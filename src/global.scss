@@ -1,0 +1,222 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+// Global variables
+:root {
+    --color-primary: #301B72;
+	--color-primary-rgb: 48,27,114;
+	--color-primary-contrast: #ffffff;
+	--color-primary-contrast-rgb: 255,255,255;
+	--color-primary-shade: #2a1864;
+	--color-primary-tint: #453280;
+
+	--color-secondary: #078CFD;
+	--color-secondary-rgb: 7,140,253;
+	--color-secondary-contrast: #ffffff;
+	--color-secondary-contrast-rgb: 255,255,255;
+	--color-secondary-shade: #067bdf;
+	--color-secondary-tint: #2098fd;
+
+	--color-tertiary: #7D5FFF;
+	--color-tertiary-rgb: 125,95,255;
+	--color-tertiary-contrast: #ffffff;
+	--color-tertiary-contrast-rgb: 255,255,255;
+	--color-tertiary-shade: #6e54e0;
+	--color-tertiary-tint: #8a6fff;
+
+	--color-success: #40cf79;
+	--color-success-rgb: 64,207,121;
+	--color-success-contrast: #000000;
+	--color-success-contrast-rgb: 0,0,0;
+	--color-success-shade: #38b66a;
+	--color-success-tint: #53d486;
+
+	--color-warning: #ffc409;
+	--color-warning-rgb: 255,196,9;
+	--color-warning-contrast: #000000;
+	--color-warning-contrast-rgb: 0,0,0;
+	--color-warning-shade: #e0ac08;
+	--color-warning-tint: #ffca22;
+
+	--color-danger: #eb445a;
+	--color-danger-rgb: 235,68,90;
+	--color-danger-contrast: #ffffff;
+	--color-danger-contrast-rgb: 255,255,255;
+	--color-danger-shade: #cf3c4f;
+	--color-danger-tint: #ed576b;
+
+    --color-dark: #222428;
+    --color-dark-rgb: 34, 36, 40;
+    --color-dark-contrast: #ffffff;
+    --color-dark-contrast-rgb: 255, 255, 255;
+    --color-dark-shade: #1e2023;
+    --color-dark-tint: #383a3e;
+
+	--color-medium: #92949c;
+	--color-medium-rgb: 146,148,156;
+	--color-medium-contrast: #000000;
+	--color-medium-contrast-rgb: 0,0,0;
+	--color-medium-shade: #808289;
+	--color-medium-tint: #9d9fa6;
+
+	--color-light: #f4f5f8;
+	--color-light-rgb: 244,245,248;
+	--color-light-contrast: #000000;
+	--color-light-contrast-rgb: 0,0,0;
+	--color-light-shade: #d7d8da;
+	--color-light-tint: #f5f6f9;
+
+    /*
+    * Dark Colors
+    * -------------------------------------------
+    */
+    --dark-theme-color-primary: #301B72;
+	--dark-theme-color-primary-rgb: 48,27,114;
+	--dark-theme-color-primary-contrast: #ffffff;
+	--dark-theme-color-primary-contrast-rgb: 255,255,255;
+	--dark-theme-color-primary-shade: #2a1864;
+	--dark-theme-color-primary-tint: #453280;
+
+	--dark-theme-color-secondary: #078CFD;
+	--dark-theme-color-secondary-rgb: 7,140,253;
+	--dark-theme-color-secondary-contrast: #ffffff;
+	--dark-theme-color-secondary-contrast-rgb: 255,255,255;
+	--dark-theme-color-secondary-shade: #067bdf;
+	--dark-theme-color-secondary-tint: #2098fd;
+
+	--dark-theme-color-tertiary: #7D5FFF;
+	--dark-theme-color-tertiary-rgb: 125,95,255;
+	--dark-theme-color-tertiary-contrast: #ffffff;
+	--dark-theme-color-tertiary-contrast-rgb: 255,255,255;
+	--dark-theme-color-tertiary-shade: #6e54e0;
+	--dark-theme-color-tertiary-tint: #8a6fff;
+
+	--dark-theme-color-success: #40cf79;
+	--dark-theme-color-success-rgb: 64,207,121;
+	--dark-theme-color-success-contrast: #000000;
+	--dark-theme-color-success-contrast-rgb: 0,0,0;
+	--dark-theme-color-success-shade: #38b66a;
+	--dark-theme-color-success-tint: #53d486;
+
+	--dark-theme-color-warning: #ffc409;
+	--dark-theme-color-warning-rgb: 255,196,9;
+	--dark-theme-color-warning-contrast: #000000;
+	--dark-theme-color-warning-contrast-rgb: 0,0,0;
+	--dark-theme-color-warning-shade: #e0ac08;
+	--dark-theme-color-warning-tint: #ffca22;
+
+	--dark-theme-color-danger: #eb445a;
+	--dark-theme-color-danger-rgb: 235,68,90;
+	--dark-theme-color-danger-contrast: #ffffff;
+	--dark-theme-color-danger-contrast-rgb: 255,255,255;
+	--dark-theme-color-danger-shade: #cf3c4f;
+	--dark-theme-color-danger-tint: #ed576b;
+
+    --dark-theme-color-dark: #f4f5f8;
+    --dark-theme-color-dark-rgb: 244,245,248;
+    --dark-theme-color-dark-contrast: #000000;
+    --dark-theme-color-dark-contrast-rgb: 0,0,0;
+    --dark-theme-color-dark-shade: #d7d8da;
+    --dark-theme-color-dark-tint: #f5f6f9;
+
+	--dark-theme-color-medium: #92949c;
+	--dark-theme-color-medium-rgb: 146,148,156;
+	--dark-theme-color-medium-contrast: #000000;
+	--dark-theme-color-medium-contrast-rgb: 0,0,0;
+	--dark-theme-color-medium-shade: #808289;
+	--dark-theme-color-medium-tint: #9d9fa6;
+
+	--dark-theme-color-light: #222428;
+	--dark-theme-color-light-rgb: 34,36,40;
+	--dark-theme-color-light-contrast: #ffffff;
+	--dark-theme-color-light-contrast-rgb: 255,255,255;
+	--dark-theme-color-light-shade: #1e2023;
+	--dark-theme-color-light-tint: #383a3e;
+}
+
+html, body, form, fieldset, table, tr, td, img, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+input, button, select, textarea, optgroup, option {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+}
+
+.heading-0 {
+	font-size: 48px;
+	font-weight: 700;
+}
+
+.heading-1 {
+	font-size: 40px;
+	font-weight: 700;
+}
+
+.heading-2 {
+	font-size: 32px;
+	font-weight: 700;
+}
+
+.heading-3 {
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.heading-4 {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.heading-5 {
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.heading-6 {
+	font-size: 10px;
+	font-weight: 700;
+}
+
+.thin-title {
+	font-weight: 300;
+}
+
+.font-body-s {
+    font-size: 14px;
+}
+
+.font-body-m {
+    font-size: 16px;
+}
+
+// TODO:
+// - Create classes for bold titles
+// - Create classes for light titles
