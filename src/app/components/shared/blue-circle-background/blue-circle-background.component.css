@@ -1,0 +1,13 @@
+.container {
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgba(7, 140, 253, 0.1);
+    padding: 1em;
+    line-height: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .container {
+        background-color: rgba(79, 161, 233, 0.1);
+    }
+}
