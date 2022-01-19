@@ -3,8 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'blue-circle-background',
   templateUrl: './blue-circle-background.component.html',
-  styleUrls: ['./blue-circle-background.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./blue-circle-background.component.css']
 })
 export class BlueCircleBackgroundComponent implements OnInit {
 
