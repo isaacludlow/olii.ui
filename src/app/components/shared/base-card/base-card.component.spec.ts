@@ -33,9 +33,6 @@ describe('BaseIconComponent', () => {
 
       // assert
       const ionCardEl = fixture.debugElement.query(By.css('ion-card'));
-      // const hasDownloadAttribute = fixture.debugElement.properties.innerHTML.Contains('download');
-      // console.log(fixture.debugElement.nativeElement)
-      // console.log(fixture.debugElement.attributes)
       expect(ionCardEl.attributes).toContain['download'];
     });
 
@@ -49,7 +46,6 @@ describe('BaseIconComponent', () => {
 
       // assert
       const ionCardEl = fixture.debugElement.query(By.css('ion-card'));
-      // const downloadAttributeValue = fixture.debugElement.nativeElement.getAttribute('download');
       expect(ionCardEl.attributes['download']).toEqual(component.downloadFileName);
     });
   });

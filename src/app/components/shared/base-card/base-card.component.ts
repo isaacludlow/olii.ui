@@ -1,6 +1,4 @@
-import { AfterViewInit, Component, ElementRef, INJECTOR, Input, OnInit, ViewChild } from '@angular/core';
-import { stringify } from 'querystring';
-
+import { AfterViewInit, Component, Input } from '@angular/core';
 @Component({
   selector: 'base-card',
   template: `
