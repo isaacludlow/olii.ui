@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-base-icon',
@@ -10,9 +10,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class BaseIconComponent {
   /** Specifies the css class to be applied to the icon to determine the size. */
-  size: string;
+  @Input() size: string;
   /** Name of the icon */
-  name: string;
+  @Input() name: string;
 
   constructor() { }
 
