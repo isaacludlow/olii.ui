@@ -1,15 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'blue-circle-background',
-  templateUrl: './blue-circle-background.component.html',
-  styleUrls: ['./blue-circle-background.component.css']
+  template: `
+    <div class="container">
+      <ng-content class="content"></ng-content>
+    </div>
+  `,
+  styleUrls: ['./blue-circle-background.component.scss']
 })
-export class BlueCircleBackgroundComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class BlueCircleBackgroundComponent {}
