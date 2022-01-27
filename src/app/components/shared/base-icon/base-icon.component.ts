@@ -1,15 +1,18 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-base-icon',
-  templateUrl: './base-icon.component.html',
-  styleUrls: ['./base-icon.component.css']
+  template: `
+    <ion-icon [ngClass]="size" [name]="name"></ion-icon>
+  `,
+  styleUrls: ['./base-icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BaseIconComponent {
   /** Specifies the css class to be applied to the icon to determine the size. */
-  size: string;
+  @Input() size: string;
   /** Name of the icon */
-  name: string;
+  @Input() name: string;
 
   constructor() { }
 
