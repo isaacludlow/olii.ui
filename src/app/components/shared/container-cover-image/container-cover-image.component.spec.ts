@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContainerImageCoverComponent } from './container-image-cover.component';
+import { ContainerCoverImageComponent } from './container-cover-image.component';
 
 describe('ContainerImageCoverComponent', () => {
-  let component: ContainerImageCoverComponent;
-  let fixture: ComponentFixture<ContainerImageCoverComponent>;
+  let component: ContainerCoverImageComponent;
+  let fixture: ComponentFixture<ContainerCoverImageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContainerImageCoverComponent ]
+      declarations: [ ContainerCoverImageComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContainerImageCoverComponent);
+    fixture = TestBed.createComponent(ContainerCoverImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

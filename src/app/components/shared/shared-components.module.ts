@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseIconComponent } from './base-icon/base-icon.component';
 import { IonicModule } from '@ionic/angular';
-import { ContainerImageCoverComponent } from './container-image-cover/container-image-cover.component';
+import { ContainerCoverImageComponent } from './container-cover-image/container-cover-image.component';
 
 
 
 @NgModule({
   declarations: [
     BaseIconComponent,
-    ContainerImageCoverComponent
+    ContainerCoverImageComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +17,7 @@ import { ContainerImageCoverComponent } from './container-image-cover/container-
   ],
   exports: [
     BaseIconComponent,
-    ContainerImageCoverComponent
+    ContainerCoverImageComponent
   ]
 })
 export class SharedComponentsModule { }
