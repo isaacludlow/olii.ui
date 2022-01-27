@@ -170,6 +170,14 @@ input, button, select, textarea, optgroup, option {
     font-weight: inherit;
 }
 
+a {
+	text-decoration: none;
+}
+
+ion-icon {
+	color: var(--color-primary)
+}
+
 .heading-0 {
 	font-size: 48px;
 	font-weight: 700;

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'blue-circle-background',
   template: `
     <div class="container">
-      <ng-content class="content"></ng-content>
+      <ng-content></ng-content>
     </div>
   `,
   styleUrls: ['./blue-circle-background.component.scss']
