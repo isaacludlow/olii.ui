@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseIconComponent } from './base-icon/base-icon.component';
 import { IonicModule } from '@ionic/angular';
+import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
 import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-circle-background.component';
 
 
@@ -9,6 +10,7 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
 @NgModule({
   declarations: [
     BaseIconComponent,
+    BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent
   ],
   imports: [
@@ -17,6 +19,7 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
   ],
   exports: [
     BaseIconComponent,
+    BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent
   ]
 })
