@@ -1,0 +1,23 @@
+@import '/src/global.scss';
+
+/* Text Color */
+.dark {
+    color: var(--color-primary);
+}
+
+.black {
+    color: var(--color-dark);
+}
+
+.gray {
+    color: var(--color-medium);
+}
+
+/* Text Size */
+.small {
+    @extend %font-body-s;
+}
+
+.medium {
+    @extend %font-body-m;
+}
