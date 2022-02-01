@@ -13,6 +13,17 @@
     </ion-toolbar>
   </ion-header>
 
+  <base-card color="primary" downloadFileName="adsf" [setDownloadAttribute]="true">
+    <ion-card-header>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the
+      woods. Wash your spirit clean.
+    </ion-card-content>
+  </base-card>
+
   <div id="container">
     <div class="heading-0">H0: Ready to create an app?</div>
     <div class="heading-1">H1: Ready to create an app?</div>
@@ -27,8 +38,9 @@
       <container-cover-image imageUrl="./../../assets/images/crystal-jo-RQg42EkyO9M-unsplash.jpg">
       </container-cover-image>
     </div>
-    <p><a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a>
-    </p>
+    <blue-circle-background><base-icon name="airplane" size="large"></base-icon></blue-circle-background>
+    <base-description-text-box textSize="small" textColor="dark">This is the test text for the base base-description-text-box!</base-description-text-box>
+    <div><a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></div>
     <ion-button color="primary">Primary</ion-button>
     <ion-button color="secondary">Secondary</ion-button>
     <ion-button color="tertiary">Tertiary</ion-button>
