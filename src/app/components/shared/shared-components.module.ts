@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseIconComponent } from './base-icon/base-icon.component';
 import { IonicModule } from '@ionic/angular';
+import { ContainerCoverImageComponent } from './container-cover-image/container-cover-image.component';
 
 import { BaseCardComponent } from './base-card/base-card.component';
 import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
@@ -14,7 +15,8 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
     BaseIconComponent,
     BaseCardComponent,
     BaseDescriptionTextBoxComponent,
-    BlueCircleBackgroundComponent
+    BlueCircleBackgroundComponent,
+    ContainerCoverImageComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
     BaseIconComponent,
     BaseCardComponent,
     BaseDescriptionTextBoxComponent,
-    BlueCircleBackgroundComponent
+    BlueCircleBackgroundComponent,
+    ContainerCoverImageComponent
   ]
 })
 export class SharedComponentsModule { }
