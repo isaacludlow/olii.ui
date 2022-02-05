@@ -7,6 +7,7 @@ import { ContainerCoverImageComponent } from './container-cover-image/container-
 import { BaseCardComponent } from './base-card/base-card.component';
 import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
 import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-circle-background.component';
+import { ToggleItemComponent } from './toggle-item/toggle-item.component';
 
 
 
@@ -16,7 +17,8 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
     BaseCardComponent,
     BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent,
-    ContainerCoverImageComponent
+    ContainerCoverImageComponent,
+    ToggleItemComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
     BaseCardComponent,
     BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent,
-    ContainerCoverImageComponent
+    ContainerCoverImageComponent,
+    ToggleItemComponent
   ]
 })
 export class SharedComponentsModule { }
