@@ -9,13 +9,6 @@ import { Component, Input, OnInit } from '@angular/core';
   `,
   styleUrls: ['./profile-preview-icons.component.scss']
 })
-export class ProfilePreviewIconsComponent implements OnInit {
+export class ProfilePreviewIconsComponent {
   @Input() profileImageUrls: Array<string>;
-
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
 }
