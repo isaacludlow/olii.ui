@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'toggle-item',
@@ -10,15 +10,12 @@ import { Component, Input, OnInit } from '@angular/core';
   `,
   styleUrls: ['./toggle-item.component.scss']
 })
-export class ToggleItemComponent implements OnInit {
+export class ToggleItemComponent {
   @Input() toggled: boolean;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  @Output() newToggledEvent = new EventEmitter<boolean>();
 
   toggle(): void {
     this.toggled = !this.toggled;
+    this.newToggledEvent.emit(this.toggled);
   }
 }

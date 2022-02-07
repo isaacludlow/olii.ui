@@ -14,7 +14,4 @@ export class BaseIconComponent {
 
   /** Name of the icon */
   @Input() name: string;
-
-  constructor() { }
-
 }

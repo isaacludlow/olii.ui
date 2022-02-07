@@ -7,10 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
   `,
   styleUrls: ['./container-cover-image.component.scss']
 })
-export class ContainerCoverImageComponent implements OnInit {
+export class ContainerCoverImageComponent {
   @Input() imageUrl: string;
-
-  ngOnInit(): void {
-  }
-
 }

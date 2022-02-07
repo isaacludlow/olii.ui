@@ -9,13 +9,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
   `,
   styleUrls: ['./base-description-text-box.component.scss']
 })
-export class BaseDescriptionTextBoxComponent implements OnInit {
+export class BaseDescriptionTextBoxComponent {
   @Input() textSize;
-  @Input() textColor
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  @Input() textColor;
 }
