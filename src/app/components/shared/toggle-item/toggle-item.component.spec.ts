@@ -22,4 +22,15 @@ describe('ToggleItemComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should toggle on and off', () => {
+    component.toggled = false;
+    fixture.detectChanges();
+    expect(component.toggled).toBeFalsy();
+
+    component.toggle();
+    fixture.detectChanges();
+
+    expect(component.toggled).toBeTruthy();
+  });
 });
