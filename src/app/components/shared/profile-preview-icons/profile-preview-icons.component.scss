@@ -1,7 +1,7 @@
 .profile-icons-container {
     display: flex;
     justify-content: space-between;
-    margin: 5px 0px;
+    gap: 4px;
     width: 84px; // sum of the width of each icon plus 3px in between each.
 }
 
