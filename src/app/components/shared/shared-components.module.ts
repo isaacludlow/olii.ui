@@ -9,6 +9,7 @@ import { BaseDescriptionTextBoxComponent } from './base-description-text-box/bas
 import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-circle-background.component';
 import { ToggleItemComponent } from './toggle-item/toggle-item.component';
 import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.component';
+import { PurpleSquareBackgroundComponent } from './purple-square-background/purple-square-background.component';
 
 
 
@@ -20,7 +21,8 @@ import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
     ToggleItemComponent,
-    DateTimePreviewComponent
+    DateTimePreviewComponent,
+    PurpleSquareBackgroundComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
     ToggleItemComponent,
-    DateTimePreviewComponent
+    DateTimePreviewComponent,
+    PurpleSquareBackgroundComponent
   ]
 })
 export class SharedComponentsModule { }
