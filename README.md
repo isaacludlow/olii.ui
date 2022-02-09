@@ -5,6 +5,7 @@ TODO: Give a short introduction of your project. Let this section explain the ob
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
 2.	Software dependencies
+    - We use the date-fns npm package to help manipulate and format dates. Refer to their [documentation](https://date-fns.org/docs/Getting-Started) when trying to find a function that you want to use in your component. You'll need to import each function to use it in your file. This helps to decrease the application bundle size when building and deploying.
 3.	Latest releases
 4.	API references
 
