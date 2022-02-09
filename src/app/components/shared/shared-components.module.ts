@@ -8,6 +8,7 @@ import { BaseCardComponent } from './base-card/base-card.component';
 import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
 import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-circle-background.component';
 import { ToggleItemComponent } from './toggle-item/toggle-item.component';
+import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.component';
 
 
 
@@ -18,7 +19,8 @@ import { ToggleItemComponent } from './toggle-item/toggle-item.component';
     BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
-    ToggleItemComponent
+    ToggleItemComponent,
+    DateTimePreviewComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ToggleItemComponent } from './toggle-item/toggle-item.component';
     BaseDescriptionTextBoxComponent,
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
-    ToggleItemComponent
+    ToggleItemComponent,
+    DateTimePreviewComponent
   ]
 })
 export class SharedComponentsModule { }

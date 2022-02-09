@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  date: Date = new Date(Date.now());
 
   constructor() {}
 
