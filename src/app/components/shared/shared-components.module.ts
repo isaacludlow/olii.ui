@@ -10,6 +10,8 @@ import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-cir
 import { ToggleItemComponent } from './toggle-item/toggle-item.component';
 import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.component';
 import { PurpleSquareBackgroundComponent } from './purple-square-background/purple-square-background.component';
+import { LocationPreviewComponent } from './location-preview/location-preview.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -22,11 +24,13 @@ import { PurpleSquareBackgroundComponent } from './purple-square-background/purp
     ContainerCoverImageComponent,
     ToggleItemComponent,
     DateTimePreviewComponent,
-    PurpleSquareBackgroundComponent
+    PurpleSquareBackgroundComponent,
+    LocationPreviewComponent
   ],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    SharedModule
   ],
   exports: [
     BaseIconComponent,
@@ -36,7 +40,8 @@ import { PurpleSquareBackgroundComponent } from './purple-square-background/purp
     ContainerCoverImageComponent,
     ToggleItemComponent,
     DateTimePreviewComponent,
-    PurpleSquareBackgroundComponent
+    PurpleSquareBackgroundComponent,
+    LocationPreviewComponent
   ]
 })
 export class SharedComponentsModule { }
