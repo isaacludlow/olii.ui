@@ -1,0 +1,22 @@
+.profile-icons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem;
+    width: 5.25rem; // sum of the width of each icon plus 3px in between each.
+}
+
+.profile-images {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.small {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.large {
+    height: 2.5rem;
+    width: 2.5rem;
+}

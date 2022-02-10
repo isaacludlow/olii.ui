@@ -58,7 +58,13 @@
     <date-time-preview [date]="date"></date-time-preview>
     <hr>
     <location-preview locationText="Eagle Park"></location-preview>
-    <div><a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></div>
+    <hr>
+    <div class="font-body-m">Small icons</div>
+    <profile-preview-icons [profileImageUrls]="profileImageUrls" profileIconSize="small"></profile-preview-icons>
+    <hr>
+    <div class="font-body-m">Large icons</div>
+    <profile-preview-icons [profileImageUrls]="profileImageUrls" profileIconSize="large"></profile-preview-icons>
+    <hr>
     <ion-button color="primary">Primary</ion-button>
     <ion-button color="secondary">Secondary</ion-button>
     <ion-button color="tertiary">Tertiary</ion-button>

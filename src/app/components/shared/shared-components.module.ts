@@ -12,6 +12,7 @@ import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.
 import { PurpleSquareBackgroundComponent } from './purple-square-background/purple-square-background.component';
 import { LocationPreviewComponent } from './location-preview/location-preview.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-preview-icons.component';
 
 
 
@@ -25,7 +26,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ToggleItemComponent,
     DateTimePreviewComponent,
     PurpleSquareBackgroundComponent,
-    LocationPreviewComponent
+    LocationPreviewComponent,
+    ProfilePreviewIconsComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ToggleItemComponent,
     DateTimePreviewComponent,
     PurpleSquareBackgroundComponent,
-    LocationPreviewComponent
+    LocationPreviewComponent,
+    ProfilePreviewIconsComponent
   ]
 })
 export class SharedComponentsModule { }
