@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedComponentsModule } from '../components/shared/shared-components.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { SharedComponentsModule } from '../components/shared/shared-components.m
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    SharedModule
   ],
   declarations: [HomePage]
 })
