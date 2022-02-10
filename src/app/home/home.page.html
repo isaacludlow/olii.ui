@@ -34,16 +34,30 @@
     <div class="heading-6">H6: Ready to create an app?</div>
     <div class="font-body-s">Font-body-s: Ready to create an app?</div>
     <div class="font-body-m">Font-body-m: Ready to create an app?</div>
+
     <div style="height: 30vh; width: 30vw;">
       <container-cover-image imageUrl="./../../assets/images/crystal-jo-RQg42EkyO9M-unsplash.jpg">
       </container-cover-image>
     </div>
-    <blue-circle-background><base-icon name="airplane" size="large"></base-icon></blue-circle-background>
+
+    <blue-circle-background>
+      <base-icon name="airplane" size="large">
+    </base-icon></blue-circle-background>
+    <hr>
+    <purple-square-background>
+      <base-icon name="airplane" size="medium"></base-icon>
+    </purple-square-background>
+
     <base-description-text-box textSize="small" textColor="dark">This is the test text for the base base-description-text-box!</base-description-text-box>
+
     <toggle-item>
       <base-icon toggleOn name="airplane" size="large"></base-icon>
       <base-icon toggleOff name="airplane-outline" size="large"></base-icon>
     </toggle-item>
+    <hr>
+    <date-time-preview [date]="date"></date-time-preview>
+    <hr>
+    <location-preview locationText="Eagle Park"></location-preview>
     <hr>
     <div class="font-body-m">Small icons</div>
     <profile-preview-icons [profileImageUrls]="profileImageUrls" profileIconSize="small"></profile-preview-icons>

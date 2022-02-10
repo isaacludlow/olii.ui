@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  date: Date = new Date(Date.now());
   profileImageUrls = [
     "../assets/test-data/profile-images/black-hair-girl.jpg",
     "../assets/test-data/profile-images/red-har-girl.jpg",

@@ -8,6 +8,10 @@ import { BaseCardComponent } from './base-card/base-card.component';
 import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
 import { BlueCircleBackgroundComponent } from './blue-circle-background/blue-circle-background.component';
 import { ToggleItemComponent } from './toggle-item/toggle-item.component';
+import { DateTimePreviewComponent } from './date-time-preview/date-time-preview.component';
+import { PurpleSquareBackgroundComponent } from './purple-square-background/purple-square-background.component';
+import { LocationPreviewComponent } from './location-preview/location-preview.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-preview-icons.component';
 
 
@@ -20,11 +24,15 @@ import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-pr
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
     ToggleItemComponent,
+    DateTimePreviewComponent,
+    PurpleSquareBackgroundComponent,
+    LocationPreviewComponent,
     ProfilePreviewIconsComponent
   ],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    SharedModule
   ],
   exports: [
     BaseIconComponent,
@@ -33,6 +41,9 @@ import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-pr
     BlueCircleBackgroundComponent,
     ContainerCoverImageComponent,
     ToggleItemComponent,
+    DateTimePreviewComponent,
+    PurpleSquareBackgroundComponent,
+    LocationPreviewComponent,
     ProfilePreviewIconsComponent
   ]
 })
