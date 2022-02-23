@@ -7,10 +7,15 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'community',
+    loadChildren: () => import('./community/community.module').then(m => m.CommunityModule)
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'community',
     pathMatch: 'full'
   },
+  { path: 'groups-feature', loadChildren: () => import('./community/groups-feature/groups-feature.module').then(m => m.GroupsFeatureModule) },
 ];
 
 @NgModule({
