@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EventsFeatureComponent } from './events-feature.component';
+import { EventsFeaturePage } from './events-feature.page';
 
-const routes: Routes = [{ path: '', component: EventsFeatureComponent }];
+const routes: Routes = [{ path: '', component: EventsFeaturePage }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

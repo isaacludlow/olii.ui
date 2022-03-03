@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GroupsFeatureRoutingModule } from './groups-feature-routing.module';
-import { GroupsFeatureComponent } from './groups-feature.component';
+import { GroupsFeaturePage } from './groups-feature.page';
 
 
 @NgModule({
   declarations: [
-    GroupsFeatureComponent
+    GroupsFeaturePage
   ],
   imports: [
     CommonModule,
