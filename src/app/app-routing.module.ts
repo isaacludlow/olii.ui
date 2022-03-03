@@ -15,6 +15,7 @@ const routes: Routes = [
     redirectTo: 'community',
     pathMatch: 'full'
   },
+  { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
 ];
 
 @NgModule({
