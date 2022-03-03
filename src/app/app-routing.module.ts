@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -15,12 +15,11 @@ const routes: Routes = [
     redirectTo: 'community',
     pathMatch: 'full'
   },
-  { path: 'groups-feature', loadChildren: () => import('./community/groups-feature/groups-feature.module').then(m => m.GroupsFeatureModule) },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

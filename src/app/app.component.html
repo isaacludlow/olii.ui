@@ -1,3 +1,22 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      
+      <ion-tab-button routerLink="/community/events" routerLinkActive #eventsRoute="routerLinkActive">
+        <ion-icon *ngIf="eventsRoute.isActive" name="today"></ion-icon>
+        <ion-icon *ngIf="!eventsRoute.isActive" name="today-outline"></ion-icon>
+      </ion-tab-button>
+  
+      <ion-tab-button routerLink="/community/groups" routerLinkActive #groupsRoute="routerLinkActive">
+        <ion-icon *ngIf="groupsRoute.isActive" name="people-circle"></ion-icon>
+        <ion-icon *ngIf="!groupsRoute.isActive" name="people-circle-outline"></ion-icon>
+      </ion-tab-button>
+  
+      <ion-tab-button routerLink="/profile" routerLinkActive #profileRoute="routerLinkActive">
+        <ion-icon *ngIf="profileRoute.isActive" name="person-circle"></ion-icon>
+        <ion-icon *ngIf="!profileRoute.isActive" name="person-circle-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-app>
