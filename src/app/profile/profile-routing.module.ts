@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EventsFeaturePage } from './events-feature.page';
+import { ProfileComponent } from './profile.page';
 
-const routes: Routes = [{ path: '', component: EventsFeaturePage }];
+const routes: Routes = [{ path: '', component: ProfileComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EventsFeatureRoutingModule { }
+export class ProfileRoutingModule { }
