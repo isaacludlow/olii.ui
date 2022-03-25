@@ -7,6 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedComponentsModule } from './components/shared/shared-components.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,13 +16,14 @@ import { SharedComponentsModule } from './components/shared/shared-components.mo
   entryComponents: [],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    HttpClientModule,
+    IonicModule.forRoot({rippleEffect: false}),
     AppRoutingModule,
     SharedComponentsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
