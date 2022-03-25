@@ -13,6 +13,7 @@ import { PurpleSquareBackgroundComponent } from './purple-square-background/purp
 import { LocationPreviewComponent } from './location-preview/location-preview.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-preview-icons.component';
+import { IconWithPurpleSquareBackgroundComponent } from './icon-with-purple-square-background/icon-with-purple-square-background.component';
 
 
 
@@ -27,7 +28,8 @@ import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-pr
     DateTimePreviewComponent,
     PurpleSquareBackgroundComponent,
     LocationPreviewComponent,
-    ProfilePreviewIconsComponent
+    ProfilePreviewIconsComponent,
+    IconWithPurpleSquareBackgroundComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-pr
     DateTimePreviewComponent,
     PurpleSquareBackgroundComponent,
     LocationPreviewComponent,
-    ProfilePreviewIconsComponent
+    ProfilePreviewIconsComponent,
+    IconWithPurpleSquareBackgroundComponent
   ]
 })
 export class SharedComponentsModule { }

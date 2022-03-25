@@ -1,1 +1,55 @@
-<p>profile works!</p>
+<ion-content>
+    <div class="settings">
+        <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
+    </div>
+    <div *ngIf="profile" class="profile-info-container">
+        <div class="profile-image">
+            <olii-container-cover-image [imageUrl]="profile.ProfileImageUrl" circle="true"></olii-container-cover-image>
+        </div>
+        <div class="profile-info">
+            <div class="personal-info">
+                <div class="name heading-3">John Snow*</div>
+                <div class="username font-light">@thegreatestsnow*</div>
+                <div class="host-city font-light">{{ profile.HomeCountry }}</div>
+                <div class="bio font-light">{{ profile.Bio }}</div>
+            </div>
+            <div class="highlighted-personal-info">
+                <div class="current-city">
+                    <ion-text color="medium">
+                        <h4>Current City</h4>
+                    </ion-text>
+                    <ion-text color="tertiary">
+                        <p>{{ profile.HostCity }}</p>
+                    </ion-text>
+                </div>
+                <div class="connections">
+                    <ion-text color="medium">
+                        <h4>Connections</h4>
+                    </ion-text>
+                    <ion-text color="tertiary">
+                        <p>{{ profile.NumberOfConnections }}</p>
+                    </ion-text>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="assets">
+        <div class="menu-bar-container">
+            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" value="photos" color="tertiary">
+                <ion-segment-button value="photos" layout="icon-start">
+                    <ion-icon name="image-outline"></ion-icon>
+                    <ion-label>Photos</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="saved" layout="icon-start">
+                    <ion-icon name="heart-outline"></ion-icon>
+                    <ion-label>Saved</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+        <div class="posts">
+            <div *ngFor="let profilePostUrl of profilePostUrls" class="image">
+                <img [src]="profilePostUrl" alt="Profile image post">
+            </div>
+        </div>
+    </div>
+</ion-content>

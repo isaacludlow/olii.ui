@@ -1,0 +1,75 @@
+@import '/src/global.scss';
+
+.settings {
+    display: flex;
+    justify-content: end;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    color: var(--color-primary);
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1.125rem;
+    
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        
+        .personal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            text-align: center;
+        }
+
+        .highlighted-personal-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+
+            .current-city, .connections {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+            }
+        }
+    }
+}
+
+.assets {
+    padding: 1rem;
+
+    .menu-bar-container {
+        margin: 0 2rem;
+    }
+    
+    .menu-bar {
+        display: flex;
+        gap: 2.5rem;
+    }
+    
+    ion-segment-button {
+        display: flex;
+        align-items: center;
+        text-transform: none;
+        --background: transparent;
+
+        --ripple-color: transparent;
+--background-activated: transparent;
+--background-activated-opacity:transparent;
+--background-focused: transparent;
+--background-focused-opacity:transparent;
+--background-hover  : transparent;
+--background-hover-opacity  :transparent;
+    }
+    
+    ion-segment-button::shadow {
+        --indicator-color: red !important;
+
+    }
+}
