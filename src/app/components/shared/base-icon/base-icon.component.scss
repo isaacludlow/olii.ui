@@ -1,19 +1,17 @@
+@import '/src/global.scss';
+
 .small {
-    font-size: 16px;
+    @extend %icon-small;
 }
 
 .medium {
-    font-size: 24px;
+    @extend %icon-medium;
 }
 
 .large {
-    font-size: 32px;
+    @extend %icon-large;
 }
 
 .display {
-    font-size: 48px;
-}
-
-.hero {
-    font-size: 80px;
+    @extend %icon-display;
 }

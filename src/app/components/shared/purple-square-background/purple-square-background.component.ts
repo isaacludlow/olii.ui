@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'purple-square-background',
+  selector: 'olii-purple-square-background',
   template: `
     <div class="container">
       <div class="background">

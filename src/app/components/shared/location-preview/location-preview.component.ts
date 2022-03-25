@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'location-preview',
+  selector: 'olii-location-preview',
   template: `
     <div class="container">
-      <purple-square-background>
-        <base-icon class="icon" size="medium" name="location-outline"></base-icon>
-      </purple-square-background>
+      <olii-purple-square-background>
+        <olii-base-icon class="icon" size="medium" name="location-outline"></olii-base-icon>
+      </olii-purple-square-background>
       <div class="font-body-s">{{ locationText | truncate:20:'...' }}</div>
     </div>
   `,

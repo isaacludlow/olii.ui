@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
-  selector: 'base-description-text-box',
+  selector: 'olii-base-description-text-box',
   template: `
     <div [ngClass]="[textSize, textColor]">
       <ng-content></ng-content>

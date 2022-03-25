@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'profile-preview-icons',
+  selector: 'olii-profile-preview-icons',
   template: `
     <div class="profile-icons-container">
       <img class="profile-images" [ngClass]="profileIconSize" *ngFor="let profileImageUrl of profileImageUrls" [src]="profileImageUrl">

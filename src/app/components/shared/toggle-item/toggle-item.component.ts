@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'toggle-item',
+  selector: 'olii-toggle-item',
   template: `
     <div class="toggle" (click)="toggle()">
       <ng-content *ngIf="!toggled" select="[toggleOff]"></ng-content>

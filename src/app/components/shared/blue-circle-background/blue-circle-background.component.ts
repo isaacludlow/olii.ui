@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'blue-circle-background',
+  selector: 'olii-blue-circle-background',
   template: `
     <div class="container">
       <ng-content></ng-content>
