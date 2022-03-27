@@ -13,6 +13,11 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 1.125rem;
+
+    .profile-image {
+        height: 100px;
+        width: 100px;
+    }
     
     .profile-info {
         display: flex;
@@ -42,10 +47,11 @@
 }
 
 .assets {
-    padding: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(var(--color-light-rgb), 0.5);
 
     .menu-bar-container {
-        margin: 0 2rem;
+        margin: 0 2rem 0.5rem 2rem;
     }
     
     .menu-bar {
@@ -57,19 +63,24 @@
         display: flex;
         align-items: center;
         text-transform: none;
-        --background: transparent;
 
-        --ripple-color: transparent;
---background-activated: transparent;
---background-activated-opacity:transparent;
---background-focused: transparent;
---background-focused-opacity:transparent;
---background-hover  : transparent;
---background-hover-opacity  :transparent;
+        ion-label {
+            font-weight: 600;
+        }
     }
-    
-    ion-segment-button::shadow {
-        --indicator-color: red !important;
 
+    .posts {
+        display: grid;
+        justify-content: center;
+        grid-template-rows: minmax(10vh, 300px) minmax(10vh, 300px) minmax(16vh, 300px) minmax(16vh, 300px);
+        grid-template-columns: minmax(33vw, 500px) minmax(33vw, 500px);
+        gap: 2px;
+    }
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .assets {
+        background-color: rgba(var(--dark-theme-color-light-rgb), 0.5);
     }
 }

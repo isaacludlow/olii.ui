@@ -1,3 +1,5 @@
+import { ProfileImage } from "./profile-image.dto";
+
 export interface Profile {
     ProfileId: number;
     UserId: number;
@@ -6,5 +8,6 @@ export interface Profile {
     HomeCountry: string;
     HostCountry: string;
     HostCity: string;
-    ProfileImageUrl: string;
+    ProfilePictureUrl: string;
+    ProfileImages: ProfileImage[];
 }
