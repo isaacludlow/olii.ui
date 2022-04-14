@@ -2,7 +2,7 @@
     <div class="settings">
         <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
     </div>
-    <div *ngIf="profile" class="profile-info-container">
+    <div class="profile-info-container">
         <div class="profile-image">
             <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" circle="true"></olii-container-cover-image>
         </div>
@@ -35,7 +35,7 @@
     </div>
     <div class="assets">
         <div class="menu-bar-container">
-            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" value="photos" color="tertiary">
+            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
                 <ion-segment-button value="photos" layout="icon-start">
                     <ion-icon name="image-outline"></ion-icon>
                     <ion-label>Photos</ion-label>
@@ -46,10 +46,13 @@
                 </ion-segment-button>
             </ion-segment>
         </div>
-        <div class="posts">
+        <div *ngIf="segmentToShow === 'photos'" class="posts">
             <div *ngFor="let profileImage of profile.ProfileImages" class="image">
                 <olii-container-cover-image [imageUrl]="profileImage.Url"></olii-container-cover-image>
             </div>
+        </div>
+        <div *ngIf="segmentToShow === 'saved'" class="saved">
+            <ion-card button="true">Saved placeholder</ion-card>
         </div>
     </div>
 </ion-content>

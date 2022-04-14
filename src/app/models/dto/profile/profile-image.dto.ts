@@ -3,4 +3,6 @@ export interface ProfileImage {
     Id: number;
     /** Urls to images. */
     Url: string;
+    /** Base64 string representing downloaded images */
+    DownloadedImage: string;
 }

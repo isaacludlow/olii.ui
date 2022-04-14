@@ -2,7 +2,7 @@
 
 .settings {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-right: 0.5rem;
     margin-top: 0.5rem;
     color: var(--color-primary);
@@ -72,9 +72,13 @@
     .posts {
         display: grid;
         justify-content: center;
-        grid-template-rows: minmax(10vh, 300px) minmax(10vh, 300px) minmax(16vh, 300px) minmax(16vh, 300px);
-        grid-template-columns: minmax(33vw, 500px) minmax(33vw, 500px);
+        grid-template-rows: minmax(10vh, 250px) minmax(10vh, 250px) minmax(10vh, 250px) minmax(10vh, 250px);
+        grid-template-columns: minmax(33vw, 400px) minmax(33vw, 500px);
         gap: 2px;
+    }
+
+    .saved {
+        
     }
 }
 

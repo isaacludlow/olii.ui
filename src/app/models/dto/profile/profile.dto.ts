@@ -1,4 +1,5 @@
 import { ProfileImage } from "./profile-image.dto";
+import { SavedImagesAlbum } from "./saved-images-album.dto";
 
 export interface Profile {
     /** Id of the profile. */
@@ -19,4 +20,6 @@ export interface Profile {
     ProfilePictureUrl: string;
     /** Profile images on the user's profile to show who they are. */
     ProfileImages: ProfileImage[];
+    /** Saved images from throughout the app */
+    SavedImagesAlbum: SavedImagesAlbum;
 }
