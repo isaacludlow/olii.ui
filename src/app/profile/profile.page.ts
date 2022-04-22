@@ -8,16 +8,17 @@ import { ProfileStore } from '../shared/services/profile/profile.store';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfilePage implements OnInit, OnDestroy {
   profile: Profile;
   profilePostUrls: string[];
-  segmentToShow: string = 'photos';
+  segmentToShow: string;
   subs = new SubSink();
 
   constructor(private profileStore: ProfileStore) { }
 
   ngOnInit(): void {
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
+    this.segmentToShow = this.profileStore.profileSection;
   }
 
   segmentChanged(event) {

@@ -1,0 +1,43 @@
+.back-icon {
+    margin: 1.5rem 0 0 1.5rem;
+    color: var(--color-primary);
+}
+
+.album-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.875rem;
+}
+
+.images {
+    display: flex;
+}
+
+//========== Aspect Ratio Css ==========
+[style*="--aspect-ratio"] > :first-child {
+    width: 100%;
+}
+
+[style*="--aspect-ratio"] > img {  
+    height: auto;
+}
+
+@supports (--custom:property) {
+    [style*="--aspect-ratio"] {
+        position: relative;
+    }
+
+    [style*="--aspect-ratio"]::before {
+        content: "";
+        display: block;
+        padding-bottom: calc(100% / (var(--aspect-ratio)));
+    }
+
+    [style*="--aspect-ratio"] > :first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    } 
+}

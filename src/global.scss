@@ -166,31 +166,37 @@ html, body, form, fieldset, table, tr, td, img, h1, h2, h3, h4, h5, h6, p {
 h1 {
 	font-size: 40px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 h2 {
 	font-size: 32px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 h3 {
 	font-size: 24px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 h4 {
 	font-size: 16px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 h5 {
 	font-size: 14px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 h6 {
 	font-size: 12px;
 	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 input, button, select, textarea, optgroup, option {
@@ -224,12 +230,16 @@ a {
 	font-weight: 300;
 }
 
-.font-light {
+.color-light {
 	color: var(--color-medium);
 }
 
-.font-tertiary {
+.color-tertiary {
 	color: var(--color-tertiary);
+}
+
+.color-primary {
+	color: var(--color-primary);
 }
 
 .font-body-s, %font-body-s {
@@ -244,6 +254,24 @@ a {
 	font-size: 18px;
 }
 
-// TODO:
-// - Create classes for bold titles
-// - Create classes for light titles
+.rounded-corners {
+	border-radius: 5px;
+}
+
+img {
+    display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+    .color-light {
+        color: var(--dark-theme-color-light);
+    }
+
+	.color-tertiary {
+		color: var(--dark-theme-color-tertiary);
+	}
+
+	.color-primary {
+		color: var(--dark-theme-color-primary);
+	}
+}

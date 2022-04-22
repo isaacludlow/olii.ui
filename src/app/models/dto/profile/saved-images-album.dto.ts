@@ -1,4 +1,6 @@
 export interface SavedImagesAlbum {
+    Id: number;
+    CoverImage: string;
     Title: string;
     Description: string;
     Visibility: VisibilityType;

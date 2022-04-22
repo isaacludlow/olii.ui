@@ -47,7 +47,6 @@
 }
 
 .assets {
-    padding: 0.5rem;
     background-color: rgba(var(--color-light-rgb), 0.5);
 
     .menu-bar-container {
@@ -70,15 +69,46 @@
     }
 
     .posts {
-        display: grid;
-        justify-content: center;
-        grid-template-rows: minmax(10vh, 250px) minmax(10vh, 250px) minmax(10vh, 250px) minmax(10vh, 250px);
-        grid-template-columns: minmax(33vw, 400px) minmax(33vw, 500px);
-        gap: 2px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+        gap: 5px;
+
+        .image-container {
+            width: 49%;
+        }
     }
 
     .saved {
-        
+        display: flex;
+        // justify-content: center;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+
+        ion-card {
+            margin-inline: 0.25rem !important;
+        }
+
+        .album-card-container {
+            width: 50%;
+
+            // .cover-image-container {
+            //     width: 50%;
+            // }
+
+            .saved-album-details {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                // gap: 0.25rem;
+                padding: 0.5rem 0;
+            }
+
+        }
+
+        .create-album.card {
+
+        }
     }
 }
 

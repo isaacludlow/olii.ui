@@ -3,9 +3,9 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 @Component({
   selector: 'olii-icon-with-purple-square-background',
   template: `
-    <olii-purple-square-background>
+    <olii-colored-square-background backgroundColor="translucent-purple">
       <olii-base-icon [size]="size" [name]="name"></olii-base-icon>
-    </olii-purple-square-background>
+    </olii-colored-square-background>
   `,
   styleUrls: ['./icon-with-purple-square-background.component.scss']
 })

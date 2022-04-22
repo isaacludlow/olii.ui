@@ -4,19 +4,19 @@
     </div>
     <div class="profile-info-container">
         <div class="profile-image">
-            <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" circle="true"></olii-container-cover-image>
+            <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
         </div>
         <div class="profile-info">
             <div class="personal-info">
                 <ion-text color="tertiary"><h3 class="name">John Snow*</h3></ion-text>
                 <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
-                <div class="host-city font-light">{{ profile.HomeCountry }}</div>
-                <div class="bio font-light">{{ profile.Bio }}</div>
+                <div class="host-city color-light">{{ profile.HomeCountry }}</div>
+                <div class="bio color-light">{{ profile.Bio }}</div>
             </div>
             <div class="highlighted-personal-info">
                 <div class="current-city">
                     <ion-text color="medium">
-                        <h4>Current City</h4>
+                        <h4 class="color-light">Current City</h4>
                     </ion-text>
                     <ion-text color="tertiary">
                         <p>{{ profile.HostCity }}</p>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="connections">
                     <ion-text color="medium">
-                        <h4>Connections</h4>
+                        <h4 class="color-light">Connections</h4>
                     </ion-text>
                     <ion-text color="tertiary">
                         <p>{{ profile.NumberOfConnections }}</p>
@@ -47,12 +47,30 @@
             </ion-segment>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <div *ngFor="let profileImage of profile.ProfileImages" class="image">
-                <olii-container-cover-image [imageUrl]="profileImage.Url"></olii-container-cover-image>
-            </div>
+            <olii-responsive-aspect-ratio-container *ngFor="let profileImage of profile.ProfileImages" aspectRatio="1/1" class="image-container">
+                <olii-container-cover-image [imageUrl]="profileImage.Url" boarderRadius="5px"></olii-container-cover-image>
+            </olii-responsive-aspect-ratio-container>
         </div>
         <div *ngIf="segmentToShow === 'saved'" class="saved">
-            <ion-card button="true">Saved placeholder</ion-card>
+            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedImagesAlbums" aspectRatio="1/1" class="album-card-container">
+                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
+                    <olii-responsive-aspect-ratio-container aspectRatio="1/0.8" class="cover-image-container">
+                        <olii-container-cover-image [imageUrl]="album.CoverImage"></olii-container-cover-image>
+                    </olii-responsive-aspect-ratio-container>
+
+                    <div class="saved-album-details">
+                        <h4>{{ album.Title }}</h4>
+                        <div class="color-light font-body-s">{{ album.Visibility }}</div>
+                    </div>
+                </ion-card>
+            </olii-responsive-aspect-ratio-container>
+
+            <olii-responsive-aspect-ratio-container aspectRatio="1/1" class="album-card-container">
+                <ion-card button="true" mode="ios" class="create-album-card">
+                    <olii-base-icon size="display" name="add" color="primary"></olii-base-icon>
+                    <h3 class="color-primary">Create album</h3>
+                </ion-card>
+            </olii-responsive-aspect-ratio-container>
         </div>
     </div>
 </ion-content>

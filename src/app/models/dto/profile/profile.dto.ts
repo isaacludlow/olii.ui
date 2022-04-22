@@ -20,6 +20,6 @@ export interface Profile {
     ProfilePictureUrl: string;
     /** Profile images on the user's profile to show who they are. */
     ProfileImages: ProfileImage[];
-    /** Saved images from throughout the app */
-    SavedImagesAlbum: SavedImagesAlbum;
+    /** Images from throughout the app that are saved to albums in the user profile. */
+    SavedImagesAlbums: SavedImagesAlbum[];
 }
