@@ -158,6 +158,12 @@
 	--dark-theme-color-light-tint: #383a3e;
 }
 
+// ========== Ionic component changes ==========
+ion-card {
+	margin-inline: 0px !important;
+	margin: 0px;
+}
+
 html, body, form, fieldset, table, tr, td, img, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
@@ -224,6 +230,10 @@ a {
 
 .icon-display, %icon-display {
 	font-size: 48px;
+}
+
+.icon-hero, %icon-hero {
+	font-size: 96px;
 }
 
 .font-thin, %font-thin {

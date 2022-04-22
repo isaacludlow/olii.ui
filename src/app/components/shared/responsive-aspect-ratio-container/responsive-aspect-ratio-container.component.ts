@@ -10,5 +10,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./responsive-aspect-ratio-container.component.scss']
 })
 export class ResponsiveAspectRatioContainerComponent {
+  /** Sets the aspect ratio: width/height (eg. 1/1, 16/9). */
   @Input() aspectRatio: string;
 }

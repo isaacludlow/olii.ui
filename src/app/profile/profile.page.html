@@ -54,7 +54,7 @@
         <div *ngIf="segmentToShow === 'saved'" class="saved">
             <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedImagesAlbums" aspectRatio="1/1" class="album-card-container">
                 <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
-                    <olii-responsive-aspect-ratio-container aspectRatio="1/0.8" class="cover-image-container">
+                    <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
                         <olii-container-cover-image [imageUrl]="album.CoverImage"></olii-container-cover-image>
                     </olii-responsive-aspect-ratio-container>
 
@@ -67,8 +67,10 @@
 
             <olii-responsive-aspect-ratio-container aspectRatio="1/1" class="album-card-container">
                 <ion-card button="true" mode="ios" class="create-album-card">
-                    <olii-base-icon size="display" name="add" color="primary"></olii-base-icon>
-                    <h3 class="color-primary">Create album</h3>
+                    <div class="content">
+                        <ion-icon size="hero" name="add" color="primary"></ion-icon>
+                        <h3 class="color-primary">Create album</h3>
+                    </div>
                 </ion-card>
             </olii-responsive-aspect-ratio-container>
         </div>

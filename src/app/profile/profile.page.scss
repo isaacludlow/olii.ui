@@ -81,33 +81,39 @@
 
     .saved {
         display: flex;
-        // justify-content: center;
         flex-wrap: wrap;
+        gap: 5px;
         padding: 0.25rem;
 
-        ion-card {
-            margin-inline: 0.25rem !important;
-        }
-
         .album-card-container {
-            width: 50%;
-
-            // .cover-image-container {
-            //     width: 50%;
-            // }
+            width: 49%;
 
             .saved-album-details {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                // gap: 0.25rem;
                 padding: 0.5rem 0;
             }
 
         }
 
-        .create-album.card {
+        .create-album-card {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 2rem;
+    
+                ion-icon {
+                    font-size: 1200%;
+                }
+            }
         }
     }
 }
