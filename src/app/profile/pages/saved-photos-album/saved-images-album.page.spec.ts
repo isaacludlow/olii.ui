@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfilePage } from './profile.page';
+import { SavedImagesAlbumPage } from './saved-images-album.page';
 
-describe('ProfileComponent', () => {
-  let component: ProfilePage;
-  let fixture: ComponentFixture<ProfilePage>;
+describe('SavedPhotosAlbumPage', () => {
+  let component: SavedImagesAlbumPage;
+  let fixture: ComponentFixture<SavedImagesAlbumPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfilePage ]
+      declarations: [ SavedImagesAlbumPage ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProfilePage);
+    fixture = TestBed.createComponent(SavedImagesAlbumPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

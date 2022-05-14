@@ -27,47 +27,47 @@
 
 // Global variables
 :root {
-    --color-primary: #301B72;
-	--color-primary-rgb: 48,27,114;
+    --color-primary: #7d5fff;
+	--color-primary-rgb: 125,95,255;
 	--color-primary-contrast: #ffffff;
 	--color-primary-contrast-rgb: 255,255,255;
-	--color-primary-shade: #2a1864;
-	--color-primary-tint: #453280;
+	--color-primary-shade: #6e54e0;
+	--color-primary-tint: #8a6fff;
 
-	--color-secondary: #078CFD;
-	--color-secondary-rgb: 7,140,253;
+	--color-secondary: #5840b8;
+	--color-secondary-rgb: 88,64,184;
 	--color-secondary-contrast: #ffffff;
 	--color-secondary-contrast-rgb: 255,255,255;
-	--color-secondary-shade: #067bdf;
-	--color-secondary-tint: #2098fd;
+	--color-secondary-shade: #4d38a2;
+	--color-secondary-tint: #6953bf;
 
-	--color-tertiary: #7D5FFF;
-	--color-tertiary-rgb: 125,95,255;
+	--color-tertiary: #301b72;
+	--color-tertiary-rgb: 48,27,114;
 	--color-tertiary-contrast: #ffffff;
 	--color-tertiary-contrast-rgb: 255,255,255;
-	--color-tertiary-shade: #6e54e0;
-	--color-tertiary-tint: #8a6fff;
+	--color-tertiary-shade: #2a1864;
+	--color-tertiary-tint: #453280;
 
-	--color-success: #40cf79;
-	--color-success-rgb: 64,207,121;
-	--color-success-contrast: #000000;
-	--color-success-contrast-rgb: 0,0,0;
-	--color-success-shade: #38b66a;
-	--color-success-tint: #53d486;
+	--color-success: #6791f9;
+	--color-success-rgb: 103,145,249;
+	--color-success-contrast: #ffffff;
+	--color-success-contrast-rgb: 255,255,255;
+	--color-success-shade: #5b80db;
+	--color-success-tint: #769cfa;
 
-	--color-warning: #ffc409;
-	--color-warning-rgb: 255,196,9;
-	--color-warning-contrast: #000000;
-	--color-warning-contrast-rgb: 0,0,0;
-	--color-warning-shade: #e0ac08;
-	--color-warning-tint: #ffca22;
+	--color-warning: #eed202;
+	--color-warning-rgb: 238,210,2;
+	--color-warning-contrast: #ffffff;
+	--color-warning-contrast-rgb: 255,255,255;
+	--color-warning-shade: #d1b902;
+	--color-warning-tint: #f0d71b;
 
-	--color-danger: #eb445a;
-	--color-danger-rgb: 235,68,90;
+	--color-danger: #ff6b6b;
+	--color-danger-rgb: 255,107,107;
 	--color-danger-contrast: #ffffff;
 	--color-danger-contrast-rgb: 255,255,255;
-	--color-danger-shade: #cf3c4f;
-	--color-danger-tint: #ed576b;
+	--color-danger-shade: #e05e0e;
+	--color-danger-tint: #ff7a7a;
 
     --color-dark: #222428;
     --color-dark-rgb: 34, 36, 40;
@@ -94,47 +94,47 @@
     * Dark Colors
     * -------------------------------------------
     */
-    --dark-theme-color-primary: #301B72;
-	--dark-theme-color-primary-rgb: 48,27,114;
+    --dark-theme-color-primary: #7d5fff;
+	--dark-theme-color-primary-rgb: 125,95,255;
 	--dark-theme-color-primary-contrast: #ffffff;
 	--dark-theme-color-primary-contrast-rgb: 255,255,255;
-	--dark-theme-color-primary-shade: #2a1864;
-	--dark-theme-color-primary-tint: #453280;
+	--dark-theme-color-primary-shade: #6e54e0;
+	--dark-theme-color-primary-tint: #8a6fff;
 
-	--dark-theme-color-secondary: #078CFD;
-	--dark-theme-color-secondary-rgb: 7,140,253;
+	--dark-theme-color-secondary: #5840b8;
+	--dark-theme-color-secondary-rgb: 88,64,184;
 	--dark-theme-color-secondary-contrast: #ffffff;
 	--dark-theme-color-secondary-contrast-rgb: 255,255,255;
-	--dark-theme-color-secondary-shade: #067bdf;
-	--dark-theme-color-secondary-tint: #2098fd;
+	--dark-theme-color-secondary-shade: #4d38a2;
+	--dark-theme-color-secondary-tint: #6953bf;
 
-	--dark-theme-color-tertiary: #7D5FFF;
-	--dark-theme-color-tertiary-rgb: 125,95,255;
+	--dark-theme-color-tertiary: #301b72;
+	--dark-theme-color-tertiary-rgb: 48,27,114;
 	--dark-theme-color-tertiary-contrast: #ffffff;
 	--dark-theme-color-tertiary-contrast-rgb: 255,255,255;
-	--dark-theme-color-tertiary-shade: #6e54e0;
-	--dark-theme-color-tertiary-tint: #8a6fff;
+	--dark-theme-color-tertiary-shade: #2a1864;
+	--dark-theme-color-tertiary-tint: #453280;
 
-	--dark-theme-color-success: #40cf79;
-	--dark-theme-color-success-rgb: 64,207,121;
+	--dark-theme-color-success: #6791f9;
+	--dark-theme-color-success-rgb: 103,145,249;
 	--dark-theme-color-success-contrast: #ffffff;
 	--dark-theme-color-success-contrast-rgb: 255,255,255;
-	--dark-theme-color-success-shade: #38b66a;
-	--dark-theme-color-success-tint: #53d486;
+	--dark-theme-color-success-shade: #5b80db;
+	--dark-theme-color-success-tint: #769cfa;
 
-	--dark-theme-color-warning: #ffc409;
-	--dark-theme-color-warning-rgb: 255,196,9;
+	--dark-theme-color-warning: #eed202;
+	--dark-theme-color-warning-rgb: 238,210,2;
 	--dark-theme-color-warning-contrast: #444444;
 	--dark-theme-color-warning-contrast-rgb: 68,68,68;
-	--dark-theme-color-warning-shade: #e0ac08;
-	--dark-theme-color-warning-tint: #ffca22;
+	--dark-theme-color-warning-shade: #d1b902;
+	--dark-theme-color-warning-tint: #f0d71b;
 
-	--dark-theme-color-danger: #eb445a;
-	--dark-theme-color-danger-rgb: 235,68,90;
+	--dark-theme-color-danger: #ff6b6b;
+	--dark-theme-color-danger-rgb: 255,107,107;
 	--dark-theme-color-danger-contrast: #ffffff;
 	--dark-theme-color-danger-contrast-rgb: 255,255,255;
-	--dark-theme-color-danger-shade: #cf3c4f;
-	--dark-theme-color-danger-tint: #ed576b;
+	--dark-theme-color-danger-shade: #e05e0e;
+	--dark-theme-color-danger-tint: #ff7a7a;
 
     --dark-theme-color-dark: #f4f5f8;
     --dark-theme-color-dark-rgb: 244,245,248;
@@ -158,9 +158,51 @@
 	--dark-theme-color-light-tint: #383a3e;
 }
 
-html, body, form, fieldset, table, tr, td, img, h1, h2, h3, h4, h5, h6 {
+// ========== Ionic component changes ==========
+ion-card {
+	margin-inline: 0px !important;
+	margin: 0px;
+}
+
+html, body, form, fieldset, table, tr, td, img, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
+}
+
+h1 {
+	font-size: 40px;
+	font-weight: 700;
+	color: var(--color-tertiary);
+}
+
+h2 {
+	font-size: 32px;
+	font-weight: 700;
+	color: var(--color-tertiary);
+}
+
+h3 {
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--color-tertiary);
+}
+
+h4 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--color-tertiary);
+}
+
+h5 {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--color-tertiary);
+}
+
+h6 {
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--color-tertiary);
 }
 
 input, button, select, textarea, optgroup, option {
@@ -174,47 +216,40 @@ a {
 	text-decoration: none;
 }
 
-ion-icon {
-	color: var(--color-primary)
-}
-
-.heading-0 {
-	font-size: 48px;
-	font-weight: 700;
-}
-
-.heading-1 {
-	font-size: 40px;
-	font-weight: 700;
-}
-
-.heading-2 {
-	font-size: 32px;
-	font-weight: 700;
-}
-
-.heading-3 {
-	font-size: 24px;
-	font-weight: 700;
-}
-
-.heading-4 {
+.icon-small, %icon-small {
 	font-size: 16px;
-	font-weight: 700;
 }
 
-.heading-5 {
-	font-size: 14px;
-	font-weight: 700;
+.icon-medium, %icon-medium {
+	font-size: 24px;
 }
 
-.heading-6 {
-	font-size: 12px;
-	font-weight: 700;
+.icon-large, %icon-large {
+	font-size: 32px;
+}
+
+.icon-display, %icon-display {
+	font-size: 48px;
+}
+
+.icon-hero, %icon-hero {
+	font-size: 96px;
 }
 
 .font-thin, %font-thin {
 	font-weight: 300;
+}
+
+.color-light {
+	color: var(--color-medium);
+}
+
+.color-tertiary {
+	color: var(--color-tertiary);
+}
+
+.color-primary {
+	color: var(--color-primary);
 }
 
 .font-body-s, %font-body-s {
@@ -225,6 +260,28 @@ ion-icon {
     font-size: 16px;
 }
 
-// TODO:
-// - Create classes for bold titles
-// - Create classes for light titles
+.font-body-l, %font-body-l {
+	font-size: 18px;
+}
+
+.rounded-corners {
+	border-radius: 5px;
+}
+
+img {
+    display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+    .color-light {
+        color: var(--dark-theme-color-light);
+    }
+
+	.color-tertiary {
+		color: var(--dark-theme-color-tertiary);
+	}
+
+	.color-primary {
+		color: var(--dark-theme-color-primary);
+	}
+}

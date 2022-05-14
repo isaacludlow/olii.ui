@@ -1,0 +1,126 @@
+@import '/src/global.scss';
+
+.settings {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    color: var(--color-primary);
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1.125rem;
+
+    .profile-image {
+        height: 100px;
+        width: 100px;
+    }
+    
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        
+        .personal-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            text-align: center;
+        }
+
+        .highlighted-personal-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+
+            .current-city, .connections {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+            }
+        }
+    }
+}
+
+.assets {
+    background-color: rgba(var(--color-light-rgb), 0.5);
+
+    .menu-bar-container {
+        margin: 0 2rem 0.5rem 2rem;
+    }
+    
+    .menu-bar {
+        display: flex;
+        gap: 2.5rem;
+    }
+    
+    ion-segment-button {
+        display: flex;
+        align-items: center;
+        text-transform: none;
+
+        ion-label {
+            font-weight: 600;
+        }
+    }
+
+    .posts {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+        gap: 5px;
+
+        .image-container {
+            width: 49%;
+        }
+    }
+
+    .saved {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 0.25rem;
+
+        .album-card-container {
+            width: 49%;
+
+            .saved-album-details {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0.5rem 0;
+            }
+
+        }
+
+        .create-album-card {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 2rem;
+    
+                ion-icon {
+                    font-size: 20vh;
+                }
+            }
+        }
+    }
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .assets {
+        background-color: rgba(var(--dark-theme-color-light-rgb), 0.5);
+    }
+}

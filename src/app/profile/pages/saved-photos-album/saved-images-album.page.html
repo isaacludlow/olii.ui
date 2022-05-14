@@ -1,0 +1,19 @@
+<ion-content>
+    <div class="cover-image" [style]="{'--background': 'url(\'' + album.CoverImage + '\')' }">
+        <div class="back-icon" (onclick)="navigateBackToSavedSection()">
+            <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/profile"></olii-icon-with-off-white-square-background>
+        </div>
+    </div>
+
+    <div class="album-details">
+        <h2>{{ album.Title }}</h2>
+        <div class="font-body-s color-light">{{ album.Visibility }}</div>
+        <div class="font-body-m color-tertiary">{{ album.Description }}</div>
+    </div>
+
+    <div class="images">
+        <olii-responsive-aspect-ratio-container aspectRatio="1/1" *ngFor="let image of album.Images" aspectRatio="1/1" class="image-container">
+            <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
+        </olii-responsive-aspect-ratio-container>
+    </div>
+</ion-content>

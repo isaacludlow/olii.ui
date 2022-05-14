@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 @Component({
-  selector: 'base-card',
+  selector: 'olii-base-card',
   template: `
     <ion-card id="BaseCardComponent_IonCard" [button]="cardAsButton" [color]="color">
       <ng-content></ng-content>

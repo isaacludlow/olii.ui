@@ -1,0 +1,34 @@
+@supports (--custom:property) {
+    .cover-image {
+        height: 30vh;
+        width: 100%;
+        background-image: var(--background);
+        background-position: center center;
+        background-attachment: local;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+    }
+}
+
+.back-icon {
+    margin: 0 0 0 1.5rem;
+    color: var(--color-primary);
+}
+
+.album-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.875rem;
+}
+
+.images {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.25rem;
+    gap: 5px;
+
+    .image-container {
+        width: 49%;
+    }
+}
