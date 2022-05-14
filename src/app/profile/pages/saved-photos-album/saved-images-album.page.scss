@@ -1,5 +1,17 @@
+@supports (--custom:property) {
+    .cover-image {
+        height: 30vh;
+        width: 100%;
+        background-image: var(--background);
+        background-position: center center;
+        background-attachment: local;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+    }
+}
+
 .back-icon {
-    margin: 1.5rem 0 0 1.5rem;
+    margin: 0 0 0 1.5rem;
     color: var(--color-primary);
 }
 
@@ -12,32 +24,11 @@
 
 .images {
     display: flex;
-}
+    flex-wrap: wrap;
+    padding: 0.25rem;
+    gap: 5px;
 
-//========== Aspect Ratio Css ==========
-[style*="--aspect-ratio"] > :first-child {
-    width: 100%;
-}
-
-[style*="--aspect-ratio"] > img {  
-    height: auto;
-}
-
-@supports (--custom:property) {
-    [style*="--aspect-ratio"] {
-        position: relative;
+    .image-container {
+        width: 49%;
     }
-
-    [style*="--aspect-ratio"]::before {
-        content: "";
-        display: block;
-        padding-bottom: calc(100% / (var(--aspect-ratio)));
-    }
-
-    [style*="--aspect-ratio"] > :first-child {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-    } 
 }
