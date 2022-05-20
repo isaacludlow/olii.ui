@@ -1,7 +1,7 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
   <ion-tabs>
-    <ion-tab-bar slot="bottom">
+    <ion-tab-bar slot="bottom" [ngClass]="{'hide-nav-bar': hideNavBar}">
       
       <ion-tab-button routerLink="/community/events" routerLinkActive #eventsRoute="routerLinkActive">
         <ion-icon *ngIf="eventsRoute.isActive" name="today"></ion-icon>
