@@ -15,7 +15,7 @@ export class AuthGuard implements CanLoad {
         
         break;
       case false:
-        this.router.navigate(['registration']);  
+        this.router.navigate(['registration/slideshow']);  
 
         return false;
       default:

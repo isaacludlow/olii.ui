@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'community',
+    redirectTo: 'community/events',
     pathMatch: 'full'
   },
 ];
