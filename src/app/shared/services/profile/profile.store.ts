@@ -46,6 +46,10 @@ export class ProfileStore {
 			// );
 	}
 
+	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
+		return this.profileService.postNewAlbum(albumName, albumDescription, albumVisibility);
+	}
+
 	getBase64Image(url: string) {
 		return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
 	}
