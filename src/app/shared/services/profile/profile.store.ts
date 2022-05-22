@@ -11,17 +11,17 @@ import { ProfileService } from "./profile.service";
 })
 export class ProfileStore {
 	private profile = new BehaviorSubject<Profile>(null);
-	private currentProfileSection = new BehaviorSubject<Section>('photos');
+	private manualOverrideForProfileSection = new BehaviorSubject<Section>('photos');
 
 	constructor(private profileService: ProfileService, private httpClient: HttpClient) {}
 
 	set profileSection(section: Section) {
-		this.currentProfileSection.next(section);
+		this.manualOverrideForProfileSection.next(section);
 	}
 
 	get profileSection() {
-		const currentSection = this.currentProfileSection.value;
-		this.currentProfileSection.next('photos');
+		const currentSection = this.manualOverrideForProfileSection.value;
+		this.manualOverrideForProfileSection.next('photos');
 		
 		return currentSection;
 	}

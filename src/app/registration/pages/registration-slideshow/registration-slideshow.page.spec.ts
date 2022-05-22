@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RegistrationSlideshowPage } from './registration-slideshow.page';
 
 describe('RegistrationSlideshowPage', () => {
@@ -17,9 +16,5 @@ describe('RegistrationSlideshowPage', () => {
     fixture = TestBed.createComponent(RegistrationSlideshowPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

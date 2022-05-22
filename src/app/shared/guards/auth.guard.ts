@@ -13,11 +13,12 @@ export class AuthGuard implements CanLoad {
     switch (isAuthenticated) {
       case true:
         
-        break;
+        return true;
       case false:
         this.router.navigate(['registration/slideshow']);  
 
         return false;
+        
       default:
         return false;
     }
