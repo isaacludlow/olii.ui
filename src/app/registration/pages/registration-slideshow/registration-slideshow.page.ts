@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./registration-slideshow.page.scss']
 })
 export class RegistrationSlideshowPage {
-  slideOpts = {
+  slideOptions = {
     initialSlide: 0,
     speed: 400
   };
