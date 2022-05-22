@@ -16,7 +16,7 @@ describe('NavBarService', () => {
 
   describe('getter for the current navBarVisibility value', () => {
     it('should return the current navBarVisibility', () => {
-      service.navBarVisibility.next(false);
+      service.navBarVisibility.next(true);
 
       const currentValue = service.navBarVisibilityValue;
 
