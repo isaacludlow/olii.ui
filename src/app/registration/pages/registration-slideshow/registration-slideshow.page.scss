@@ -13,7 +13,7 @@ ion-slides {
 }
 
 .image-three {
-    background-image: url('../../../../assets/images/Registration/RegistrationSlideshow3.png');
+    background-image: url('../../../../assets/images/Registration/RegistrationSlideshow3(small).png');
 }
 // ========== Slide background images ==========
 
@@ -23,7 +23,7 @@ ion-slides {
     width: 100%;
     object-fit: cover;
     object-position: center center;
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 
 .overlay {
@@ -55,6 +55,8 @@ ion-slides {
         ion-button {
             --padding-start: 5rem;
             --padding-end: 5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
     }
 }
