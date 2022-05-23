@@ -6,6 +6,8 @@ import { RegistrationPage } from './registration.page';
 import { RegistrationSlideshowPage } from './pages/registration-slideshow/registration-slideshow.page';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedComponentsModule } from '../components/shared/shared-components.module';
 
 
 @NgModule({
@@ -18,6 +20,8 @@ import { SharedModule } from '../shared/shared.module';
     RegistrationRoutingModule,
     IonicModule,
     SharedModule,
+    SharedComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class RegistrationModule { }

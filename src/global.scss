@@ -241,6 +241,10 @@ a {
 }
 
 .color-light {
+	color: var(--color-light);
+}
+
+.color-medium {
 	color: var(--color-medium);
 }
 
@@ -270,6 +274,10 @@ a {
 
 img {
     display: block;
+}
+
+.full-page-side-margin {
+	margin: 0rem 1rem;
 }
 
 @media (prefers-color-scheme: dark) {
