@@ -7,11 +7,11 @@ import { ModalController } from '@ionic/angular';
   selector: 'create-album-pop-up',
   template: `
 
-    <ion-header class="ion-no-border ion-margin-top">
-      <ion-toolbar class="popup-toolbar" color="primary-contrast">
+    <ion-header class="ion-no-border ion-margin-top" mode="ios">
+      <ion-toolbar class="popup-toolbar" color="primary-contrast" mode="ios">
         <ion-title><h3>Create album</h3></ion-title>
-        <ion-buttons slot="end">
-          <div class="back-icon" (click)="dismissModal()">
+        <ion-buttons slot="end" mode="ios">
+          <div class="back-icon close-modal" (click)="dismissModal()">
             <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
           </div>
         </ion-buttons>
@@ -31,21 +31,21 @@ import { ModalController } from '@ionic/angular';
       <ion-radio-group [(ngModel)]="albumVisibility" class="ion-margin-top">
       
         <ion-item>
-          <ion-label class="visibility-label" color="tertiary">Public</ion-label>
+          <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
           <ion-radio slot="end" color="primary" value='Public' mode="md"></ion-radio>
-          <ion-label color="medium" position="stacked">Anyone can view posts in the group</ion-label>
+          <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Anyone can view posts in the group</ion-label>
         </ion-item>
 
         <ion-item>
-          <ion-label class="visibility-label" color="tertiary">Private</ion-label>
+          <ion-label class="visibility-label" color="tertiary" mode="ios">Private</ion-label>
           <ion-radio slot="end" color="primary" value="Private" mode="md"></ion-radio>
-          <ion-label color="medium" position="stacked">Only members can view posts in the group</ion-label>
+          <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Only members can view posts in the group</ion-label>
         </ion-item>
 
       </ion-radio-group>
       
       <ion-row class="ion-justify-content-center">
-        <ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()">Create Album</ion-button>
+        <ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()" mode="ios">Create Album</ion-button>
       </ion-row>
 
     </ion-content>
@@ -64,7 +64,6 @@ export class CreateAlbumPopUpComponent implements OnInit {
   }
 
   onCreateAlbum() {
-    console.log(this.albumNameInput.value + " " + this.albumDescriptionInput.value + " " + this.albumVisibility);
     this.profileStore.postNewAlbum(this.albumNameInput.value, this.albumDescriptionInput.value, this.albumVisibility);
     this.dismissModal();
   }

@@ -1,6 +1,6 @@
 ion-content {
-    --padding-start: 30px;
-    --padding-end: 30px;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
 }
 
 ion-item {
@@ -8,9 +8,21 @@ ion-item {
 }
 
 ion-button {
-    margin-top: 25px;
+    margin-top: 1rem;
 }
 
 .visibility-label {
     font-weight: bold;
+}
+
+.visibility-descr {
+    font-size: 0.7rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+.close-modal {
+    margin-right: 1rem;
 }
