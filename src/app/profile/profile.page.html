@@ -1,6 +1,12 @@
 <ion-content>
-    <div class="settings">
-        <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
+    <div class="profile_options">
+        <!-- Eventually this will only exist in the profile view of other users; for now it's a toggle to view an other user profile-->
+        <div class="back" (click)="viewControl()">
+            <olii-icon-with-off-white-square-background size="medium" name="arrow-back-circle-outline"></olii-icon-with-off-white-square-background>
+        </div>
+        <div class="settings">
+            <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
+        </div>
     </div>
     <div class="profile-info-container">
         <div class="profile-image">
@@ -8,6 +14,7 @@
         </div>
         <div class="profile-info">
             <div class="personal-info">
+                <!-- TOOD: Change these values from being hardcoded to being responsively connected to actual retrieved values -->
                 <ion-text color="tertiary"><h3 class="name">John Snow*</h3></ion-text>
                 <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
                 <div class="host-city color-light">{{ profile.HomeCountry }}</div>
@@ -35,16 +42,23 @@
     </div>
     <div class="assets">
         <div class="menu-bar-container">
-            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
-                <ion-segment-button value="photos" layout="icon-start">
-                    <ion-icon name="image-outline"></ion-icon>
-                    <ion-label>Photos</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="saved" layout="icon-start">
-                    <ion-icon name="heart-outline"></ion-icon>
-                    <ion-label>Saved</ion-label>
-                </ion-segment-button>
-            </ion-segment>
+            <div *ngIf="isActiveUser == true; else elseView">
+                <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
+                    <ion-segment-button value="photos" layout="icon-start">
+                        <ion-icon name="image-outline"></ion-icon>
+                        <ion-label>Photos</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="saved" layout="icon-start">
+                        <ion-icon name="heart-outline"></ion-icon>
+                        <ion-label>Saved</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
+            <ng-template #elseView>
+                <ion-button type="button" color="primary" mode="ios" expand="block" (click)="followUser()">
+                    <olii-icon-with-purple-square-background size="medium" name="people-circle-outline"></olii-icon-with-purple-square-background> Follow
+                </ion-button>
+            </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
             <olii-responsive-aspect-ratio-container *ngFor="let profileImage of profile.ProfileImages" aspectRatio="1/1" class="image-container">

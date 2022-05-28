@@ -13,6 +13,8 @@ export class ProfilePage implements OnInit, OnDestroy {
   profilePostUrls: string[];
   segmentToShow: string;
   subs = new SubSink();
+  // TODO: We probably don't want to default this to true...
+  isActiveUser = true;
 
   constructor(private profileStore: ProfileStore) { }
 
@@ -23,6 +25,18 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   segmentChanged(event) {
     this.segmentToShow = event.detail.value;
+  }
+
+  viewControl() {
+    // TODO: Meant to control the view basecd on whether you are viewing 
+    // your own profile or someone elses.  Will have to change the
+    // logic in the future to compare userIds
+      this.isActiveUser = !this.isActiveUser;
+      this.segmentToShow = (this.isActiveUser == false ? "photos" : "photos");
+  }
+
+  followUser() {
+    // TOOD: Send an api update to the database to follow this user
   }
 
   ngOnDestroy(): void {
