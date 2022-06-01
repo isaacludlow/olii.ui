@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-album.page';
 import { ProfilePage } from './profile.page';
+import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'album/:profileId/:albumId',
     component: SavedImagesAlbumPage
+  },
+  {
+    path: 'edit/:profileId',
+    component: EditProfilePage
   }
 ];
 

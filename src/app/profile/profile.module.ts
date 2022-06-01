@@ -7,12 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 import { SharedComponentsModule } from '../components/shared/shared-components.module';
 import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-album.page';
+import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     ProfilePage,
-    SavedImagesAlbumPage
+    SavedImagesAlbumPage,
+    EditProfilePage
   ],
   imports: [
     CommonModule,
@@ -20,6 +23,7 @@ import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-al
     IonicModule,
     SharedModule,
     SharedComponentsModule,
+    ReactiveFormsModule,
   ]
 })
 export class ProfileModule { }
