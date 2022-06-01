@@ -10,8 +10,9 @@ interface Event {
     Date: Date;
     PrivacyLevel: PrivacyLevel;
     Location: string;
+    ImageUrls: string[]
     Invitations: Invitation[]
 }
 
 // Connections-Only is valid for the creator type of user not group.
-type PrivacyLevel = 'Public' | 'Group' | 'Connections-Only' | 'Private';
+type PrivacyLevel = 'Public' | 'Group' | 'Connections-Only' | 'Invite-Only';

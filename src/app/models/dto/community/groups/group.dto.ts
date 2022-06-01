@@ -8,8 +8,8 @@ export interface Group {
     Description: string;
     PrivacyLevel: PrivacyLevel;
     Posts: GroupPost[];
-    Members: Profile[];
     Admins: Profile[];
+    Members: Profile[];
 }
 
 type PrivacyLevel = 'Public' | 'Connections-Only' | 'Invite-Only';

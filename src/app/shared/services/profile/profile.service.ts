@@ -15,7 +15,7 @@ export class ProfileService {
 
   getProfileById(id: number): Observable<Profile> {
     var profileExampleData: Profile = {
-      ProfileId: 98,
+      Id: 98,
       Connections: 127,
       Bio: "Livin' the dream life. Adventurer. Professional turtle racer.",
       HomeCountry: 'USA',

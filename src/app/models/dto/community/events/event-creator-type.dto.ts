@@ -1,4 +1,4 @@
 enum EventCreatorType {
-    Group,
-    User
+    Group = 'Group',
+    User = 'User'
 }
