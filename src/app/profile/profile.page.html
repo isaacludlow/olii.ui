@@ -1,8 +1,8 @@
-<ion-content>
+<ion-content class="ion-padding-vertical">
     <div class="profile_options">
         <!-- Eventually this will only exist in the profile view of other users; for now it's a toggle to view an other user profile-->
         <div class="back" (click)="viewControl()">
-            <olii-icon-with-off-white-square-background size="medium" name="arrow-back-circle-outline"></olii-icon-with-off-white-square-background>
+            <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
         <div class="settings">
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
@@ -56,7 +56,8 @@
             </div>
             <ng-template #elseView>
                 <ion-button type="button" color="primary" mode="ios" expand="block" (click)="followUser()">
-                    <olii-icon-with-purple-square-background size="medium" name="people-circle-outline"></olii-icon-with-purple-square-background> Follow
+                    <olii-base-icon size="medium" name="people-circle-outline"></olii-base-icon>
+                    <div>Follow</div>
                 </ion-button>
             </ng-template>
         </div>
@@ -83,7 +84,7 @@
                 <ion-card button="true" mode="ios" class="create-album-card">
                     <div class="content">
                         <ion-icon size="hero" name="add" color="primary"></ion-icon>
-                        <h3 class="color-primary">Create album</h3>
+                        <h4 class="color-primary">Create album</h4>
                     </div>
                 </ion-card>
             </olii-responsive-aspect-ratio-container>

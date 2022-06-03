@@ -28,7 +28,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   viewControl() {
-    // TODO: Meant to control the view basecd on whether you are viewing 
+    // TODO: Meant to control the view based on whether you are viewing 
     // your own profile or someone elses.  Will have to change the
     // logic in the future to compare userIds
       this.isActiveUser = !this.isActiveUser;
