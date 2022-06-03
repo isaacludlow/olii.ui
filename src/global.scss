@@ -272,6 +272,16 @@ img {
     display: block;
 }
 
+.popup-modal {
+	--border-radius: 8px!important;
+	&::part(content) {
+		height: 50%;
+    	top: 50%;
+    	position: absolute; 
+    	display: block;  
+	}
+}
+
 @media (prefers-color-scheme: dark) {
     .color-light {
         color: var(--dark-theme-color-light);
