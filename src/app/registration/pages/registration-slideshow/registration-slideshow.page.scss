@@ -1,0 +1,62 @@
+ion-slides {
+    height: 100%;
+    --bullet-background: #ffffff
+}
+
+// ========== Slide background images ==========
+.image-one {
+    background-image: url('../../../../assets/images/Registration/RegistrationSlideshow1.png');
+}
+
+.image-two {
+    background-image: url('../../../../assets/images/Registration/RegistrationSlideshow2.png');
+}
+
+.image-three {
+    background-image: url('../../../../assets/images/Registration/RegistrationSlideshow3.png');
+}
+// ========== Slide background images ==========
+
+.slideshow-image {
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+    background-size: 100% 100%;
+}
+
+.overlay {
+    background: linear-gradient(0.04deg, #060213 -13.79%, rgba(48, 27, 114, 0) 70%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.content {
+    position: absolute;
+    bottom: 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+
+    h3 {
+        color: var(--color-light);
+    }
+
+    a {
+        font-weight: 700;
+    }
+
+    .sign-up-content {
+        display: inline-block;
+
+        ion-button {
+            --padding-start: 5rem;
+            --padding-end: 5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    }
+}
