@@ -7,16 +7,12 @@ import { ModalController } from '@ionic/angular';
   selector: 'create-album-pop-up',
   template: `
 
-    <ion-header class="ion-no-border ion-margin-top" mode="ios">
-      <ion-toolbar class="popup-toolbar" color="primary-contrast" mode="ios">
-        <ion-title><h3>Create album</h3></ion-title>
-        <ion-buttons slot="end" mode="ios">
-          <div class="back-icon close-modal" (click)="dismissModal()">
-            <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
-          </div>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <div class="close-modal" (click)="dismissModal()">
+      <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
+    </div>
+    <div class="header">
+      <h3>Create album</h3>
+    </div>
 
     <ion-content class="ion-padding">
       <ion-item>

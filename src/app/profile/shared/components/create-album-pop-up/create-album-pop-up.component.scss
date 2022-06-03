@@ -11,6 +11,11 @@ ion-button {
     margin-top: 1rem;
 }
 
+.header {
+    display: flex;
+    justify-content: center;
+}
+
 .visibility-label {
     font-weight: bold;
 }
@@ -24,5 +29,8 @@ h3 {
 }
 
 .close-modal {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
     margin-right: 1rem;
 }
