@@ -1,11 +1,21 @@
 @import '/src/global.scss';
 
+.profile_options {
+    display: flex;
+}
+
 .settings {
     display: flex;
-    justify-content: flex-end;
+    margin-left: auto;
     margin-right: 0.5rem;
     margin-top: 0.5rem;
     color: var(--color-primary);
+}
+
+.back {
+    display: flex;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .profile-info-container {
@@ -47,8 +57,6 @@
 }
 
 .assets {
-    background-color: rgba(var(--color-light-rgb), 0.5);
-
     .menu-bar-container {
         margin: 0 2rem 0.5rem 2rem;
     }
@@ -111,7 +119,7 @@
                 padding-bottom: 2rem;
     
                 ion-icon {
-                    font-size: 20vh;
+                    font-size: 18vh;
                 }
             }
         }
