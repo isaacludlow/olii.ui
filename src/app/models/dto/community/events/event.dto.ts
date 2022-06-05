@@ -1,6 +1,7 @@
+import { EventCreatorType } from "./event-creator-type.dto";
 import { Invitation } from "./invitation.dto";
 
-interface Event {
+export interface Event {
     Id: number;
     CoverImageUrl: string;
     Title: string;

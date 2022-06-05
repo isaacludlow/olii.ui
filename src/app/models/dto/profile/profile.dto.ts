@@ -1,4 +1,5 @@
-import { SavedAlbum as SavedAlbum } from "./saved-album.dto";
+import { ConnectedSocial } from "./connected-social.dto";
+import { SavedAlbum } from "./saved-album.dto";
 
 export interface Profile {
     /** Id of the profile. */

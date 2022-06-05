@@ -1,4 +1,4 @@
-enum EventCreatorType {
+export enum EventCreatorType {
     Group = 'Group',
     User = 'User'
 }

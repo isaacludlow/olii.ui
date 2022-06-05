@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { NavBarService } from './shared/services/nav-bar/nav-bar.service';
 
 @Component({
