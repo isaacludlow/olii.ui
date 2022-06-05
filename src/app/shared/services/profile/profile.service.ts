@@ -66,6 +66,11 @@ export class ProfileService {
     return of(profileExampleData);
   }
 
+  postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
+    // Add API call code here
+    return true;
+  }
+
   asdf() {
     return this.httpClient.get('https://images.unsplash.com/photo-1648735883246-eb69122d1037?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80', { observe: 'response', responseType: 'blob' })
       .pipe(switchMap(res => from(convertBlobToBase64(res.body))));
