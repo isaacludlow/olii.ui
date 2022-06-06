@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'olii-back-button',
   template: `
     <div>
-      <olii-base-icon name="arrow-back" color="primary" size="medium"></olii-base-icon>
+      <olii-icon-with-purple-square-background name="arrow-back" size="medium"></olii-icon-with-purple-square-background>
     </div>
   `,
   styleUrls: ['./back-button.component.scss']
