@@ -9,14 +9,11 @@ import { FormBuilder } from '@angular/forms';
 export class RegistrationPage implements OnInit {
   showTermsAndConditions: boolean;
   registerForm = this.fb.group({
-    firstName: [''],
-    lastName: [''],
     username: [''],
     email: [''],
     password: [''],
     options: this.fb.group({
-      hasReadTermsAndConditions: [''],
-      keepLoggedIn: ['']
+      hasReadTermsAndConditions: ['']
     })
   });
 
@@ -29,4 +26,7 @@ export class RegistrationPage implements OnInit {
     this.showTermsAndConditions = !this.showTermsAndConditions;
   }
 
+  onSubmit(): void {
+    
+  }
 }

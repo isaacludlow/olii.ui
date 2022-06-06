@@ -7,12 +7,9 @@
             <p class="color-medium font-thin">Create awesome plans and meet new exchange students</p>
         </div>
     
-        <form>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <ion-item>
-                <ion-input mode="ios" type="text" placeholder="Name"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-input type="text" placeholder="Username"></ion-input>
+                <ion-input formControlName="username" type="text" placeholder="Username"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-input type="text" placeholder="Email"></ion-input>
@@ -26,15 +23,12 @@
                     <ion-checkbox slot="start"></ion-checkbox>
                     <ion-label>"I have read the <a (click)="toggleModel()">Terms and Conditions</a>"</ion-label>
                 </div>
-                <div class="checkbox">
-                    <ion-checkbox slot="start"></ion-checkbox>
-                    <ion-label>Keep me logged in</ion-label>
-                </div>
             </div>
 
             <div class="submit-button">
-                <ion-button mode="ios">Create Account</ion-button>
+                <ion-button type="submit" [disabled]="!registerForm.valid" mode="ios">Create Account</ion-button>
             </div>
+            <a routerLink="registration-flow">registration flow</a>
         </form>
     </div>
     <ion-modal [isOpen]="showTermsAndConditions">
