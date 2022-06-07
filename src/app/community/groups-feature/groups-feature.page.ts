@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 @Component({
   selector: 'groups-feature',
@@ -6,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./groups-feature.page.scss']
 })
 export class GroupsFeaturePage implements OnInit {
+
+  // TODO: Replace with DTO and a group store
+
+  groups = {
+    
+  }
 
   constructor() { }
 

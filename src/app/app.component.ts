@@ -13,6 +13,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.navBarService.navBarVisibility.subscribe(currentVisibility => this.hideNavBar = !currentVisibility);
-    this.navBarService.setNavBarVisibility(false);
+    this.navBarService.setNavBarVisibility(true);
   }
 }
