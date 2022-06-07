@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'registration',
@@ -6,10 +7,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./registration.page.scss']
 })
 export class RegistrationPage implements OnInit {
+  showTermsAndConditions: boolean;
+  registerForm = this.fb.group({
+    username: [''],
+    email: [''],
+    password: [''],
+    options: this.fb.group({
+      hasReadTermsAndConditions: ['']
+    })
+  });
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
+  toggleModel(): void {
+    this.showTermsAndConditions = !this.showTermsAndConditions;
+  }
+
+  onSubmit(): void {
+    
+  }
 }
