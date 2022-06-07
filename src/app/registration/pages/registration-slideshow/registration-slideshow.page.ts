@@ -9,7 +9,4 @@ export class RegistrationSlideshowPage {
     initialSlide: 0,
     speed: 400
   };
-
-  constructor() { }
-
 }

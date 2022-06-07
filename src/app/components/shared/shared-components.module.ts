@@ -16,6 +16,7 @@ import { ProfilePreviewIconsComponent } from './profile-preview-icons/profile-pr
 import { IconWithPurpleSquareBackgroundComponent } from './icon-with-purple-square-background/icon-with-purple-square-background.component';
 import { IconWithOffWhiteSquareBackgroundComponent } from './icon-with-off-white-square-background/icon-with-off-white-square-background.component';
 import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-ratio-container/responsive-aspect-ratio-container.component';
+import { BackButtonComponent } from './back-button/back-button.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-rat
     ProfilePreviewIconsComponent,
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
-    ResponsiveAspectRatioContainerComponent
+    ResponsiveAspectRatioContainerComponent,
+    BackButtonComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,8 @@ import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-rat
     ProfilePreviewIconsComponent,
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
-    ResponsiveAspectRatioContainerComponent
+    ResponsiveAspectRatioContainerComponent,
+    BackButtonComponent
   ]
 })
 export class SharedComponentsModule { }
