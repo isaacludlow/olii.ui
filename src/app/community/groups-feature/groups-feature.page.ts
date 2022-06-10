@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Group } from '../../models/dto/community/groups/group.dto';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'groups-feature',
@@ -8,15 +11,13 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 })
 export class GroupsFeaturePage implements OnInit {
 
-  // TODO: Replace with DTO and a group store
+  groups: Group[];
+  subs = new SubSink();
 
-  groups = {
-    
-  }
-
-  constructor() { }
+  constructor(private groupStore: GroupStore) { }
 
   ngOnInit(): void {
+    this.subs.sink = this.groupStore.getGroupAll().subscribe(res => this.groups = res);
   }
 
 }
