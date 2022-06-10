@@ -41,7 +41,7 @@ export class ProfileService {
         {
           Id: 1,
           CoverImageUrl: null, Title: 'My Photos', Description: 'Personal photos that mean a lot to you.', PrivacyLevel: 'Private',
-          Images: [
+          ImageUrls: [
             'https://images.unsplash.com/photo-1466921583968-f07aa80c526e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80',
             'https://images.unsplash.com/photo-1496024840928-4c417adf211d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80',
             'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
@@ -50,7 +50,7 @@ export class ProfileService {
         {
           Id: 2,
           CoverImageUrl: null, Title: 'Saved Photos', Description: 'All your random pics from things you don\'t want to lose track of.', PrivacyLevel: 'Public',
-          Images: [
+          ImageUrls: [
             'https://images.unsplash.com/photo-1619537901863-9807597cb0b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80',
             'https://images.unsplash.com/photo-1564245709234-fd3de5cacd40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjd8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
             'https://images.unsplash.com/photo-1611153662496-c232240334a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60'
@@ -60,7 +60,7 @@ export class ProfileService {
     };
 
     // TODO: Setting of album cover image should be done in the Olii API.
-    profileExampleData.SavedAlbums.forEach(album => album.CoverImageUrl = album.Images[0]);
+    profileExampleData.SavedAlbums.forEach(album => album.CoverImageUrl = album.ImageUrls[0]);
 
 
     return of(profileExampleData);

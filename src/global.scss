@@ -205,11 +205,15 @@ h6 {
 	color: var(--color-tertiary);
 }
 
-input, button, select, textarea, optgroup, option {
+input, button, select, textarea, optgroup, option, p {
     font-family: inherit;
     font-size: inherit;
     font-style: inherit;
     font-weight: inherit;
+}
+
+p {
+	@extend %font-body-m;
 }
 
 a {

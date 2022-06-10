@@ -6,7 +6,7 @@
           <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
           <div class="slide-text">
             <h3>We are almost done!</h3>
-            <div class="font-body-m color-medium font-thin">To have a more personalized experience, we recommend adding some additional information</div>
+            <p class="color-medium font-thin">To have a more personalized experience, we recommend adding some additional information</p>
           </div>
           <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
         </div>
@@ -20,7 +20,7 @@
           <div class="slide-content">
             <div class="slide-text">
               <h3>Personal Information</h3>
-              <p class="color-medium font-thin"></p>
+              <p class="color-medium font-thin">Help others recognize you.</p>
             </div>
             <div class="personal-info-inputs">
               <ion-item>
@@ -45,7 +45,10 @@
               <h3>Location</h3>
               <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
             </div>
-            <olii-places-autocomplete-field [responseType]="['(cities)']" [responseFieldType]="['name']" placeholder="Host City"></olii-places-autocomplete-field>
+            <div class="location-inputs">
+              <olii-places-autocomplete-field (autocompletedResult)="setHostLocation($event)" [responseType]="['(cities)']" [responseFieldType]="['name']" placeholder="Host City"></olii-places-autocomplete-field>
+              <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['name']" placeholder="Home Country"></olii-places-autocomplete-field>
+            </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
         </div>
@@ -63,6 +66,19 @@
             <div class="slide-text">
               <h3>Profile</h3>
               <p class="color-medium font-thin">Add images and a bio so others can get to know you.</p>
+            </div>
+            <div class="profile-inputs">
+              <div class="profile-image">
+                <olii-container-cover-image imageUrl="../../../../assets/images/placeholder-profile-image.png" boarderRadius="50%"></olii-container-cover-image>  
+                <div class="font-body-s"><a>Add profile picture</a></div>
+              </div>
+              <ion-item>
+                <ion-textarea formControlName="bio" placeholder="Write your profile bio here"></ion-textarea>
+              </ion-item>
+              <div class="font-body-m color-tertiary">Choose up to 9 pictures for your profile:</div>
+              <div class="profile-images-container">
+                
+              </div>
             </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>

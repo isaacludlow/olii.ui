@@ -26,7 +26,7 @@
                         <h4 class="color-medium">Current City</h4>
                     </ion-text>
                     <ion-text color="tertiary">
-                        <p>{{ profile.HostCity }}</p>
+                        <p>{{ profile.CurrentCity }}</p>
                     </ion-text>
                 </div>
                 <div class="connections">
@@ -34,7 +34,7 @@
                         <h4 class="color-medium">Connections</h4>
                     </ion-text>
                     <ion-text color="tertiary">
-                        <p>{{ profile.NumberOfConnections }}</p>
+                        <p>{{ profile.Connections }}</p>
                     </ion-text>
                 </div>
             </div>
@@ -62,20 +62,20 @@
             </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <olii-responsive-aspect-ratio-container *ngFor="let profileImage of profile.ProfileImages" aspectRatio="1/1" class="image-container">
-                <olii-container-cover-image [imageUrl]="profileImage.Url" boarderRadius="5px"></olii-container-cover-image>
+            <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls" aspectRatio="1/1" class="image-container">
+                <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
             </olii-responsive-aspect-ratio-container>
         </div>
         <div *ngIf="segmentToShow === 'saved'" class="saved">
-            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedImagesAlbums" aspectRatio="1/1" class="album-card-container">
-                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
+            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedAlbums" aspectRatio="1/1" class="album-card-container">
+                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.Id, album.Id]">
                     <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
-                        <olii-container-cover-image [imageUrl]="album.CoverImage"></olii-container-cover-image>
+                        <olii-container-cover-image [imageUrl]="album.CoverImageUrl"></olii-container-cover-image>
                     </olii-responsive-aspect-ratio-container>
 
                     <div class="saved-album-details">
                         <h4>{{ album.Title }}</h4>
-                        <div class="color-medium font-body-s">{{ album.Visibility }}</div>
+                        <div class="color-medium font-body-s">{{ album.PrivacyLevel }}</div>
                     </div>
                 </ion-card>
             </olii-responsive-aspect-ratio-container>
