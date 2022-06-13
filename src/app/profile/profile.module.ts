@@ -8,18 +8,22 @@ import { SharedModule } from '../shared/shared.module';
 import { SharedComponentsModule } from '../components/shared/shared-components.module';
 import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-album.page';
 import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     ProfilePage,
     SavedImagesAlbumPage,
-    EditProfilePage
+    EditProfilePage,
+    CreateAlbumPopUpComponent
   ],
   imports: [
     CommonModule,
     ProfileRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     SharedModule,
     SharedComponentsModule,

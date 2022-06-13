@@ -8,7 +8,7 @@ export class AuthGuard implements CanLoad {
   constructor(private router: Router) { }
 
   canLoad(): boolean {
-    const isAuthenticated = !!(+localStorage.getItem('isAuthenticated'));
+    const isAuthenticated = !!(localStorage.getItem('isAuthenticated'));
 
     switch (isAuthenticated) {
       case true:

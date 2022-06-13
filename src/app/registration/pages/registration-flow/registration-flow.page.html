@@ -1,0 +1,89 @@
+<ion-content>
+    <ion-slides #slider [options]="slideOptions">
+      <ion-slide>
+        <div class="first-slide">
+          <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
+          <div class="slide-text">
+            <h3>We are almost done!</h3>
+            <div class="font-body-m color-medium font-thin">To have a more personalized experience, we recommend adding some additional information</div>
+          </div>
+          <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <!-- Not sure how much of this page we need. Will revisit after talking to the team. -->
+        <div class="slide">
+          <div class="header">
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <ion-progress-bar mode="md" value="0.25"></ion-progress-bar>
+          </div>
+          <div class="slide-content">
+            <div class="slide-text">
+              <h3>Personal Information</h3>
+              <p class="color-medium font-thin"></p>
+            </div>
+            <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
+          </div>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="slide">
+          <div class="header">
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <ion-progress-bar mode="md" value="0.5"></ion-progress-bar>
+          </div>
+          <div class="slide-content">
+            <div class="slide-text">
+              <h3>Location</h3>
+              <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
+            </div>
+            <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
+          </div>
+        </div>
+      </ion-slide>
+      <!-- <ion-slide>
+          <h2>Interests</h2>
+      </ion-slide> -->
+      <ion-slide>
+        <div class="slide">
+          <div class="header">
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <ion-progress-bar mode="md" value="0.75"></ion-progress-bar>
+          </div>
+          <div class="slide-content">
+            <div class="slide-text">
+              <h3>Profile</h3>
+              <p class="color-medium font-thin">Add images and a bio so others can get to know you.</p>
+            </div>
+            <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
+          </div>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="slide">
+          <div class="header">
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <ion-progress-bar mode="md" value="1"></ion-progress-bar>
+          </div>
+          <div class="slide-content">
+            <div class="slide-text">
+              <h3>All done!</h3>
+              <p class="color-medium font-thin">Ready to get started?</p>
+            </div>
+            <olii-blue-circle-background>
+              <olii-base-icon name="checkmark-circle-outline" color="primary" size="hero"></olii-base-icon>
+            </olii-blue-circle-background>
+            <p>Create awesome memories and meet new exchange students</p>
+            <ion-button mode="ios" (click)="submit()">Done</ion-button>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
+
+<ng-template #navigationButtons>
+  <div class="navigation-buttons">
+    <ion-button class="next" mode="ios" (click)="nextSlide()">Next</ion-button>
+    <a class="later" (click)="submit()"><h4>Continue later</h4></a>
+  </div>
+</ng-template>

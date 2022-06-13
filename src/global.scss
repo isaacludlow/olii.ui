@@ -214,6 +214,7 @@ input, button, select, textarea, optgroup, option {
 
 a {
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .icon-small, %icon-small {
@@ -237,10 +238,15 @@ a {
 }
 
 .font-thin, %font-thin {
+	font-family: 'Open Sans';
 	font-weight: 300;
 }
 
 .color-light {
+	color: var(--color-light);
+}
+
+.color-medium {
 	color: var(--color-medium);
 }
 
@@ -272,16 +278,30 @@ img {
     display: block;
 }
 
-@media (prefers-color-scheme: dark) {
-    .color-light {
-        color: var(--dark-theme-color-light);
-    }
+.full-page-side-margin {
+	margin: 0rem 1rem;
+}
 
-	.color-tertiary {
-		color: var(--dark-theme-color-tertiary);
-	}
-
-	.color-primary {
-		color: var(--dark-theme-color-primary);
+.popup-modal {
+	--border-radius: 8px!important;
+	&::part(content) {
+		height: 50%;
+    	top: 50%;
+    	position: absolute; 
+    	display: block;  
 	}
 }
+
+// @media (prefers-color-scheme: dark) {
+//     .color-light {
+//         color: var(--dark-theme-color-light);
+//     }
+
+// 	.color-tertiary {
+// 		color: var(--dark-theme-color-tertiary);
+// 	}
+
+// 	.color-primary {
+// 		color: var(--dark-theme-color-primary);
+// 	}
+// }

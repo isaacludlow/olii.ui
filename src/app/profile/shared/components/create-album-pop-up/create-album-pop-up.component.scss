@@ -1,0 +1,36 @@
+ion-content {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+}
+
+ion-item {
+    --padding-start: 0;
+}
+
+ion-button {
+    margin-top: 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+.visibility-label {
+    font-weight: bold;
+}
+
+.visibility-descr {
+    font-size: 0.7rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+.close-modal {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
