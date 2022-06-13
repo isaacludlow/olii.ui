@@ -1,9 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserRegistrationRequest } from '../models/requests/registration/user-registration-request';
-import { AuthenticationService } from '../shared/services/authentication/authentication.service';
-import { NavBarService } from '../shared/services/nav-bar/nav-bar.service';
 import { RegistrationService } from '../shared/services/registration.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { RegistrationService } from '../shared/services/registration.service';
   templateUrl: './registration.page.html',
   styleUrls: ['./registration.page.scss']
 })
-export class RegistrationPage implements OnInit {
+export class RegistrationPage {
   showTermsAndConditions: boolean;
   registerForm = this.fb.group({
     username: ['', Validators.required],
@@ -30,15 +29,15 @@ export class RegistrationPage implements OnInit {
     private fb: FormBuilder,
     private registrationService: RegistrationService,
     private router: Router,
-    private navBar: NavBarService
+    private location: Location
   ) { }
-
-  ngOnInit(): void {
-    this.navBar.setNavBarVisibility(false);
-  }
 
   toggleModel(): void {
     this.showTermsAndConditions = !this.showTermsAndConditions;
+  }
+
+  navigateBack(): void {
+    this.location.back();
   }
 
   onSubmit(): void {

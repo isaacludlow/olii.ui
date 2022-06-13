@@ -36,11 +36,9 @@ export class AuthenticationService {
     );
   }
 
-  async login(email: string, password: string) {
-    const userCredentials = await this.firebaseAuthService.signInWithEmailAndPassword(email, password);
-    this.userCredentials = userCredentials;
-
-    return userCredentials;
+  login(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    return from(this.firebaseAuthService.signInWithEmailAndPassword(email, password)).pipe(
+      tap(userCredentials => this.userCredentials = userCredentials));
   }
 
   signOut(): Promise<void> {

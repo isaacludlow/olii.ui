@@ -1,5 +1,5 @@
 <ion-content>
-    <olii-back-button></olii-back-button>
+    <olii-back-button (click)="navigateBack()"></olii-back-button>
     <div class="full-page-side-margin">
         <div class="intro">
             <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
@@ -28,7 +28,6 @@
             <div class="submit-button">
                 <ion-button type="submit" [disabled]="!registerForm.valid" mode="ios">Create Account</ion-button>
             </div>
-            <a routerLink="registration-flow">registration flow</a>
         </form>
     </div>
     <ion-modal [isOpen]="showTermsAndConditions">

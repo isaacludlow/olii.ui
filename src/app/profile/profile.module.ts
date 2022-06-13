@@ -10,6 +10,7 @@ import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-al
 import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
 import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SettingsPage } from './pages/settings/settings.page';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProfilePage,
     SavedImagesAlbumPage,
     EditProfilePage,
-    CreateAlbumPopUpComponent
+    CreateAlbumPopUpComponent,
+    SettingsPage
   ],
   imports: [
     CommonModule,
