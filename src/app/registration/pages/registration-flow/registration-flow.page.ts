@@ -6,6 +6,9 @@ import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { DomSanitizer } from '@angular/platform-browser';
 import gm = google.maps;
+import { ProfileService } from 'src/app/shared/services/profile/profile.service';
+import { Router } from '@angular/router';
+import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
 
 @Component({
   templateUrl: './registration-flow.page.html',
@@ -25,7 +28,14 @@ export class RegistrationFlowPage {
   profilePicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   profileImages: GalleryPhoto[] = [];
 
-  constructor(private fb: FormBuilder, private domSanitizer: DomSanitizer, private platform: Platform) { }
+  constructor(
+    private fb: FormBuilder,
+    private domSanitizer: DomSanitizer,
+    private platform: Platform,
+    private profileService: ProfileService,
+    private router: Router,
+    private navBar: NavBarService
+  ) { }
 
   nextSlide(): void {
     this.slides.slideNext();
@@ -54,9 +64,12 @@ export class RegistrationFlowPage {
     this.registerFlowForm.get('homeCountry').setValue(placeResult.name);
   }
 
-  submit() {
-    const profileRequest = this.createProfileRequest();
-    console.log(profileRequest)
+  async submit() {
+    const profileData = await this.createProfileRequest();
+    const res = this.profileService.createNewProfile(profileData);
+    console.log(res);
+    this.navBar.setNavBarVisibility(true);
+    this.router.navigate(['community/events'])
   }
 
   async createProfileRequest() {

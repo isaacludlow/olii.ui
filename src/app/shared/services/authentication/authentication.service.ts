@@ -9,13 +9,13 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  isAuthenticated = this.authService.user.pipe(map(user => !!user));
+  isAuthenticated = this.firebaseAuthService.user.pipe(map(user => !!user));
   userCredentials: firebase.auth.UserCredential;
 
-  constructor(private authService: AngularFireAuth) { }
+  constructor(private firebaseAuthService: AngularFireAuth) { }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
-    return from(this.authService.createUserWithEmailAndPassword(email, password)).pipe(
+    return from(this.firebaseAuthService.createUserWithEmailAndPassword(email, password)).pipe(
       tap(userCredentials => this.userCredentials = userCredentials),
       catchError(error => {
         // TODO: Use ionic toast alert instead of the default alert.
@@ -37,9 +37,13 @@ export class AuthenticationService {
   }
 
   async login(email: string, password: string) {
-    const userCredentials = await this.authService.signInWithEmailAndPassword(email, password);
+    const userCredentials = await this.firebaseAuthService.signInWithEmailAndPassword(email, password);
     this.userCredentials = userCredentials;
 
     return userCredentials;
+  }
+
+  signOut(): Promise<void> {
+    return this.firebaseAuthService.signOut();
   }
 }
