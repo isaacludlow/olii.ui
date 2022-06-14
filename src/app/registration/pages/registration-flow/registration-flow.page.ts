@@ -34,7 +34,7 @@ export class RegistrationFlowPage {
     private platform: Platform,
     private profileService: ProfileService,
     private router: Router,
-    private navBar: NavBarService
+    private navBar: NavBarService,
   ) { }
 
   nextSlide(): void {
@@ -46,12 +46,16 @@ export class RegistrationFlowPage {
   }
 
   setProfilePicture() {
-    selectImages(1, this.domSanitizer).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
+    selectImages(1).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
   }
 
   setProfileImages() {
     let numberOfImagesAllowedToUpload = 9 - this.profileImages.length;
-    selectImages(numberOfImagesAllowedToUpload, this.domSanitizer).subscribe(galleryPhotos => this.profileImages.push(...galleryPhotos));
+    selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => this.profileImages.push(...galleryPhotos));
+  }
+
+  sanitizeUrl(url: string): string {
+    return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
   setHostLocation(placeResult: gm.places.PlaceResult): void {

@@ -5,12 +5,11 @@ import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-export function selectImages(maxNumberOfImages: number, domSanitizer: DomSanitizer): Observable<GalleryPhoto[]> {
+export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
     const galleryPhoto = from(Camera.pickImages({limit: maxNumberOfImages}));
 
     return galleryPhoto.pipe(
-        map(galleryPhoto => galleryPhoto.photos),
-        tap(photos => photos.forEach(photo => photo.webPath = domSanitizer.bypassSecurityTrustUrl(photo.webPath) as string))
+        map(galleryPhoto => galleryPhoto.photos)
     );
 }
 
@@ -29,7 +28,7 @@ export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: P
       const response = await fetch(photo.webPath);
       const blob = await response.blob();
   
-      return await this.convertBlobToBase64(blob);
+      return await convertBlobToBase64(blob);
     }
   }
 
