@@ -6,5 +6,5 @@ export interface ProfileRequestSavedAlbum {
     Title: string;
     Description: string;
     PrivacyLevel: PrivacyLevel;
-    ImageFile: string[];
+    ImageFiles: string[];
 }

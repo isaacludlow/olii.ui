@@ -18,7 +18,7 @@ export class AuthenticationService {
     return from(this.firebaseAuthService.createUserWithEmailAndPassword(email, password)).pipe(
       tap(userCredentials => this.userCredentials = userCredentials),
       catchError(error => {
-        // TODO: Use ionic toast alert instead of the default alert.
+        // TODO: Use ionic toast alert instead of the default alert?
         if (error.code === 'auth/email-already-in-use') {
           alert('This email address is already in use by another account.');
 
@@ -38,7 +38,14 @@ export class AuthenticationService {
 
   login(email: string, password: string): Observable<firebase.auth.UserCredential> {
     return from(this.firebaseAuthService.signInWithEmailAndPassword(email, password)).pipe(
-      tap(userCredentials => this.userCredentials = userCredentials));
+      tap(userCredentials => this.userCredentials = userCredentials),
+      catchError(error => {
+        // TODO: Use ionic toast alert instead of the default alert?
+        alert(error.message);
+
+        throw new Error(error.message);
+      })
+    );
   }
 
   signOut(): Promise<void> {

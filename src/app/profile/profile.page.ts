@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SubSink } from 'subsink';
 import { Profile } from '../models/dto/profile/profile.dto';
@@ -22,7 +23,8 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private profileStore: ProfileStore,
     private modalCtrl: ModalController,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   async signOut(): Promise<void> {
     await this.authService.signOut();
-    // TODO: Redirect to sign-in page.
+    this.router.navigate(['registration/slideshow']);
   }
 
   ngOnDestroy(): void {

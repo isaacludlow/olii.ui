@@ -4,9 +4,12 @@ import gm = google.maps;
 
 @Component({
   selector: 'olii-places-autocomplete-field',
-  templateUrl: './places-autocomplete-field.component.html',
-  styles: [
-  ]
+  template: `
+    <ion-item>
+      <ion-input #searchField type="text" [placeholder]="placeholder"></ion-input>
+    </ion-item>
+  `,
+  styleUrls: ['./places-autocomplete-field.component.scss']
 })
 export class PlacesAutocompleteFieldComponent implements OnInit {
   @Input() placeholder: string;

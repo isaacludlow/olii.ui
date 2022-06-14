@@ -71,14 +71,15 @@ export class RegistrationFlowPage {
   async submit() {
     const profileData = await this.createProfileRequest();
     const res = this.profileService.createNewProfile(profileData);
-    console.log(res);
     this.navBar.setNavBarVisibility(true);
     this.router.navigate(['community/events'])
   }
 
   async createProfileRequest() {
     const profileBase64Images = [];
-    this.profileImages.forEach(async profileImage => profileBase64Images.push(await readPhotoAsBase64(profileImage, this.platform)))
+    this.profileImages.slice(0, 10).forEach(async profileImage => {
+      profileBase64Images.push(await readPhotoAsBase64(profileImage, this.platform))
+    });
 
     const profileRequest: ProfileRequest = {
       FirstName: this.registerFlowForm.get('firstName').value,

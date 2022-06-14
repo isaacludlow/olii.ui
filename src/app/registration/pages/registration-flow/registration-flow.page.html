@@ -89,7 +89,7 @@
               <div *ngIf="profileImages.length > 0" class="profile-images-container">
                 <div *ngFor="let profileImage of profileImages" class="profile-image">
                   <olii-responsive-aspect-ratio-container aspectRatio="1/1">
-                    <olii-container-cover-image [imageUrl]="profileImage.webPath" boarderRadius="5%"></olii-container-cover-image>
+                    <olii-container-cover-image [imageUrl]="sanitizeUrl(profileImage.webPath)" boarderRadius="5%"></olii-container-cover-image>
                   </olii-responsive-aspect-ratio-container>
                 </div>
               </div>
