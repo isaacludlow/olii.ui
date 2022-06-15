@@ -72,7 +72,7 @@
             <div class="profile-inputs">
               <div class="profile-picture-container" (click)="setProfilePicture()">
                 <div class="profile-picture">
-                  <olii-container-cover-image [imageUrl]="profilePicture.webPath" boarderRadius="50%"></olii-container-cover-image>  
+                  <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>  
                   <!-- <img [src]="profilePicture.webPath" alt=""> -->
                 </div>
                 <p class="font-body-s color-tertiary">Add profile picture</p>
