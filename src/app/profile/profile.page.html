@@ -4,7 +4,7 @@
         <div class="back" (click)="viewControl()">
             <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
-        <div class="settings">
+        <div class="settings" [routerLink]="['/profile/edit', profile.Id]">
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
         </div>
     </div>
@@ -62,8 +62,8 @@
             </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <olii-responsive-aspect-ratio-container *ngFor="let profileImage of profile.ImageUrls" aspectRatio="1/1" class="image-container">
-                <olii-container-cover-image [imageUrl]="profileImage" boarderRadius="5px"></olii-container-cover-image>
+            <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls" aspectRatio="1/1" class="image-container">
+                <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
             </olii-responsive-aspect-ratio-container>
         </div>
         <div *ngIf="segmentToShow === 'saved'" class="saved">

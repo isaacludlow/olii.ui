@@ -1,0 +1,56 @@
+
+<ion-toolbar color="primary" mode="ios">
+    <ion-buttons slot="start" mode="ios">
+        <!--TODO: Make a new component that allows you to also change the color of the icon?-->
+        <div class="back-icon">
+            <olii-colored-square-background backgroundColor="purple-tinted-white" routerLink="/profile">
+                <olii-base-icon name="arrow-back-outline" color="primary"></olii-base-icon>
+            </olii-colored-square-background>
+        </div>
+    </ion-buttons>
+    <ion-title>Edit Profile</ion-title>
+</ion-toolbar>
+
+<ion-content>
+    
+    <div class="profile-image-container">
+        <div class="profile-image">
+            <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+        </div>
+        <div class="change-profile-pic-label">
+            Change Profile Pic
+        </div>
+    </div>
+
+    <form>
+        <!-- Profile should include name, number and age as well?-->
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Name</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" value="John Snow" clearInput="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Number</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" clearInput="true" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Home Country</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.HomeCountry" clearInput="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Age</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" clearInput="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Current City</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.CurrentCity" clearInput="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Description</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.Bio" clearInput="true"></ion-input>
+        </ion-item>
+    </form>
+    
+    <div class="save-button">
+        <ion-button mode="ios">Save</ion-button>
+    </div>
+</ion-content>
