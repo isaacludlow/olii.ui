@@ -8,21 +8,21 @@ ion-content {
     --padding-end: 1rem;
 }
 
+.section-title {
+    color: var(--color-primary-contrast);
+}
+
 hr {
     display: block;
     margin-top: 1em;
     margin-bottom: 0.5em;
     margin-left: auto;
     margin-right: auto;
-    border-top: 1px solid #bbb;
+    border-top: 1px solid #eee;
   }
 
 .group-nav {
     width: 100%;
-}
-
-.section-title {
-    color: var(--color-primary-contrast);
 }
 
 .my-groups-header {

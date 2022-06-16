@@ -1,1 +1,63 @@
-<p>group-main works!</p>
+<ion-content>
+    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
+        <div class="back-icon">
+            <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+        </div>
+    </div>
+
+    <div class="group-details">
+        <h2 class="group-name">{{ group.Name }}</h2>
+        <div class="group-description">{{group.Description}}</div>
+    </div>
+
+    <div class="member-icons">
+        <div *ngFor="let member of group.Members | slice:0:6;">
+            <div class="member-image">
+                <!-- Router Link to a member page?-->
+                <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="post" *ngFor="let post of group.Posts">
+        <ion-card>
+            <div class="card-content">
+                <div class="post-header">
+                    <div class="poster-info">
+                        <div class="poster-image">
+                            <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                            <olii-container-cover-image [imageUrl]="getPosterImageUrl(post.AuthorUserId)" boarderRadius="50%"></olii-container-cover-image>
+                        </div>
+                        <div class="poster-name">{{getPosterName(post.AuthorUserId)}}</div>
+                    </div>
+                    <div>{{post.Date.toDateString()}}</div>
+                </div>
+                {{post.Content}}
+                <div class="post-images">
+                    <olii-responsive-aspect-ratio-container *ngFor="let image of post.ImageUrls" aspectRatio="1/1" class="image-container">
+                        <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
+                    </olii-responsive-aspect-ratio-container>
+                </div>
+            </div>
+        </ion-card>
+    </div>
+
+
+    <div class="group-main-buttons">
+        <ion-button class="side-button" type="button" mode="ios" size="small" (click)="writePost()">
+            <olii-base-icon name="pencil-outline"></olii-base-icon>
+            <div class="button-label">Write Post</div>
+        </ion-button>
+        <ion-button type="button" mode="ios" size="small" (click)="sharePhoto()">
+            <olii-base-icon name="camera-outline"></olii-base-icon>
+            <div class="button-label">Share Photo</div>
+        </ion-button>
+        <ion-button class="side-button" type="button" mode="ios" size="small" (click)="addEvent()">
+            <olii-base-icon name="calendar-outline"></olii-base-icon>
+            <div class="button-label">Add Event</div>
+        </ion-button>
+    </div>
+
+</ion-content>

@@ -11,6 +11,10 @@ export class GroupStore {
 
     constructor(private groupService: GroupService) {}
 
+    // TODO: We'll need to figure out cashing so that both getGroupAll() and
+    // getGroupById don't have to query every time.  Probably just a data
+    // structure to hold all a user's related groups cache is queried once and then
+    // pull the data from there
     getGroupAll() {
         return this.groupService.getGroupAll();
     }

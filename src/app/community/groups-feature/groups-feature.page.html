@@ -13,15 +13,15 @@
         </div>
         <div class="group-selector">
             <div class="group-icons">
-                <div *ngFor="let group of groups | slice:0:4;">
+                <div *ngFor="let group of groups | slice:0:3;">
                     <div class="group-image">
-                        <olii-container-cover-image [imageUrl]="group.CoverImageUrl" boarderRadius="50%" [routerLink]="['/group', group.Id]"></olii-container-cover-image>
+                        <olii-container-cover-image [imageUrl]="group.CoverImageUrl" boarderRadius="50%" [routerLink]="['./group', group.Id]"></olii-container-cover-image>
                     </div>
                     <div class="group-nav-group-name">{{ group.Name }}</div>
                 </div>
             </div>
-            <div>
-                <div class="new-group-button">
+            <div class="new-group-button-container">
+                <div class="new-group-button" routerLink="./create">
                     <olii-base-icon size="medium" name="add-outline"></olii-base-icon>
                 </div>
                 <div class="group-nav-group-name">+ New</div>

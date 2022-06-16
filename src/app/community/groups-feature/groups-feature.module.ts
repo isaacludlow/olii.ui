@@ -7,12 +7,14 @@ import { SharedModule } from '../../shared/shared.module';
 import { SharedComponentsModule } from '../../components/shared/shared-components.module';
 import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupMainPage } from './pages/group-main/group-main.page';
+import { CreateGroupPage } from './pages/create-group/create-group.page';
 
 
 @NgModule({
   declarations: [
     GroupsFeaturePage,
-    GroupMainPage
+    GroupMainPage,
+    CreateGroupPage
   ],
   imports: [
     CommonModule,

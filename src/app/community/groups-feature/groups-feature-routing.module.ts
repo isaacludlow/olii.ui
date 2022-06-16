@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupMainPage } from './pages/group-main/group-main.page';
+import { CreateGroupPage } from './pages/create-group/create-group.page';
 
 const routes: Routes = [
   { 
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'group/:groupId',
     component: GroupMainPage
+  },
+  {
+    path: 'create',
+    component: CreateGroupPage
   }
 ];
 
