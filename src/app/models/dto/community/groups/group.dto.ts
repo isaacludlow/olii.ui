@@ -12,4 +12,4 @@ export interface Group {
     Members: Profile[];
 }
 
-type PrivacyLevel = 'Public' | 'Connections-Only' | 'Invite-Only';
+type PrivacyLevel = 'Public' | 'Friends-Only' | 'Invite-Only';

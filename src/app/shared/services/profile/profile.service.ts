@@ -20,7 +20,7 @@ export class ProfileService {
       Id: 98,
       FirstName: 'John',
       LastName: 'Doe',
-      Connections: 127,
+      Friends: 127,
       Bio: "Livin' the dream life. Adventurer. Professional turtle racer.",
       HomeCountry: 'USA',
       HostCountry: 'Germany',

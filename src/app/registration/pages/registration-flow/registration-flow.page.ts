@@ -90,7 +90,7 @@ export class RegistrationFlowPage {
       Bio: this.registerFlowForm.get('bio').value,
       ProfilePictureFile: await readPhotoAsBase64(this.profilePicture, this.platform),
       ImageFiles: profileBase64Images,
-      Connections: 0,
+      Friends: 0,
       ConnectedSocials: [],
       SavedAlbums: []
     };

@@ -20,8 +20,8 @@ export interface Profile {
     Bio: string;
     /** Links to social apps. */
     ConnectedSocials: ConnectedSocial[];
-    /** Number of connections the user has. */
-    Connections: number;
+    /** Number of friends the user has. */
+    Friends: number;
     /** Profile images on the user's profile to show who they are. */
     ImageUrls: string[];
     /** Images from throughout the app that are saved to albums in the user profile. */
