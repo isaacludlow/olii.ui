@@ -1,0 +1,23 @@
+<ion-content>
+    <olii-back-button (click)="navigateBack()"></olii-back-button>
+    <div class="full-page-side-margin content">
+        <div class="intro">
+            <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
+            <h3>Join us to start searching</h3>
+            <p class="color-medium font-thin">Create awesome plans and meet new exchange students</p>
+        </div>
+    
+        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+            <ion-item>
+                <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+            </ion-item>
+    
+            <div class="submit-button">
+                <ion-button type="submit" [disabled]="!signInForm.valid" mode="ios">Sign In</ion-button>
+            </div>
+        </form>
+    </div>
+</ion-content>

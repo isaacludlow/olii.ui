@@ -14,11 +14,11 @@ export class EditProfilePage implements OnInit {
 
   profileForm = this.fb.group({
     name: [''],
-    numbber: [''],
+    number: [''],
     homeCountry: [''],
     age: [''],
     currentCity: [''],
-    description: [''],
+    bio: [''],
   })
 
   constructor(private fb: FormBuilder, private profileStore: ProfileStore) { }
@@ -26,5 +26,4 @@ export class EditProfilePage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
   }
-
 }

@@ -26,6 +26,7 @@
     flex-direction: column;
     gap: 3vh;
     width: 100%;
+    margin: 0rem 1rem;
     
     .header {
         display: flex;
@@ -47,18 +48,49 @@
     .slide-content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 3rem;
+        gap: 2rem;
+        min-height: 73vh;
     }
 }
 
-.navigation-buttons {
+.profile-inputs {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 
-    .later {
-        color: var(--color-tertiary);
+    .profile-picture-container {
+        margin: 0 auto 0 auto;
+
+        .profile-picture {
+            height: 100px;
+            width: 100px;
+            margin-bottom: 8px;
+        }
+    }
+
+    .profile-images-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+
+        .profile-image {
+            width: 32%;
+        }
+    }
+}
+
+.navigation-buttons-container {
+    margin-top: auto;
+
+    .navigation-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        
+        .later {
+            color: var(--color-tertiary);
+        }
     }
 }
 

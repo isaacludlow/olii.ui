@@ -15,5 +15,5 @@ export interface Event {
     Invitations: Invitation[]
 }
 
-// Connections-Only is valid for the creator type of user not group.
-type PrivacyLevel = 'Public' | 'Group' | 'Connections-Only' | 'Invite-Only';
+// Friends-Only is valid for the creator type of user not group.
+type PrivacyLevel = 'Public' | 'Group' | 'Friends-Only' | 'Invite-Only';

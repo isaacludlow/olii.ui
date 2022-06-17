@@ -1,17 +1,17 @@
 <ion-content>
+  <form [formGroup]="registerFlowForm">
     <ion-slides #slider [options]="slideOptions">
       <ion-slide>
         <div class="first-slide">
           <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
           <div class="slide-text">
             <h3>We are almost done!</h3>
-            <div class="font-body-m color-medium font-thin">To have a more personalized experience, we recommend adding some additional information</div>
+            <p class="color-medium font-thin">To have a more personalized experience, we recommend adding some additional information</p>
           </div>
           <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
         </div>
       </ion-slide>
       <ion-slide>
-        <!-- Not sure how much of this page we need. Will revisit after talking to the team. -->
         <div class="slide">
           <div class="header">
             <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
@@ -20,7 +20,15 @@
           <div class="slide-content">
             <div class="slide-text">
               <h3>Personal Information</h3>
-              <p class="color-medium font-thin"></p>
+              <p class="color-medium font-thin">Help others recognize you.</p>
+            </div>
+            <div class="personal-info-inputs">
+              <ion-item>
+                <ion-input formControlName="firstName" type="text" placeholder="First Name"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input formControlName="lastName" type="text" placeholder="Last Name"></ion-input>
+            </ion-item>
             </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
@@ -37,6 +45,10 @@
               <h3>Location</h3>
               <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
             </div>
+            <div class="location-inputs">
+              <olii-places-autocomplete-field (autocompletedResult)="setHostLocation($event)" [responseType]="['(cities)']" [responseFieldType]="['name']" placeholder="Host City"></olii-places-autocomplete-field>
+              <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['name']" placeholder="Home Country"></olii-places-autocomplete-field>
+            </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
         </div>
@@ -50,11 +62,39 @@
             <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
             <ion-progress-bar mode="md" value="0.75"></ion-progress-bar>
           </div>
+
           <div class="slide-content">
             <div class="slide-text">
               <h3>Profile</h3>
               <p class="color-medium font-thin">Add images and a bio so others can get to know you.</p>
             </div>
+
+            <div class="profile-inputs">
+              <div class="profile-picture-container" (click)="setProfilePicture()">
+                <div class="profile-picture">
+                  <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>  
+                  <!-- <img [src]="profilePicture.webPath" alt=""> -->
+                </div>
+                <p class="font-body-s color-tertiary">Add profile picture</p>
+              </div>
+
+              <ion-item>
+                <ion-textarea formControlName="bio" placeholder="Write your profile bio here"></ion-textarea>
+              </ion-item>
+
+              <div (click)="setProfileImages()">
+                <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
+                <olii-base-icon *ngIf="profileImages.length === 0" name="images-outline" size="display" color="medium"></olii-base-icon>
+              </div>
+              <div *ngIf="profileImages.length > 0" class="profile-images-container">
+                <div *ngFor="let profileImage of profileImages" class="profile-image">
+                  <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                    <olii-container-cover-image [imageUrl]="sanitizeUrl(profileImage.webPath)" boarderRadius="5%"></olii-container-cover-image>
+                  </olii-responsive-aspect-ratio-container>
+                </div>
+              </div>
+            </div>
+            
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
         </div>
@@ -79,11 +119,14 @@
         </div>
       </ion-slide>
     </ion-slides>
-  </ion-content>
+    </form>
+</ion-content>
 
 <ng-template #navigationButtons>
-  <div class="navigation-buttons">
-    <ion-button class="next" mode="ios" (click)="nextSlide()">Next</ion-button>
-    <a class="later" (click)="submit()"><h4>Continue later</h4></a>
+  <div class="navigation-buttons-container">
+    <div class="navigation-buttons">
+      <ion-button class="next" mode="ios" (click)="nextSlide()">Next</ion-button>
+      <a class="later" (click)="submit()"><h4>Continue later</h4></a>
+    </div>
   </div>
 </ng-template>
