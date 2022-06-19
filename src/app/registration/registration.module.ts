@@ -9,13 +9,15 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedComponentsModule } from '../components/shared/shared-components.module';
 import { RegistrationFlowPage } from './pages/registration-flow/registration-flow.page';
+import { SignInPage } from './pages/sign-in/sign-in.page';
 
 
 @NgModule({
   declarations: [
     RegistrationPage,
     RegistrationSlideshowPage,
-    RegistrationFlowPage
+    RegistrationFlowPage,
+    SignInPage
   ],
   imports: [
     CommonModule,

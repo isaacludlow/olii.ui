@@ -1,0 +1,19 @@
+<ion-toolbar mode="ios">
+    <ion-buttons slot="start" mode="ios">
+        <div class="back-icon">
+            <olii-colored-square-background backgroundColor="purple-tinted-white" routerLink="/profile">
+                <olii-base-icon name="arrow-back-outline" color="primary"></olii-base-icon>
+            </olii-colored-square-background>
+        </div>
+    </ion-buttons>
+    <ion-title color="light">Settings</ion-title>
+</ion-toolbar>
+
+<ion-content>
+    <ion-item button [routerLink]="['/profile/edit', profileId]">
+        <ion-label>Edit Profile</ion-label>
+    </ion-item>
+    <ion-item button (click)="signOut()">
+        <ion-label>Sign Out</ion-label>
+    </ion-item>
+</ion-content>

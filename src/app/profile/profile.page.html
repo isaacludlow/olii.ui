@@ -4,7 +4,7 @@
         <div class="back" (click)="viewControl()">
             <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
-        <div class="settings" [routerLink]="['/profile/edit', profile.Id]">
+        <div class="settings" routerLink="/profile/settings">
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
         </div>
     </div>
@@ -29,12 +29,12 @@
                         <p>{{ profile.CurrentCity }}</p>
                     </ion-text>
                 </div>
-                <div class="connections">
+                <div class="friends">
                     <ion-text color="medium">
-                        <h4 class="color-medium">Connections</h4>
+                        <h4 class="color-medium">Friends</h4>
                     </ion-text>
                     <ion-text color="tertiary">
-                        <p>{{ profile.Connections }}</p>
+                        <p>{{ profile.Friends }}</p>
                     </ion-text>
                 </div>
             </div>

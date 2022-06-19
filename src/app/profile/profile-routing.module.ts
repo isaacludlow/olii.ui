@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-album.page';
 import { ProfilePage } from './profile.page';
 import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
+import { SettingsPage } from './pages/settings/settings.page';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'edit/:profileId',
     component: EditProfilePage
+  },
+  {
+    path: 'settings',
+    component: SettingsPage
   }
 ];
 

@@ -47,7 +47,7 @@ export class ProfileStore {
 	}
 
 	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
-		return this.profileService.postNewAlbum(albumName, albumDescription, albumVisibility);
+		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
 	}
 
 	getBase64Image(url: string) {
