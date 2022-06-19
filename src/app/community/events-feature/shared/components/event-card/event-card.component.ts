@@ -15,7 +15,7 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
             <olii-location-preview [locationText]=""></olii-location-preview>
             <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           </div>
-          <olii-profile-preview-icons [profilePictureUrls]="" profileIconSize="small"></olii-profile-preview-icons>
+          <olii-profile-preview-icons [profilePictureUrls]="profilePictureUrls" profileIconSize="small"></olii-profile-preview-icons>
         </div>
       </div>
     </ion-card>
@@ -29,7 +29,7 @@ export class EventCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // this.profilePictureUrls = this.event.theImageUrls for the people attending
+    this.profilePictureUrls = this.event.Invitations.map(i => i.Recipient.ProfilePictureUrl);
   }
 
 }
