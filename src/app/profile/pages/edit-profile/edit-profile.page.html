@@ -1,4 +1,3 @@
-
 <ion-toolbar color="primary" mode="ios">
     <ion-buttons slot="start" mode="ios">
         <!--TODO: Make a new component that allows you to also change the color of the icon?-->
@@ -22,31 +21,31 @@
         </div>
     </div>
 
-    <form>
+    <form [formGroup]="profileForm">
         <!-- Profile should include name, number and age as well?-->
         <ion-item>
             <ion-label color="tertiary" position="stacked">Name</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" value="John Snow" clearInput="true"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="name" clearInput="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Number</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" clearInput="true" type="number"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" clearInput="true" type="number" formControlName="number"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Home Country</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.HomeCountry" clearInput="true"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="homeCountry" clearInput="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Age</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" clearInput="true"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="age" clearInput="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Current City</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.CurrentCity" clearInput="true"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="currentCity" clearInput="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Description</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" [value]="profile.Bio" clearInput="true"></ion-input>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="description" clearInput="true"></ion-input>
         </ion-item>
     </form>
     

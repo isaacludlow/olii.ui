@@ -10,7 +10,7 @@
         <div class="group-description">{{group.Description}}</div>
     </div>
 
-    <div class="member-icons">
+    <div class="member-icons" routerLink= "./members">
         <div *ngFor="let member of group.Members | slice:0:6;">
             <div class="member-image">
                 <!-- Router Link to a member page?-->

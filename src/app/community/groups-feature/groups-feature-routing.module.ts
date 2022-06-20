@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupMainPage } from './pages/group-main/group-main.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
+import { GroupMembersPage } from './pages/group-members/group-members.page';
 
 const routes: Routes = [
   { 
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'group/:groupId',
     component: GroupMainPage
+  },
+  {
+    path: 'group/:groupId/members',
+    component: GroupMembersPage
   },
   {
     path: 'create',

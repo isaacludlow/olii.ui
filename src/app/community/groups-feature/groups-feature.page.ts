@@ -17,6 +17,7 @@ export class GroupsFeaturePage implements OnInit {
   constructor(private groupStore: GroupStore) { }
 
   ngOnInit(): void {
+    // TODO: we need to get groups associated with the specific user
     this.subs.sink = this.groupStore.getGroupAll().subscribe(res => this.groups = res);
   }
 

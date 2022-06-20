@@ -8,18 +8,22 @@ import { SharedComponentsModule } from '../../components/shared/shared-component
 import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupMainPage } from './pages/group-main/group-main.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GroupMembersPage } from './pages/group-members/group-members.page';
 
 @NgModule({
   declarations: [
     GroupsFeaturePage,
     GroupMainPage,
-    CreateGroupPage
+    CreateGroupPage,
+    GroupMembersPage
   ],
   imports: [
     CommonModule,
     IonicModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedComponentsModule,
     GroupsFeatureRoutingModule
   ]

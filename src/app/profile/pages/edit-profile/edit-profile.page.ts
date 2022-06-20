@@ -14,7 +14,7 @@ export class EditProfilePage implements OnInit {
 
   profileForm = this.fb.group({
     name: [''],
-    numbber: [''],
+    number: [''],
     homeCountry: [''],
     age: [''],
     currentCity: [''],
@@ -25,6 +25,17 @@ export class EditProfilePage implements OnInit {
 
   ngOnInit(): void {
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
+
+    if (this.profile != null) {
+      if (this.profile.FirstName && this.profile.LastName) {
+        this.profileForm.controls['name'].setValue(this.profile.FirstName + " " + this.profile.LastName);
+      }
+      // this.profileForm.controls['number'].setValue(this.profile.PhoneNumber);
+      this.profileForm.controls['homeCountry'].setValue(this.profile.HomeCountry);
+      //this.profileForm.controls['homeCountry'].setValue(this.profile.Age);
+      this.profileForm.controls['currentCity'].setValue(this.profile.CurrentCity);
+      this.profileForm.controls['description'].setValue(this.profile.Bio);
+    }
   }
 
 }

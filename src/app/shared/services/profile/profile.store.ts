@@ -46,6 +46,10 @@ export class ProfileStore {
 			// );
 	}
 
+	getFriends(userId: number): Observable<Profile[]> {
+		return this.profileService.getFriends(userId);
+	}
+
 	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
 		return this.profileService.postNewAlbum(albumName, albumDescription, albumVisibility);
 	}

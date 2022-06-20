@@ -1,0 +1,21 @@
+ion-toolbar {
+    --min-height: 4rem;
+}
+
+.section-title {
+    color: var(--color-primary-contrast);
+}
+
+.back-icon {
+    margin: 0 0 0 1rem;
+    color: var(--color-primary);
+}
+
+hr {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid #eee;
+  }
