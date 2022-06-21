@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { PlacesAutocompleteFieldComponent } from './application-components/places-autocomplete-field/places-autocomplete-field.component';
+import { IonicModule } from '@ionic/angular';
 
 
 
 @NgModule({
   declarations: [
-    TruncatePipe
+    TruncatePipe,
+    PlacesAutocompleteFieldComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    IonicModule
   ],
   exports: [
-    TruncatePipe
+    TruncatePipe,
+    PlacesAutocompleteFieldComponent
   ]
 })
 export class SharedModule { }

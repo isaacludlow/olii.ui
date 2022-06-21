@@ -17,6 +17,7 @@ import { IconWithPurpleSquareBackgroundComponent } from './icon-with-purple-squa
 import { IconWithOffWhiteSquareBackgroundComponent } from './icon-with-off-white-square-background/icon-with-off-white-square-background.component';
 import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-ratio-container/responsive-aspect-ratio-container.component';
 import { BackButtonComponent } from './back-button/back-button.component';
+import { PurplePageHeaderComponent } from './purple-page-header/purple-page-header.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { BackButtonComponent } from './back-button/back-button.component';
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    PurplePageHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { BackButtonComponent } from './back-button/back-button.component';
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    PurplePageHeaderComponent
   ]
 })
 export class SharedComponentsModule { }

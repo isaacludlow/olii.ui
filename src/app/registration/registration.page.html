@@ -1,5 +1,5 @@
 <ion-content>
-    <olii-back-button></olii-back-button>
+    <olii-back-button (click)="navigateBack()"></olii-back-button>
     <div class="full-page-side-margin">
         <div class="intro">
             <img src="../../assets/logos/OliiWithPurpleBG.png" alt="">
@@ -12,15 +12,15 @@
                 <ion-input formControlName="username" type="text" placeholder="Username"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-input type="text" placeholder="Email"></ion-input>
+                <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-input type="password" placeholder="Password"></ion-input>
+                <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
             </ion-item>
     
             <div class="other-options">
                 <div class="checkbox">
-                    <ion-checkbox slot="start"></ion-checkbox>
+                    <ion-checkbox formControlName="hasReadTermsAndConditions" slot="start"></ion-checkbox>
                     <ion-label>"I have read the <a (click)="toggleModel()">Terms and Conditions</a>"</ion-label>
                 </div>
             </div>
@@ -28,7 +28,6 @@
             <div class="submit-button">
                 <ion-button type="submit" [disabled]="!registerForm.valid" mode="ios">Create Account</ion-button>
             </div>
-            <a routerLink="registration-flow">registration flow</a>
         </form>
     </div>
     <ion-modal [isOpen]="showTermsAndConditions">

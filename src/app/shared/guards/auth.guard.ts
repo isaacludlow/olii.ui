@@ -1,26 +1,21 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { AuthenticationService } from '../services/authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-  constructor(private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
-  canLoad(): boolean {
-    const isAuthenticated = !!(localStorage.getItem('isAuthenticated'));
-
-    switch (isAuthenticated) {
-      case true:
-        
-        return true;
-      case false:
-        this.router.navigate(['registration/slideshow']);  
-
-        return false;
-        
-      default:
-        return false;
-    }
+  canLoad() {
+    return this.authService.isAuthenticated.pipe(
+      tap(isAuthenticated => {
+        if (!isAuthenticated)
+          this.router.navigate(['registration/slideshow']);  
+        }
+      ));
   }
 }

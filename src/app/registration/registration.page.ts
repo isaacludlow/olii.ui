@@ -1,32 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserRegistrationRequest } from '../models/requests/registration/user-registration-request';
+import { RegistrationService } from '../shared/services/registration.service';
 
 @Component({
   selector: 'registration',
   templateUrl: './registration.page.html',
   styleUrls: ['./registration.page.scss']
 })
-export class RegistrationPage implements OnInit {
+export class RegistrationPage {
   showTermsAndConditions: boolean;
   registerForm = this.fb.group({
-    username: [''],
-    email: [''],
-    password: [''],
-    options: this.fb.group({
-      hasReadTermsAndConditions: ['']
-    })
+    username: ['', Validators.required],
+    email: ['', [
+      Validators.required,
+      Validators.email
+    ]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(8)
+    ]],
+    hasReadTermsAndConditions: [false, Validators.requiredTrue]
   });
 
-  constructor(private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private registrationService: RegistrationService,
+    private router: Router,
+    private location: Location
+  ) { }
 
   toggleModel(): void {
     this.showTermsAndConditions = !this.showTermsAndConditions;
   }
 
+  navigateBack(): void {
+    this.location.back();
+  }
+
   onSubmit(): void {
+    const userInfo: UserRegistrationRequest = {
+      Username: this.registerForm.get('username').value,
+      Email: this.registerForm.get('email').value,
+      Password: this.registerForm.get('password').value,
+      HasReadTermsAndConditions: this.registerForm.get('hasReadTermsAndConditions').value
+    }
     
+    this.registrationService.registerUser(userInfo).subscribe(_ => {
+      this.registerForm.reset();
+      this.router.navigate(['registration/registration-flow']);
+    });
   }
 }

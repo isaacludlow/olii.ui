@@ -18,7 +18,7 @@ export class EditProfilePage implements OnInit {
     homeCountry: [''],
     age: [''],
     currentCity: [''],
-    description: [''],
+    bio: [''],
   })
 
   constructor(private fb: FormBuilder, private profileStore: ProfileStore) { }
@@ -37,5 +37,4 @@ export class EditProfilePage implements OnInit {
       this.profileForm.controls['description'].setValue(this.profile.Bio);
     }
   }
-
 }
