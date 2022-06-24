@@ -62,12 +62,32 @@ hr {
     border-top: 1px solid #eee;
   }
 
+.menu-bar-container {
+    margin: 0 2rem 0.5rem 2rem;
+}
+
+.menu-bar {
+    display: flex;
+    gap: 2.5rem;
+}
+
+ion-segment-button {
+    display: flex;
+    align-items: center;
+    text-transform: none;
+
+    ion-label {
+        font-weight: 600;
+    }
+}
+
 .post {
     margin: 0 1rem 0 1rem;
 }
 
 .card-content {
     margin: 1rem;
+    color: var(--color-tertiary);
 }
 
 .post-header {
@@ -121,4 +141,33 @@ hr {
     --background: var(--color-primary-contrast);
     --background-activated: var(--color-light-shade);
     --color: var(--color-secondary);
+}
+
+ion-item {
+    --padding-start: 0;
+    margin-bottom: 2rem;
+}
+
+.modal-content {
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.close-modal {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+
+.write-post-button-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }

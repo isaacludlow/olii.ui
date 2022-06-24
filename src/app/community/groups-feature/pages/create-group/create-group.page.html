@@ -10,16 +10,16 @@
 
 <ion-content>
     <form [formGroup]="createGroupForm">
-        <ion-label color="tertiary">Group Details</ion-label>
+        <h4 class="form-label">Group Details</h4>
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Name" formControlName="name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Description" formControlName="description"></ion-input>
         </ion-item>
-        <ion-label color="tertiary">Group Visibility</ion-label>
     </form>
 
+    <h4 class="form-label">Group Visibility</h4>
     <!--Turns out the Reactiveforms module is incompatible with ion-radio-group.  Maybe change appraoch in the future?-->
     <ion-radio-group [(ngModel)]="groupVisibility" class="ion-margin-top">
         <ion-item>
@@ -29,17 +29,24 @@
         </ion-item>
         <ion-item>
           <ion-label class="visibility-label" color="tertiary" mode="ios">Private</ion-label>
-          <ion-radio slot="end" color="primary" value="Private" mode="md"></ion-radio>
+          <ion-radio slot="end" color="primary" value='Private' mode="md"></ion-radio>
           <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Only members can view posts in the group</ion-label>
         </ion-item>
-      </ion-radio-group>
+    </ion-radio-group>
 
-      <div *ngFor="let friend of friends">
+    <div *ngFor="let friend of friends">
 
-      </div>
+    </div>
 
-      <div *ngFor="let image of profile.ImageUrls">
-        
-      </div>
+    <hr>
+
+    <h4 class="form-label">Add Image</h4>
+    <div class="group-picture-container" (click)="setGroupPicture()">
+        <div class="group-picture">
+            <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
+        </div>
+    </div>
+
+    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios">Create Group</ion-button>
 
 </ion-content>

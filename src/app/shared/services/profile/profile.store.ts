@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, from, Observable } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators"
 import { Profile } from "src/app/models/dto/profile/profile.dto";
+import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 import { convertBlobToBase64 } from "../../utilities";
 import { ProfileService } from "./profile.service";
 
@@ -46,7 +47,7 @@ export class ProfileStore {
 			// );
 	}
 
-	getFriends(userId: number): Observable<Profile[]> {
+	getFriends(userId: number): Observable<PartialProfile[]> {
 		return this.profileService.getFriends(userId);
 	}
 

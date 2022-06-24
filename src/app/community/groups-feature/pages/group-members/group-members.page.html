@@ -9,16 +9,25 @@
 </ion-toolbar>
 
 <ion-content>
-    <h4>Admins</h4>
 
+    <h4 class="member-section-heading">Admins</h4>
+        <div class="group-member-container" *ngFor="let memberAdmin of group.Admins">
+            <div class="member-image">
+                <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                <olii-container-cover-image [imageUrl]="memberAdmin.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            </div>
+            <div class="member-name">{{memberAdmin.FirstName}} {{memberAdmin.LastName}}</div>
+        </div>
     <hr>
 
-    <h4>Connections</h4>
-
-    <hr>
-
-    <h4>Others</h4>
-
+    <h4 class="member-section-heading">Members</h4>
+        <div class="group-member-container" *ngFor="let member of group.Members">
+            <div class="member-image">
+                <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            </div>
+            <div class="member-name">{{member.FirstName}} {{member.LastName}}</div>
+        </div>
     <hr>
 
 </ion-content>

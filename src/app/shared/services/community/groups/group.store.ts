@@ -9,7 +9,20 @@ import { Group } from "src/app/models/dto/community/groups/group.dto";
 
 export class GroupStore {
 
+    private manualOverrideForGroupSection = new BehaviorSubject<Section>('feed');
+
     constructor(private groupService: GroupService) {}
+
+	set groupSection(section: Section) {
+		this.manualOverrideForGroupSection.next(section);
+	}
+
+	get groupSection() {
+		const currentSection = this.manualOverrideForGroupSection.value;
+		this.manualOverrideForGroupSection.next('feed');
+		
+		return currentSection;
+	}
 
     // TODO: We'll need to figure out caching so that both getGroupAll() and
     // getGroupById don't have to query every time.  Probably just a data
@@ -29,3 +42,5 @@ export class GroupStore {
 
     // Delete Group?
 }
+
+type Section = 'feed' | 'events';

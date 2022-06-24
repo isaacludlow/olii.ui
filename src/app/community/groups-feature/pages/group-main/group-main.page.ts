@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
+import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -10,13 +12,16 @@ import { SubSink } from 'subsink';
   styleUrls: ['./group-main.page.scss']
 })
 export class GroupMainPage implements OnInit {
+  user: Profile; // TODO: Temporary variable while we do not have a global user var
   group: Group;
+  showPostModal: boolean
   subs = new SubSink();
+  segmentToShow: string;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private groupStore: GroupStore
+    private groupStore: GroupStore,
+    private profileStore: ProfileStore
   ) { }
 
   ngOnInit(): void {
@@ -25,25 +30,25 @@ export class GroupMainPage implements OnInit {
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
+    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.user = res);
+    this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
+    this.segmentToShow = this.groupStore.groupSection;
   }
 
-  getPosterImageUrl(postAuthorUserId: number) {
-    // TODO: Error check; need to return some missing image url in the event we can't find the profile for some reason
-    return this.group.Members.find(member => member.Id === postAuthorUserId).ProfilePictureUrl;
+  segmentChanged(event) {
+    this.segmentToShow = event.detail.value;
   }
 
-  getPosterName(postAuthorUserId: number) {
-    var firstName = this.group.Members.find(member => member.Id === postAuthorUserId).FirstName;
-    var lastName = this.group.Members.find(member => member.Id === postAuthorUserId).LastName;
-    return firstName + " " + lastName;
+  toggleModal(): void {
+    this.showPostModal = !this.showPostModal;
   }
 
   writePost() {
     // TODO: Implement screen/modal once we have the mock up for it
   }
-  sharePhoto() {
+  //sharePhoto() {
     // TODO: Implement screen/modal once we have the mock up for it
-  }
+  //}
   addEvent() {
     // TODO: Implement screen/modal once we have the mock up for it
   }

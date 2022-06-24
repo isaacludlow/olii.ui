@@ -9,13 +9,13 @@
     <div class="group-nav">
         <div class="my-groups-header">
             <h3 class="group-nav-title">My groups</h3>
-            <div class="see-all-link">See all</div>
+            <div class="see-all-link" routerLink="./all">See all</div>
         </div>
         <div class="group-selector">
             <div class="group-icons">
-                <div *ngFor="let group of groups | slice:0:3;">
+                <div *ngFor="let group of groups | slice:0:4;">
                     <div class="group-image">
-                        <olii-container-cover-image [imageUrl]="group.CoverImageUrl" boarderRadius="50%" [routerLink]="['./group', group.Id]"></olii-container-cover-image>
+                        <olii-container-cover-image [imageUrl]="sanitizeUrl(group.CoverImageUrl)" boarderRadius="50%" [routerLink]="['./group', group.Id]"></olii-container-cover-image>
                     </div>
                     <div class="group-nav-group-name">{{ group.Name }}</div>
                 </div>

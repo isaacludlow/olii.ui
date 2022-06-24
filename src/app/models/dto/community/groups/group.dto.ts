@@ -1,5 +1,6 @@
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { GroupPost } from "./group-post.dto";
+import { PrivacyLevel } from "./group-privacy-level.do";
 
 export interface Group {
     Id: number;
@@ -11,5 +12,3 @@ export interface Group {
     Admins: PartialProfile[];
     Members: PartialProfile[];
 }
-
-type PrivacyLevel = 'Public' | 'Friends-Only' | 'Invite-Only';

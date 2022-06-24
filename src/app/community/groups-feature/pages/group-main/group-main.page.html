@@ -11,7 +11,7 @@
     </div>
 
     <div class="member-icons" routerLink= "./members">
-        <div *ngFor="let member of group.Members | slice:0:6;">
+        <div *ngFor="let member of group.Admins.concat(group.Members) | slice:0:6;">
             <div class="member-image">
                 <!-- Router Link to a member page?-->
                 <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
@@ -21,43 +21,84 @@
 
     <hr>
 
-    <div class="post" *ngFor="let post of group.Posts">
-        <ion-card>
-            <div class="card-content">
-                <div class="post-header">
-                    <div class="poster-info">
-                        <div class="poster-image">
-                            <!-- TODO: Should be a routerlink to the posters profile(?) -->
-                            <olii-container-cover-image [imageUrl]="getPosterImageUrl(post.AuthorUserId)" boarderRadius="50%"></olii-container-cover-image>
-                        </div>
-                        <div class="poster-name">{{getPosterName(post.AuthorUserId)}}</div>
-                    </div>
-                    <div>{{post.Date.toDateString()}}</div>
-                </div>
-                {{post.Content}}
-                <div class="post-images">
-                    <olii-responsive-aspect-ratio-container *ngFor="let image of post.ImageUrls" aspectRatio="1/1" class="image-container">
-                        <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
-                    </olii-responsive-aspect-ratio-container>
-                </div>
-            </div>
-        </ion-card>
+    <!--ngIf user is a member of this group-->
+
+    <div class="menu-bar-container">
+        <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
+            <ion-segment-button value="feed" layout="icon-start">
+                <ion-icon name="list-outline"></ion-icon>
+                <ion-label>Feed</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="events" layout="icon-start">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <ion-label>Events</ion-label>
+            </ion-segment-button>
+        </ion-segment>
     </div>
 
+    <div *ngIf="segmentToShow == 'feed'">
+        <div class="post" *ngFor="let post of group.Posts">
+            <ion-card>
+                <div class="card-content">
+                    <div class="post-header">
+                        <div class="poster-info">
+                            <div class="poster-image">
+                                <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                                <olii-container-cover-image [imageUrl]="post.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+                            </div>
+                            <div class="poster-name">{{post.Author.FirstName}} {{post.Author.LastName}}</div>
+                        </div>
+                        <div>{{post.Date.toDateString()}}</div>
+                    </div>
+                    {{post.Content}}
+                    <div class="post-images">
+                        <olii-responsive-aspect-ratio-container *ngFor="let image of post.ImageUrls" aspectRatio="1/1" class="image-container">
+                            <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
+                        </olii-responsive-aspect-ratio-container>
+                    </div>
+                </div>
+            </ion-card>
+        </div>
+    </div>
 
     <div class="group-main-buttons">
-        <ion-button class="side-button" type="button" mode="ios" size="small" (click)="writePost()">
+        <ion-button class="side-button" type="button" mode="ios" size="small" (click)="toggleModal()">
             <olii-base-icon name="pencil-outline"></olii-base-icon>
             <div class="button-label">Write Post</div>
         </ion-button>
+        <!-- Excluded from Beta
         <ion-button type="button" mode="ios" size="small" (click)="sharePhoto()">
             <olii-base-icon name="camera-outline"></olii-base-icon>
             <div class="button-label">Share Photo</div>
         </ion-button>
+        -->
         <ion-button class="side-button" type="button" mode="ios" size="small" (click)="addEvent()">
             <olii-base-icon name="calendar-outline"></olii-base-icon>
             <div class="button-label">Add Event</div>
         </ion-button>
     </div>
+
+    <ion-modal class="create-post-popup-modal" [isOpen]="showPostModal">
+        <ng-template>
+            
+            <div class="close-modal" (click)="toggleModal()">
+                <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
+            </div>
+            <div class="modal-header">
+                <h3>Create a Post</h3>
+            </div>
+
+          <ion-content class="modal-content">
+                <ion-item>
+                    <ion-input placeholder="What's on your mind?"></ion-input>
+                </ion-item>
+
+                <div class="write-post-button-container">
+                    <!--<ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()" mode="ios">Create Album</ion-button>-->
+                    <ion-button color="primary" (click)="writePost()" mode="ios">Write a Post</ion-button>
+                </div>
+            </ion-content>
+        </ng-template>
+      </ion-modal>
 
 </ion-content>

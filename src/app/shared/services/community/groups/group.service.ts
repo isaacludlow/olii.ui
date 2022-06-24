@@ -3,12 +3,15 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { from, Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
+import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class GroupService {
+
+    dummyId = 32;
 
     constructor(private httpClient:HttpClient) {}
 
@@ -22,117 +25,71 @@ export class GroupService {
             Posts: [
                 {
                     Id: 25,
-                    AuthorUserId: 98,
+                    Author: {
+                      Id: 98,
+                      FirstName: 'John',
+                      LastName: 'Doe',
+                      ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
+                    },
                     Content: "Hey, anyone have any news on how things are looking with covid and the upcoming Post concert?",
                     Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
                     ImageUrls: [],
                     Comments: [],
                 },
                 {
+                    Id: 27,
+                    Author: {
+                      Id: 98,
+                      FirstName: 'John',
+                      LastName: 'Doe',
+                      ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
+                    },
+                    Content: "",
+                    Date: new Date(Date.UTC(2021, 3, 2, 12, 44, 20)),
+                    ImageUrls: ['https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80'],
+                    Comments: [],
+                },
+                {
                     Id: 26,
-                    AuthorUserId: 99,
+                    Author: {
+                      Id: 99,
+                      FirstName: 'Steven',
+                      LastName: 'Jobs',
+                      ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+                    },
                     Content: "Check it out B)",
-                    Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
+                    Date: new Date(Date.UTC(2021, 4, 17, 12, 44, 20)),
                     ImageUrls: ['https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
                                 "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"],
                     Comments: [],
                 },
+            ],
+            Admins: [
                 {
-                    Id: 27,
-                    AuthorUserId: 98,
-                    Content: "",
-                    Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
-                    ImageUrls: ['https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80'],
-                    Comments: [],
+                    Id: 98,
+                    FirstName: 'John',
+                    LastName: 'Doe',
+                    ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
                 },
             ],
-            Admins: [],
             Members: [
-                {
-                Id: 98,
-                FirstName: 'John',
-                LastName: 'Doe',
-                Connections: 127,
-                Bio: "Livin' the dream life. Adventurer. Professional turtle racer.",
-                HomeCountry: 'USA',
-                HostCountry: 'Germany',
-                CurrentCity: 'Berlin',
-                ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
-                ConnectedSocials: [],
-                ImageUrls: [
-                  'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1514315384763-ba401779410f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-                  'https://images.unsplash.com/photo-1551892589-865f69869476?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3VjY2Vzc3xlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1559912147-f62c767ec0e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xpZmZ8ZW58MHx8MHx8&w=1000&q=80',
-                ],
-                SavedAlbums: [
-                  {
-                    Id: 1,
-                    CoverImageUrl: null, Title: 'My Photos', Description: 'Personal photos that mean a lot to you.', PrivacyLevel: 'Private',
-                    Images: [
-                      'https://images.unsplash.com/photo-1466921583968-f07aa80c526e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80',
-                      'https://images.unsplash.com/photo-1496024840928-4c417adf211d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80',
-                      'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
-                    ]
-                  },
-                  {
-                    Id: 2,
-                    CoverImageUrl: null, Title: 'Saved Photos', Description: 'All your random pics from things you don\'t want to lose track of.', PrivacyLevel: 'Public',
-                    Images: [
-                      'https://images.unsplash.com/photo-1619537901863-9807597cb0b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80',
-                      'https://images.unsplash.com/photo-1564245709234-fd3de5cacd40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjd8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
-                      'https://images.unsplash.com/photo-1611153662496-c232240334a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60'
-                    ]
-                  }
-                ]
-              },
               {
                 Id: 99,
                 FirstName: 'Steven',
                 LastName: 'Jobs',
-                Connections: 127,
-                Bio: "Livin' the dream life. Adventurer. Professional turtle racer.",
-                HomeCountry: 'USA',
-                HostCountry: 'Germany',
-                CurrentCity: 'Berlin',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-                ConnectedSocials: [],
-                ImageUrls: [
-                  'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1514315384763-ba401779410f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-                  'https://images.unsplash.com/photo-1551892589-865f69869476?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3VjY2Vzc3xlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
-                  'https://images.unsplash.com/photo-1559912147-f62c767ec0e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xpZmZ8ZW58MHx8MHx8&w=1000&q=80',
-                ],
-                SavedAlbums: [
-                  {
-                    Id: 1,
-                    CoverImageUrl: null, Title: 'My Photos', Description: 'Personal photos that mean a lot to you.', PrivacyLevel: 'Private',
-                    Images: [
-                      'https://images.unsplash.com/photo-1466921583968-f07aa80c526e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80',
-                      'https://images.unsplash.com/photo-1496024840928-4c417adf211d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80',
-                      'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
-                    ]
-                  },
-                  {
-                    Id: 2,
-                    CoverImageUrl: null, Title: 'Saved Photos', Description: 'All your random pics from things you don\'t want to lose track of.', PrivacyLevel: 'Public',
-                    Images: [
-                      'https://images.unsplash.com/photo-1619537901863-9807597cb0b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80',
-                      'https://images.unsplash.com/photo-1564245709234-fd3de5cacd40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjd8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',
-                      'https://images.unsplash.com/photo-1611153662496-c232240334a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60'
-                    ]
-                  }
-                ]
+              },
+              {
+                Id: 102,
+                FirstName: 'Mark',
+                LastName: 'Rober',
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+              },
+              {
+                Id: 152,
+                FirstName: 'Jim',
+                LastName: 'Browning',
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
               },
             ],
         },
@@ -142,9 +99,57 @@ export class GroupService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
             Description: 'If you enjoy partying, this is the spot for you',
-            PrivacyLevel: "Public",
-            Posts: [],
-            Admins: [],
+            PrivacyLevel: "Friends-Only",
+            Posts: [
+                {
+                    Id: 26,
+                    Author: {
+                        Id: 102,
+                        FirstName: 'Mark',
+                        LastName: 'Rober',
+                        ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                    },
+                    Content: "Check it out B)",
+                    Date: new Date(Date.UTC(2021, 3, 15, 12, 44, 20)),
+                    ImageUrls: ['https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',],
+                    Comments: [],
+                },
+                {
+                    Id: 26,
+                    Author: {
+                        Id: 102,
+                        FirstName: 'Mark',
+                        LastName: 'Rober',
+                        ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                    },
+                    Content: "This is a great post",
+                    Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
+                    ImageUrls: [],
+                    Comments: [],
+                },
+                {
+                    Id: 26,
+                    Author: {
+                        Id: 102,
+                        FirstName: 'Mark',
+                        LastName: 'Rober',
+                        ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                    },
+                    Content: "Check it out B)",
+                    Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
+                    ImageUrls: ['https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                                "https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"],
+                    Comments: [],
+                },
+            ],
+            Admins: [
+                {
+                    Id: 102,
+                    FirstName: 'Mark',
+                    LastName: 'Rober',
+                    ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                },
+            ],
             Members: [],
         },
 
@@ -153,9 +158,16 @@ export class GroupService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
             Description: 'This is a description',
-            PrivacyLevel: "Public",
+            PrivacyLevel: "Invite-Only",
             Posts: [],
-            Admins: [],
+            Admins: [
+                {
+                    Id: 152,
+                    FirstName: 'Jim',
+                    LastName: 'Browning',
+                    ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                  },
+            ],
             Members: [],
         },
 
@@ -164,9 +176,16 @@ export class GroupService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This is a description',
-            PrivacyLevel: "Public",
+            PrivacyLevel: "Friends-Only",
             Posts: [],
-            Admins: [],
+            Admins: [
+                {
+                    Id: 102,
+                    FirstName: 'Mark',
+                    LastName: 'Rober',
+                    ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                },
+            ],
             Members: [],
         },
 
@@ -175,12 +194,38 @@ export class GroupService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This is a description',
-            PrivacyLevel: "Public",
+            PrivacyLevel: "Invite-Only",
             Posts: [],
-            Admins: [],
+            Admins: [
+                {
+                    Id: 152,
+                    FirstName: 'Jim',
+                    LastName: 'Browning',
+                    ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+                },
+            ],
             Members: [],
         }
     ];
+
+    createGroup(newGroupInfo: CreateGroupRequest): Observable<Group> {
+        // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
+        const newGroup: Group = {
+            Id: this.dummyId, // 
+            CoverImageUrl: newGroupInfo.CoverImageUrl,
+            Name: newGroupInfo.Name,
+            Description: newGroupInfo.Description,
+            PrivacyLevel: newGroupInfo.PrivacyLevel,
+            Posts: [],
+            Admins: newGroupInfo.Admins,
+            Members: newGroupInfo.Members
+        }
+
+        this.ExampleGroups.push(newGroup);
+        this.dummyId++;
+
+        return of(newGroup);
+    }
 
     getGroupAll(): Observable<Group[]> {
         return of(this.ExampleGroups);

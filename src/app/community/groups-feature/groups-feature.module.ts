@@ -10,13 +10,15 @@ import { GroupMainPage } from './pages/group-main/group-main.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
+import { GroupsAllPage } from './pages/groups-all/groups-all.page';
 
 @NgModule({
   declarations: [
     GroupsFeaturePage,
     GroupMainPage,
     CreateGroupPage,
-    GroupMembersPage
+    GroupMembersPage,
+    GroupsAllPage
   ],
   imports: [
     CommonModule,

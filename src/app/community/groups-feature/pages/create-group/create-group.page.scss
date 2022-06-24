@@ -2,6 +2,17 @@ ion-toolbar {
     --min-height: 4rem;
 }
 
+ion-content {
+    --padding-top: 1rem;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+}
+
+ion-item {
+    --padding-start: 0;
+    margin-bottom: 0.5rem;
+}
+
 .section-title {
     color: var(--color-primary-contrast);
 }
@@ -9,4 +20,30 @@ ion-toolbar {
 .back-icon {
     margin: 0 0 0 1rem;
     color: var(--color-primary);
+}
+
+.form-label {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.visibility-label {
+    font-weight: bold;
+}
+
+.visibility-descr {
+    font-size: 0.7rem;
+}
+
+.group-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0 auto;
+
+    .group-picture {
+        height: 6em;
+        width: 6em;
+    }
 }

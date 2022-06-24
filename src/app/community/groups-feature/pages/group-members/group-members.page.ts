@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Group } from 'src/app/models/dto/community/groups/group.dto';
+import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { SubSink } from 'subsink';
 
 @Component({
   templateUrl: './group-members.page.html',
@@ -7,9 +11,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GroupMembersPage implements OnInit {
 
-  constructor(private route: ActivatedRoute,) { }
+  // Ideally we would want this passed down from the previous page... is that a thing in angular?
+  group: Group;
+  subs = new SubSink();
+
+  constructor(private route: ActivatedRoute, private groupStore: GroupStore) { }
 
   ngOnInit(): void {
+    this.subs.sink = this.route.paramMap.pipe(
+      switchMap((paramMap: ParamMap) => 
+        this.groupStore.getGroupById(+paramMap.get('groupId'))
+      )
+    ).subscribe(group => this.group = group);
   }
 
 
