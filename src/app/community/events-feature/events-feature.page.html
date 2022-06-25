@@ -27,8 +27,8 @@
             <h3>Your events</h3>
             <p class="font-body-s color-tertiary">See all</p>
         </div>
-        <div class="card-wrapper">
-            <olii-event-card *ngFor="let event of myEvents$ | async" [event]="event"></olii-event-card>
+        <div class="card-wrapper" *ngFor="let event of myEvents$ | async">
+            <olii-event-card [event]="event"></olii-event-card>
         </div>
     </div>
 

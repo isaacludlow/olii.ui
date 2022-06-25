@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
 
@@ -16,6 +17,6 @@ export class EventsFeaturePage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.allEvents$ = this.eventsStore.getEvents();
-    this.myEvents$ = this.eventsStore.getMyEvents(98);
+    this.myEvents$ = this.eventsStore.getMyEvents(98).pipe(map(events => events.slice(0, 1)));
   }
 }
