@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'olii-profile-preview-icons',
   template: `
     <div class="profile-icons-container">
       <img class="profile-images" [ngClass]="profileIconSize" *ngFor="let profileImageUrl of profilePictureUrls" [src]="profileImageUrl">
+      <div *ngIf="additionalDisplayNumber && additionalDisplayNumber > 0" class="additional-display-number">{{additionalDisplayNumber}}+</div>
     </div>
   `,
   styleUrls: ['./profile-preview-icons.component.scss']
@@ -12,5 +13,5 @@ import { Component, Input } from '@angular/core';
 export class ProfilePreviewIconsComponent {
   @Input() profilePictureUrls: Array<string>;
   @Input() profileIconSize: string;
-  // @Input() additionDisplayNumber: number = null; // TODO: Show and hide the addition number to display next to the profile preview icons.
+  @Input() additionalDisplayNumber: number = null;
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserRegistrationRequest } from 'src/app/models/requests/registration/user-registration-request';
-import { AuthenticationService } from './authentication/authentication.service';
 import firebase from 'firebase/compat';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable({
   providedIn: 'root'

@@ -6,6 +6,8 @@ import { EventsFeaturePage } from './events-feature.page';
 import { EventCardComponent } from './shared/components/event-card/event-card.component';
 import { IonicModule } from '@ionic/angular';
 import { SharedComponentsModule } from 'src/app/components/shared/shared-components.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { SharedComponentsModule } from 'src/app/components/shared/shared-compone
     CommonModule,
     EventsFeatureRoutingModule,
     IonicModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    ScrollingModule,
+    SharedModule
   ]
 })
 export class EventsFeatureModule { }

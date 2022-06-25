@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
 
 @Component({
   selector: 'events-feature',
@@ -6,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./events-feature.page.scss']
 })
 export class EventsFeaturePage implements OnInit {
+  myEvents$: Observable<Event[]>;
+  allEvents$: Observable<Event[]>;
 
-  constructor() { }
+  constructor(private eventsStore: EventsFeatureStore) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.allEvents$ = this.eventsStore.getEvents();
+    this.myEvents$ = this.eventsStore.getMyEvents(98);
   }
-
 }

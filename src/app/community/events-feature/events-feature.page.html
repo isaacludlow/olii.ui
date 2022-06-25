@@ -1,1 +1,43 @@
-<p>events-feature works!</p>
+<ion-header collapse="fade" mode="ios">
+  <ion-toolbar class="purple-background" mode="ios">
+    <ion-title color="light">Events</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <h2 class="color-light">Events</h2>
+                <div class="add-event">
+                    <olii-colored-square-background backgroundColor="white">
+                        <olii-base-icon name="add" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+            </div>
+        </ion-toolbar>
+        <div class="searchbar-spacer"></div>
+        <!-- <ion-toolbar class="searchbar" mode="ios">
+            <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
+        </ion-toolbar> -->
+    </ion-header>
+    
+    <div class="events-container">
+        <div class="your-events">
+            <h3>Your events</h3>
+            <p class="font-body-s color-tertiary">See all</p>
+        </div>
+        <div class="card-wrapper">
+            <olii-event-card *ngFor="let event of myEvents$ | async" [event]="event"></olii-event-card>
+        </div>
+    </div>
+
+    <div class="events-container">
+        <div class="upcoming-events">
+            <h3>Upcoming events</h3>
+        </div>
+        <div class="card-wrapper" *ngFor="let event of allEvents$ | async">
+            <olii-event-card [event]="event"></olii-event-card>
+        </div>
+    </div>
+</ion-content>

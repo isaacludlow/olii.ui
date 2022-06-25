@@ -1,0 +1,28 @@
+ion-card {
+    --background: white;
+}
+
+.content {
+    display: flex;
+    gap: 4px;
+
+    .cover-image {
+        width: 30vw;
+    }
+
+    .event-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3px 3px 3px 0px;
+
+        h4 {
+        }
+
+        .location-time {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+    }
+}

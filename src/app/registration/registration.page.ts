@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserRegistrationRequest } from '../models/requests/registration/user-registration-request';
-import { RegistrationService } from '../shared/services/registration.service';
+import { RegistrationService } from '../shared/services/registration/registration.service';
 
 @Component({
   selector: 'registration',

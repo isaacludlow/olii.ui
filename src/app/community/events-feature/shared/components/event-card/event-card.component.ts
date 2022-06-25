@@ -6,16 +6,22 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
   template: `
     <ion-card>
       <div class="content">
-        <olii-responsive-aspect-ratio-container aspectRatio="1/1">
-          <olii-container-cover-image [imageUrl]="event.CoverImageUrl" boarderRadius="5%"></olii-container-cover-image>
-        </olii-responsive-aspect-ratio-container>
+        <div class="cover-image">
+          <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+            <olii-container-cover-image [imageUrl]="event.CoverImageUrl" boarderRadius="5%"></olii-container-cover-image>
+          </olii-responsive-aspect-ratio-container>
+        </div>  
         <div class="event-details">
-          <h5>{{ event.Title }}</h5>
+          <h4>{{ event.Title | truncate:21:'...' }}</h4>
           <div class="location-time">
-            <olii-location-preview [locationText]=""></olii-location-preview>
+            <olii-location-preview locationText="Fake location from Google Maps"></olii-location-preview>
             <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           </div>
-          <olii-profile-preview-icons [profilePictureUrls]="profilePictureUrls" profileIconSize="small"></olii-profile-preview-icons>
+          <olii-profile-preview-icons
+            [profilePictureUrls]="firstFourProfilePictureUrls"
+            profileIconSize="small"
+            [additionalDisplayNumber]="event.Invitations.length - numberOfProfilesDisplayed">
+          </olii-profile-preview-icons>
         </div>
       </div>
     </ion-card>
@@ -24,12 +30,13 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
 })
 export class EventCardComponent implements OnInit {
   @Input() event: Event;
-  profilePictureUrls: Array<string>;
+  firstFourProfilePictureUrls: Array<string>;
+  numberOfProfilesDisplayed: number = 4;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.profilePictureUrls = this.event.Invitations.map(i => i.Recipient.ProfilePictureUrl);
+    this.firstFourProfilePictureUrls = this.event.Invitations.map(i => i.Recipient.ProfilePictureUrl).slice(0, 4);
   }
 
 }
