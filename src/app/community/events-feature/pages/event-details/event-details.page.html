@@ -7,12 +7,14 @@
 
     <div class="event-container">
         <div class="event-details">
-            <h3>{{ event.Title }}</h3>
-            <div class="creator">
-                <ion-avatar>
-                    <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
-                </ion-avatar>
-                <p class="color-tertiary">John Doe*</p>
+            <div class="event-details-header">
+                <h3>{{ event.Title }}</h3>
+                <div class="creator">
+                    <ion-avatar>
+                        <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
+                    </ion-avatar>
+                    <p class="color-tertiary font-body-l">John Doe*</p>
+                </div>
             </div>
             <div class="description">
                 <h4>Description</h4>
@@ -31,14 +33,20 @@
                 </div>
                 <div>
                     <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
-                    <div class="color-tertiary">Fake location from Google Maps</div>
+                    <div class="color-tertiary">{{ 'Fake location from Google Maps' | truncate:12:'...' }}</div>
                 </div>
             </div>
         </div>
         <div class="attendees">
-            <olii-profile-preview-icons></olii-profile-preview-icons> 
+            <h4>Attending</h4>
+            <olii-profile-preview-icons [profilePictureUrls]="attendingProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="attendingProfilePictures.length - 5"></olii-profile-preview-icons> 
         </div>
-        <div class="location"></div>
-        <div class="images"></div>
+        <div class="location">
+            <h4>Location</h4>
+            <capacitor-google-map></capacitor-google-map>
+        </div>
+        <div class="images">
+            <h4>Pictures</h4>
+        </div>
     </div>
 </ion-content>

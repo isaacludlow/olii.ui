@@ -1,4 +1,4 @@
-import { PrivacyLevel } from "./SavedAlbumPrivacyLevel.do";
+import { PrivacyLevel } from "./saved-album-privacy-level.do";
 
 export interface SavedAlbum {
     Id: number;

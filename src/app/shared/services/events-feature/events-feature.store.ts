@@ -20,12 +20,14 @@ export class EventsFeatureStore {
   }
 
   getEventById(eventId: number) {
-    if (this.allEvents != null) {
+    if (this.allEvents.value === null) {
+      return this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.next([event])));
+    } else {
       const event = this.allEvents.asObservable().pipe(map(events => events.find(event => event.Id === eventId)));
 
-      return event === undefined ? this.retrieveEventById(eventId) : event;
-    } else {
-      return this.retrieveEventById(eventId);
+      return event === undefined
+        ? this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.value.push(event)))
+        : event;
     }
   }
 
@@ -39,9 +41,5 @@ export class EventsFeatureStore {
 
   getMyEvents(profileId: number) {
     return this.eventsService.getMyEvents(profileId).pipe(tap(events => this.myEvents.next(events)));
-  }
-
-  private retrieveEventById(eventId: number): Observable<Event> {
-    return this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.value.push(event)));
   }
 }

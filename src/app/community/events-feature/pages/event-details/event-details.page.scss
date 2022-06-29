@@ -14,3 +14,54 @@
     padding: 1.5rem 0 0 1rem;
     color: var(--color-primary);
 }
+
+.event-container {
+    margin: 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    
+    .event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .event-details-header {
+            h3 {
+                text-align: center;
+            }
+            
+            .creator {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                margin-top: 0.75rem;
+    
+                ion-avatar {
+                    height: 2rem;
+                    width: 2rem;
+                }
+            }
+        }
+
+        .date-time-location {
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+            white-space: nowrap;
+
+            div {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+        }
+    }
+
+    .attendees {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+}

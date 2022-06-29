@@ -1,6 +1,6 @@
 import { EventCreatorType } from "src/app/models/dto/community/events/event-creator-type.dto";
 import { Event } from "src/app/models/dto/community/events/event.dto";
-import { Invitation } from "src/app/models/dto/community/events/invitation.dto";
+import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 
 export let mockEventData_allEvents: Event[];
 export let mockEventData_myEvents: Event[];
@@ -16,18 +16,21 @@ mockEventData_allEvents = [
         CreatorId: 217,
         Date: new Date(),
         PrivacyLevel: 'Public',
-        Location: 'https://goo.gl/maps/XE5aGVCGU4uEFzJQA',
+        Location: {
+            DisplayName: 'Eagle Creek Park',
+            Latitude: 36.121159802475646,
+            Longitude: -115.17502713288535
+        },
         ImageUrls: [],
-        Invitations: [
-            <Invitation>{
-                Recipient: {
+        Attendees: [
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
+            },
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             }
         ]
     },
@@ -40,33 +43,30 @@ mockEventData_allEvents = [
         CreatorId: 378,
         Date: new Date(),
         PrivacyLevel: 'Public',
-        Location: 'https://goo.gl/maps/Tod1u1tsgcFLyHsa9',
+        Location: {
+            DisplayName: 'Eagle Creek Park',
+            Latitude: 36.121159802475646,
+            Longitude: -115.17502713288535
+        },
         ImageUrls: [],
-        Invitations: [
-            <Invitation>{
-                Recipient: {
+        Attendees: [
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
-                ProfilePictureUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
-                }
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
+            },
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
             }
         ]
     }
@@ -82,33 +82,27 @@ mockEventData_myEvents = [
         CreatorId: 378,
         Date: new Date(),
         PrivacyLevel: 'Public',
-        Location: 'https://goo.gl/maps/Tod1u1tsgcFLyHsa9',
+        Location: {
+            DisplayName: 'Eagle Creek Park',
+            Latitude: 36.121159802475646,
+            Longitude: -115.17502713288535
+        },
         ImageUrls: [],
-        Invitations: [
-            <Invitation>{
-                Recipient: {
+        Attendees: [
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
-                ProfilePictureUrl: 'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
-                }
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
             }
         ]
     },
@@ -121,19 +115,19 @@ mockEventData_myEvents = [
         CreatorId: 217,
         Date: new Date(),
         PrivacyLevel: 'Public',
-        Location: 'https://goo.gl/maps/XE5aGVCGU4uEFzJQA',
+        Location: {
+            DisplayName: 'Eagle Creek Park',
+            Latitude: 36.121159802475646,
+            Longitude: -115.17502713288535
+        },
         ImageUrls: [],
-        Invitations: [
-            <Invitation>{
-                Recipient: {
+        Attendees: [
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
             },
-            <Invitation>{
-                Recipient: {
+            <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-                }
-            }
+            },
         ]
     }
 ];
@@ -147,18 +141,18 @@ mockEventData_eventById = {
     CreatorId: 217,
     Date: new Date(),
     PrivacyLevel: 'Public',
-    Location: 'https://goo.gl/maps/XE5aGVCGU4uEFzJQA',
+    Location: {
+        DisplayName: 'Eagle Creek Park',
+        Latitude: 36.121159802475646,
+        Longitude: -115.17502713288535
+    },
     ImageUrls: [],
-    Invitations: [
-        <Invitation>{
-            Recipient: {
+    Attendees: [
+        <PartialProfile>{
             ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-            }
         },
-        <Invitation>{
-            Recipient: {
+        <PartialProfile>{
             ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
-            }
         }
     ]
 };

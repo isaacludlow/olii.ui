@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
 import { SubSink } from 'subsink';
 
@@ -14,7 +13,7 @@ import { SubSink } from 'subsink';
 export class EventDetailsPage implements OnInit {
   event: Event;
   // eventCreator: PartialProfile;
-  attending: PartialProfile[];
+  attendingProfilePictures: string[];
   subs = new SubSink();
 
   constructor(
@@ -28,10 +27,11 @@ export class EventDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
-      // this.subs.sink = this.eventsStore.getEventCreatorInfo(event.CreatorType, event.CreatorId).pipe(tap(eventCreator => this.eventCreator = eventCreator));
+      // this.subs.sink = this.eventsStore.getEventCreatorInfo(event.CreatorType, event.CreatorId).pipe(
+      //   tap(eventCreator => this.eventCreator = eventCreator)
+      // );
 
-      // TODO: We might want to separate invitations from events. Events would have an 'Attendees' property instead.
-      // this.event.Invitations.filter(invite => invite.Status === InvitationStatus.Coming).map(invite => invite.)
+      this.attendingProfilePictures = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl);
     });
 
   }
