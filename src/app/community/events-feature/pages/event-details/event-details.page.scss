@@ -64,4 +64,12 @@
         flex-direction: column;
         gap: 4px;
     }
+
+    .location {
+        capacitor-google-map {
+            display: inline-block;
+            height: 40vh;
+            width: 90vw;
+        }
+    }
 }
