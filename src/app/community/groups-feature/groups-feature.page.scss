@@ -3,6 +3,7 @@ ion-toolbar {
 }
 
 ion-content {
+    margin: 1rem;
     --padding-top: 1rem;
     --padding-start: 1rem;
     --padding-end: 1rem;
@@ -21,61 +22,73 @@ hr {
     border-top: 1px solid #eee;
   }
 
-.group-nav {
+.my-groups-container {
     width: 100%;
-}
+    
+    .my-groups-header-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
-.my-groups-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+        .my-groups-header {
+            margin-bottom: 1rem;
+        }
+    }
 
-.group-image {
-    height: 3rem;
-    width: 3rem;
-    margin-right: 1.8rem;
-    margin-bottom: 0.5rem;
-}
+    .my-groups-selector-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
-.new-group-button {
-    max-width: 3rem;
-    min-width: 3rem;
-    min-height: 3rem;
-    max-height: 3rem;
-    border-radius: 50%;
-    background-color: var(--color-primary);
-    color: var(--color-primary-contrast);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
+        .group-links-container {
+            display: flex;
+            flex-direction: row;
 
-.group-selector {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+            .group-link {
+                align-items: center;
+                margin: 0 1.8rem 0 0;
 
-.group-icons {
-    display: flex;
-    flex-direction: row;
-}
-
-.group-nav-title {
-    margin-bottom: 1rem;
-}
-
-.group-nav-group-name {
-    font-size: 0.8em;
-    text-align: center;
-    margin-right: 1rem;
-    width: 3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
+                .group-image {
+                    height: 3rem;
+                    width: 3rem;
+                    margin-bottom: 0.5rem;
+                }
+                .group-nav-group-name {
+                    font-size: 0.8em;
+                    text-align: center;
+                    width: 3rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    display: block;
+                }
+            }
+        }
+        .new-group-button-container {
+            .new-group-button {
+                max-width: 3rem;
+                min-width: 3rem;
+                min-height: 3rem;
+                max-height: 3rem;
+                border-radius: 50%;
+                background-color: var(--color-primary);
+                color: var(--color-primary-contrast);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .group-nav-group-name {
+                font-size: 0.8em;
+                text-align: center;
+                width: 3rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: block;
+            }
+        }
+    }
 }
 
 .see-all-link {

@@ -4,23 +4,24 @@
     </ion-title>
 </ion-toolbar>
 
-<ion-content>
+<ion-content id="content-id">
 
-    <div class="group-nav">
-        <div class="my-groups-header">
-            <h3 class="group-nav-title">My groups</h3>
+    <div class="my-groups-container">
+        <div class="my-groups-header-container">
+            <h3 class="my-groups-header">My groups</h3>
             <div class="see-all-link" routerLink="./all">See all</div>
         </div>
-        <div class="group-selector">
-            <div class="group-icons">
-                <div *ngFor="let group of groups | slice:0:4;">
+        <div class="my-groups-selector-container">
+            <div class="group-links-container">
+                <div class="group-link" *ngFor="let group of groups | slice:0:calcDisplayGroups();">
                     <div class="group-image">
                         <olii-container-cover-image [imageUrl]="sanitizeUrl(group.CoverImageUrl)" boarderRadius="50%" [routerLink]="['./group', group.Id]"></olii-container-cover-image>
                     </div>
                     <div class="group-nav-group-name">{{ group.Name }}</div>
                 </div>
             </div>
-            <div class="new-group-button-container">
+
+            <div id="new-group-button-id" class="new-group-button-container">
                 <div class="new-group-button" routerLink="./create">
                     <olii-base-icon size="medium" name="add-outline"></olii-base-icon>
                 </div>

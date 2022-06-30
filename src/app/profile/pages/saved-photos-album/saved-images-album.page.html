@@ -12,7 +12,7 @@
     </div>
 
     <div class="images">
-        <olii-responsive-aspect-ratio-container aspectRatio="1/1" *ngFor="let image of album.Images" aspectRatio="1/1" class="image-container">
+        <olii-responsive-aspect-ratio-container aspectRatio="1/1" *ngFor="let image of album.ImageUrls" aspectRatio="1/1" class="image-container">
             <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
         </olii-responsive-aspect-ratio-container>
     </div>

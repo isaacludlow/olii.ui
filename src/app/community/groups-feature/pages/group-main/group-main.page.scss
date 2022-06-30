@@ -10,6 +10,16 @@
     }
 }
 
+@supports (--custom:property) {
+    .post-picture {
+        background-image: var(--background);
+        background-position: center center;
+        background-attachment: local;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
 ion-card {
     margin-bottom: 1rem;
 }
@@ -170,4 +180,16 @@ ion-item {
     display: flex;
     width: 100%;
     justify-content: center;
+}
+
+.post-pictures-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto 1rem auto;
+
+    .post-picture {
+        height: 4em;
+        width: 4em;
+    }
 }

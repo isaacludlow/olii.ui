@@ -66,12 +66,6 @@
             <olii-base-icon name="pencil-outline"></olii-base-icon>
             <div class="button-label">Write Post</div>
         </ion-button>
-        <!-- Excluded from Beta
-        <ion-button type="button" mode="ios" size="small" (click)="sharePhoto()">
-            <olii-base-icon name="camera-outline"></olii-base-icon>
-            <div class="button-label">Share Photo</div>
-        </ion-button>
-        -->
         <ion-button class="side-button" type="button" mode="ios" size="small" (click)="addEvent()">
             <olii-base-icon name="calendar-outline"></olii-base-icon>
             <div class="button-label">Add Event</div>
@@ -89,13 +83,34 @@
             </div>
 
           <ion-content class="modal-content">
-                <ion-item>
-                    <ion-input placeholder="What's on your mind?"></ion-input>
-                </ion-item>
+                <form [formGroup]="createPostForm">
+                    <ion-item>
+                        <ion-input placeholder="What's on your mind?" formControlName="postContent"></ion-input>
+                    </ion-item>
+                </form>
+
+                <h3>Add Image</h3>
+
+                <div class="post-pictures-container">
+                    <div *ngFor="let picture of postPictures; let i = index">
+
+
+                        <div class="post-picture" [style]="{'--background': 'url(\'' + picture.webPath + '\')' }">
+                            <div class="remove-picture">
+                                <olii-icon-with-off-white-square-background name="close-circle-outline" (click)="removePostPicture(i)"></olii-icon-with-off-white-square-background>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-picture">
+                        <olii-container-cover-image [imageUrl]="sanitizeUrl(addPictureImage.webPath)" (click)="addPostPicture()"></olii-container-cover-image>  
+                    </div>
+                </div>
+
+                <hr>
 
                 <div class="write-post-button-container">
                     <!--<ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()" mode="ios">Create Album</ion-button>-->
-                    <ion-button color="primary" (click)="writePost()" mode="ios">Write a Post</ion-button>
+                    <ion-button color="primary" [disabled]="!createPostForm.valid" (click)="writePost()" mode="ios">Write a Post</ion-button>
                 </div>
             </ion-content>
         </ng-template>

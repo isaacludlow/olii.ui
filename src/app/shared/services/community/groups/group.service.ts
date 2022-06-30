@@ -4,6 +4,7 @@ import { from, Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
+import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 
 @Injectable({
     providedIn: 'root'
@@ -233,5 +234,21 @@ export class GroupService {
 
     getGroupById(id: number): Observable<Group> {
         return of(this.ExampleGroups.find(group => group.Id === id));
+    }
+
+    createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
+        const newPost: GroupPost = {
+            Id: this.dummyId,
+            Author: newPostRequest.Author,
+            Content: newPostRequest.Content,
+            Date: newPostRequest.Date,
+            ImageUrls: newPostRequest.ImageUrls,
+            Comments: [],
+        }
+
+        this.ExampleGroups.find(group => group.Id == newPostRequest.Group).Posts.push(newPost);
+        this.dummyId++;
+
+        return of(true);
     }
 }

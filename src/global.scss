@@ -299,8 +299,8 @@ img {
 .create-post-popup-modal {
 	--border-radius: 8px!important;
 	&::part(content) {
-		height: 35%;
-    	top: 65%;
+		height: 50%;
+    	top: 50%;
     	position: absolute; 
     	display: block;  
 	}

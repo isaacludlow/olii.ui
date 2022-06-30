@@ -26,4 +26,13 @@ export class GroupsFeaturePage implements OnInit {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
+  calcDisplayGroups() {
+    // TODO: Need to get rid of the magic numbers...
+    return (screen.width - this.convertRemToPixels(5)) / this.convertRemToPixels(4.8);
+  }
+
+  convertRemToPixels(rem: number): number {    
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
 }
