@@ -1,12 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { GoogleMap } from '@capacitor/google-maps';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
-import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
+import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   templateUrl: './event-details.page.html',
@@ -14,9 +13,9 @@ import { SubSink } from 'subsink';
 })
 export class EventDetailsPage implements OnInit {
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
-  map: GoogleMap
+  map: google.maps.Map;
+  mapMarker: google.maps.Marker;
   event: Event;
-  // eventCreator: PartialProfile;
   attendingProfilePictures: string[];
   subs = new SubSink();
 
@@ -31,32 +30,26 @@ export class EventDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
-      // this.subs.sink = this.eventsStore.getEventCreatorInfo(event.CreatorType, event.CreatorId).pipe(
-      //   tap(eventCreator => this.eventCreator = eventCreator)
-      // );
-
+      
       this.attendingProfilePictures = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl);
     });
-
   }
   
   ionViewDidEnter() {
-    this.createMap();
+    // TODO: Refactor to wait until call to get events is done.
+    this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);
   }
 
-  async createMap() {
-    this.map = await GoogleMap.create({
-      id: 'event-map',
-      apiKey: environment.mapsKey,
-      element: this.mapRef.nativeElement,
-      // forceCreate: true,
-      config: {
-        center: {
-          lat: 33.6,
-          lng: -117.9
-        },
-        zoom: 8
-      }
+  async createMap(latitude: number, longitude: number) {
+    this.map = new google.maps.Map(this.mapRef.nativeElement, {
+      zoom: 10,
+      center: { lat: latitude, lng: longitude },
+      disableDefaultUI: true,
+    });
+
+    this.mapMarker = new google.maps.Marker({
+      position: { lat: latitude, lng: longitude },
+      map: this.map
     });
   }
 

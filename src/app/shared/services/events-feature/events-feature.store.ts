@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { EventCreatorType } from 'src/app/models/dto/community/events/event-creator-type.dto';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
 import { EventsFeatureService } from './events-feature.service';
@@ -28,14 +27,6 @@ export class EventsFeatureStore {
       return event === undefined
         ? this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.value.push(event)))
         : event;
-    }
-  }
-
-  getEventCreatorInfo(eventCreatorType: EventCreatorType, eventCreatorId: number) {
-    if (eventCreatorType === EventCreatorType.Group) {
-      
-    } else {
-      
     }
   }
 

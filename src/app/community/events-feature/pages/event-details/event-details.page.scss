@@ -20,6 +20,10 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    h4 {
+        margin-bottom: 4px;
+    }
     
     .event-details {
         display: flex;
@@ -45,31 +49,50 @@
             }
         }
 
-        .date-time-location {
+        .date-time-location-container {
             display: flex;
-            justify-content: space-between;
-            gap: 4px;
-            white-space: nowrap;
+            flex-direction: column;
+            gap: 5px;
 
-            div {
+            .date, .time, .location {
                 display: flex;
                 align-items: center;
                 gap: 4px;
             }
-        }
-    }
 
-    .attendees {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+            .date-time {
+                display: flex;
+                justify-content: space-evenly;
+                gap: 4px;
+                white-space: nowrap;
+
+            }
+    
+            .location {
+                display: flex;
+                justify-content: center;
+            }
+        }
     }
 
     .location {
         capacitor-google-map {
             display: inline-block;
-            height: 40vh;
-            width: 90vw;
+            height: 20vh;
+            width: 100%;
+        }
+    }
+
+    .images {
+        .images-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px;
+
+            .image-container {
+                width: 32%;
+            }
         }
     }
 }

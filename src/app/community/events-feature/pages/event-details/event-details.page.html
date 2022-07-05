@@ -22,18 +22,20 @@
                     4 other DJ's will be coming into town so get ready to get LIT!! We will be meeting at Zurich HB 30 minutes prior and then head over together. Bring water because it will get HOT in the building! 
                 </p>
             </div>
-            <div class="date-time-location">
-                <div>
-                    <olii-icon-with-purple-square-background name="calendar-clear-outline"></olii-icon-with-purple-square-background>
-                    <div class="color-tertiary">July 27</div>
+            <div class="date-time-location-container">
+                <div class="date-time">
+                    <div class="date">
+                        <olii-icon-with-purple-square-background name="calendar-clear-outline"></olii-icon-with-purple-square-background>
+                        <div class="color-tertiary">July 27</div>
+                    </div>
+                    <div class="time">
+                        <olii-icon-with-purple-square-background name="time-outline"></olii-icon-with-purple-square-background>
+                        <div class="color-tertiary">9:00 PM</div>
+                    </div>
                 </div>
-                <div>
-                    <olii-icon-with-purple-square-background name="time-outline"></olii-icon-with-purple-square-background>
-                    <div class="color-tertiary">9:00 PM</div>
-                </div>
-                <div>
+                <div class="location">
                     <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
-                    <div class="color-tertiary">{{ 'Fake location from Google Maps' | truncate:12:'...' }}</div>
+                    <div class="color-tertiary">Fake location from Google</div>
                 </div>
             </div>
         </div>
@@ -43,10 +45,17 @@
         </div>
         <div class="location">
             <h4>Location</h4>
-            <capacitor-google-map #map></capacitor-google-map>
+            <div #map></div>
         </div>
         <div class="images">
             <h4>Pictures</h4>
+            <div class="images-container">
+                <div *ngFor="let imageUrl of event.ImageUrls" class="image-container">
+                    <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                        <olii-container-cover-image [imageUrl]="imageUrl" boarderRadius="5%"></olii-container-cover-image>
+                    </olii-responsive-aspect-ratio-container>
+                </div>
+            </div>
         </div>
     </div>
 </ion-content>

@@ -1,14 +1,13 @@
+import { EntityPreview } from "../../misc/entity-preview.dto";
 import { Location } from "../../misc/location.dto";
 import { PartialProfile } from "../../profile/partial-profile.dto";
-import { EventCreatorType } from "./event-creator-type.dto";
 
 export interface Event {
     Id: number;
     CoverImageUrl: string;
     Title: string;
     Description: string;
-    CreatorType: EventCreatorType;
-    CreatorId: number;
+    Creator: EntityPreview;
     Date: Date;
     PrivacyLevel: PrivacyLevel;
     Location: Location;
