@@ -11,7 +11,7 @@
                 <h3>{{ event.Title }}</h3>
                 <div class="creator">
                     <ion-avatar>
-                        <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
+                        <img [src]="event.Creator.ImageUrl">
                     </ion-avatar>
                     <p class="color-tertiary font-body-l">{{ event.Creator.DisplayName }}</p>
                 </div>
