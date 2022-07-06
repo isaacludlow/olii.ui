@@ -13,29 +13,27 @@
                     <ion-avatar>
                         <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60">
                     </ion-avatar>
-                    <p class="color-tertiary font-body-l">John Doe*</p>
+                    <p class="color-tertiary font-body-l">{{ event.Creator.DisplayName }}</p>
                 </div>
             </div>
             <div class="description">
                 <h4>Description</h4>
-                <p class="color-tertiary">
-                    4 other DJ's will be coming into town so get ready to get LIT!! We will be meeting at Zurich HB 30 minutes prior and then head over together. Bring water because it will get HOT in the building! 
-                </p>
+                <p class="color-tertiary">{{ event.Description }}</p>
             </div>
             <div class="date-time-location-container">
                 <div class="date-time">
                     <div class="date">
                         <olii-icon-with-purple-square-background name="calendar-clear-outline"></olii-icon-with-purple-square-background>
-                        <div class="color-tertiary">July 27</div>
+                        <div class="color-tertiary">{{ event.Date | date: 'MMM d' }}</div>
                     </div>
                     <div class="time">
                         <olii-icon-with-purple-square-background name="time-outline"></olii-icon-with-purple-square-background>
-                        <div class="color-tertiary">9:00 PM</div>
+                        <div class="color-tertiary">{{ event.Date | date: 'h:mm a' }}</div>
                     </div>
                 </div>
                 <div class="location">
                     <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
-                    <div class="color-tertiary">Fake location from Google</div>
+                    <div class="color-tertiary">{{ event.Location.DisplayName }}</div>
                 </div>
             </div>
         </div>
@@ -45,7 +43,7 @@
         </div>
         <div class="location">
             <h4>Location</h4>
-            <div #map></div>
+            <capacitor-google-map #map></capacitor-google-map>
         </div>
         <div class="images">
             <h4>Pictures</h4>

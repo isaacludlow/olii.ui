@@ -30,11 +30,11 @@ export class EventDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
-      
+
       this.attendingProfilePictures = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl);
     });
   }
-  
+
   ionViewDidEnter() {
     // TODO: Refactor to wait until call to get events is done.
     this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);

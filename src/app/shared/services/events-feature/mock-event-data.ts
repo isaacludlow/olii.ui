@@ -54,7 +54,7 @@ mockEventData_allEvents = [
             Id: 398,
             IdType: 'Group',
             DisplayName: 'Berlin Football Crew',
-            ImageUrl: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8c29jY2VyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
+            ImageUrl: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8c29jY2VyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
         Date: new Date(),
         PrivacyLevel: 'Public',
