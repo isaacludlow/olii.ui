@@ -99,7 +99,7 @@ export class GroupService {
             Id: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
-            Description: 'If you enjoy partying, this is the spot for you',
+            Description: 'This group is friends-only',
             PrivacyLevel: "Friends-Only",
             Posts: [
                 {
@@ -158,7 +158,7 @@ export class GroupService {
             Id: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
-            Description: 'This is a description',
+            Description: 'This group is invite-only',
             PrivacyLevel: "Invite-Only",
             Posts: [],
             Admins: [
@@ -176,7 +176,7 @@ export class GroupService {
             Id: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
-            Description: 'This is a description',
+            Description: 'This group is friends-only',
             PrivacyLevel: "Friends-Only",
             Posts: [],
             Admins: [
@@ -194,7 +194,7 @@ export class GroupService {
             Id: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
-            Description: 'This is a description',
+            Description: 'This group is invite-only',
             PrivacyLevel: "Invite-Only",
             Posts: [],
             Admins: [

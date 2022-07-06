@@ -193,3 +193,19 @@ ion-item {
         width: 4em;
     }
 }
+
+.request-button-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.request-button-container {
+    margin-bottom: 3rem;
+}
+
+.comment-icon {
+    display: flex;
+    justify-content: flex-end;
+}

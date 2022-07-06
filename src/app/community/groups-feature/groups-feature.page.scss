@@ -29,10 +29,7 @@ hr {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-
-        .my-groups-header {
-            margin-bottom: 1rem;
-        }
+        margin-bottom: 1rem;
     }
 
     .my-groups-selector-container {
@@ -91,7 +88,79 @@ hr {
     }
 }
 
+.section-header {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
 .see-all-link {
     font-size: 0.8rem;
     margin-top: 0.5rem;
+}
+
+.post {
+    margin-bottom: 1rem;
+}
+
+.card-content {
+    margin: 1rem;
+    color: var(--color-tertiary);
+}
+
+.comment-icon {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post-group-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+
+    .group-info {
+        display: flex;
+        flex-direction: row;
+    }
+    .group-image {
+        height: 3rem;
+        width: 3rem;
+        margin-right: 0.8rem;
+    }
+    .group-name {
+        font-size: 1.3em;
+        font-weight: bold;
+        align-self: center;
+    }
+    .post-date {
+        font-size: 0.8em;
+    }
+}
+
+.post-content {
+    margin-left: 3rem;
+
+    .poster-info {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 0.5rem;
+    
+        .poster-image {
+            height: 1.5rem;
+            width: 1.5rem;
+            margin-right: 0.5rem;
+        }
+        .poster-name {
+            font-weight: bold;
+            align-self: center;
+        }
+    }
+    
+    .post-images {
+        margin-top: 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.25rem;
+        gap: 10px;
+    }
 }

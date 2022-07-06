@@ -23,6 +23,7 @@ export class GroupMainPage implements OnInit {
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
@@ -47,6 +48,7 @@ export class GroupMainPage implements OnInit {
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.user = res);
     this.sortGroupPosts();
     this.segmentToShow = this.groupStore.groupSection;
+    this.canView();
   }
 
   sortGroupPosts() {
@@ -71,6 +73,29 @@ export class GroupMainPage implements OnInit {
 
   removePostPicture(index: number) {
     this.postPictures.splice(index, 1);
+  }
+
+  canView(): boolean {
+    if (this.group.PrivacyLevel == 'Public') {
+      return true;
+    }
+    else if (this.group.PrivacyLevel == "Friends-Only") {
+      // You must be a friend of the creator of the group
+    }
+    else if (this.group.PrivacyLevel == "Invite-Only") {
+      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.user.Id)) {
+        return true;
+      }
+    }
+    const content = document.getElementById("group-content");
+    content.style.setProperty('--webkit-filter', 'blur(8px)');
+    content.style.filter = "blur(8px)";
+    this.disableButtons = true;
+    return false;
+  }
+
+  requestToJoinGroup() {
+    // TODO: Connect to request feature (pending)
   }
 
   // TODO: Add form control to prevent empty posting.  Must have either an image or text or both

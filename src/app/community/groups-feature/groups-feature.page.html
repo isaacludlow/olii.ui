@@ -8,7 +8,7 @@
 
     <div class="my-groups-container">
         <div class="my-groups-header-container">
-            <h3 class="my-groups-header">My groups</h3>
+            <h3>My groups</h3>
             <div class="see-all-link" routerLink="./all">See all</div>
         </div>
         <div class="my-groups-selector-container">
@@ -32,6 +32,47 @@
 
     <hr>
 
-    <!-- TODO: Add section here that has group posts by post date -->
+    <div>
+        <h3 class="section-header">Latest</h3>
+
+        <div class="post" *ngFor="let postWrapper of groupsLatest">
+            <ion-card>
+                <div class="card-content">
+                    
+                    <div class="post-group-header">
+                        <div class="group-info">
+                            <div class="group-image">
+                                <olii-container-cover-image [imageUrl]="postWrapper.GroupImageUrl" boarderRadius="50%"></olii-container-cover-image>
+                            </div>
+                            <div class="group-name">{{postWrapper.GroupName}}</div>
+                        </div>
+                        <div class="post-date">{{postWrapper.GroupPost.Date.toDateString()}}</div>
+                    </div>
+
+                    <div class="post-content">
+                        <div class="poster-info">
+                            <div class="poster-image">
+                                <olii-container-cover-image [imageUrl]="postWrapper.GroupPost.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+                            </div>
+                            <div class="poster-name">{{postWrapper.GroupPost.Author.FirstName}} {{postWrapper.GroupPost.Author.LastName}}</div>
+                        </div>
+                        
+                        {{postWrapper.GroupPost.Content}}
+                        
+                        <div class="post-images">
+                            <olii-responsive-aspect-ratio-container *ngFor="let image of postWrapper.GroupPost.ImageUrls" aspectRatio="1/1" class="image-container">
+                                <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
+                            </olii-responsive-aspect-ratio-container>
+                        </div>
+                    </div>
+
+                    <div class="comment-icon">
+                        <!-- TODO: Implement comment functionality-->
+                        <olii-icon-with-off-white-square-background name="chatbox-ellipses-outline"></olii-icon-with-off-white-square-background>
+                    </div>
+                </div>
+            </ion-card>
+        </div>
+    </div>
 
 </ion-content>
