@@ -5,5 +5,5 @@ export interface CreatePostRequest {
     Author: PartialProfile;
     Content: string;
     Date: Date;
-    ImageUrls: string[];
+    ImagesData: string[];
 }

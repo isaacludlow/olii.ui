@@ -12,6 +12,7 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
 import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 @Component({
   templateUrl: './create-group.page.html',
@@ -35,10 +36,12 @@ export class CreateGroupPage implements OnInit {
 
   constructor(
     private fb: FormBuilder, 
+    private domSanitizer: DomSanitizer,
+    private platform: Platform,
     private profileStore: ProfileStore, 
     private router: Router,
     private groupService: GroupService,
-    private domSanitizer: DomSanitizer) { }
+    ) { }
 
   ngOnInit(): void {
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
@@ -54,10 +57,9 @@ export class CreateGroupPage implements OnInit {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
-  createGroup(){
-
+  async createGroup(){
     const newGroup: CreateGroupRequest = {
-      CoverImageUrl: this.groupPicture.webPath,
+      CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
       PrivacyLevel: this.groupVisibility as PrivacyLevel,

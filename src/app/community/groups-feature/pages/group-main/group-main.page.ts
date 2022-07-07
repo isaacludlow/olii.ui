@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { switchMap } from 'rxjs/operators';
-import { selectImages } from 'src/app/shared/utilities';
+import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
@@ -12,6 +12,7 @@ import { SubSink } from 'subsink';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   templateUrl: './group-main.page.html',
@@ -32,11 +33,12 @@ export class GroupMainPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private domSanitizer: DomSanitizer,
+    private platform: Platform,
     private groupStore: GroupStore,
     private groupService: GroupService,
     private profileStore: ProfileStore,
-    private domSanitizer: DomSanitizer
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -99,11 +101,11 @@ export class GroupMainPage implements OnInit {
   }
 
   // TODO: Add form control to prevent empty posting.  Must have either an image or text or both
-  writePost() {
+  async writePost() {
 
     var images = [];
     for (const image of this.postPictures) {
-      images.push(this.sanitizeUrl(image.webPath));
+      images.push(await readPhotoAsBase64(image, this.platform));
     }
 
     const newPost: CreatePostRequest = {
@@ -117,7 +119,7 @@ export class GroupMainPage implements OnInit {
         },
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
-      ImageUrls: images,
+      ImagesData: images,
     }
 
     // TODO: ADD ERROR HANDLING

@@ -213,7 +213,7 @@ export class GroupService {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
             Id: this.dummyId, // 
-            CoverImageUrl: newGroupInfo.CoverImageUrl,
+            CoverImageUrl: newGroupInfo.CoverImageData,
             Name: newGroupInfo.Name,
             Description: newGroupInfo.Description,
             PrivacyLevel: newGroupInfo.PrivacyLevel,
@@ -242,7 +242,7 @@ export class GroupService {
             Author: newPostRequest.Author,
             Content: newPostRequest.Content,
             Date: newPostRequest.Date,
-            ImageUrls: newPostRequest.ImageUrls,
+            ImageUrls: newPostRequest.ImagesData,
             Comments: [],
         }
 
