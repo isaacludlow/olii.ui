@@ -7,11 +7,11 @@ import { Component, Input } from '@angular/core';
       <div class="date-location-container">
         <div class="date-container">
           <olii-colored-square-background backgroundColor="translucent-purple">
-            <olii-base-icon class="icon" size="medium" name="time-outline"></olii-base-icon>
+            <olii-base-icon size="extra-small" name="time-outline" color="primary"></olii-base-icon>
           </olii-colored-square-background>
-          <div class="date heading-5">{{ date | date: 'EE, MMM d' }}</div>
+          <div class="font-body-s">{{ date | date: 'EE, MMM d' }}</div>
         </div>
-        <div class="time font-body-s">{{ date | date: 'h:mm aa' }}</div>
+        <div class="font-body-s">{{ date | date: 'h:mm aa' }}</div>
       </div>
     </div>
   `,

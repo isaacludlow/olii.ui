@@ -28,8 +28,7 @@ import { SettingsPage } from './pages/settings/settings.page';
     ReactiveFormsModule,
     IonicModule,
     SharedModule,
-    SharedComponentsModule,
-    ReactiveFormsModule,
+    SharedComponentsModule
   ]
 })
 export class ProfileModule { }

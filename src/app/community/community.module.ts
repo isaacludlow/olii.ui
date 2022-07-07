@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CommunityRoutingModule } from './community-routing.module';
 import { CommunityComponent } from './community.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { CommunityComponent } from './community.component';
   ],
   imports: [
     CommonModule,
-    CommunityRoutingModule
+    CommunityRoutingModule,
+    ScrollingModule
   ]
 })
 export class CommunityModule { }

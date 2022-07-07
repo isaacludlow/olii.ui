@@ -1,0 +1,52 @@
+ion-content {
+    --ion-background-color: #FBFBFB;
+}
+
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
+ion-toolbar.searchbar {
+    --background: #FBFBFB;
+
+    ion-searchbar {
+        margin-top: 0.5rem;
+    }
+}
+
+.searchbar-spacer {
+    margin-bottom: 1rem;
+}
+
+.events-container {
+    margin: 0rem 0.5rem 1.5rem 0.5rem;
+
+    h3 {
+        font-size: 20px;
+    }
+
+    .your-events {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .upcoming-events {
+        margin-bottom: 0.75rem;
+    }
+
+    .card-wrapper {
+        margin-bottom: 0.75rem;
+    }
+}
