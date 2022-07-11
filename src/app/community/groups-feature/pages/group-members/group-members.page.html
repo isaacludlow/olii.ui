@@ -1,0 +1,33 @@
+<ion-toolbar color="primary" mode="ios">
+    <ion-title>
+        <h2 class="section-title">Members</h2>
+    </ion-title>
+
+    <div class="back-icon">
+        <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups/group/{{getGroupId()}}"></olii-icon-with-off-white-square-background>
+    </div>
+</ion-toolbar>
+
+<ion-content>
+
+    <h4 class="member-section-heading">Admins</h4>
+        <div class="group-member-container" *ngFor="let memberAdmin of group.Admins">
+            <div class="member-image">
+                <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                <olii-container-cover-image [imageUrl]="memberAdmin.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            </div>
+            <div class="member-name">{{memberAdmin.FirstName}} {{memberAdmin.LastName}}</div>
+        </div>
+    <hr>
+
+    <h4 class="member-section-heading">Members</h4>
+        <div class="group-member-container" *ngFor="let member of group.Members">
+            <div class="member-image">
+                <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            </div>
+            <div class="member-name">{{member.FirstName}} {{member.LastName}}</div>
+        </div>
+    <hr>
+
+</ion-content>

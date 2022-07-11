@@ -60,7 +60,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: CreateAlbumPopUpComponent,
-      cssClass: 'popup-modal'
+      cssClass: 'create-album-popup-modal'
     });
 
     return await modal.present();
