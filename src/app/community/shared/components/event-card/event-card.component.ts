@@ -20,7 +20,7 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
           <olii-profile-preview-icons
             [profilePictureUrls]="firstFourProfilePictureUrls"
             profileIconSize="small"
-            [additionalDisplayNumber]="event.Invitations.length - numberOfProfilesDisplayed">
+            [additionalDisplayNumber]="event.Attendees.length - numberOfProfilesDisplayed">
           </olii-profile-preview-icons>
         </div>
       </div>
@@ -36,7 +36,7 @@ export class EventCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.firstFourProfilePictureUrls = this.event.Invitations.map(i => i.Recipient.ProfilePictureUrl).slice(0, 4);
+    this.firstFourProfilePictureUrls = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl).slice(0, 4);
   }
 
 }

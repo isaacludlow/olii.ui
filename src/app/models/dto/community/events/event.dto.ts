@@ -1,18 +1,18 @@
-import { EventCreatorType } from "./event-creator-type.dto";
-import { Invitation } from "./invitation.dto";
+import { EntityPreview } from "../../misc/entity-preview.dto";
+import { Location } from "../../misc/location.dto";
+import { PartialProfile } from "../../profile/partial-profile.dto";
 
 export interface Event {
     Id: number;
     CoverImageUrl: string;
     Title: string;
     Description: string;
-    CreatorType: EventCreatorType;
-    CreatorId: number;
+    Creator: EntityPreview;
     Date: Date;
     PrivacyLevel: PrivacyLevel;
-    Location: string;
-    ImageUrls: string[]
-    Invitations: Invitation[]
+    Location: Location;
+    ImageUrls: string[];
+    Attendees: PartialProfile[];
 }
 
 // Friends-Only is valid for the creator type of user not group.

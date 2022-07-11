@@ -1,0 +1,59 @@
+<ion-content>
+    <div class="cover-image" [style]="{'--background': 'url(\'' + event.CoverImageUrl + '\')' }">
+        <div class="back-icon" (click)="navigateBack()">
+            <olii-icon-with-off-white-square-background name="arrow-back"></olii-icon-with-off-white-square-background>
+        </div>
+    </div>
+
+    <div class="event-container">
+        <div class="event-details">
+            <div class="event-details-header">
+                <h3>{{ event.Title }}</h3>
+                <div class="creator">
+                    <ion-avatar>
+                        <img [src]="event.Creator.ImageUrl">
+                    </ion-avatar>
+                    <p class="color-tertiary font-body-l">{{ event.Creator.DisplayName }}</p>
+                </div>
+            </div>
+            <div class="description">
+                <h4>Description</h4>
+                <p class="color-tertiary">{{ event.Description }}</p>
+            </div>
+            <div class="date-time-location-container">
+                <div class="date-time">
+                    <div class="date">
+                        <olii-icon-with-purple-square-background name="calendar-clear-outline"></olii-icon-with-purple-square-background>
+                        <div class="color-tertiary">{{ event.Date | date: 'MMM d' }}</div>
+                    </div>
+                    <div class="time">
+                        <olii-icon-with-purple-square-background name="time-outline"></olii-icon-with-purple-square-background>
+                        <div class="color-tertiary">{{ event.Date | date: 'h:mm a' }}</div>
+                    </div>
+                </div>
+                <div class="location">
+                    <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
+                    <div class="color-tertiary">{{ event.Location.DisplayName }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="attendees">
+            <h4>Attending</h4>
+            <olii-profile-preview-icons [profilePictureUrls]="attendingProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="attendingProfilePictures.length - 5"></olii-profile-preview-icons> 
+        </div>
+        <div class="location">
+            <h4>Location</h4>
+            <capacitor-google-map #map></capacitor-google-map>
+        </div>
+        <div class="images">
+            <h4>Pictures</h4>
+            <div class="images-container">
+                <div *ngFor="let imageUrl of event.ImageUrls" class="image-container">
+                    <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                        <olii-container-cover-image [imageUrl]="imageUrl" boarderRadius="5%"></olii-container-cover-image>
+                    </olii-responsive-aspect-ratio-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

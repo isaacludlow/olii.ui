@@ -1,0 +1,58 @@
+import { Location } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { SubSink } from 'subsink';
+import { GoogleMap } from '@capacitor/google-maps';
+
+@Component({
+  templateUrl: './event-details.page.html',
+  styleUrls: ['./event-details.page.scss']
+})
+export class EventDetailsPage implements OnInit {
+  @ViewChild('map') mapRef: ElementRef<HTMLElement>
+  map: google.maps.Map;
+  mapMarker: google.maps.Marker;
+  event: Event;
+  attendingProfilePictures: string[];
+  subs = new SubSink();
+
+  constructor(
+    private eventsStore: EventsFeatureStore,
+    private route: ActivatedRoute,
+    private location: Location
+  ) { }
+
+  ngOnInit(): void {
+    this.subs.sink = this.route.paramMap.pipe(
+      switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
+    ).subscribe(event => {
+      this.event = event;
+      this.attendingProfilePictures = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl);
+    });
+  }
+
+  ionViewDidEnter() {
+    // TODO: Refactor to wait until call to get events is done.
+    this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);
+  }
+
+  async createMap(latitude: number, longitude: number) {
+    this.map = new google.maps.Map(this.mapRef.nativeElement, {
+      zoom: 10,
+      center: { lat: latitude, lng: longitude },
+      disableDefaultUI: true,
+    });
+
+    this.mapMarker = new google.maps.Marker({
+      position: { lat: latitude, lng: longitude },
+      map: this.map
+    });
+  }
+
+  navigateBack(): void {
+    this.location.back();
+  }
+}

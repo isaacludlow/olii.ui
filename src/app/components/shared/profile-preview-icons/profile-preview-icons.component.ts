@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'olii-profile-preview-icons',
   template: `
-    <div class="profile-icons-container">
-      <img class="profile-images" [ngClass]="profileIconSize" *ngFor="let profileImageUrl of profilePictureUrls" [src]="profileImageUrl">
+    <div class="profile-icons-container" [ngClass]="profileIconSize">
+      <img class="profile-images" *ngFor="let profileImageUrl of profilePictureUrls" [src]="profileImageUrl">
       <div *ngIf="additionalDisplayNumber && additionalDisplayNumber > 0" class="additional-display-number">{{additionalDisplayNumber}}+</div>
     </div>
   `,
