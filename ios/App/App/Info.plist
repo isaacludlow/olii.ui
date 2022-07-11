@@ -48,13 +48,19 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+		<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>To capture images</string>
+		<string>To capture images</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>To add images</string>
+		<string>To add images</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To store imaes</string>
+		<string>To store imaes</string>
+
+	<key>NSLocationAlwaysUsageDescription</key>
+		<string>We want to track you</string>
+	<key>NSLocationWhenInUseDescription</key>
+		<string>We want you current position</string>
 </dict>
 </plist>

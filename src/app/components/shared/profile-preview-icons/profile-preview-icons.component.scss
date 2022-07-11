@@ -1,8 +1,6 @@
 .profile-icons-container {
     display: flex;
-    justify-content: space-between;
     gap: 0.25rem;
-    width: 5.25rem; // sum of the width of each icon plus 3px in between each.
 }
 
 .profile-images {
@@ -12,11 +10,31 @@
 }
 
 .small {
-    height: 1.5rem;
-    width: 1.5rem;
+    img {
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .additional-display-number {
+        padding: 2px;
+        font-size: 10px;
+    }
 }
 
 .large {
-    height: 2.5rem;
-    width: 2.5rem;
+    img {
+        height: 2rem;
+        width: 2rem;
+    }
+
+    .additional-display-number {
+        padding: 6px;
+        font-size: 17px;
+    }
+}
+
+.additional-display-number {
+    background-color: #C5C2CE;
+    color: white;
+    border-radius: 50%;
 }

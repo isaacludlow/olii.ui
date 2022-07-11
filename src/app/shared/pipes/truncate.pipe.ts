@@ -4,8 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'truncate'
 })
 export class TruncatePipe implements PipeTransform {
-  transform(value: string, length: number, symbol: string) {
-    return value.split(' ').slice(0, length).join(' ') + symbol;
+  transform(value: string, lengthLimit: number, trailingSymbol: string) {
+    return value.length > lengthLimit ? value.substring(0, lengthLimit) + trailingSymbol : value;
   }
 
 }

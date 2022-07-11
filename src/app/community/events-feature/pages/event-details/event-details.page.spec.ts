@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PurplePageHeaderComponent } from './purple-page-header.component';
+import { EventDetailsPage } from './event-details.page';
 
-describe('PurplePageHeaderComponent', () => {
-  let component: PurplePageHeaderComponent;
-  let fixture: ComponentFixture<PurplePageHeaderComponent>;
+describe('EventDetailsPage', () => {
+  let component: EventDetailsPage;
+  let fixture: ComponentFixture<EventDetailsPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PurplePageHeaderComponent ]
+      declarations: [ EventDetailsPage ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PurplePageHeaderComponent);
+    fixture = TestBed.createComponent(EventDetailsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

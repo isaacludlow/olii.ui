@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { ExceptionCode } from '@capacitor/core';
 import firebase from 'firebase/compat';
 import { from, Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
