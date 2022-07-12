@@ -13,6 +13,8 @@ import { CreatePostRequest } from 'src/app/models/requests/community/groups/crea
 import { FormBuilder } from '@angular/forms';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 import { Platform } from '@ionic/angular';
+import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
+import { Observable, of } from 'rxjs';
 
 @Component({
   templateUrl: './group-main.page.html',
@@ -21,6 +23,7 @@ import { Platform } from '@ionic/angular';
 export class GroupMainPage implements OnInit {
   user: Profile; // TODO: Temporary variable while we do not have a global user var
   group: Group;
+  groupPosts$: Observable<GroupPost[]>;
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
@@ -41,7 +44,7 @@ export class GroupMainPage implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
@@ -54,7 +57,7 @@ export class GroupMainPage implements OnInit {
   }
 
   sortGroupPosts() {
-    this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
+    this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
   }
 
   segmentChanged(event) {

@@ -45,31 +45,8 @@
     <!--ngIf user is a member of this group-->
     <div id="group-content" class="view-content">
         <div *ngIf="segmentToShow == 'feed'">
-            <div class="post" *ngFor="let post of group.Posts">
-                <ion-card>
-                    <div class="card-content">
-                        <div class="post-header">
-                            <div class="poster-info">
-                                <div class="poster-image">
-                                    <!-- TODO: Should be a routerlink to the posters profile(?) -->
-                                    <olii-container-cover-image [imageUrl]="post.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
-                                </div>
-                                <div class="poster-name">{{post.Author.FirstName}} {{post.Author.LastName}}</div>
-                            </div>
-                            <div>{{post.Date.toDateString()}}</div>
-                        </div>
-                        {{post.Content}}
-                        <div class="post-images">
-                            <olii-responsive-aspect-ratio-container *ngFor="let image of post.ImageUrls" aspectRatio="1/1" class="image-container">
-                                <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
-                            </olii-responsive-aspect-ratio-container>
-                        </div>
-                        <div class="comment-icon">
-                            <!-- TODO: Implement comment functionality-->
-                            <olii-icon-with-off-white-square-background name="chatbox-ellipses-outline"></olii-icon-with-off-white-square-background>
-                        </div>
-                    </div>
-                </ion-card>
+            <div class="post" *ngFor="let post of groupPosts$ | async">
+                <olii-comment-card [post]="post" [currentUser]="user" [groupId]="group.Id"></olii-comment-card>
             </div>
         </div>
     
