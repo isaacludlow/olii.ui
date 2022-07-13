@@ -23,9 +23,9 @@
     </ion-header>
     
     <div class="events-container">
-        <div class="your-events">
-            <h3>Your events</h3>
-            <p class="font-body-s color-tertiary">See all</p>
+        <div class="my-events">
+            <h3>My events</h3>
+            <p routerLink="/community/events/my-events" class="font-body-s color-tertiary">See all</p>
         </div>
         <div class="card-wrapper" *ngFor="let event of myEvents$ | async">
             <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>

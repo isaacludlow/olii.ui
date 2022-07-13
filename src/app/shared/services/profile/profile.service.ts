@@ -5,6 +5,7 @@ import { ConnectedSocial } from 'src/app/models/dto/profile/connected-social.dto
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { environment } from 'src/environments/environment';
+import { mockEventData_eventById } from '../events-feature/mock-event-data';
 import { mockProfileData_yourProfile } from './mock-profile-data';
 
 @Injectable({
@@ -14,9 +15,15 @@ export class ProfileService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getProfileById(id: number): Observable<Profile> {
+  getProfileById(profileId: number): Observable<Profile> {
     const response = mockProfileData_yourProfile;
     
+    return of(response);
+  }
+
+  getProfileByUserId(userId: number): Observable<Profile> {
+    const response = mockProfileData_yourProfile;
+
     return of(response);
   }
   

@@ -300,6 +300,20 @@ img {
 	}
 }
 
+// Only works when mode is set to 'ios'.
+ion-segment.button-segment {
+	display: flex;
+	gap: 0.25rem;
+	--background: none;
+
+	ion-segment-button {
+		--color: var(--color-medium);
+		--background: #e2e2e2;
+		--color-checked: var(--color-light);
+		--indicator-color: var(--color-primary);
+	}
+}
+
 // @media (prefers-color-scheme: dark) {
 //     .color-light {
 //         color: var(--dark-theme-color-light);

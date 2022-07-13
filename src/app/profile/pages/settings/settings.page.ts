@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/shared/services/authentication/authentication.service';
+import { FirebaseAuthService } from 'src/app/shared/services/authentication/firebase-auth.service';
 
 @Component({
   templateUrl: './settings.page.html',
@@ -9,7 +9,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication/au
 export class SettingsPage implements OnInit {
   profileId: number;
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: FirebaseAuthService, private router: Router) { }
 
   ngOnInit(): void {
       // this.profileId = +this.authService.userCredentials.user.displayName;

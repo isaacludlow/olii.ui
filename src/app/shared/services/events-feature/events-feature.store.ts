@@ -1,36 +1,80 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { isAfter, isBefore } from 'date-fns';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
+import { ProfileStore } from '../profile/profile.store';
 import { EventsFeatureService } from './events-feature.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventsFeatureStore {
-  allEvents = new BehaviorSubject<Event[]>(null);
-  myEvents = new BehaviorSubject<Event[]>(null);
+  private _allEvents = new BehaviorSubject<Event[]>(null);
+  private _myEvents = new BehaviorSubject<Event[]>(null);
 
   constructor(private eventsService: EventsFeatureService) { }
 
   getEvents(offset: number = 0, limit: number = null): Observable<Event[]> {
-    return this.eventsService.getEvents(offset, limit).pipe(tap(events => this.allEvents.next(events)));
+    return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
   }
 
   getEventById(eventId: number) {
-    if (this.allEvents.value === null) {
-      return this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.next([event])));
+    if (this._allEvents.value === null) {
+      return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
-      const event = this.allEvents.asObservable().pipe(map(events => events.find(event => event.Id === eventId)));
+      const event = this._allEvents.asObservable().pipe(map(events => events.find(event => event.Id === eventId)));
 
       return event === undefined
-        ? this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.value.push(event)))
+        ? this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([...this._allEvents.value, event])))
         : event;
     }
   }
 
-  getMyEvents(profileId: number) {
-    return this.eventsService.getMyEvents(profileId).pipe(tap(events => this.myEvents.next(events)));
+  getMyEvents(profileId: number, filter: MyEventsFilterOptions): Observable<Event[]> {
+    switch (filter) {
+      case MyEventsFilterOptions.Attending:
+        return this.retrieveMyEvents(profileId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        );
+
+      case MyEventsFilterOptions.Hosting:
+        return this.retrieveMyEvents(profileId).pipe(
+          map(events => events.filter(event => this.isCreator(event, profileId))
+        ));
+
+      case MyEventsFilterOptions.Past:
+        return this.retrieveMyEvents(profileId).pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        );
+
+      case MyEventsFilterOptions.All:
+        return this.retrieveMyEvents(profileId);
+    }
   }
+
+  //#region this.getMyEvents() helper methods.
+  private retrieveMyEvents(profileId: number): Observable<Event[]> {
+    if (this._myEvents.value === null) {
+      return this.eventsService.getMyEvents(profileId).pipe(tap(events => this._myEvents.next(events)));
+    } else {
+      return this._myEvents.asObservable();
+    }
+  }
+
+  private isCreator(event: Event, profileId: number): boolean {
+    if (event.Creator.IdType !== 'Profile') {
+      return false;
+    } else {
+      return event.Creator.Id === profileId;
+    }
+  }
+  //#endregion
+}
+
+export enum MyEventsFilterOptions {
+  Attending,
+  Hosting,
+  Past,
+  All
 }
