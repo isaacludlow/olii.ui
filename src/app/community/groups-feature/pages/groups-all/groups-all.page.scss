@@ -1,0 +1,56 @@
+ion-toolbar {
+    --min-height: 4rem;
+}
+
+ion-content {
+    --padding-top: 1rem;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+}
+
+.section-title {
+    color: var(--color-primary-contrast);
+}
+
+.back-icon {
+    margin: 0 0 0 1rem;
+    color: var(--color-primary);
+}
+
+.groups-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0.25rem;
+}
+
+.group-card-container {        
+    width: 49%;
+
+    .group-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+
+}
+
+.group-description {
+    text-align: center;
+    margin-right: 1rem;
+    width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+
+.group-title {
+    text-align: center;
+    width: 9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}

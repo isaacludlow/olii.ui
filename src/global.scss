@@ -290,7 +290,17 @@ img {
 	margin: 0rem 1rem;
 }
 
-.popup-modal {
+.create-album-popup-modal {
+	--border-radius: 8px!important;
+	&::part(content) {
+		height: 50%;
+    	top: 50%;
+    	position: absolute; 
+    	display: block;  
+	}
+}
+
+.create-post-popup-modal {
 	--border-radius: 8px!important;
 	&::part(content) {
 		height: 50%;

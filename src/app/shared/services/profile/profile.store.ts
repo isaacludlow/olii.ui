@@ -4,6 +4,7 @@ import { BehaviorSubject, from, Observable } from "rxjs";
 import { switchMap, tap } from "rxjs/operators"
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
+import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 import { convertBlobToBase64 } from "../../utilities";
 import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
@@ -60,6 +61,10 @@ export class ProfileStore implements OnDestroy {
 
 	getProfileByUserId(userId: number) {
 		return this.profileService.getProfileByUserId(userId).pipe(tap(profile => this._profile.next(profile)));;
+	}
+
+	getFriends(userId: number): Observable<PartialProfile[]> {
+		return this.profileService.getFriends(userId);
 	}
 
 	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
