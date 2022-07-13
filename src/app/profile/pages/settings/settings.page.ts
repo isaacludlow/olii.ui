@@ -12,6 +12,7 @@ export class SettingsPage implements OnInit {
   constructor(private authService: FirebaseAuthService, private router: Router) { }
 
   ngOnInit(): void {
+      // TODO: Use the userStore for this properties.
       // this.profileId = +this.authService.userCredentials.user.displayName;
       this.profileId = 98 // Hard coding right now until displayName is populated with the profileId.
   }
