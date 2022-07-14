@@ -46,7 +46,9 @@
     <div id="group-content" class="view-content">
         <div *ngIf="segmentToShow == 'feed'">
             <div class="post" *ngFor="let post of groupPosts$ | async">
-                <olii-comment-card [post]="post" [currentUser]="user" [groupId]="group.Id"></olii-comment-card>
+                <ion-card>
+                    <olii-comment-card [post]="post" [currentUser]="user" [groupId]="group.Id"></olii-comment-card>
+                </ion-card>
             </div>
         </div>
     

@@ -8,7 +8,7 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 @Component({
   selector: 'olii-comment-card',
   template: `
-    <ion-card>
+    <div>
         <div class="card-content">
             <div class="post-header">
                 <div class="poster-info">
@@ -69,7 +69,7 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
                 </div>
             </div>
         </div>
-    </ion-card>
+    </div>
   `,
   styleUrls: ['./comment-card.component.scss'],
 
