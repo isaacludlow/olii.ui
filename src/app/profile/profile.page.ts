@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { SubSink } from 'subsink';
 import { Profile } from '../models/dto/profile/profile.dto';
-import { AuthenticationService } from '../shared/services/authentication/authentication.service';
+import { FirebaseAuthService } from '../shared/services/authentication/firebase-auth.service';
 import { ProfileStore } from '../shared/services/profile/profile.store';
 import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';
 
@@ -23,7 +23,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private profileStore: ProfileStore,
     private modalCtrl: ModalController,
-    private authService: AuthenticationService,
+    private authService: FirebaseAuthService,
     private router: Router
   ) { }
 
