@@ -1,0 +1,82 @@
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        .back {
+            margin-right: auto;
+        }
+
+        h2 {
+            margin-right: auto;
+            margin-left: -6vw;
+        }
+    }
+}
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0.5rem;
+    
+    .icon-spacer {
+        olii-icon-with-purple-square-background {
+            margin-right: 4px;
+        }
+    }
+
+    .event-details {
+
+    }
+
+    .location {
+        capacitor-google-map {
+            display: inline-block;
+            height: 20vh;
+            width: 100%;
+        }
+    }
+
+    .privacy-level {
+
+        ion-item {
+            div {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        
+        .visibility-label {
+            font-weight: bold;
+        }
+        
+        .visibility-description {
+            font-size: 0.75rem;
+        }
+    }
+    
+    .cover-image {
+        
+    }
+
+    .add-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+
+        olii-base-icon {
+            background-color: rgba(var(--color-primary-rgb), 0.125);
+            border-radius: 3px;
+            line-height: 0;
+            padding: 0.75rem;
+        }
+    }
+}

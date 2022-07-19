@@ -39,7 +39,11 @@
         </div>
         <div class="attendees">
             <h4>Attending</h4>
-            <olii-profile-preview-icons [profilePictureUrls]="attendingProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="attendingProfilePictures.length - 5"></olii-profile-preview-icons> 
+            <olii-profile-preview-icons
+                [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
+                profileIconSize="large"
+                [additionalDisplayNumber]="attendingProfilePictures.length - 5">
+            </olii-profile-preview-icons> 
         </div>
         <div class="location">
             <h4>Location</h4>

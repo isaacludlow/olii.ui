@@ -1,0 +1,104 @@
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Events</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
+                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+                <h2 class="color-light">Create Event</h2>
+            </div>
+        </ion-toolbar>
+    </ion-header>
+
+    <form [formGroup]="createEventForm">
+        <div class="event-details">
+            <h4>Event details</h4>
+            <ion-item>
+                <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-textarea formControlName="description" clearInput="true" placeholder="Description"></ion-textarea>
+            </ion-item>
+            <ion-item id="open-modal" class="icon-spacer">
+                <!-- Create pass through for the slot attribute on the icon -->
+                <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
+                <ion-input formControlName="dateTime" clearInput="true" type="text" placeholder="Date and time"></ion-input>
+            </ion-item>
+            <ion-item class="icon-spacer">
+                <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
+                <!-- Include a location and radius to limit search results to more local around the user instead of the whole world. -->
+                <olii-places-autocomplete-field (autocompletedResult)="setEventLocation($event)" [responseType]="[]" [responseFieldType]="['name', 'geometry']" placeholder="Search for a location"></olii-places-autocomplete-field>
+            </ion-item>
+        </div>
+        <div class="location">
+            <h4>Location</h4>
+            <hr>
+            <capacitor-google-map #map></capacitor-google-map>
+        </div>
+        <div class="cover-image">
+            <h4>Cover Image</h4>
+            <hr>
+            <div class="add-image">
+                <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+            </div>
+        </div>
+        <!-- Check to see if creator is a group, if so, show the privacy level section -->
+        <div class="privacy-level">
+            <h4>Privacy Level</h4>
+            <hr>
+            <ion-radio-group formControlName="privacyLevel">
+                <ion-item>
+                    <div>
+                        <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
+                        <ion-label class="visibility-description" color="medium" mode="ios">Anyone can see this event</ion-label>
+                    </div>
+                    <ion-radio slot="end" color="primary" value='Public' mode="md"></ion-radio>
+                </ion-item>
+                
+                <ion-item>
+                    <div>
+                        <ion-label class="visibility-label" color="tertiary" mode="ios">Group</ion-label>
+                        <ion-label class="visibility-description" color="medium" mode="ios">Only group members can see this event</ion-label>
+                    </div>
+                    <ion-radio slot="end" color="primary" value="Group" mode="md"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </div>
+        <div class="images">
+            <h4>Add Images</h4>
+            <hr>
+            <div class="images-container">
+                <div class="image" *ngFor=""></div>
+                <div class="add-image">
+                    <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-datetime></ion-datetime>
+          </ion-content>
+          <ion-footer>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title>Welcome</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="confirm()" [strong]="true">Ok</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-footer>
+        </ng-template>
+      </ion-modal>
+</ion-content>

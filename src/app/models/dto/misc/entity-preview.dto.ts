@@ -1,8 +1,8 @@
-import { EntityPreviewIdType } from "./entity-preview-id-type.dto";
+import { EventCreatorIdType } from "./entity-preview-id-type.dto";
 
 export interface EntityPreview {
     Id: number;
-    IdType: EntityPreviewIdType;
+    IdType: EventCreatorIdType;
     DisplayName: string;
     ImageUrl: string
 }
