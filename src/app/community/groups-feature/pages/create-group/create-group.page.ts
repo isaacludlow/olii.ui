@@ -57,7 +57,7 @@ export class CreateGroupPage implements OnInit {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
-  async createGroup(){
+  async createGroup() {
     const newGroup: CreateGroupRequest = {
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
