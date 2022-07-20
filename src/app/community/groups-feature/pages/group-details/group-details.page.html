@@ -47,7 +47,7 @@
         <div *ngIf="segmentToShow == 'feed'">
             <div class="post" *ngFor="let post of groupPosts$ | async">
                 <ion-card>
-                    <olii-comment-card [post]="post" [currentUser]="user" [groupId]="group.Id"></olii-comment-card>
+                    <olii-comment-card [post]="post" [currentUser]="profile" [groupId]="group.Id"></olii-comment-card>
                 </ion-card>
             </div>
         </div>
@@ -84,8 +84,6 @@
     
                     <div class="post-pictures-container">
                         <div *ngFor="let picture of postPictures; let i = index">
-    
-    
                             <div class="post-picture" [style]="{'--background': 'url(\'' + picture.webPath + '\')' }">
                                 <div class="remove-picture">
                                     <olii-icon-with-off-white-square-background name="close-circle-outline" (click)="removePostPicture(i)"></olii-icon-with-off-white-square-background>
