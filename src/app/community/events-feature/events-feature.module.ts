@@ -9,11 +9,13 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { EventDetailsPage } from './pages/event-details/event-details.page';
 import { CommunityModule } from '../community.module';
+import { MyEventsPage } from './pages/my-events/my-events.page';
 
 @NgModule({
   declarations: [
     EventsFeaturePage,
-    EventDetailsPage
+    EventDetailsPage,
+    MyEventsPage
   ],
   imports: [
     CommonModule,
