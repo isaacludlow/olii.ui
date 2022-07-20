@@ -4,6 +4,7 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
   selector: 'olii-comment-card',
@@ -56,7 +57,7 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 
             <div class="add-comment-content" *ngIf="showAddComment">
                 <div class="poster-image">
-                    <olii-container-cover-image [imageUrl]="currentUser.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+                    <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
                 </div>
                 <ion-item class="comment-textbox">
                     <ion-input [formControl]="addCommentInput" type="text" maxlength="50" placeholder="Add comment..."></ion-input>
@@ -77,17 +78,19 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 export class CommentCardComponent implements OnInit {
   @Input() post: GroupPost;
   @Input() groupId: number;
-  @Input() currentUser: Profile;
   
+  profile: Profile;
   showAddComment: boolean;
   showComments: boolean;
   addCommentInput = new FormControl('', Validators.required);
 
   constructor( 
-    private groupService: GroupService
+    private groupService: GroupService,
+    private profileStore: ProfileStore
    ) { }
 
   ngOnInit(): void {
+    this.profile = this.profileStore.currentUserProfile;
     this.showAddComment = false;
     this.showComments = false;
   }
@@ -110,7 +113,7 @@ export class CommentCardComponent implements OnInit {
         const newComment: GroupPostCommentRequest = {
             OriginGroup: this.groupId,
             ParentId: this.post.Id,
-            Author: this.currentUser,
+            Author: this.profile,
             Content: this.addCommentInput.value,
             Date: new Date(Date.now()),
         }

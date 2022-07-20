@@ -7,6 +7,11 @@ import { CreateGroupRequest } from 'src/app/models/requests/community/groups/cre
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
+import { Profile } from 'src/app/models/dto/profile/profile.dto';
+import { SubSink } from "subsink";
+import { AuthStore } from '../../authentication/auth-store';
+import { switchMap, tap } from "rxjs/operators"
+import { ProfileService } from '../../profile/profile.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,9 +19,20 @@ import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post
 
 export class GroupService {
 
+	currentUserProfile: Profile;
+    private subs = new SubSink()
+
     dummyId = 32;
 
-    constructor(private httpClient:HttpClient) {}
+    constructor(
+        private httpClient:HttpClient,
+        private profileService: ProfileService,
+        private authStore: AuthStore,
+        ) {
+        this.subs.sink = this.authStore.user.pipe(
+			switchMap(user => this.profileService.getProfileByUserId(user.Id))
+		).subscribe(profile => this.currentUserProfile = profile);
+    }
 
     ExampleGroups:Group[] = [
         {
@@ -254,7 +270,12 @@ export class GroupService {
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
         const newPost: GroupPost = {
             Id: this.dummyId,
-            Author: newPostRequest.Author,
+            Author: {
+                Id: this.currentUserProfile.Id,
+                FirstName: this.currentUserProfile.FirstName,
+                LastName: this.currentUserProfile.LastName,
+                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+            },
             Content: newPostRequest.Content,
             Date: newPostRequest.Date,
             ImageUrls: newPostRequest.ImagesData,

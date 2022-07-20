@@ -22,7 +22,6 @@ import { Validators } from '@angular/forms';
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit {
-  profile: Profile; // TODO: Temporary variable while we do not have a global user var
   group: Group;
   groupPosts$: Observable<GroupPost[]>;
   showPostModal: boolean
@@ -46,14 +45,14 @@ export class GroupDetailsPage implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.segmentToShow = this.groupStore.groupSection;
+
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
     this.sortGroupPosts();
-    this.segmentToShow = this.groupStore.groupSection;
     this.canView();
   }
 
@@ -91,7 +90,7 @@ export class GroupDetailsPage implements OnInit {
       // You must be a friend of the creator of the group
     }
     else if (this.group.PrivacyLevel == "Invite-Only") {
-      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profile.Id)) {
+      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }
     }
@@ -116,13 +115,7 @@ export class GroupDetailsPage implements OnInit {
 
     const newPost: CreatePostRequest = {
       Group: this.group.Id,
-      Author: 
-        {
-          Id: this.profile.Id,
-          FirstName: this.profile.FirstName,
-          LastName: this.profile.LastName,
-          ProfilePictureUrl: this.profile.ProfilePictureUrl
-        },
+      Author: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
       ImagesData: images,
