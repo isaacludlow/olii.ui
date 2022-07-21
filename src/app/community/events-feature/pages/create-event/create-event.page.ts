@@ -3,9 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { LocationPreviewComponent } from 'src/app/components/shared/location-preview/location-preview.component';
-import { EventLocation } from 'src/app/models/dto/misc/location.dto';
+import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import gm = google.maps;
 

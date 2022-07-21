@@ -1,5 +1,5 @@
 import { EntityPreview } from "../../misc/entity-preview.dto";
-import { EventLocation } from "../../misc/location.dto";
+import { EventLocation } from "../../misc/event-location.dto";
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { EventPrivacyLevel } from "./event-privacy-level.dto";
 

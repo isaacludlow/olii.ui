@@ -86,19 +86,8 @@
     <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
         <ng-template>
           <ion-content class="ion-padding">
-            <ion-datetime></ion-datetime>
+            <ion-datetime showDefaultButtons="true"></ion-datetime>
           </ion-content>
-          <ion-footer>
-            <ion-toolbar>
-              <ion-buttons slot="start">
-                <ion-button (click)="cancel()">Cancel</ion-button>
-              </ion-buttons>
-              <ion-title>Welcome</ion-title>
-              <ion-buttons slot="end">
-                <ion-button (click)="confirm()" [strong]="true">Ok</ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-footer>
         </ng-template>
       </ion-modal>
 </ion-content>
