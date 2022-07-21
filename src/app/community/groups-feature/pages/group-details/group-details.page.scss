@@ -100,42 +100,7 @@ ion-segment-button {
 }
 
 .post {
-    margin: 0 1rem 0 1rem;
-}
-
-.card-content {
-    margin: 1rem;
-    color: var(--color-tertiary);
-}
-
-.post-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.poster-info {
-    display: flex;
-    flex-direction: row;
-}
-
-.poster-name {
-    align-self: center;
-}
-
-.poster-image {
-    height: 3rem;
-    width: 3rem;
-    margin-right: 0.5rem;
-}
-
-.post-images {
-    margin-top: 0.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0.25rem;
-    gap: 10px;
+    margin: 0 1rem 1rem 1rem;
 }
 
 .group-main-buttons {
@@ -192,11 +157,13 @@ ion-item {
 
 .post-pictures-container {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     margin: 1rem auto 1rem auto;
 
     .post-picture {
+        margin-right: 0.5rem;
         height: 4em;
         width: 4em;
     }
@@ -211,9 +178,4 @@ ion-item {
 
 .request-button-container {
     margin-bottom: 3rem;
-}
-
-.comment-icon {
-    display: flex;
-    justify-content: flex-end;
 }

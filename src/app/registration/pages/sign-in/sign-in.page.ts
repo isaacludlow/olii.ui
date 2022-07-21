@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/shared/services/authentication/authentication.service';
+import { FirebaseAuthService } from 'src/app/shared/services/authentication/firebase-auth.service';
 
 @Component({
   templateUrl: './sign-in.page.html',
@@ -22,7 +22,7 @@ export class SignInPage {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthenticationService,
+    private authService: FirebaseAuthService,
     private router: Router,
     private location: Location
   ) { }

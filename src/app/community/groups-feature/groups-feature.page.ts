@@ -46,6 +46,7 @@ export class GroupsFeaturePage implements OnInit {
         for (const post of posts) {
           this.groupsLatest.push(
             {
+              GroupId: group.Id,
               GroupName: group.Name,
               GroupImageUrl: group.CoverImageUrl,
               GroupPost: post,

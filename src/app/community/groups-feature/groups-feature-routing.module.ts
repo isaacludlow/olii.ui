@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GroupsFeaturePage } from './groups-feature.page';
-import { GroupMainPage } from './pages/group-main/group-main.page';
+import { GroupDetailsPage } from './pages/group-details/group-details.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
 import { GroupsAllPage } from './pages/groups-all/groups-all.page';
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'group/:groupId',
-    component: GroupMainPage
+    component: GroupDetailsPage
   },
   {
     path: 'group/:groupId/edit',

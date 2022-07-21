@@ -94,12 +94,12 @@ mockEventData_myEvents = [
         Title: 'National chair convention',
         Description: 'The worlds largest event for chairs and the threat they pose to our butts.',
         Creator: {
-            Id: 217,
+            Id: 98,
             IdType: 'Profile',
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
-        Date: new Date(),
+        Date: new Date(2022, 11, 1),
         PrivacyLevel: 'Public',
         Location: {
             DisplayName: 'Eagle Creek Park',
@@ -132,11 +132,11 @@ mockEventData_myEvents = [
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
             Id: 217,
-            IdType: 'Profile',
-            DisplayName: 'John Doe',
+            IdType: 'Group',
+            DisplayName: 'Olii App',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
-        Date: new Date(),
+        Date: new Date(2022, 11, 1),
         PrivacyLevel: 'Public',
         Location: {
             DisplayName: 'Eagle Creek Park',
@@ -151,6 +151,37 @@ mockEventData_myEvents = [
             <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
             },
+        ]
+    },
+    {
+        Id: 1,
+        CoverImageUrl: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8ZXZlbnR8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
+        Title: 'Olii app beta release party',
+        Description: 'Come celebrate the beta release of the Olii app with us!',
+        Creator: {
+            Id: 217,
+            IdType: 'Profile',
+            DisplayName: 'John Doe',
+            ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
+        },
+        Date: new Date(2021, 11, 1),
+        PrivacyLevel: 'Public',
+        Location: {
+            DisplayName: 'Eagle Creek Park',
+            Latitude: 36.121159802475646,
+            Longitude: -115.17502713288535
+        },
+        ImageUrls: eventImageUrls,
+        Attendees: [
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
+            },
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
+            },
+            <PartialProfile>{
+                ProfilePictureUrl: 'https://images.unsplash.com/photo-1619895862022-09114b41f16f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
+            }
         ]
     }
 ];

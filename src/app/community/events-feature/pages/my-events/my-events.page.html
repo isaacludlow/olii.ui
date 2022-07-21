@@ -1,0 +1,95 @@
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Events</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back" (click)="navigateBack()">
+                    <olii-colored-square-background backgroundColor="purple-tinted-white">
+                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+                <h2 class="color-light">My Events</h2>
+            </div>
+        </ion-toolbar>
+        <div class="searchbar-spacer"></div>
+        <!-- <ion-toolbar class="searchbar" mode="ios">
+            <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
+        </ion-toolbar> -->
+    </ion-header>
+
+    <!-- Use this for later beta versions -->
+    <!-- <div class="events-invites">
+        <ion-segment class="button-segment" mode="ios" (ionChange)="pageSegmentChanged($event)" [value]="currentPageSegment">
+            <ion-segment-button value="events" layout="icon-start">
+                <ion-icon size="small" name="today"></ion-icon>
+                <ion-label>Events</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="invites" layout="icon-start">
+                <ion-icon size="small" name="ticket"></ion-icon>
+                <ion-label>Invites</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </div> -->
+
+    <div class="content-container">
+        <ng-container *ngIf="currentPageSegment === 'events'" [ngTemplateOutlet]="events"></ng-container>
+
+        <!-- <ng-container *ngIf="currentPageSegment === 'invites'" [ngTemplateOutlet]="invites"></ng-container> -->
+    </div>
+</ion-content>
+
+<ng-template #events>
+    <div class="event-filter">
+        <ion-segment class="button-segment" mode="ios" (ionChange)="eventFilterSegmentChanged($event)" [value]="currentEventFilterSegment">
+            <ion-segment-button value="attending" layout="icon-start">
+                <ion-icon size="small" name="checkmark-circle"></ion-icon>
+                <ion-label>Attending</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="hosting" layout="icon-start">
+                <ion-icon size="small" name="home"></ion-icon>
+                <ion-label>Hosting</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="past" layout="icon-start">
+                <ion-icon size="small" name="reload-circle"></ion-icon>
+                <ion-label>Past</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+    <div class="events-container">
+        <div [ngSwitch]="currentEventFilterSegment">
+            <ng-container *ngSwitchCase="'attending'" [ngTemplateOutlet]="attending"></ng-container>
+            <ng-container *ngSwitchCase="'hosting'" [ngTemplateOutlet]="hosting"></ng-container>
+            <ng-container *ngSwitchCase="'past'" [ngTemplateOutlet]="past"></ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<!-- Use this for later beta version -->
+<!-- <ng-template #invites>
+    <h1>Invites</h1>
+</ng-template> -->
+
+<ng-template #attending>
+    <div class="card-wrapper">
+        <olii-event-card *ngFor="let event of attendingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        </olii-event-card>
+    </div>
+</ng-template>
+<ng-template #hosting>
+    <div class="card-wrapper">
+        <olii-event-card *ngFor="let event of hostingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        </olii-event-card>
+    </div>
+</ng-template>
+<ng-template #past>
+    <div class="card-wrapper">
+        <olii-event-card *ngFor="let event of pastEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        </olii-event-card>
+    </div>
+</ng-template>
+

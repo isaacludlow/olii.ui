@@ -34,7 +34,7 @@ export class EditProfilePage implements OnInit {
       this.profileForm.controls['homeCountry'].setValue(this.profile.HomeCountry);
       //this.profileForm.controls['homeCountry'].setValue(this.profile.Age);
       this.profileForm.controls['currentCity'].setValue(this.profile.CurrentCity);
-      this.profileForm.controls['description'].setValue(this.profile.Bio);
+      this.profileForm.controls['bio'].setValue(this.profile.Bio);
     }
   }
 }
