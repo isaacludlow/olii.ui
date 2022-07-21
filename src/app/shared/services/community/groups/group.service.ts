@@ -249,8 +249,13 @@ export class GroupService {
             Description: newGroupInfo.Description,
             PrivacyLevel: newGroupInfo.PrivacyLevel,
             Posts: [],
-            Admins: newGroupInfo.Admins,
-            Members: newGroupInfo.Members
+            Admins: [ {
+                Id: this.currentUserProfile.Id,
+                FirstName: this.currentUserProfile.FirstName,
+                LastName: this.currentUserProfile.LastName,
+                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+            }],
+            Members: []
         }
 
         this.ExampleGroups.push(newGroup);

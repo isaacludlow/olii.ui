@@ -6,6 +6,5 @@ export interface CreateGroupRequest {
     Name: string;
     Description: string;
     PrivacyLevel: PrivacyLevel;
-    Admins: PartialProfile [],
-    Members: PartialProfile [],
+    Admin: number,
 }

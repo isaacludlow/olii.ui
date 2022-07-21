@@ -21,7 +21,6 @@ import { Platform } from '@ionic/angular';
 export class CreateGroupPage implements OnInit {
 
   // TODO: We want some singleton to hold the logged in user's data instead of calling it from API each time
-  profile: Profile;
   friends: Profile[];
   groupVisibility:string = 'Public';
   subs = new SubSink();
@@ -44,8 +43,6 @@ export class CreateGroupPage implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
-    //this.subs.sink = this.profileStore.getFriends(98).subscribe(res => this.friends = res);
   }
 
   
@@ -63,16 +60,7 @@ export class CreateGroupPage implements OnInit {
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
       PrivacyLevel: this.groupVisibility as PrivacyLevel,
-      Admins: [
-        {
-          Id: this.profile.Id,
-          FirstName: this.profile.FirstName,
-          LastName: this.profile.LastName,
-          ProfilePictureUrl: this.profile.ProfilePictureUrl
-        }
-      ],
-      // TODO: Calculate what members should be added (make modal)
-      Members: [],
+      Admin: this.profileStore.currentUserProfile.Id,
     }
 
     this.groupService.createGroup(newGroup).subscribe(res => {
