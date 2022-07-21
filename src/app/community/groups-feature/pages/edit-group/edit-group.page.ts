@@ -4,7 +4,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { SubSink } from 'subsink';
 import { switchMap } from 'rxjs/operators';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -12,6 +12,8 @@ import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
 import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -26,8 +28,8 @@ export class EditGroupPage implements OnInit {
   subs = new SubSink();
 
   editGroupForm = this.fb.group({
-    name: [''],
-    description: [''],
+    name: ['', Validators.required],
+    description: ['', Validators.required],
   })
 
   constructor(
@@ -35,7 +37,9 @@ export class EditGroupPage implements OnInit {
     private domSanitizer: DomSanitizer,
     private platform: Platform,
     private groupStore: GroupStore,
+    private groupService: GroupService,
     private profileStore: ProfileStore,
+    private router: Router,
     private route: ActivatedRoute
   ) { }
 
@@ -66,9 +70,9 @@ export class EditGroupPage implements OnInit {
     this.group.PrivacyLevel = this.groupVisibility as PrivacyLevel;
     this.group.CoverImageUrl = await readPhotoAsBase64(this.groupPicture, this.platform);
   
-    //this.groupStore.updateGroup(this.group).subscribe(res => {
-    //  this.router.navigate(['community/groups/'])
-    //})
+    this.groupService.updateGroup(this.group).subscribe(res => {
+      this.router.navigate(['community/groups/group/' + res.Id]);
+    })
   }
 
 }

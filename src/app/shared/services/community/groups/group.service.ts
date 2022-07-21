@@ -228,6 +228,14 @@ export class GroupService {
         return of(newGroup);
     }
 
+    updateGroup(updatedGroup: Group): Observable<Group> {
+        const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
+        if (index !== -1) {
+            this.ExampleGroups[index] = updatedGroup;
+        }
+        return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
+    }
+
     getGroupAll(): Observable<Group[]> {
         return of(this.ExampleGroups);
     }

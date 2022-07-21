@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
@@ -29,8 +29,8 @@ export class CreateGroupPage implements OnInit {
 
 
   createGroupForm = this.fb.group({
-    name: [''],
-    description: [''],
+    name: ['', Validators.required],
+    description: ['', Validators.required],
     //tags:[],
   })
 

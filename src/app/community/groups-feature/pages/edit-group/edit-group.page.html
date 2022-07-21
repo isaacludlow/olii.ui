@@ -43,6 +43,6 @@
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="updateGroup()" mode="ios">Update Group</ion-button>
+    <ion-button type="button" expand="block" color="primary" (click)="updateGroup()" mode="ios" [disabled]="!editGroupForm.valid">Update Group</ion-button>
 
 </ion-content>

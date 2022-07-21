@@ -47,6 +47,6 @@
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios">Create Group</ion-button>
+    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid">Create Group</ion-button>
 
 </ion-content>
