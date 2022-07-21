@@ -5,6 +5,13 @@ import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
+import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
+import { Profile } from 'src/app/models/dto/profile/profile.dto';
+import { SubSink } from "subsink";
+import { AuthStore } from '../../authentication/auth-store';
+import { switchMap, tap } from "rxjs/operators"
+import { ProfileService } from '../../profile/profile.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,9 +19,20 @@ import { CreatePostRequest } from 'src/app/models/requests/community/groups/crea
 
 export class GroupService {
 
+	currentUserProfile: Profile;
+    private subs = new SubSink()
+
     dummyId = 32;
 
-    constructor(private httpClient:HttpClient) {}
+    constructor(
+        private httpClient:HttpClient,
+        private profileService: ProfileService,
+        private authStore: AuthStore,
+        ) {
+        this.subs.sink = this.authStore.user.pipe(
+			switchMap(user => this.profileService.getProfileByUserId(user.Id))
+		).subscribe(profile => this.currentUserProfile = profile);
+    }
 
     ExampleGroups:Group[] = [
         {
@@ -35,7 +53,20 @@ export class GroupService {
                     Content: "Hey, anyone have any news on how things are looking with covid and the upcoming Post concert?",
                     Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
                     ImageUrls: [],
-                    Comments: [],
+                    Comments: [
+                        {
+                            Id: 1000,
+                            ParentId: 25,
+                            Author: {
+                                Id: 99,
+                                FirstName: 'Steven',
+                                LastName: 'Jobs',
+                                ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+                            },
+                            Content: "Haven't heard anything back yet, I'll let you know",
+                            Date: new Date(Date.UTC(2022, 3, 2, 12, 44, 20))
+                        }
+                    ],
                 },
                 {
                     Id: 27,
@@ -239,7 +270,12 @@ export class GroupService {
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
         const newPost: GroupPost = {
             Id: this.dummyId,
-            Author: newPostRequest.Author,
+            Author: {
+                Id: this.currentUserProfile.Id,
+                FirstName: this.currentUserProfile.FirstName,
+                LastName: this.currentUserProfile.LastName,
+                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+            },
             Content: newPostRequest.Content,
             Date: newPostRequest.Date,
             ImageUrls: newPostRequest.ImagesData,
@@ -247,6 +283,21 @@ export class GroupService {
         }
 
         this.ExampleGroups.find(group => group.Id == newPostRequest.Group).Posts.push(newPost);
+        this.dummyId++;
+
+        return of(true);
+    }
+
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
+        const newComment: GroupPostComment = {
+            Id: this.dummyId,
+            ParentId: newCommentRequest.ParentId,
+            Author: newCommentRequest.Author,
+            Content: newCommentRequest.Content,
+            Date: newCommentRequest.Date
+        }
+
+        this.ExampleGroups.find(group => group.Id == newCommentRequest.OriginGroup).Posts.find(post => post.Id == newCommentRequest.ParentId).Comments.push(newComment);
         this.dummyId++;
 
         return of(true);
