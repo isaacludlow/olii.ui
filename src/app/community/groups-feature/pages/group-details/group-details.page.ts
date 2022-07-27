@@ -86,10 +86,7 @@ export class GroupDetailsPage implements OnInit {
     if (this.group.PrivacyLevel == 'Public') {
       return true;
     }
-    else if (this.group.PrivacyLevel == "Friends-Only") {
-      // You must be a friend of the creator of the group
-    }
-    else if (this.group.PrivacyLevel == "Invite-Only") {
+    else if (this.group.PrivacyLevel == "Private") {
       if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }

@@ -55,16 +55,20 @@ export class GroupsFeaturePage implements OnInit {
         }
       }
     }
+
+    this.sortGroupPosts();
   }
+
+  sortGroupPosts() {
+    this.groupsLatest = this.groupsLatest.sort((a, b) => b.GroupPost.Date > a.GroupPost.Date ? 1 : -1);
+  }
+
 
   canView(group: Group): boolean {
     if (group.PrivacyLevel == 'Public') {
       return true;
     }
-    else if (group.PrivacyLevel == "Friends-Only") {
-      // You must be a friend of the creator of the group
-    }
-    else if (group.PrivacyLevel == "Invite-Only") {
+    else if (group.PrivacyLevel == "Private") {
       if (group.Members.concat(group.Admins).find(member => member.Id === this.user.Id)) {
         return true;
       }
@@ -73,19 +77,6 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcDisplayGroups() {
-    //var newGroupButtonWidth = document.getElementById('new-group-button-id').clientWidth;
-    //var ionContentMargins = document.getElementById('content-id').clientWidth;
-    //var ionContentMargins = document.getElementById('content-id').style.paddingLeft;
-    //var totalWidth = screen.width - ionContentMargins + newGroupButtonWidth;
-    
-    //console.log("Screen Width: " + screen.width);
-    //console.log("Button Width: " + newGroupButtonWidth);
-    //console.log("Content Width: " + ionContentMargins);
-    //console.log("Dynamic Calculation: " + (newGroupButtonWidth + this.convertRemToPixels(2)));
-
-    //console.log("According to function: " + this.convertRemToPixels(5));
-
-    // TODO: Need to get rid of the magic numbers...
     return (screen.width - this.convertRemToPixels(5)) / this.convertRemToPixels(4.8);
   }
 
