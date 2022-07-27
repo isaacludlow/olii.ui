@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BaseIconComponent } from './base-icon/base-icon.component';
 import { IonicModule } from '@ionic/angular';
 import { ContainerCoverImageComponent } from './container-cover-image/container-cover-image.component';
+import { RouterModule } from '@angular/router';
 
 import { BaseCardComponent } from './base-card/base-card.component';
 import { BaseDescriptionTextBoxComponent } from './base-description-text-box/base-description-text-box.component';
@@ -17,6 +18,7 @@ import { IconWithPurpleSquareBackgroundComponent } from './icon-with-purple-squa
 import { IconWithOffWhiteSquareBackgroundComponent } from './icon-with-off-white-square-background/icon-with-off-white-square-background.component';
 import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-ratio-container/responsive-aspect-ratio-container.component';
 import { BackButtonComponent } from './back-button/back-button.component';
+import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-icons.component';
 
 
 @NgModule({
@@ -34,12 +36,14 @@ import { BackButtonComponent } from './back-button/back-button.component';
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    GroupPreviewIconsComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   exports: [
     BaseIconComponent,
@@ -55,7 +59,8 @@ import { BackButtonComponent } from './back-button/back-button.component';
     IconWithPurpleSquareBackgroundComponent,
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    GroupPreviewIconsComponent
   ]
 })
 export class SharedComponentsModule { }

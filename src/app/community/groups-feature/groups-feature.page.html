@@ -13,12 +13,13 @@
         </div>
         <div class="my-groups-selector-container">
             <div class="group-links-container">
-                <div class="group-link" *ngFor="let group of groups | slice:0:calcDisplayGroups();">
+                <olii-group-preview-icons [groups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
+                <!--div class="group-link" *ngFor="let group of groups | slice:0:calcDisplayGroups();">
                     <div class="group-image">
                         <olii-container-cover-image [imageUrl]="sanitizeUrl(group.CoverImageUrl)" boarderRadius="50%" [routerLink]="['./group', group.Id]"></olii-container-cover-image>
                     </div>
                     <div class="group-nav-group-name">{{ group.Name }}</div>
-                </div>
+                </div-->
             </div>
 
             <div id="new-group-button-id" class="new-group-button-container">
@@ -48,7 +49,7 @@
                         </div>
                     </div>
 
-                    <olii-comment-card [post]="postWrapper.GroupPost" [currentUser]="user" [groupId]="postWrapper.GroupId"></olii-comment-card>
+                    <olii-comment-card [post]="postWrapper.GroupPost" [currentUser]="profile" [groupId]="postWrapper.GroupId"></olii-comment-card>
                     
                 </div>
             </ion-card>

@@ -27,6 +27,7 @@ export class GroupDetailsPage implements OnInit {
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
@@ -51,9 +52,12 @@ export class GroupDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
-    ).subscribe(group => this.group = group);
-    this.sortGroupPosts();
-    this.canView();
+    ).subscribe(group => {
+      this.group = group;
+      this.sortGroupPosts();
+      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
+      this.canView();
+    });
   }
 
   sortGroupPosts() {
