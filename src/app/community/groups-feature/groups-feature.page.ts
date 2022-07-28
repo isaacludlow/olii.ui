@@ -16,7 +16,7 @@ import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.
 })
 export class GroupsFeaturePage implements OnInit {
 
-  profile: Profile; // TODO: Temporary variable while we do not have a global user var
+  profile: Profile;
   groups: Group[];
   groupsLatest: GroupPostLatest[];
   partialGroups: PartialGroup[] = [];
