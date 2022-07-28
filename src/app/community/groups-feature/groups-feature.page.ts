@@ -60,6 +60,12 @@ export class GroupsFeaturePage implements OnInit {
         }
       }
     }
+
+    this.sortGroupPosts();
+  }
+
+  sortGroupPosts() {
+    this.groupsLatest = this.groupsLatest.sort((a, b) => b.GroupPost.Date > a.GroupPost.Date ? 1 : -1);
   }
 
   calcPartialGroups() {
@@ -76,10 +82,7 @@ export class GroupsFeaturePage implements OnInit {
     if (group.PrivacyLevel == 'Public') {
       return true;
     }
-    else if (group.PrivacyLevel == "Friends-Only") {
-      // You must be a friend of the creator of the group
-    }
-    else if (group.PrivacyLevel == "Invite-Only") {
+    else if (group.PrivacyLevel == "Private") {
       if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
         return true;
       }
