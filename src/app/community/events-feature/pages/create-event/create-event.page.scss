@@ -32,10 +32,6 @@ form {
         }
     }
 
-    .event-details {
-
-    }
-
     .location {
         capacitor-google-map {
             display: inline-block;
@@ -61,10 +57,6 @@ form {
             font-size: 0.75rem;
         }
     }
-    
-    .cover-image {
-        
-    }
 
     .add-image {
         display: flex;
@@ -77,6 +69,34 @@ form {
             border-radius: 3px;
             line-height: 0;
             padding: 0.75rem;
+        }
+    }
+
+    .images-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+
+        .image {
+            width: 25%;
+        }
+    }
+
+    olii-responsive-aspect-ratio-container {
+        position: relative;
+
+        ion-badge {
+            --background: #F2EFFF;
+            --color: var(--color-primary);
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            margin-top: -5px;
+            margin-right: -5px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
         }
     }
 }

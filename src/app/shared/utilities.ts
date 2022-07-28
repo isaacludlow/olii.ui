@@ -9,7 +9,7 @@ export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto
     const galleryPhoto = from(Camera.pickImages({limit: maxNumberOfImages}));
 
     return galleryPhoto.pipe(
-        map(galleryPhoto => galleryPhoto.photos)
+        map(galleryPhoto => galleryPhoto.photos.slice(0, maxNumberOfImages))
     );
 }
 

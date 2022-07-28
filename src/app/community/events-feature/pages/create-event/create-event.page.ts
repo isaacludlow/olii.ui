@@ -1,34 +1,47 @@
 import { Location } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { GalleryPhoto } from '@capacitor/camera';
 import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
+import { selectImages } from 'src/app/shared/utilities';
+import { SubSink } from 'subsink';
 import gm = google.maps;
 
 @Component({
   templateUrl: './create-event.page.html',
   styleUrls: ['./create-event.page.scss']
 })
-export class CreateEventPage implements OnInit {
+export class CreateEventPage implements OnInit, OnDestroy {
   @ViewChild(IonModal) modal: IonModal;
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
   map: google.maps.Map;
   mapMarker: google.maps.Marker = null;
-  event: EventRequest;
+
+  eventDateTimeInput: Date;
+  eventCoverImage: GalleryPhoto = null;
+  eventImages: GalleryPhoto[] = [];
   createEventForm = this.fb.group({
-    coverImage: [Validators.required, Validators.minLength(5)],
-    title: [null, Validators.required],
-    description: [null, [Validators.required, Validators.minLength(50)]],
+    coverImage: [null, Validators.required],
+    title: [null, [Validators.required, Validators.minLength(5)]],
+    description: [null, [Validators.required, Validators.minLength(5)]],
     dateTime: [null, Validators.required],
     location: [null, Validators.required],
-    privacyLevel: [null]
+    // privacyLevel: [null, Validators.required],
+    images: [null]
   });
+  subs = new SubSink();
 
-  constructor(private location: Location, private fb: FormBuilder) { }
+  constructor(
+    private location: Location,
+    private fb: FormBuilder,
+    private domSanitizer: DomSanitizer
+  ) { }
 
   ngOnInit(): void {
+    this.createEventForm.valueChanges.subscribe(v => console.log(v))
   }
 
   ionViewDidEnter() {
@@ -36,19 +49,11 @@ export class CreateEventPage implements OnInit {
     this.createMap();
   }
 
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
+  onDateTimeChanged(dateTimeValue: string) {
+    this.eventDateTimeInput = new Date(dateTimeValue);
+    this.createEventForm.get('dateTime').setValue(dateTimeValue);
   }
 
-  confirm() {
-    this.modal.dismiss('blank', 'confirm');
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-    }
-  }
 
   async createMap() {
     this.map = new google.maps.Map(this.mapRef.nativeElement, {
@@ -60,7 +65,7 @@ export class CreateEventPage implements OnInit {
 
   setEventLocation(placeResult: gm.places.PlaceResult): void {
     const location = placeResult.geometry.location;
-
+    
     this.addMapMarkerAndCenterMap(location.lat(), location.lng());
     this.createEventForm.get('location').setValue(
       <EventLocation>{
@@ -70,7 +75,7 @@ export class CreateEventPage implements OnInit {
       }
     );
   }
-
+  
   addMapMarkerAndCenterMap(latitude: number, longitude: number) {
     if (this.mapMarker === null) {
       this.mapMarker = new google.maps.Marker({
@@ -80,12 +85,49 @@ export class CreateEventPage implements OnInit {
     } else {
       this.mapMarker.setPosition({lat: latitude, lng: longitude});
     }
-
+    
     this.map.setCenter({lat: latitude, lng: longitude});
     this.map.setZoom(10);
   }
 
+  setEventCoverImage() {
+    this.subs.sink = selectImages(1).subscribe(galleryPhotos => {
+      this.eventCoverImage = galleryPhotos[0];
+      this.createEventForm.get('coverImage').setValue(this.eventCoverImage);
+    });
+  }
+
+  removeEventCoverImage(): void {
+    this.eventCoverImage = null;
+    this.createEventForm.get('coverImage').setValue(this.eventCoverImage);
+  }
+
+  setEventImages() {
+    let numberOfImagesAllowedToUpload = 9 - this.eventImages.length;
+    this.subs.sink = selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => {
+      this.eventImages.push(...galleryPhotos);
+      this.createEventForm.get('images').setValue(this.eventImages);
+    });
+  }
+
+  removeEventImage(imageIndex: number): void {
+    this.eventImages.splice(imageIndex, 1);
+    this.createEventForm.get('images').setValue(this.eventImages);
+  }
+
+  sanitizeUrl(url: string): string {
+    return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
+  }
+
+  async onSubmit(): Promise<void> {
+
+  }
+  
   navigateBack(): void {
     this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

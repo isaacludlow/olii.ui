@@ -328,6 +328,25 @@ ion-segment.button-segment {
 	}
 }
 
+ion-modal.date-picker {
+	--background: rgba(44,39,45,0.2);
+
+	 &::part(content) {
+	   backdrop-filter: blur(5px);
+	}
+					  
+	 ion-content{
+	   --background: transparent;
+	   --padding-top: 20vh;
+	   --padding-start: 1rem;
+	   --padding-end: 1rem;
+
+	   ion-datetime {
+		border-radius: 5px;
+	   }
+	}
+}
+
 // @media (prefers-color-scheme: dark) {
 //     .color-light {
 //         color: var(--dark-theme-color-light);
