@@ -147,7 +147,7 @@ export class GroupService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    Id: 27,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -160,7 +160,7 @@ export class GroupService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    Id: 28,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
