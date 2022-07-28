@@ -30,7 +30,7 @@ export class GroupsFeaturePage implements OnInit {
 
   ngOnInit(): void {
     // TODO: we need to get groups associated with the specific user
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
+    this.profile = this.profileStore.currentUserProfile;
     this.subs.sink = this.groupStore.getGroupAll().subscribe(res =>  {
       this.groups = res;
       this.calcLatestPosts();
