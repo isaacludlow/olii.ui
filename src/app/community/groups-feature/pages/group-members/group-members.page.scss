@@ -4,9 +4,24 @@ ion-content {
     --padding-end: 1rem;
 }
 
-ion-toolbar {
-    --min-height: 4rem;
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        h2 {
+            margin-left: 22vw;
+            margin-right: auto;
+        }
+    }
 }
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
 
 .section-title {
     color: var(--color-primary-contrast);

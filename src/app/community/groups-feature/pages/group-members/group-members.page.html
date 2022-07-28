@@ -1,4 +1,21 @@
-<ion-toolbar color="primary" mode="ios">
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Members</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-header collapse="condense" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+        <div class="header">
+            <div class="back-icon">
+                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups/group/{{getGroupId()}}"></olii-icon-with-off-white-square-background>
+            </div>
+            <h2 class="color-light">Members</h2>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<!--ion-toolbar color="primary" mode="ios">
     <ion-title>
         <h2 class="section-title">Members</h2>
     </ion-title>
@@ -6,7 +23,7 @@
     <div class="back-icon">
         <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups/group/{{getGroupId()}}"></olii-icon-with-off-white-square-background>
     </div>
-</ion-toolbar>
+</ion-toolbar-->
 
 <ion-content>
 
