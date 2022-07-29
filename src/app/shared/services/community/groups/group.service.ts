@@ -12,6 +12,7 @@ import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { switchMap, tap } from "rxjs/operators"
 import { ProfileService } from '../../profile/profile.service';
+import { UpdateGroupRequest } from 'src/app/models/requests/community/groups/update-group-request';
 
 @Injectable({
     providedIn: 'root'
@@ -264,10 +265,13 @@ export class GroupService {
         return of(newGroup);
     }
 
-    updateGroup(updatedGroup: Group): Observable<Group> {
+    updateGroup(updatedGroup: UpdateGroupRequest): Observable<Group> {
         const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
         if (index !== -1) {
-            this.ExampleGroups[index] = updatedGroup;
+            this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
+            this.ExampleGroups[index].Name = updatedGroup.Name;
+            this.ExampleGroups[index].Description = updatedGroup.Description;
+            this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
         }
         return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
     }

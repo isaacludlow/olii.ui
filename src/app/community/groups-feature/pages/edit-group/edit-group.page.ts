@@ -14,6 +14,7 @@ import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { UpdateGroupRequest } from 'src/app/models/requests/community/groups/update-group-request';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -21,7 +22,6 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 })
 export class EditGroupPage implements OnInit {
 
-  user: Profile; // TODO: Temporary variable while we do not have a global user var
   group: Group;
   groupVisibility:string;
   groupPicture: GalleryPhoto;
@@ -38,7 +38,6 @@ export class EditGroupPage implements OnInit {
     private platform: Platform,
     private groupStore: GroupStore,
     private groupService: GroupService,
-    private profileStore: ProfileStore,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -53,7 +52,6 @@ export class EditGroupPage implements OnInit {
     this.groupPicture = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
     this.editGroupForm.controls['name'].setValue(this.group.Name);
     this.editGroupForm.controls['description'].setValue(this.group.Description);
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.user = res);
   }
 
   setGroupPicture() {
@@ -65,12 +63,16 @@ export class EditGroupPage implements OnInit {
   }
 
   async updateGroup() {
-    this.group.Name = this.editGroupForm.get('name').value;
-    this.group.Description = this.editGroupForm.get('description').value;
-    this.group.PrivacyLevel = this.groupVisibility as PrivacyLevel;
-    this.group.CoverImageUrl = await readPhotoAsBase64(this.groupPicture, this.platform);
+    
+    const updatedGroup: UpdateGroupRequest = {
+      Id: this.group.Id,
+      CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
+      Name: this.editGroupForm.get('name').value,
+      Description: this.editGroupForm.get('description').value,
+      PrivacyLevel: this.groupVisibility as PrivacyLevel,
+    }
   
-    this.groupService.updateGroup(this.group).subscribe(res => {
+    this.groupService.updateGroup(updatedGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.Id]);
     })
   }

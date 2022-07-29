@@ -30,7 +30,6 @@ export class CreateGroupPage implements OnInit {
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    //tags:[],
   })
 
   constructor(
