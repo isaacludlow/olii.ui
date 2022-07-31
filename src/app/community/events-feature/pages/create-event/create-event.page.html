@@ -33,7 +33,7 @@
             </ion-item>
             <ion-item class="icon-spacer">
                 <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
-                <!-- Include a location and radius to limit search results to more local around the user instead of the whole world. -->
+                <!-- TODO: Include a location and radius to limit search results to more local around the user instead of the whole world. -->
                 <olii-places-autocomplete-field (autocompletedResult)="setEventLocation($event)" [responseType]="[]" [responseFieldType]="['name', 'geometry']" placeholder="Search for a location"></olii-places-autocomplete-field>
             </ion-item>
         </div>

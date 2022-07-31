@@ -23,8 +23,8 @@ export class CreateEventPage implements OnInit, OnDestroy {
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
   map: google.maps.Map;
   mapMarker: google.maps.Marker = null;
+  // Gets a formatted date string to set the min value on ion-datetime
   currentDateTime = format(new Date(), 'yyyy-MM-dd')+'T'+format(new Date(), 'kk:mm:ss');
-
   eventDateTimeInput: Date;
   eventCoverImage: GalleryPhoto = null;
   eventImages: GalleryPhoto[] = [];

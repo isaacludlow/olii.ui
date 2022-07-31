@@ -1,6 +1,6 @@
-import { EventPrivacyLevel } from "src/app/models/dto/community/events/event-privacy-level.dto";
 import { EventCreatorIdType } from "src/app/models/dto/misc/entity-preview-id-type.dto";
 import { EventLocation } from "src/app/models/dto/misc/event-location.dto";
+import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
 
 export interface EventRequest {
     CoverImage: string;
@@ -9,7 +9,7 @@ export interface EventRequest {
     CreatorId: number;
     CreatorType: EventCreatorIdType;
     Date: Date;
-    PrivacyLevel: EventPrivacyLevel;
+    PrivacyLevel: PrivacyLevel;
     Location: EventLocation;
     Images: string[];
 }

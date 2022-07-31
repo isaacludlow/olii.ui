@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { ProfileStore } from '../profile/profile.store';
 import { EventsFeatureService } from './events-feature.service';
 
 @Injectable({
@@ -59,8 +58,6 @@ export class EventsFeatureStore {
       tap(event => {
         this._allEvents.next([...this._allEvents.value, event]);
         this._myEvents.next([...this._myEvents.value, event]);
-        console.log(this._allEvents.value)
-        console.log(this._myEvents.value)
       }));
   }
 

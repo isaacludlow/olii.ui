@@ -36,7 +36,6 @@ export class MyEventsPage implements OnInit {
 
       if (!!eventFilterSegmentToShow) this.currentEventFilterSegment = eventFilterSegmentToShow;
     });
-    // this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Hosting).subscribe(asdf => console.log(asdf))
   }
 
   pageSegmentChanged(event) {
