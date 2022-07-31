@@ -13,22 +13,26 @@ import { CreatePostRequest } from 'src/app/models/requests/community/groups/crea
 import { FormBuilder } from '@angular/forms';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 import { Platform } from '@ionic/angular';
+import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
+import { Observable, of } from 'rxjs';
+import { Validators } from '@angular/forms';
 
 @Component({
-  templateUrl: './group-main.page.html',
-  styleUrls: ['./group-main.page.scss']
+  templateUrl: './group-details.page.html',
+  styleUrls: ['./group-details.page.scss']
 })
-export class GroupMainPage implements OnInit {
-  user: Profile; // TODO: Temporary variable while we do not have a global user var
+export class GroupDetailsPage implements OnInit {
   group: Group;
+  groupPosts$: Observable<GroupPost[]>;
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
-    postContent: [''],
+    postContent: ['', Validators.required],
   })
 
   constructor(
@@ -41,20 +45,23 @@ export class GroupMainPage implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.segmentToShow = this.groupStore.groupSection;
+
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
-    ).subscribe(group => this.group = group);
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.user = res);
-    this.sortGroupPosts();
-    this.segmentToShow = this.groupStore.groupSection;
-    this.canView();
+    ).subscribe(group => {
+      this.group = group;
+      this.sortGroupPosts();
+      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
+      this.canView();
+    });
   }
 
   sortGroupPosts() {
-    this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
+    this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
   }
 
   segmentChanged(event) {
@@ -70,7 +77,9 @@ export class GroupMainPage implements OnInit {
   }
 
   addPostPicture() {
-    selectImages(1).subscribe(galleryPhotos => this.postPictures.push(galleryPhotos.shift()));
+    if (this.postPictures.length < 5) {
+      selectImages(1).subscribe(galleryPhotos => this.postPictures.push(galleryPhotos.shift()));
+    }
   }
 
   removePostPicture(index: number) {
@@ -81,11 +90,8 @@ export class GroupMainPage implements OnInit {
     if (this.group.PrivacyLevel == 'Public') {
       return true;
     }
-    else if (this.group.PrivacyLevel == "Friends-Only") {
-      // You must be a friend of the creator of the group
-    }
-    else if (this.group.PrivacyLevel == "Invite-Only") {
-      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.user.Id)) {
+    else if (this.group.PrivacyLevel == "Private") {
+      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }
     }
@@ -110,13 +116,7 @@ export class GroupMainPage implements OnInit {
 
     const newPost: CreatePostRequest = {
       Group: this.group.Id,
-      Author: 
-        {
-          Id: this.user.Id,
-          FirstName: this.user.FirstName,
-          LastName: this.user.LastName,
-          ProfilePictureUrl: this.user.ProfilePictureUrl
-        },
+      Author: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
       ImagesData: images,
@@ -130,6 +130,7 @@ export class GroupMainPage implements OnInit {
       this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
     });
   }
+
   addEvent() {
     // TODO: Implement screen/modal once we have the mock up for it
   }

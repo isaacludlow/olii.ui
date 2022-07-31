@@ -8,12 +8,15 @@ import { IonicModule } from '@ionic/angular';
 import { EventCardComponent } from './shared/components/event-card/event-card.component';
 import { SharedComponentsModule } from 'src/app/components/shared/shared-components.module';
 import { SharedModule } from '../shared/shared.module';
+import { CommentCardComponent } from './shared/components/comment-card/comment-card.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     CommunityComponent,
-    EventCardComponent
+    EventCardComponent,
+    CommentCardComponent
   ],
   imports: [
     CommonModule,
@@ -21,10 +24,13 @@ import { SharedModule } from '../shared/shared.module';
     IonicModule,
     ScrollingModule,
     SharedComponentsModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
-    EventCardComponent
+    EventCardComponent,
+    CommentCardComponent
   ]
 })
 export class CommunityModule { }

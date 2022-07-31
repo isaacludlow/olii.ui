@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupMainPage } from './group-main.page';
+import { GroupPreviewIconsComponent } from './group-preview-icons.component';
 
-describe('GroupMainPage', () => {
-  let component: GroupMainPage;
-  let fixture: ComponentFixture<GroupMainPage>;
+describe('GroupPreviewIconsComponent', () => {
+  let component: GroupPreviewIconsComponent;
+  let fixture: ComponentFixture<GroupPreviewIconsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupMainPage ]
+      declarations: [ GroupPreviewIconsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupMainPage);
+    fixture = TestBed.createComponent(GroupPreviewIconsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
