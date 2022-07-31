@@ -3,6 +3,7 @@ import { isAfter, isBefore } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { ProfileStore } from '../profile/profile.store';
 import { EventsFeatureService } from './events-feature.service';
 
@@ -23,7 +24,7 @@ export class EventsFeatureStore {
     if (this._allEvents.value === null) {
       return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
-      const event = this._allEvents.asObservable().pipe(map(events => events.find(event => event.Id === eventId)));
+      const event = this._allEvents.pipe(map(events => events.find(event => event.Id === eventId)));
 
       return event === undefined
         ? this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([...this._allEvents.value, event])))
@@ -53,12 +54,22 @@ export class EventsFeatureStore {
     }
   }
 
-  //#region this.getMyEvents() helper methods.
+  createEvent(eventRequest: EventRequest): Observable<Event> {
+    return this.eventsService.createEvent(eventRequest).pipe(
+      tap(event => {
+        this._allEvents.next([...this._allEvents.value, event]);
+        this._myEvents.next([...this._myEvents.value, event]);
+        console.log(this._allEvents.value)
+        console.log(this._myEvents.value)
+      }));
+  }
+
+  //#region getMyEvents() helper methods.
   private retrieveMyEvents(profileId: number): Observable<Event[]> {
     if (this._myEvents.value === null) {
       return this.eventsService.getMyEvents(profileId).pipe(tap(events => this._myEvents.next(events)));
     } else {
-      return this._myEvents.asObservable();
+      return this._myEvents;
     }
   }
 

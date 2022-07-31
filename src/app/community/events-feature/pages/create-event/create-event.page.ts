@@ -2,11 +2,15 @@ import { Location } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
-import { IonModal } from '@ionic/angular';
+import { IonModal, Platform } from '@ionic/angular';
+import { format } from 'date-fns';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { selectImages } from 'src/app/shared/utilities';
+import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
 
@@ -19,14 +23,18 @@ export class CreateEventPage implements OnInit, OnDestroy {
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
   map: google.maps.Map;
   mapMarker: google.maps.Marker = null;
+  currentDateTime = format(new Date(), 'yyyy-MM-dd')+'T'+format(new Date(), 'kk:mm:ss');
 
   eventDateTimeInput: Date;
   eventCoverImage: GalleryPhoto = null;
   eventImages: GalleryPhoto[] = [];
+  // TODO: Need to build visualization for the user for when a validator has not been satisfied.
   createEventForm = this.fb.group({
     coverImage: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
     description: [null, [Validators.required, Validators.minLength(5)]],
+    creatorType: [null, Validators.required],
+    creatorId: [null, Validators.required],
     dateTime: [null, Validators.required],
     location: [null, Validators.required],
     // privacyLevel: [null, Validators.required],
@@ -37,11 +45,18 @@ export class CreateEventPage implements OnInit, OnDestroy {
   constructor(
     private location: Location,
     private fb: FormBuilder,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private platform: Platform,
+    private router: Router,
+    private route: ActivatedRoute,
+    private eventStore: EventsFeatureStore
   ) { }
 
   ngOnInit(): void {
-    this.createEventForm.valueChanges.subscribe(v => console.log(v))
+    this.route.queryParamMap.subscribe(paramMap => {
+      this.createEventForm.get('creatorType').setValue(paramMap.get('creatorType'));
+      this.createEventForm.get('creatorId').setValue(paramMap.get('creatorId'));
+    });
   }
 
   ionViewDidEnter() {
@@ -120,7 +135,26 @@ export class CreateEventPage implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    const eventBase64Images = [];
+    this.eventImages.forEach(async image => {
+      eventBase64Images.push(await readPhotoAsBase64(image, this.platform))
+    });
 
+    const eventRequest: EventRequest = {
+      CoverImage: await readPhotoAsBase64(this.eventCoverImage, this.platform),
+      Title: this.createEventForm.get('title').value,
+      Description: this.createEventForm.get('description').value,
+      CreatorType: this.createEventForm.get('creatorType').value as EventCreatorIdType,
+      CreatorId: this.createEventForm.get('creatorId').value as number,
+      // Need to figure out how to convert to UTC date and handle dates in the UI and API layers.
+      Date: new Date(this.createEventForm.get('dateTime').value),
+      PrivacyLevel: 'Public',
+      Location: this.createEventForm.get('location').value as EventLocation,
+      Images: eventBase64Images
+    };
+
+    this.eventStore.createEvent(eventRequest).subscribe();
+    this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
   }
   
   navigateBack(): void {

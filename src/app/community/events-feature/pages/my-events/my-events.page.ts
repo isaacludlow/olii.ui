@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/events-feature/events-feature.store';
@@ -18,6 +19,7 @@ export class MyEventsPage implements OnInit {
 
   constructor(
     private location: Location,
+    private route: ActivatedRoute,
     private eventStore: EventsFeatureStore,
     private profileStore: ProfileStore
   ) { }
@@ -28,6 +30,13 @@ export class MyEventsPage implements OnInit {
     this.attendingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Attending);
     this.hostingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Hosting);
     this.pastEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Past);
+
+    this.route.queryParamMap.subscribe(paramMap => {
+      const eventFilterSegmentToShow = paramMap.get('eventFilterSegmentToShow');
+
+      if (!!eventFilterSegmentToShow) this.currentEventFilterSegment = eventFilterSegmentToShow;
+    });
+    // this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Hosting).subscribe(asdf => console.log(asdf))
   }
 
   pageSegmentChanged(event) {

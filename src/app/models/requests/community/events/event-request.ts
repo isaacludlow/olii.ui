@@ -10,5 +10,6 @@ export interface EventRequest {
     CreatorType: EventCreatorIdType;
     Date: Date;
     PrivacyLevel: EventPrivacyLevel;
-    Location: EventLocation
+    Location: EventLocation;
+    Images: string[];
 }
