@@ -8,7 +8,7 @@ import { GroupStore } from 'src/app/shared/services/community/groups/group.store
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
-import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
