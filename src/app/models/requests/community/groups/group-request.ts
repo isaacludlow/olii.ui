@@ -1,4 +1,4 @@
-import { PrivacyLevel } from "src/app/models/dto/community/groups/group-privacy-level.do";
+import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
 
 export interface GroupRequest {
     Id: number;

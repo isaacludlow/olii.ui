@@ -130,8 +130,8 @@ export class GroupService {
             Id: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
-            Description: 'This group is friends-only',
-            PrivacyLevel: "Friends-Only",
+            Description: 'This group is public',
+            PrivacyLevel: "Public",
             Posts: [
                 {
                     Id: 26,
@@ -147,7 +147,7 @@ export class GroupService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    Id: 27,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -160,7 +160,7 @@ export class GroupService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    Id: 28,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -189,9 +189,23 @@ export class GroupService {
             Id: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
-            Description: 'This group is invite-only',
-            PrivacyLevel: "Invite-Only",
-            Posts: [],
+            Description: 'This group is private',
+            PrivacyLevel: "Private",
+            Posts: [
+                {
+                    Id: 21000,
+                    Author: {
+                        Id: 102,
+                        FirstName: 'Mark',
+                        LastName: 'Rober',
+                        ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+                    },
+                    Content: "Messaging in a private group B)",
+                    Date: new Date(Date.UTC(2021, 5, 20, 12, 44, 20)),
+                    ImageUrls: [],
+                    Comments: [],
+                },
+            ],
             Admins: [
                 {
                     Id: 152,
@@ -207,8 +221,8 @@ export class GroupService {
             Id: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
-            Description: 'This group is friends-only',
-            PrivacyLevel: "Friends-Only",
+            Description: 'This group is private',
+            PrivacyLevel: "Private",
             Posts: [],
             Admins: [
                 {
@@ -225,8 +239,8 @@ export class GroupService {
             Id: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
-            Description: 'This group is invite-only',
-            PrivacyLevel: "Invite-Only",
+            Description: 'This group is public',
+            PrivacyLevel: "Public",
             Posts: [],
             Admins: [
                 {

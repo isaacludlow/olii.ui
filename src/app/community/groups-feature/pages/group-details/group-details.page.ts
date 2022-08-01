@@ -27,6 +27,7 @@ export class GroupDetailsPage implements OnInit {
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
@@ -51,9 +52,12 @@ export class GroupDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
-    ).subscribe(group => this.group = group);
-    this.sortGroupPosts();
-    this.canView();
+    ).subscribe(group => {
+      this.group = group;
+      this.sortGroupPosts();
+      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
+      this.canView();
+    });
   }
 
   sortGroupPosts() {
@@ -86,10 +90,7 @@ export class GroupDetailsPage implements OnInit {
     if (this.group.PrivacyLevel == 'Public') {
       return true;
     }
-    else if (this.group.PrivacyLevel == "Friends-Only") {
-      // You must be a friend of the creator of the group
-    }
-    else if (this.group.PrivacyLevel == "Invite-Only") {
+    else if (this.group.PrivacyLevel == "Private") {
       if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }

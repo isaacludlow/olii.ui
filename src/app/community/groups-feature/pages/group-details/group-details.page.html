@@ -13,13 +13,8 @@
         <div class="group-description">{{group.Description}}</div>
     </div>
 
-    <div class="member-icons" routerLink= "./members">
-        <div *ngFor="let member of group.Admins.concat(group.Members) | slice:0:6;">
-            <div class="member-image">
-                <!-- Router Link to a member page?-->
-                <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
-            </div>
-        </div>
+    <div class="member-icons">
+        <olii-profile-preview-icons routerLink= "./members" [profilePictureUrls]="memberProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="memberProfilePictures.length - 5"></olii-profile-preview-icons> 
     </div>
 
     <hr>

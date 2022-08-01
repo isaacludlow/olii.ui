@@ -22,20 +22,24 @@ import { ModalController } from '@ionic/angular';
         <ion-input [formControl]="albumDescriptionInput" placeholder="Album description"></ion-input>
       </ion-item>
 
-      <hr>
+      <div class="spacer"></div>
 
       <ion-radio-group [(ngModel)]="albumVisibility" class="ion-margin-top">
-      
+      <!-- TODO: Change this text back to create album related text and create a new modal for groups or pass in the label. -->
         <ion-item>
-          <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
+          <div>
+            <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
+            <ion-label class="visibility-description" color="medium" mode="ios">Anyone can view posts in the group</ion-label>
+          </div>
           <ion-radio slot="end" color="primary" value='Public' mode="md"></ion-radio>
-          <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Anyone can view posts in the group</ion-label>
         </ion-item>
 
         <ion-item>
-          <ion-label class="visibility-label" color="tertiary" mode="ios">Private</ion-label>
+          <div>
+            <ion-label class="visibility-label" color="tertiary" mode="ios">Private</ion-label>
+            <ion-label class="visibility-description" color="medium" mode="ios">Only members can view posts in the group</ion-label>
+          </div>
           <ion-radio slot="end" color="primary" value="Private" mode="md"></ion-radio>
-          <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Only members can view posts in the group</ion-label>
         </ion-item>
 
       </ion-radio-group>
@@ -52,7 +56,7 @@ export class CreateAlbumPopUpComponent implements OnInit {
 
   albumNameInput = new FormControl('', Validators.required);
   albumDescriptionInput = new FormControl('', Validators.required);
-  albumVisibility:string = "Public";
+  albumVisibility: string = "Public";
 
   constructor(private profileStore: ProfileStore, private modalCtrl: ModalController) { }
 

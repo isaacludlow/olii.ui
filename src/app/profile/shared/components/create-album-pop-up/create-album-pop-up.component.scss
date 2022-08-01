@@ -16,12 +16,25 @@ ion-button {
     justify-content: center;
 }
 
+.spacer {
+    margin-bottom: 1rem;
+}
+
+ion-radio-group {
+    ion-item {
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
 .visibility-label {
     font-weight: bold;
 }
 
-.visibility-descr {
-    font-size: 0.7rem;
+.visibility-description {
+    font-size: 0.75rem;
 }
 
 h3 {
