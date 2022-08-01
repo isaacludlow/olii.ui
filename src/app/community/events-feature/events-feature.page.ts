@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
@@ -14,10 +15,22 @@ export class EventsFeaturePage implements OnInit {
   myEvents$: Observable<Event[]>;
   allEvents$: Observable<Event[]>;
 
-  constructor(private eventsStore: EventsFeatureStore, private profileStore: ProfileStore) { }
+  constructor(
+    private eventsStore: EventsFeatureStore,
+    private profileStore: ProfileStore,
+    private router: Router
+  ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.allEvents$ = this.eventsStore.getEvents();
     this.myEvents$ = this.eventsStore.getMyEvents(this.profileStore.currentUserProfile.Id, MyEventsFilterOptions.Attending).pipe(map(events => events.slice(0, 1)));
+  }
+
+  createEvent(): void {
+    // Creator type is 'Group' when creating an event from a group page.
+    this.router.navigate(
+      ['community/events/create-event'],
+      { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
+    );
   }
 }

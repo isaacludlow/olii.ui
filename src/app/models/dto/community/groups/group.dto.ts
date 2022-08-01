@@ -1,6 +1,6 @@
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { GroupPost } from "./group-post.dto";
-import { PrivacyLevel } from "./group-privacy-level.do";
+import { PrivacyLevel } from "../../misc/privacy-level.do";
 
 export interface Group {
     Id: number;

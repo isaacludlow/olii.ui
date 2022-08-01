@@ -1,0 +1,103 @@
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Events</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
+                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+                <h2 class="color-light">Create Event</h2>
+            </div>
+        </ion-toolbar>
+    </ion-header>
+
+    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()">
+        <div class="event-details">
+            <h4>Event details</h4>
+            <ion-item>
+                <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+            </ion-item>
+            <ion-item id="open-modal" class="icon-spacer">
+                <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
+                <ion-input formControlName="dateTime" type="text" placeholder="Date and time" [value]="eventDateTimeInput | date:'EE, MMM d, h:mm a'"></ion-input>
+            </ion-item>
+            <ion-item class="icon-spacer">
+                <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
+                <!-- TODO: Include a location and radius to limit search results to more local around the user instead of the whole world. -->
+                <olii-places-autocomplete-field (autocompletedResult)="setEventLocation($event)" [responseType]="[]" [responseFieldType]="['name', 'geometry']" placeholder="Search for a location"></olii-places-autocomplete-field>
+            </ion-item>
+        </div>
+        <div class="location">
+            <h4>Location</h4>
+            <hr>
+            <capacitor-google-map #map></capacitor-google-map>
+        </div>
+        <div class="cover-image">
+            <h4>Cover Image</h4>
+            <hr>
+            <div class="add-image" *ngIf="!eventCoverImage" (click)="setEventCoverImage()">
+                <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+            </div>
+            <div *ngIf="eventCoverImage" class="cover-image">
+                <olii-responsive-aspect-ratio-container aspectRatio="2/1">
+                    <ion-badge (click)="removeEventCoverImage()"><ion-icon name="close"></ion-icon></ion-badge>
+                    <olii-container-cover-image [imageUrl]="sanitizeUrl(eventCoverImage.webPath)" boarderRadius="3%"></olii-container-cover-image>
+                </olii-responsive-aspect-ratio-container>
+            </div>
+        </div>
+        <!-- <div class="privacy-level">
+            <h4>Privacy Level</h4>
+            <hr>
+            <ion-radio-group formControlName="privacyLevel">
+                <ion-item>
+                    <div>
+                        <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
+                        <ion-label class="visibility-description" color="medium" mode="ios">Anyone can see this event</ion-label>
+                    </div>
+                    <ion-radio slot="end" color="primary" value='Public' mode="md"></ion-radio>
+                </ion-item>
+                
+                <ion-item>
+                    <div>
+                        <ion-label class="visibility-label" color="tertiary" mode="ios">Group</ion-label>
+                        <ion-label class="visibility-description" color="medium" mode="ios">Only group members can see this event</ion-label>
+                    </div>
+                    <ion-radio slot="end" color="primary" value="Group" mode="md"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </div> -->
+        <div class="images">
+            <h4>Add Images</h4>
+            <hr>
+            <div class="images-container">
+                <div class="image" *ngFor="let eventImage of eventImages; let i = index">
+                    <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                        <ion-badge (click)="removeEventImage(i)"><ion-icon name="close"></ion-icon></ion-badge>
+                        <olii-container-cover-image [imageUrl]="sanitizeUrl(eventImage.webPath)" boarderRadius="3%"></olii-container-cover-image>
+                    </olii-responsive-aspect-ratio-container>
+                </div>
+                <div class="add-image" *ngIf="eventImages.length < 9" (click)="setEventImages()">
+                    <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+                </div>
+            </div>
+        </div>
+        <ion-button type="submit" [disabled]="!createEventForm.valid" mode="ios">Create Event</ion-button>
+    </form>
+    <ion-modal trigger="open-modal" class="date-picker">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-datetime #dateTime (ionChange)="onDateTimeChanged(dateTime.value)" showDefaultButtons="true" [min]="currentDateTime"></ion-datetime>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+</ion-content>

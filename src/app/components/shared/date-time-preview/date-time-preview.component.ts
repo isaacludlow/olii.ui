@@ -11,7 +11,7 @@ import { Component, Input } from '@angular/core';
           </olii-colored-square-background>
           <div class="font-body-s">{{ date | date: 'EE, MMM d' }}</div>
         </div>
-        <div class="font-body-s">{{ date | date: 'h:mm aa' }}</div>
+        <div class="font-body-s">{{ date | date: 'h:mm a' }}</div>
       </div>
     </div>
   `,

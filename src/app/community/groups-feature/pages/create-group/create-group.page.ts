@@ -9,7 +9,7 @@ import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
-import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';

@@ -5,9 +5,7 @@ import gm = google.maps;
 @Component({
   selector: 'olii-places-autocomplete-field',
   template: `
-    <ion-item>
-      <ion-input #searchField type="text" [placeholder]="placeholder"></ion-input>
-    </ion-item>
+    <ion-input #searchField clearInput="true" type="text" [placeholder]="placeholder"></ion-input>
   `,
   styleUrls: ['./places-autocomplete-field.component.scss']
 })
