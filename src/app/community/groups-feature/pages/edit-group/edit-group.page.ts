@@ -21,13 +21,13 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 export class EditGroupPage implements OnInit {
 
   group: Group;
-  groupVisibility:string;
   groupPicture: GalleryPhoto;
   subs = new SubSink();
 
   editGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
+    groupVisibility: [null, Validators.required],
   })
 
   constructor(
@@ -46,7 +46,7 @@ export class EditGroupPage implements OnInit {
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
-    this.groupVisibility = this.group.PrivacyLevel;
+    this.editGroupForm.get('groupVisibility').setValue(this.group.PrivacyLevel);
     this.groupPicture = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
     this.editGroupForm.controls['name'].setValue(this.group.Name);
     this.editGroupForm.controls['description'].setValue(this.group.Description);
@@ -67,7 +67,7 @@ export class EditGroupPage implements OnInit {
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevel: this.groupVisibility as PrivacyLevel,
+      PrivacyLevel: this.editGroupForm.get('groupVisibility').value as PrivacyLevel,
       Admin: null,
     }
   

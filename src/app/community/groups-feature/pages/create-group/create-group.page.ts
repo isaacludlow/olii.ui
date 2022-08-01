@@ -22,7 +22,6 @@ export class CreateGroupPage implements OnInit {
 
   // TODO: We want some singleton to hold the logged in user's data instead of calling it from API each time
   friends: Profile[];
-  groupVisibility:string = 'Public';
   subs = new SubSink();
   groupPicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
 
@@ -30,7 +29,8 @@ export class CreateGroupPage implements OnInit {
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-  })
+    groupVisibility: [null, Validators.required],
+  });
 
   constructor(
     private fb: FormBuilder, 
@@ -59,7 +59,7 @@ export class CreateGroupPage implements OnInit {
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
-      PrivacyLevel: this.groupVisibility as PrivacyLevel,
+      PrivacyLevel: this.createGroupForm.get('groupVisibility').value as PrivacyLevel,
       Admin: this.profileStore.currentUserProfile.Id,
     }
 
