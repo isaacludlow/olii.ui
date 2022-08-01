@@ -1,6 +1,7 @@
 import { PrivacyLevel } from "src/app/models/dto/community/groups/group-privacy-level.do";
 
-export interface CreateGroupRequest {
+export interface GroupRequest {
+    Id: number;
     CoverImageData: string;
     Name: string;
     Description: string;

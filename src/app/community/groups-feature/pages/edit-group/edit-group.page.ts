@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { SubSink } from 'subsink';
 import { switchMap } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
-import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
 import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
-import { UpdateGroupRequest } from 'src/app/models/requests/community/groups/update-group-request';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -64,12 +62,13 @@ export class EditGroupPage implements OnInit {
 
   async updateGroup() {
     
-    const updatedGroup: UpdateGroupRequest = {
+    const updatedGroup: GroupRequest = {
       Id: this.group.Id,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
       PrivacyLevel: this.groupVisibility as PrivacyLevel,
+      Admin: null,
     }
   
     this.groupService.updateGroup(updatedGroup).subscribe(res => {

@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 import { PrivacyLevel } from 'src/app/models/dto/community/groups/group-privacy-level.do';
-import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 
@@ -54,7 +54,8 @@ export class CreateGroupPage implements OnInit {
   }
 
   async createGroup() {
-    const newGroup: CreateGroupRequest = {
+    const newGroup: GroupRequest = {
+      Id: null,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,

@@ -3,7 +3,7 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { from, Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
@@ -12,7 +12,6 @@ import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { switchMap, tap } from "rxjs/operators"
 import { ProfileService } from '../../profile/profile.service';
-import { UpdateGroupRequest } from 'src/app/models/requests/community/groups/update-group-request';
 
 @Injectable({
     providedIn: 'root'
@@ -241,7 +240,7 @@ export class GroupService {
         }
     ];
 
-    createGroup(newGroupInfo: CreateGroupRequest): Observable<Group> {
+    createGroup(newGroupInfo: GroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
             Id: this.dummyId, // 
@@ -265,7 +264,7 @@ export class GroupService {
         return of(newGroup);
     }
 
-    updateGroup(updatedGroup: UpdateGroupRequest): Observable<Group> {
+    updateGroup(updatedGroup: GroupRequest): Observable<Group> {
         const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
         if (index !== -1) {
             this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
