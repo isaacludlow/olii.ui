@@ -1,6 +1,6 @@
 <ion-content class="ion-padding-vertical">
     <div class="profile_options">
-        <!-- Eventually this will only exist in the profile view of other users; for now it's a toggle to view an other user profile-->
+        <!-- TODO-M7: Remove this from user profile view; We'll need a proper way to view other user's profiles -->
         <div class="back" (click)="viewControl()">
             <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
@@ -14,7 +14,7 @@
         </div>
         <div class="profile-info">
             <div class="personal-info">
-                <!-- TOOD: Change these values from being hardcoded to being responsively connected to actual retrieved values -->
+                <!-- TODO-M6: Remove hardcoded values; pull from currentuserprofile -->
                 <ion-text color="tertiary"><h3 class="name">John Snow*</h3></ion-text>
                 <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
