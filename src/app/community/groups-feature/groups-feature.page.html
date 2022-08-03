@@ -25,6 +25,7 @@
             <h3>My groups</h3>
             <div class="see-all-link" routerLink="./all">See all</div>
         </div>
+        <!-- TODO-L3: Can't see the group preview count or add group button when running the app with ionic lab. -->
         <div class="my-groups-selector-container">
             <div class="group-links-container">
                 <olii-group-preview-icons [groups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
@@ -45,6 +46,7 @@
         <h3 class="section-header">Latest</h3>
 
         <div class="post" *ngFor="let postWrapper of groupsLatest">
+            <!-- TODO-L4: Clicking on the card should take me to the group details page. -->
             <ion-card>
                 <div class="card-content">
                     
