@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.dto';
+import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
 
 @Component({
   selector: 'groups-feature',

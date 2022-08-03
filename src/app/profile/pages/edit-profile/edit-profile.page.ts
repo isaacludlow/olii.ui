@@ -24,6 +24,7 @@ export class EditProfilePage implements OnInit {
   constructor(private fb: FormBuilder, private profileStore: ProfileStore) { }
 
   ngOnInit(): void {
+    // TODO-M6: Remove all references to hard-coded user
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
 
     if (this.profile != null) {

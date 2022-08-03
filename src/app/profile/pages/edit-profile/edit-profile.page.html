@@ -13,6 +13,7 @@
 <ion-content>
     
     <div class="profile-image-container">
+        <!-- TODO-M4: Add profile picture changing functionality to Edit Profile page -->
         <div class="profile-image">
             <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
         </div>
@@ -22,11 +23,11 @@
     </div>
 
     <form [formGroup]="profileForm">
-        <!-- Profile should include name, number and age as well?-->
         <ion-item>
             <ion-label color="tertiary" position="stacked">Name</ion-label>
             <ion-input color="tertiary" mode="ios" type="text" formControlName="name" clearInput="true"></ion-input>
         </ion-item>
+        <!-- TODO-M5: We do not have numbers on profile.dto; remove? -->
         <ion-item>
             <ion-label color="tertiary" position="stacked">Number</ion-label>
             <ion-input color="tertiary" mode="ios" type="text" clearInput="true" type="number" formControlName="number"></ion-input>
