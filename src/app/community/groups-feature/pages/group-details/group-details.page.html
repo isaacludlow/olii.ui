@@ -1,4 +1,5 @@
 <ion-content>
+    <!-- TODO-L7: Group details cover image looks vertically smashed. -->
     <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
@@ -18,11 +19,13 @@
 
     <div *ngIf="canView() else requestToJoinView">
         <div class="menu-bar-container">
+            <!-- TODO-L13: Group section buttons style should match the style of the section buttons on the my-events page. -->
             <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
                 <ion-segment-button value="feed" layout="icon-start">
                     <ion-icon name="list-outline"></ion-icon>
                     <ion-label>Feed</ion-label>
                 </ion-segment-button>
+                <!-- TODO-L14: Create the events section component(s) for a group. -->
                 <ion-segment-button value="events" layout="icon-start">
                     <ion-icon name="calendar-outline"></ion-icon>
                     <ion-label>Events</ion-label>
@@ -47,11 +50,13 @@
             </div>
         </div>
     
+        <!-- TODO-L15: Add some sort of blurred background for "Write Post" and "Add Event" buttons so they don't blend in with the ion-content background. -->
         <div class="group-main-buttons">
             <ion-button class="side-button" type="button" mode="ios" size="small" (click)="toggleModal()" [disabled]="disableButtons">
                 <olii-base-icon name="pencil-outline"></olii-base-icon>
                 <div class="button-label">Write Post</div>
             </ion-button>
+            <!-- TODO-L12: Group add event button should route to the create event page with correct queryParams. -->
             <ion-button class="side-button" type="button" mode="ios" size="small" (click)="addEvent()" [disabled]="disableButtons">
                 <olii-base-icon name="calendar-outline"></olii-base-icon>
                 <div class="button-label">Add Event</div>
@@ -60,7 +65,7 @@
     
         <ion-modal class="create-post-popup-modal" [isOpen]="showPostModal">
             <ng-template>
-                
+                <!-- TODO-L11: The close button on the create post modal is too light of a color. -->
                 <div class="close-modal" (click)="toggleModal()">
                     <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
                 </div>
@@ -79,8 +84,10 @@
     
                     <div class="post-pictures-container">
                         <div *ngFor="let picture of postPictures; let i = index">
+                            <!-- TODO-L9: Change the image placeholder for create post modal to match the create event placeholder. -->
                             <div class="post-picture" [style]="{'--background': 'url(\'' + picture.webPath + '\')' }">
                                 <div class="remove-picture">
+                                    <!-- TODO-L10: Fix the remove image button to match the styles of the remove image button on the create event page. -->
                                     <olii-icon-with-off-white-square-background name="close-circle-outline" (click)="removePostPicture(i)"></olii-icon-with-off-white-square-background>
                                 </div>
                             </div>
@@ -93,7 +100,6 @@
                     <hr>
     
                     <div class="write-post-button-container">
-                        <!--<ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()" mode="ios">Create Album</ion-button>-->
                         <ion-button color="primary" [disabled]="!createPostForm.valid" (click)="writePost()" mode="ios">Write a Post</ion-button>
                     </div>
                 </ion-content>

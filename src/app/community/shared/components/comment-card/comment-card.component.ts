@@ -7,14 +7,14 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
-  selector: 'olii-comment-card',
+  selector: 'olii-comment-card', // TODO: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into it's own component.
   template: `
     <div>
         <div class="card-content">
             <div class="post-header">
                 <div class="poster-info">
                     <div class="poster-image">
-                        <!-- TODO: Should be a routerlink to the posters profile(?) -->
+                        <!-- TODO-L5: Should link profile preview to the poster's profile. -->
                         <olii-container-cover-image [imageUrl]="post.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
                     </div>
                     <div class="poster-name">{{post.Author.FirstName}} {{post.Author.LastName}}</div>
