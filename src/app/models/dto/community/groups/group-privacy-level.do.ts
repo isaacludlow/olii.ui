@@ -1,1 +1,0 @@
-export type PrivacyLevel = 'Public' | 'Friends-Only' | 'Invite-Only';

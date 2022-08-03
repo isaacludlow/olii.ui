@@ -1,4 +1,4 @@
-import { PrivacyLevel } from "../../dto/profile/saved-album-privacy-level.do";
+import { PrivacyLevel } from "../../dto/misc/privacy-level.do";
 
 export interface ProfileRequestSavedAlbum {
     Id: number;

@@ -1,1 +1,1 @@
-export type EntityPreviewIdType = 'Profile' | 'Group'
+export type EventCreatorIdType = 'Profile' | 'Group'

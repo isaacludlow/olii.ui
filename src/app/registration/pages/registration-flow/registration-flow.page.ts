@@ -77,7 +77,7 @@ export class RegistrationFlowPage {
 
   async createProfileRequest() {
     const profileBase64Images = [];
-    this.profileImages.slice(0, 10).forEach(async profileImage => {
+    this.profileImages.forEach(async profileImage => {
       profileBase64Images.push(await readPhotoAsBase64(profileImage, this.platform))
     });
 

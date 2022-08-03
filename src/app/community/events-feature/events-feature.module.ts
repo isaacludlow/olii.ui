@@ -10,17 +10,21 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { EventDetailsPage } from './pages/event-details/event-details.page';
 import { CommunityModule } from '../community.module';
 import { MyEventsPage } from './pages/my-events/my-events.page';
+import { CreateEventPage } from './pages/create-event/create-event.page';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     EventsFeaturePage,
     EventDetailsPage,
-    MyEventsPage
+    MyEventsPage,
+    CreateEventPage
   ],
   imports: [
     CommonModule,
-    EventsFeatureRoutingModule,
     IonicModule,
+    ReactiveFormsModule,
+    EventsFeatureRoutingModule,
     SharedComponentsModule,
     ScrollingModule,
     SharedModule,

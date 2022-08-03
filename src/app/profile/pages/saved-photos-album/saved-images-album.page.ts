@@ -29,6 +29,7 @@ export class SavedImagesAlbumPage implements OnInit {
   }
 
   navigateBackToSavedSection(): void {
+    // TODO: Move this to the profile page so that it's not hard coded here.
     this.profileStore.profileSection = 'saved';
     this.router.navigate(['/profile']);
   }
