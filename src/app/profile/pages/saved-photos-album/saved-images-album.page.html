@@ -12,6 +12,7 @@
     </div>
 
     <div class="images">
+        <!-- TODO-L18: Fix the saved albums photo grid to match the style of the other grids in the app (3x3). -->
         <olii-responsive-aspect-ratio-container aspectRatio="1/1" *ngFor="let image of album.ImageUrls" aspectRatio="1/1" class="image-container">
             <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
         </olii-responsive-aspect-ratio-container>

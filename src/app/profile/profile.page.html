@@ -43,6 +43,7 @@
     <div class="assets">
         <div class="menu-bar-container">
             <div *ngIf="isActiveUser == true; else elseView">
+                <!-- TODO-L16: Change the photos section on the profile page to "About Me" or something like that. Talk to Tovi about possible wording. -->
                 <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
                     <ion-segment-button value="photos" layout="icon-start">
                         <ion-icon name="image-outline"></ion-icon>
@@ -62,6 +63,7 @@
             </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
+            <!-- TODO-L17: Fix the profile photo grid to match the style of the other grids in the app (3x3). -->
             <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls" aspectRatio="1/1" class="image-container">
                 <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
             </olii-responsive-aspect-ratio-container>
