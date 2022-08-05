@@ -13,6 +13,7 @@ export class EditProfilePage implements OnInit {
   subs = new SubSink();
 
   profileForm = this.fb.group({
+    // TODO-L35: Change edit profile name form field to be two fields: firstName and lastName.
     name: [''],
     number: [''],
     homeCountry: [''],

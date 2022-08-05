@@ -17,7 +17,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   profilePostUrls: string[];
   segmentToShow: string;
   subs = new SubSink();
-  // TODO: We probably don't want to default this to true...
+  // TODO-L32: Use the user property on the userStore.
   isActiveUser = true;
 
   constructor(
@@ -28,6 +28,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // TODO-L33: Use the currentUserProfile property on the profileStore.
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
     this.segmentToShow = this.profileStore.profileSection;
   }
@@ -49,6 +50,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   async signOut(): Promise<void> {
+    // TODO-L34: Use the authStore instead of the authService.
     await this.authService.signOut();
     this.router.navigate(['registration/slideshow']);
   }
