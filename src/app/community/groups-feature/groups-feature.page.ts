@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Group } from '../../models/dto/community/groups/group.dto';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
 import { SubSink } from 'subsink';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,6 +20,7 @@ export class GroupsFeaturePage implements OnInit {
   groupsLatest: GroupPostLatest[];
   partialGroups: PartialGroup[] = [];
   subs = new SubSink();
+  // TODO-L22: Private fields should be in snake case starting with an underscore (_snake_case).
   POSTLIMITER: number = 10;
 
   constructor(
@@ -29,7 +29,7 @@ export class GroupsFeaturePage implements OnInit {
     private domSanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-    // TODO: we need to get groups associated with the specific user
+    // TODO-L20: Get groups associated with the user on the groups page.
     this.profile = this.profileStore.currentUserProfile;
     this.subs.sink = this.groupStore.getGroupAll().subscribe(res =>  {
       this.groups = res;
@@ -47,6 +47,7 @@ export class GroupsFeaturePage implements OnInit {
     
     for (const group of this.groups) {
       if (this.canView(group)) {
+        // TODO-L21: Should get the latest group posts. Currently gets the first posts in the group.
         var posts = group.Posts.slice(0, this.POSTLIMITER);
         for (const post of posts) {
           this.groupsLatest.push(

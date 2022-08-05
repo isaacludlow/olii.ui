@@ -10,8 +10,6 @@ import { SubSink } from 'subsink';
   styleUrls: ['./group-members.page.scss']
 })
 export class GroupMembersPage implements OnInit {
-
-  // Ideally we would want this passed down from the previous page... is that a thing in angular?
   group: Group;
   subs = new SubSink();
 

@@ -8,7 +8,7 @@ import { Group } from "src/app/models/dto/community/groups/group.dto";
 })
 
 export class GroupStore {
-
+    // TODO-L28: Update groupStore to follow the patterns in the eventStore.
     private manualOverrideForGroupSection = new BehaviorSubject<Section>('feed');
 
     constructor(private groupService: GroupService) {}
@@ -24,10 +24,6 @@ export class GroupStore {
 		return currentSection;
 	}
 
-    // TODO: We'll need to figure out caching so that both getGroupAll() and
-    // getGroupById don't have to query every time.  Probably just a data
-    // structure to hold all a user's related groups cache is queried once and then
-    // pull the data from there
     getGroupAll() {
         return this.groupService.getGroupAll();
     }
@@ -40,7 +36,7 @@ export class GroupStore {
 
     }
 
-    // Delete Group?
+    // TODO-AfterBeta: Allow an admin to delete a group.
 }
 
 type Section = 'feed' | 'events';

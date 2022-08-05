@@ -4,7 +4,6 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
 import { SubSink } from 'subsink';
-import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
@@ -20,7 +19,6 @@ import { Platform } from '@ionic/angular';
 })
 export class CreateGroupPage implements OnInit {
 
-  // TODO: We want some singleton to hold the logged in user's data instead of calling it from API each time
   profile: Profile;
   friends: Profile[];
   groupVisibility:string = 'Public';
@@ -44,8 +42,9 @@ export class CreateGroupPage implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    // TODO-L25: Use the profileStore to get the current user instead of making a call.
     this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
-    //this.subs.sink = this.profileStore.getFriends(98).subscribe(res => this.friends = res);
+    //this.subs.sink = this.profileStore.getFriends(98).subscribe(res => this.friends = res); // Will add the ability to invite friends to a newly create group in the future.
   }
 
   
@@ -75,6 +74,7 @@ export class CreateGroupPage implements OnInit {
       Members: [],
     }
 
+    // TODO-L26: Use groupStore instead of groupService to create a group.
     this.groupService.createGroup(newGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.Id]);
     })

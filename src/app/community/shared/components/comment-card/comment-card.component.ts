@@ -7,7 +7,7 @@ import { GroupService } from 'src/app/shared/services/community/groups/group.ser
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
-  selector: 'olii-comment-card', // TODO: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into it's own component.
+  selector: 'olii-comment-card', // TODO-AfterBeta: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into it's own component.
   template: `
     <div>
         <div class="card-content">

@@ -16,6 +16,7 @@ export class GroupsAllPage implements OnInit {
   constructor(private groupStore: GroupStore, private domSanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
+    // TODO-L24: Should get all groups the current user is in, not all groups on the all.
     this.subs.sink = this.groupStore.getGroupAll().subscribe(res => this.groups = res);
   }
 

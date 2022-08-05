@@ -34,6 +34,7 @@ export class GroupService {
 		).subscribe(profile => this.currentUserProfile = profile);
     }
 
+    // TODO-L27: Move group mock data to separate file.
     ExampleGroups:Group[] = [
         {
             Id: 1,

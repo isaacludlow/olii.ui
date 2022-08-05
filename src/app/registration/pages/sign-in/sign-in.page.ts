@@ -31,6 +31,7 @@ export class SignInPage {
     const email = this.signInForm.get('email').value;
     const password = this.signInForm.get('password').value;
 
+    // TODO-31: Use authStore instead of authService.
     this.authService.login(email, password).subscribe(_ => {
       this.signInForm.reset();
       this.router.navigate(['registration/registration-flow']);

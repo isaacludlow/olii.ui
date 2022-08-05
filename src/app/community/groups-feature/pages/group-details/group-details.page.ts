@@ -5,7 +5,6 @@ import { GalleryPhoto } from '@capacitor/camera';
 import { switchMap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
@@ -22,6 +21,7 @@ import { Validators } from '@angular/forms';
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit {
+  // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
   group: Group;
   groupPosts$: Observable<GroupPost[]>;
   showPostModal: boolean
@@ -60,6 +60,8 @@ export class GroupDetailsPage implements OnInit {
     });
   }
 
+  // TODO-AfterBeta: Double check that we need to sort group posts.
+  // I think they will naturally be in the order people add them, which will be in chronological order.
   sortGroupPosts() {
     this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
   }
@@ -103,10 +105,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   requestToJoinGroup() {
-    // TODO: Connect to request feature (pending)
+    // TODO-L23: Create logic on the group-details page to let the user request to join a group.
   }
 
-  // TODO: Add form control to prevent empty posting.  Must have either an image or text or both
+  // TODO-L24: Add form control to prevent an empty group post. Must have either an image or text.
   async writePost() {
 
     var images = [];
@@ -132,7 +134,7 @@ export class GroupDetailsPage implements OnInit {
   }
 
   addEvent() {
-    // TODO: Implement screen/modal once we have the mock up for it
+    // Should link to the create-event screen.
   }
 
 }

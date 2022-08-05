@@ -41,6 +41,7 @@ export class ProfileStore implements OnDestroy {
 
 	getProfileById(profileId: number): Observable<Profile> {
 		if (!(this._profile.value)) {
+			// TODO-L29: GetProfileById() should match pattern in eventStore.getEventById().
 			return this.profileService.getProfileById(profileId).pipe(tap(profile => this._profile.next(profile)));
 		}
 		else {
@@ -71,9 +72,9 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
 	}
 
-	getBase64Image(url: string) {
-		return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
-	}
+	// getBase64Image(url: string) {
+	// 	return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
+	// }
 
 	ngOnDestroy(): void {
 		this.subs.unsubscribe();

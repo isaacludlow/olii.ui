@@ -28,7 +28,6 @@ export class CreateEventPage implements OnInit, OnDestroy {
   eventDateTimeInput: Date;
   eventCoverImage: GalleryPhoto = null;
   eventImages: GalleryPhoto[] = [];
-  // TODO: Need to build visualization for the user for when a validator has not been satisfied.
   createEventForm = this.fb.group({
     coverImage: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
@@ -60,7 +59,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    // TODO: Refactor to wait until call to get events is done.
+    // TODO-AfterBeta: Refactor to wait until call to get events is done.
     this.createMap();
   }
 
@@ -146,7 +145,6 @@ export class CreateEventPage implements OnInit, OnDestroy {
       Description: this.createEventForm.get('description').value,
       CreatorType: this.createEventForm.get('creatorType').value as EventCreatorIdType,
       CreatorId: this.createEventForm.get('creatorId').value as number,
-      // Need to figure out how to convert to UTC date and handle dates in the UI and API layers.
       Date: new Date(this.createEventForm.get('dateTime').value),
       PrivacyLevel: 'Public',
       Location: this.createEventForm.get('location').value as EventLocation,
