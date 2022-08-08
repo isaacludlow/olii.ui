@@ -18,9 +18,9 @@
     <hr>
 
     <div *ngIf="canView() else requestToJoinView">
-        <div class="menu-bar-container">
+        <div class="feed-events-segment-container">
             <!-- TODO-L13: Group section buttons style should match the style of the section buttons on the my-events page. -->
-            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
+            <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
                 <ion-segment-button value="feed" layout="icon-start">
                     <ion-icon name="list-outline"></ion-icon>
                     <ion-label>Feed</ion-label>
