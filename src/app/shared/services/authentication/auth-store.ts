@@ -16,7 +16,7 @@ export class AuthStore {
   get user(): Observable<User> {
     if (this._user.value === null) {
       return this.authService.user.pipe(
-        switchMap(user => this.userService.getUserByUid(user.uid).pipe(tap(user => this._user.next(user))))
+        switchMap(user => this.userService.getUserByUid(user?.uid).pipe(tap(user => this._user.next(user))))
       );
     } else {
       return this._user.asObservable();

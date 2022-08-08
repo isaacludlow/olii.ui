@@ -154,6 +154,20 @@ ion-item {
     justify-content: center;
     margin: 1rem auto 1rem auto;
 
+    .add-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+
+        olii-base-icon {
+            background-color: rgba(var(--color-primary-rgb), 0.125);
+            border-radius: 3px;
+            line-height: 0;
+            padding: 0.75rem;
+        }
+    }
+
     .post-picture {
         margin-right: 0.5rem;
         height: 4em;
