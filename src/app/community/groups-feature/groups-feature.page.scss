@@ -1,26 +1,38 @@
-ion-content {
-    margin: 1rem;
-    --padding-top: 1rem;
-    --padding-start: 1rem;
-    --padding-end: 1rem;
-}
-
 ion-toolbar.purple-background {
     --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-bottom: 0.5rem;
 
     .header {
         display: flex;
         align-items: center;
 
+        .add-event {
+            margin-left: auto;
+        }
+
         h2 {
             margin-left: auto;
-            margin-right: auto;
+            margin-right: -6vw;
         }
     }
 }
 
 ion-header {
     background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
+ion-toolbar.searchbar {
+    --background: #FBFBFB;
+
+    ion-searchbar {
+        margin-top: 0.5rem;
+    }
+}
+
+.spacer {
+    margin-bottom: 1rem;
 }
 
 .section-title {

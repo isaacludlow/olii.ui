@@ -27,7 +27,7 @@ export class GroupService {
     constructor(
         private httpClient:HttpClient,
         private profileService: ProfileService,
-        private authStore: AuthStore,
+        private authStore: AuthStore
         ) {
         this.subs.sink = this.authStore.user.pipe(
 			switchMap(user => this.profileService.getProfileByUserId(user.Id))
@@ -258,7 +258,7 @@ export class GroupService {
     createGroup(newGroupInfo: CreateGroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
-            Id: this.dummyId, // 
+            Id: this.dummyId,
             CoverImageUrl: newGroupInfo.CoverImageData,
             Name: newGroupInfo.Name,
             Description: newGroupInfo.Description,

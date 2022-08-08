@@ -7,6 +7,7 @@ import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-lates
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'groups-feature',
@@ -26,7 +27,9 @@ export class GroupsFeaturePage implements OnInit {
   constructor(
     private profileStore: ProfileStore,
     private groupStore: GroupStore, 
-    private domSanitizer: DomSanitizer) { }
+    private domSanitizer: DomSanitizer,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     // TODO-L20: Get groups associated with the user on the groups page.
@@ -67,6 +70,14 @@ export class GroupsFeaturePage implements OnInit {
 
   sortGroupPosts() {
     this.groupsLatest = this.groupsLatest.sort((a, b) => b.GroupPost.Date > a.GroupPost.Date ? 1 : -1);
+  }
+
+  createGroup(): void {
+    // Creator type is 'Group' when creating an event from a group details page.
+    this.router.navigate(
+      ['community/groups/create'],
+      { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
+    );
   }
 
   calcPartialGroups() {

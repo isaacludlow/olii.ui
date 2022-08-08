@@ -1,5 +1,6 @@
 import { Component, Input, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
@@ -12,9 +13,8 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
     <div>
         <div class="card-content">
             <div class="post-header">
-                <div class="poster-info">
+                <div class="poster-info" (click)="navigateToUserProfile(post.Author.Id)">
                     <div class="poster-image">
-                        <!-- TODO-L5: Should link profile preview to the poster's profile. -->
                         <olii-container-cover-image [imageUrl]="post.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
                     </div>
                     <div class="poster-name">{{post.Author.FirstName}} {{post.Author.LastName}}</div>
@@ -86,13 +86,18 @@ export class CommentCardComponent implements OnInit {
 
   constructor( 
     private groupService: GroupService,
-    private profileStore: ProfileStore
+    private profileStore: ProfileStore,
+    private router: Router
    ) { }
 
   ngOnInit(): void {
     this.profile = this.profileStore.currentUserProfile;
     this.showAddComment = false;
     this.showComments = false;
+  }
+
+  navigateToUserProfile(profileId: number) {
+    this.router.navigate(['/profile'], { queryParams: { profileId: profileId } })
   }
 
   toggleAddComment(set: boolean) {

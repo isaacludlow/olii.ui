@@ -134,7 +134,7 @@ export class GroupDetailsPage implements OnInit {
   }
 
   addEvent() {
-    // Should link to the create-event screen.
+    // Should link to the create event screen.
   }
 
 }

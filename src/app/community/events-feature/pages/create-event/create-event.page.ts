@@ -140,7 +140,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
     });
 
     const eventRequest: EventRequest = {
-      CoverImage: await readPhotoAsBase64(this.eventCoverImage, this.platform),
+      CoverImageData: await readPhotoAsBase64(this.eventCoverImage, this.platform),
       Title: this.createEventForm.get('title').value,
       Description: this.createEventForm.get('description').value,
       CreatorType: this.createEventForm.get('creatorType').value as EventCreatorIdType,

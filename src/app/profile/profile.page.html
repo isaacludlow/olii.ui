@@ -1,10 +1,10 @@
 <ion-content class="ion-padding-vertical">
     <div class="profile_options">
         <!-- TODO-M7: Remove this from user profile view; We'll need a proper way to view other user's profiles -->
-        <div class="back" (click)="viewControl()">
+        <div *ngIf="showBackButton" class="back" (click)="navigateBack()">
             <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
-        <div class="settings" routerLink="/profile/settings">
+        <div *ngIf="!showBackButton" class="settings" routerLink="/profile/settings">
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
         </div>
     </div>

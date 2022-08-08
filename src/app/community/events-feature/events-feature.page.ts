@@ -27,9 +27,9 @@ export class EventsFeaturePage implements OnInit {
   }
 
   createEvent(): void {
-    // Creator type is 'Group' when creating an event from a group page.
+    // Creator type is 'Group' when creating an event from a group details page.
     this.router.navigate(
-      ['community/events/create-event'],
+      ['community/events/create'],
       { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
     );
   }

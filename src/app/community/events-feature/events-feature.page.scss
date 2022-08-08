@@ -1,5 +1,8 @@
 ion-toolbar.purple-background {
     --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-bottom: 0.5rem;
 
     .header {
         display: flex;
