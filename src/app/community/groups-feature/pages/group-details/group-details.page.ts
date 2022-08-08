@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { switchMap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
@@ -42,6 +42,7 @@ export class GroupDetailsPage implements OnInit {
     private groupStore: GroupStore,
     private groupService: GroupService,
     private profileStore: ProfileStore,
+    private router: Router,
     private route: ActivatedRoute,
   ) { }
 
@@ -134,7 +135,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   addEvent() {
-    // Should link to the create event screen.
+    this.router.navigate(
+      ['community/events/create'],
+      { queryParams: { creatorType: 'Group', creatorId: this.group.Id } }
+    );
   }
 
 }
