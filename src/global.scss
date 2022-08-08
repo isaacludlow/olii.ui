@@ -297,8 +297,7 @@ img {
 .create-album-popup-modal {
 	--border-radius: 8px!important;
 	&::part(content) {
-		height: 50%;
-    	top: 50%;
+    	top: 40%;
     	position: absolute; 
     	display: block;  
 	}
@@ -307,8 +306,7 @@ img {
 .create-post-popup-modal {
 	--border-radius: 8px!important;
 	&::part(content) {
-		height: 50%;
-    	top: 50%;
+    	top: 40%;
     	position: absolute; 
     	display: block;  
 	}

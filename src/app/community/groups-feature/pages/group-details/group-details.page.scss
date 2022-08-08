@@ -168,6 +168,23 @@ ion-item {
         }
     }
 
+    olii-responsive-aspect-ratio-container {
+        position: relative;
+
+        ion-badge {
+            --background: #F2EFFF;
+            --color: var(--color-primary);
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            margin-top: -5px;
+            margin-right: -5px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+
     .post-picture {
         margin-right: 0.5rem;
         height: 4em;
