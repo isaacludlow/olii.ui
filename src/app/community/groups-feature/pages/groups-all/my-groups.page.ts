@@ -5,10 +5,10 @@ import { GroupStore } from 'src/app/shared/services/community/groups/group.store
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  templateUrl: './groups-all.page.html',
-  styleUrls: ['./groups-all.page.scss']
+  templateUrl: './my-groups.page.html',
+  styleUrls: ['./my-groups.page.scss']
 })
-export class GroupsAllPage implements OnInit {
+export class MyGroupsPage implements OnInit {
 
   groups: Group[]
   subs = new SubSink();

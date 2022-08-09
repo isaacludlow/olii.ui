@@ -97,7 +97,7 @@ export class CommentCardComponent implements OnInit {
   }
 
   navigateToUserProfile(profileId: number) {
-    this.router.navigate(['/profile'], { queryParams: { profileId: profileId } })
+    this.router.navigate(['/profile'], { queryParams: { profileId: profileId, showBackButton: true } })
   }
 
   toggleAddComment(set: boolean) {

@@ -1,15 +1,23 @@
-<ion-toolbar mode="ios">
-    <ion-buttons slot="start" mode="ios">
-        <div>
-            <olii-colored-square-background backgroundColor="purple-tinted-white" routerLink="/profile">
-                <olii-base-icon name="arrow-back-outline" color="primary"></olii-base-icon>
-            </olii-colored-square-background>
-        </div>
-    </ion-buttons>
-    <ion-title color="light">Settings</ion-title>
-</ion-toolbar>
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Settings</ion-title>
+    </ion-toolbar>
+</ion-header>
 
-<ion-content>
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
+                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+                <h2 class="color-light">Settings</h2>
+            </div>
+        </ion-toolbar>
+    </ion-header>
+
     <ion-item button [routerLink]="['/profile/edit', profileId]">
         <ion-label>Edit Profile</ion-label>
     </ion-item>

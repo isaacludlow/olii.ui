@@ -3,6 +3,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from 'subsink';
 import { FormBuilder } from '@angular/forms';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './edit-profile.page.html',
@@ -22,7 +23,11 @@ export class EditProfilePage implements OnInit {
     bio: [''],
   })
 
-  constructor(private fb: FormBuilder, private profileStore: ProfileStore) { }
+  constructor(
+    private fb: FormBuilder,
+    private profileStore: ProfileStore,
+    private location: Location
+  ) { }
 
   ngOnInit(): void {
     // TODO-M6: Remove all references to hard-coded user
@@ -38,5 +43,9 @@ export class EditProfilePage implements OnInit {
       this.profileForm.controls['currentCity'].setValue(this.profile.CurrentCity);
       this.profileForm.controls['bio'].setValue(this.profile.Bio);
     }
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }

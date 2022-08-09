@@ -4,7 +4,7 @@ import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupDetailsPage } from './pages/group-details/group-details.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
-import { GroupsAllPage } from './pages/groups-all/groups-all.page';
+import { MyGroupsPage } from './pages/groups-all/my-groups.page';
 
 const routes: Routes = [
   { 
@@ -25,7 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'all',
-    component: GroupsAllPage
+    component: MyGroupsPage
   },
 ];
 
