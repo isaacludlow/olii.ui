@@ -103,7 +103,7 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcDisplayGroups() {
-    return Math.round((screen.width - this.convertRemToPixels(8)) / this.convertRemToPixels(4.8));
+    return Math.round((window.innerWidth - this.convertRemToPixels(4.8)) / this.convertRemToPixels(4.8));
   }
 
   convertRemToPixels(rem: number): number {    
