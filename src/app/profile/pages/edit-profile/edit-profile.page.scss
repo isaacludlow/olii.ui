@@ -26,6 +26,11 @@ ion-label {
     font-weight: bold;
 }
 
+ion-item {
+    --padding-start: 0;
+    margin-bottom: 0.5rem;
+}
+
 .profile-image-container {
     display: flex;
     flex-direction: column;
@@ -41,7 +46,7 @@ ion-label {
 
 .change-profile-pic-label {
     font-weight: bold;
-    color: var(--color-primary);
+    color: var(--color-tertiary);
 }
 
 form {
