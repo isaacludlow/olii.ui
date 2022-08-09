@@ -5,6 +5,7 @@ import { GroupDetailsPage } from './pages/group-details/group-details.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
 import { MyGroupsPage } from './pages/groups-all/my-groups.page';
+import { EditGroupPage } from './pages/edit-group/edit-group.page';
 
 const routes: Routes = [
   { 
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'group/:groupId',
     component: GroupDetailsPage
+  },
+  {
+    path: 'group/:groupId/edit',
+    component: EditGroupPage
   },
   {
     path: 'group/:groupId/members',

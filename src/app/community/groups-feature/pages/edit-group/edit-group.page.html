@@ -1,21 +1,4 @@
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Create Group</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-header collapse="condense" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-        <div class="header">
-            <div class="back-icon">
-                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-            </div>
-            <h2 class="color-light">Create Group</h2>
-        </div>
-    </ion-toolbar>
-</ion-header>
-
-<!--ion-toolbar color="primary" mode="ios">
+<ion-toolbar color="primary" mode="ios">
     <ion-title>
         <h2 class="section-title">Create Group</h2>
     </ion-title>
@@ -23,10 +6,10 @@
     <div class="back-icon">
         <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
     </div>
-</ion-toolbar-->
+</ion-toolbar>
 
 <ion-content>
-    <form [formGroup]="createGroupForm">
+    <form [formGroup]="editGroupForm">
         <h4 class="form-label">Group Details</h4>
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Name" formControlName="name"></ion-input>
@@ -34,7 +17,7 @@
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Description" formControlName="description"></ion-input>
         </ion-item>
-
+    
         <h4 class="form-label">Group Visibility</h4>
 
         <ion-radio-group formControlName="groupVisibility" class="ion-margin-top">
@@ -49,18 +32,18 @@
                 <ion-label class="visibility-descr" color="medium" position="stacked" mode="ios">Only members can view posts in the group</ion-label>
             </ion-item>
         </ion-radio-group>
-
-    </form>
     
+    </form>
+
     <hr>
 
-    <h4 class="form-label">Add Image</h4>
+    <h4 class="form-label">Change Image</h4>
     <div class="group-picture-container" (click)="setGroupPicture()">
         <div class="group-picture">
             <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid">Create Group</ion-button>
+    <ion-button type="button" expand="block" color="primary" (click)="updateGroup()" mode="ios" [disabled]="!editGroupForm.valid">Update Group</ion-button>
 
 </ion-content>

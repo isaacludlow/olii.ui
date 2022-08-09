@@ -10,6 +10,7 @@ import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
 import { MyGroupsPage } from './pages/groups-all/my-groups.page';
+import { EditGroupPage } from './pages/edit-group/edit-group.page';
 import { CommunityModule } from '../community.module';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CommunityModule } from '../community.module';
     GroupDetailsPage,
     CreateGroupPage,
     GroupMembersPage,
-    MyGroupsPage
+    MyGroupsPage,
+    EditGroupPage
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
-import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 
@@ -21,16 +21,15 @@ export class CreateGroupPage implements OnInit {
 
   profile: Profile;
   friends: Profile[];
-  groupVisibility:string = 'Public';
   subs = new SubSink();
   groupPicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
 
 
   createGroupForm = this.fb.group({
-    name: [''],
-    description: [''],
-    //tags:[],
-  })
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    groupVisibility: [null, Validators.required],
+  });
 
   constructor(
     private fb: FormBuilder, 
@@ -56,22 +55,14 @@ export class CreateGroupPage implements OnInit {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
-  async createGroup(){
-    const newGroup: CreateGroupRequest = {
+  async createGroup() {
+    const newGroup: GroupRequest = {
+      Id: null,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
-      PrivacyLevel: this.groupVisibility as PrivacyLevel,
-      Admins: [
-        {
-          Id: this.profile.Id,
-          FirstName: this.profile.FirstName,
-          LastName: this.profile.LastName,
-          ProfilePictureUrl: this.profile.ProfilePictureUrl
-        }
-      ],
-      // TODO: Calculate what members should be added (make modal)
-      Members: [],
+      PrivacyLevel: this.createGroupForm.get('groupVisibility').value as PrivacyLevel,
+      Admin: this.profileStore.currentUserProfile.Id,
     }
 
     // TODO-L26: Use groupStore instead of groupService to create a group.

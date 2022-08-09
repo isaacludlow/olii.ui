@@ -3,7 +3,7 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { from, Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { CreateGroupRequest } from 'src/app/models/requests/community/groups/create-group-request';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
@@ -255,7 +255,7 @@ export class GroupService {
         }
     ];
 
-    createGroup(newGroupInfo: CreateGroupRequest): Observable<Group> {
+    createGroup(newGroupInfo: GroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
             Id: this.dummyId,
@@ -264,14 +264,30 @@ export class GroupService {
             Description: newGroupInfo.Description,
             PrivacyLevel: newGroupInfo.PrivacyLevel,
             Posts: [],
-            Admins: newGroupInfo.Admins,
-            Members: newGroupInfo.Members
+            Admins: [ {
+                Id: this.currentUserProfile.Id,
+                FirstName: this.currentUserProfile.FirstName,
+                LastName: this.currentUserProfile.LastName,
+                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+            }],
+            Members: []
         }
 
         this.ExampleGroups.push(newGroup);
         this.dummyId++;
 
         return of(newGroup);
+    }
+
+    updateGroup(updatedGroup: GroupRequest): Observable<Group> {
+        const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
+        if (index !== -1) {
+            this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
+            this.ExampleGroups[index].Name = updatedGroup.Name;
+            this.ExampleGroups[index].Description = updatedGroup.Description;
+            this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
+        }
+        return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
     }
 
     getGroupAll(): Observable<Group[]> {
