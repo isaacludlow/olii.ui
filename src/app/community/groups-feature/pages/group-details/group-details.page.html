@@ -7,8 +7,7 @@
 
     <div class="group-details">
         <h2 class="group-name">{{ group.Name }}</h2>
-        <!-- TODO-M2: Text size between here and the event-details page is inconsistent-->
-        <div class="group-description">{{group.Description}}</div>
+        <p class="group-description">{{group.Description}}</p>
     </div>
 
     <div class="member-icons">
@@ -81,7 +80,6 @@
     
                     <div class="post-pictures-container">
                         <div *ngFor="let picture of postPictures; let i = index">
-                            <!-- TODO-L10: Fix the remove image button to match the styles of the remove image button on the create event page. -->
                             <div class="post-picture">
                                 <olii-responsive-aspect-ratio-container aspectRatio="1/1">
                                     <ion-badge (click)="removePostPicture(i)"><ion-icon name="close"></ion-icon></ion-badge>
