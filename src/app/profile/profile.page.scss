@@ -78,12 +78,12 @@
 
     .posts {
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
-        padding: 0.25rem;
-        gap: 5px;
+        gap: 2px;
 
         .image-container {
-            width: 49%;
+            width: 32%;
         }
     }
 
