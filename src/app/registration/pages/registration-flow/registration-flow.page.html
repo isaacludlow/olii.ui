@@ -48,13 +48,17 @@
             <div class="location-inputs">
               <ion-item>
                 <ion-input>
-                  <olii-places-autocomplete-field (autocompletedResult)="setHostLocation($event)" [responseType]="['(cities)']" [responseFieldType]="['name']" placeholder="Host City"></olii-places-autocomplete-field>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHostCity($event)" [responseType]="['(cities)']" [responseFieldType]="['vicinity']" placeholder="Host City"></olii-places-autocomplete-field>
                 </ion-input>
               </ion-item>
               <ion-item>
                 <ion-input>
-                  <!-- TODO M10: Needs to standardize country input; I could put either USA or United States without issue -->
-                  <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['name']" placeholder="Home Country"></olii-places-autocomplete-field>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHostCountry($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Host Country"></olii-places-autocomplete-field>
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Home Country"></olii-places-autocomplete-field>
                 </ion-input>
               </ion-item>
             </div>
