@@ -50,8 +50,9 @@ export class GroupsFeaturePage implements OnInit {
     
     for (const group of this.groups) {
       if (this.canView(group)) {
-        // TODO-L21: Should get the latest group posts. Currently gets the first posts in the group.
-        var posts = group.Posts.slice(0, this.POSTLIMITER);
+        var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
+        posts.reverse().slice(0, this.POSTLIMITER);
+
         for (const post of posts) {
           this.groupsLatest.push(
             {
