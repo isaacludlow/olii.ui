@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
-import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { Router } from '@angular/router';
@@ -37,7 +37,7 @@ export class CreateGroupPage implements OnInit {
     private platform: Platform,
     private profileStore: ProfileStore, 
     private router: Router,
-    private groupService: GroupService,
+    private groupService: GroupFeatureService,
     ) { }
 
   ngOnInit(): void {

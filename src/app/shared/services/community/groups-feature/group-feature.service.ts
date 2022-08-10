@@ -17,7 +17,7 @@ import { ProfileService } from '../../profile/profile.service';
     providedIn: 'root'
 })
 
-export class GroupService {
+export class GroupFeatureService {
 
 	currentUserProfile: Profile;
     private subs = new SubSink()
@@ -34,7 +34,6 @@ export class GroupService {
 		).subscribe(profile => this.currentUserProfile = profile);
     }
 
-    // TODO-L27: Move group mock data to separate file.
     ExampleGroups:Group[] = [
         {
             Id: 1,
@@ -126,7 +125,6 @@ export class GroupService {
               },
             ],
         },
-
         {
             Id: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -185,7 +183,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -217,7 +214,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -235,7 +231,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -254,6 +249,20 @@ export class GroupService {
             Members: [],
         }
     ];
+
+    getGroups(offset: number, limit: number): Observable<Group[]> {
+        return of(this.ExampleGroups);
+    }
+
+    getGroupById(id: number): Observable<Group> {
+        return of(this.ExampleGroups.find(group => group.Id === id));
+    }
+
+    getMyGroups(profileId: number): Observable<Group[]> {
+        // TODO: Create getMyGroups endpoint.
+        console.log('Fix the getMyGroups service call')
+        return of([])
+    }
 
     createGroup(newGroupInfo: GroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
@@ -288,14 +297,6 @@ export class GroupService {
             this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
         }
         return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
-    }
-
-    getGroupAll(): Observable<Group[]> {
-        return of(this.ExampleGroups);
-    }
-
-    getGroupById(id: number): Observable<Group> {
-        return of(this.ExampleGroups.find(group => group.Id === id));
     }
 
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {

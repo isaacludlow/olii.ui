@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
