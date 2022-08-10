@@ -14,8 +14,7 @@
         </div>
         <div class="profile-info">
             <div class="personal-info">
-                <!-- TODO-M6: Remove hardcoded values; pull from currentuserprofile -->
-                <ion-text color="tertiary"><h3 class="name">John Snow*</h3></ion-text>
+                <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName + ' ' + profile.LastName }}</h3></ion-text>
                 <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
                 <div class="bio color-medium">{{ profile.Bio }}</div>
