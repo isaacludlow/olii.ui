@@ -31,14 +31,16 @@ export class CreateEventPage implements OnInit, OnDestroy {
   createEventForm = this.fb.group({
     coverImage: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
-    description: [null, [Validators.required, Validators.minLength(5)]],
+    description: [null, [Validators.required, Validators.minLength(8)]],
     creatorType: [null, Validators.required],
     creatorId: [null, Validators.required],
     dateTime: [null, Validators.required],
     location: [null, Validators.required],
     // privacyLevel: [null, Validators.required],
     images: [null]
-  });
+  },
+  { updateOn: 'blur' }
+  );
   subs = new SubSink();
 
   constructor(
