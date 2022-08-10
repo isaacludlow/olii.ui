@@ -32,8 +32,10 @@ export class GroupDetailsPage implements OnInit {
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
-    postContent: ['', Validators.required],
-  })
+    postContent: ['', [Validators.required, Validators.minLength(8)]],
+  },
+  { updateOn: 'blur' }
+  )
 
   constructor(
     private fb: FormBuilder,
@@ -111,7 +113,6 @@ export class GroupDetailsPage implements OnInit {
 
   // TODO-L24: Add form control to prevent an empty group post. Must have either an image or text.
   async writePost() {
-
     var images = [];
     for (const image of this.postPictures) {
       images.push(await readPhotoAsBase64(image, this.platform));
