@@ -15,11 +15,15 @@ export class EventsFeatureStore {
 
   constructor(private eventsService: EventsFeatureService) { }
 
-  getEvents(offset: number = 0, limit: number = null): Observable<Event[]> {
-    return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
+  getEvents(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Event[]> {
+    if (this._allEvents.value === null || refresh) {
+      return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
+    } else {
+      return this._allEvents.asObservable();
+    }
   }
 
-  getEventById(eventId: number) {
+  getEventById(eventId: number): Observable<Event> {
     if (this._allEvents.value === null) {
       return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
@@ -66,7 +70,7 @@ export class EventsFeatureStore {
     if (this._myEvents.value === null) {
       return this.eventsService.getMyEvents(profileId).pipe(tap(events => this._myEvents.next(events)));
     } else {
-      return this._myEvents;
+      return this._myEvents.asObservable();
     }
   }
 

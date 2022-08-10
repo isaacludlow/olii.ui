@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Group } from '../../models/dto/community/groups/group.dto';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-latest-post.dto';
@@ -26,7 +26,7 @@ export class GroupsFeaturePage implements OnInit {
 
   constructor(
     private profileStore: ProfileStore,
-    private groupStore: GroupStore, 
+    private groupStore: GroupFeatureStore, 
     private domSanitizer: DomSanitizer,
     private router: Router
   ) { }
@@ -34,7 +34,7 @@ export class GroupsFeaturePage implements OnInit {
   ngOnInit(): void {
     // TODO-L20: Get groups associated with the user on the groups page.
     this.profile = this.profileStore.currentUserProfile;
-    this.subs.sink = this.groupStore.getGroupAll().subscribe(res =>  {
+    this.subs.sink = this.groupStore.getGroups().subscribe(res =>  {
       this.groups = res;
       this.calcLatestPosts();
       this.calcPartialGroups();

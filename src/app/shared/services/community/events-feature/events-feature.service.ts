@@ -6,8 +6,8 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { SubSink } from 'subsink';
-import { AuthStore } from '../authentication/auth-store';
-import { ProfileService } from '../profile/profile.service';
+import { AuthStore } from '../../authentication/auth-store';
+import { ProfileService } from '../../profile/profile.service';
 import { mockEventData_allEvents, mockEventData_eventById, mockEventData_myEvents, mockEventData_newEvent } from './mock-event-data';
 
 @Injectable({
@@ -33,7 +33,7 @@ export class EventsFeatureService {
   }
 
   // TODO: All of these methods should have error handling once we connect to the api.
-  getEvents(offset: number = 0, limit: number = null): Observable<Event[]> {
+  getEvents(offset: number, limit: number): Observable<Event[]> {
     const response = mockEventData_allEvents;
 
     return of(response);

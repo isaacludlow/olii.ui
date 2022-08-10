@@ -5,12 +5,12 @@ import { GalleryPhoto } from '@capacitor/camera';
 import { switchMap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
-import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 import { Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
@@ -39,8 +39,8 @@ export class GroupDetailsPage implements OnInit {
     private fb: FormBuilder,
     private domSanitizer: DomSanitizer,
     private platform: Platform,
-    private groupStore: GroupStore,
-    private groupService: GroupService,
+    private groupStore: GroupFeatureStore,
+    private groupService: GroupFeatureService,
     private profileStore: ProfileStore,
     private router: Router,
     private route: ActivatedRoute,

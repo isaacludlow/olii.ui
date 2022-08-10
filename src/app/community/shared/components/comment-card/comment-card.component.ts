@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
-import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
@@ -85,7 +85,7 @@ export class CommentCardComponent implements OnInit {
   addCommentInput = new FormControl('', Validators.required);
 
   constructor( 
-    private groupService: GroupService,
+    private groupService: GroupFeatureService,
     private profileStore: ProfileStore,
     private router: Router
    ) { }
