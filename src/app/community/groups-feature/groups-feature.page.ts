@@ -15,14 +15,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./groups-feature.page.scss']
 })
 export class GroupsFeaturePage implements OnInit {
-
+  private readonly _postLimiter: number = 10;
   profile: Profile;
   groups: Group[];
   groupsLatest: GroupPostLatest[];
   partialGroups: PartialGroup[] = [];
   subs = new SubSink();
-  // TODO-L22: Private fields should be in snake case starting with an underscore (_snake_case).
-  POSTLIMITER: number = 10;
 
   constructor(
     private profileStore: ProfileStore,
@@ -51,7 +49,7 @@ export class GroupsFeaturePage implements OnInit {
     for (const group of this.groups) {
       if (this.canView(group)) {
         var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
-        posts.reverse().slice(0, this.POSTLIMITER);
+        posts.reverse().slice(0, this._postLimiter);
 
         for (const post of posts) {
           this.groupsLatest.push(
