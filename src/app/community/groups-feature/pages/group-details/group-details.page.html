@@ -73,10 +73,11 @@
                 </div>
     
               <ion-content class="modal-content">
-                    <form [formGroup]="createPostForm">
+                    <form [formGroup]="createPostForm" #form="ngForm">
                         <ion-item>
                             <ion-input placeholder="What's on your mind?" formControlName="postContent"></ion-input>
                         </ion-item>
+                        <ion-note color="danger" *ngIf="(createPostForm.controls.postContent.dirty || form.submitted) && !createPostForm.controls.postContent.valid">Please enter at lease 8 characters for your post</ion-note>
                     </form>
     
                     <h3>Add Image</h3>

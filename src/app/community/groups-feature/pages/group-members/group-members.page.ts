@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -16,7 +16,7 @@ export class GroupMembersPage implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private groupStore: GroupStore
+    private groupStore: GroupFeatureStore
   ) { }
 
   ngOnInit(): void {

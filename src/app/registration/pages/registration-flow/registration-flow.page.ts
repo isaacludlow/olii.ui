@@ -9,6 +9,7 @@ import gm = google.maps;
 import { ProfileService } from 'src/app/shared/services/profile/profile.service';
 import { Router } from '@angular/router';
 import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
+import { calculateBackoffMillis } from '@firebase/util';
 
 @Component({
   templateUrl: './registration-flow.page.html',
@@ -37,6 +38,10 @@ export class RegistrationFlowPage {
     private navBar: NavBarService,
   ) { }
 
+  ngOnInit() {
+    this.registerFlowForm.valueChanges.subscribe(value => console.log(value))
+  }
+
   nextSlide(): void {
     this.slides.slideNext();
   }
@@ -49,23 +54,30 @@ export class RegistrationFlowPage {
     selectImages(1).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
   }
 
-  setProfileImages() {
+  addProfileImages() {
     let numberOfImagesAllowedToUpload = 9 - this.profileImages.length;
     selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => this.profileImages.push(...galleryPhotos));
+  }
+
+  removeProfileImage(imageIndex: number): void {
+    this.profileImages.splice(imageIndex, 1);
   }
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
-  setHostLocation(placeResult: gm.places.PlaceResult): void {
-    const placeDetails = placeResult.name.split(', ');
-    this.registerFlowForm.get('currentCity').setValue(placeDetails.shift());
-    this.registerFlowForm.get('hostCountry').setValue(placeDetails.pop());
+  setHostCity(placeResult: gm.places.PlaceResult): void {
+    this.registerFlowForm.get('currentCity').setValue(placeResult.vicinity);
+  }
+  
+  setHostCountry(placeResult: gm.places.PlaceResult): void {
+    
+    this.registerFlowForm.get('hostCountry').setValue(placeResult.formatted_address);
   }
   
   setHomeLocation(placeResult: gm.places.PlaceResult): void {
-    this.registerFlowForm.get('homeCountry').setValue(placeResult.name);
+    this.registerFlowForm.get('homeCountry').setValue(placeResult.formatted_address);
   }
 
   async submit() {

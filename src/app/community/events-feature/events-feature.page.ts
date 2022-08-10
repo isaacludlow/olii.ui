@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/events-feature/events-feature.store';
+import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({

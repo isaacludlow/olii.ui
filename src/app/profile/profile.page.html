@@ -14,9 +14,7 @@
         </div>
         <div class="profile-info">
             <div class="personal-info">
-                <!-- TODO-M6: Remove hardcoded values; pull from currentuserprofile -->
-                <ion-text color="tertiary"><h3 class="name"> {{profile.FirstName}} {{profile.LastName}}</h3></ion-text>
-                <!-- TODO-M16: Profiles do not have a username -->
+                <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName + ' ' + profile.LastName }}</h3></ion-text>
                 <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
                 <div class="bio color-medium">{{ profile.Bio }}</div>
@@ -30,15 +28,14 @@
                         <p>{{ profile.CurrentCity }}</p>
                     </ion-text>
                 </div>
-                <!-- TODO-L38: Remove friend count. -->
-                <div class="friends">
+                <!-- <div class="friends">
                     <ion-text color="medium">
                         <h4 class="color-medium">Friends</h4>
                     </ion-text>
                     <ion-text color="tertiary">
                         <p>{{ profile.Friends }}</p>
                     </ion-text>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

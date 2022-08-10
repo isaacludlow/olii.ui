@@ -18,16 +18,20 @@
         </ion-toolbar>
     </ion-header>
 
-    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <!-- TODO-L19: Need to build visualization for the user for when a validator has not been satisfied on the create event page. -->
         <div class="event-details">
             <h4>Event details</h4>
             <ion-item>
                 <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
             </ion-item>
+            <ion-note color="danger" *ngIf="(createEventForm.controls.title.dirty || form.submitted) && !createEventForm.controls.title.valid">Event title must be at least 5 characters long</ion-note>
+
             <ion-item>
                 <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
+            <ion-note color="danger" *ngIf="(createEventForm.controls.description.dirty || form.submitted) && !createEventForm.controls.description.valid">Event description must be at lease 8 characters long</ion-note>
+
             <ion-item id="open-modal" class="icon-spacer">
                 <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
                 <ion-input formControlName="dateTime" type="text" placeholder="Date and time" [value]="eventDateTimeInput | date:'EE, MMM d, h:mm a'"></ion-input>
