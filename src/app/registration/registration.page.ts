@@ -23,7 +23,9 @@ export class RegistrationPage {
       Validators.minLength(8)
     ]],
     hasReadTermsAndConditions: [false, Validators.requiredTrue]
-  });
+  },
+  { updateOn: 'blur' }
+  );
 
   constructor(
     private fb: FormBuilder,
