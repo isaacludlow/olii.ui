@@ -68,6 +68,20 @@
         }
     }
 
+    .add-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+
+        olii-base-icon {
+            background-color: rgba(var(--color-primary-rgb), 0.125);
+            border-radius: 3px;
+            line-height: 0;
+            padding: 0.75rem;
+        }
+    }
+
     .profile-images-container {
         display: flex;
         flex-wrap: wrap;
@@ -75,6 +89,25 @@
 
         .profile-image {
             width: 32%;
+
+            olii-responsive-aspect-ratio-container {
+                position: relative;
+        
+                ion-badge {
+                    --background: #F2EFFF;
+                    --color: var(--color-primary);
+                    position: absolute;
+                    top: 0px;
+                    right: 0px;
+                    margin-top: -5px;
+                    margin-right: -5px;
+                    border-radius: 100%;
+                    display: flex;
+                    align-items: center;
+                    height: 30px;
+                    width: 30px;
+                }
+            }
         }
     }
 }

@@ -95,14 +95,14 @@
                 <ion-textarea formControlName="bio" placeholder="Write your profile bio here"></ion-textarea>
               </ion-item>
 
-              <div (click)="setProfileImages()">
-                <!-- TODO-M11: No way to remove a picture if you change your mind, no way to add more pictures once you've selected just one -->
-                <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
-                <olii-base-icon *ngIf="profileImages.length === 0" name="images-outline" size="display" color="medium"></olii-base-icon>
+              <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
+              <div class="add-image" *ngIf="profileImages.length < 9" (click)="addProfileImages()">
+                <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
               </div>
               <div *ngIf="profileImages.length > 0" class="profile-images-container">
-                <div *ngFor="let profileImage of profileImages" class="profile-image">
+                <div *ngFor="let profileImage of profileImages; let i = index" class="profile-image">
                   <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                    <ion-badge (click)="removeProfileImage(i)"><ion-icon name="close"></ion-icon></ion-badge>
                     <olii-container-cover-image [imageUrl]="sanitizeUrl(profileImage.webPath)" boarderRadius="5%"></olii-container-cover-image>
                   </olii-responsive-aspect-ratio-container>
                 </div>

@@ -54,9 +54,13 @@ export class RegistrationFlowPage {
     selectImages(1).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
   }
 
-  setProfileImages() {
+  addProfileImages() {
     let numberOfImagesAllowedToUpload = 9 - this.profileImages.length;
     selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => this.profileImages.push(...galleryPhotos));
+  }
+
+  removeProfileImage(imageIndex: number): void {
+    this.profileImages.splice(imageIndex, 1);
   }
 
   sanitizeUrl(url: string): string {
