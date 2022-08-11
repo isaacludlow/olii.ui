@@ -41,9 +41,8 @@ export class CreateGroupPage implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    // TODO-L25: Use the profileStore to get the current user instead of making a call.
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
-    //this.subs.sink = this.profileStore.getFriends(98).subscribe(res => this.friends = res); // Will add the ability to invite friends to a newly create group in the future.
+    this.profile = this.profileStore.currentUserProfile;
+    // TODO: Add the ability to invite friends to a newly create group in the future.
   }
 
   
