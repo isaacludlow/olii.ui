@@ -1,29 +1,30 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { User } from 'src/app/models/dto/user/user.dto';
-import { UserService } from '../user/user.service';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { FirebaseAuthService } from './firebase-auth.service';
+import firebase from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthStore {
-  private _user = new BehaviorSubject<User>(null);
+  private _userCredentials: firebase.auth.UserCredential;
 
-  constructor(private authService: FirebaseAuthService, private userService: UserService) { }
+  constructor(private authService: FirebaseAuthService) { }
 
-  get user(): Observable<User> {
-    if (this._user.value === null) {
-      return this.authService.user.pipe(
-        switchMap(user => this.userService.getUserByUid(user?.uid).pipe(tap(user => this._user.next(user))))
-      );
-    } else {
-      return this._user.asObservable();
-    }
+  get userCredentials(): firebase.auth.UserCredential {
+    return this._userCredentials;
   }
 
   get isAuthenticated(): Observable<boolean> {
-    return this.user.pipe(map(user => !!user));
+    return this.authService.user.pipe(map(user => !!user));
+  }
+
+  registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    return this.authService.registerUser(email, password).pipe(tap(userCredentials => this._userCredentials = userCredentials));
+  }
+
+  login(email: string, password: string): Observable<firebase.auth.UserCredential> {
+    return this.authService.login(email, password).pipe(tap(userCredentials => this._userCredentials = userCredentials));
   }
 }
