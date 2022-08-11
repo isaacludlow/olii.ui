@@ -8,6 +8,7 @@ import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 import { convertBlobToBase64 } from "../../utilities";
 import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
+import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 
 @Injectable({
 	providedIn: 'root'
@@ -70,6 +71,10 @@ export class ProfileStore implements OnDestroy {
 
 	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
 		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
+	}
+
+	updateProfile(profileRequest: ProfileRequest) {
+		return this.profileService.updateProfile(profileRequest);
 	}
 
 	// getBase64Image(url: string) {

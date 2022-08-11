@@ -56,12 +56,16 @@ hr {
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 1rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
 
     .my-groups-selector-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
 
         .group-links-container {
             display: flex;
@@ -117,6 +121,8 @@ hr {
 .section-header {
     margin-top: 2rem;
     margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    
 }
 
 .see-all-link {
@@ -126,6 +132,8 @@ hr {
 
 .post {
     margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .card-content {

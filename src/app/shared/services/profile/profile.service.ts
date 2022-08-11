@@ -65,6 +65,10 @@ export class ProfileService {
     return of(exampleFriends);
   }
 
+  updateProfile(profileRequest: ProfileRequest) {
+    
+  }
+
   createNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
     // Add API call code here
     return true;
