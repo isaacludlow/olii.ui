@@ -62,7 +62,8 @@ export class EventsFeatureStore {
       tap(event => {
         this._allEvents.next([...this._allEvents.value, event]);
         this._myEvents.next([...this._myEvents.value, event]);
-      }));
+      })
+    );
   }
 
   //#region getMyEvents() helper methods.

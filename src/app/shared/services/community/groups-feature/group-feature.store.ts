@@ -3,6 +3,7 @@ import { BehaviorSubject, from, Observable } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, tap } from "rxjs/operators";
+import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 
 @Injectable({
     providedIn: 'root'
@@ -52,6 +53,15 @@ export class GroupFeatureStore {
         } else {
             return this._myGroups.asObservable();
         }
+    }
+
+    createGroup(groupRequest: GroupRequest): Observable<Group> {
+        return this.groupService.createGroup(groupRequest).pipe(
+            tap(group => {
+                this._allGroups.next([...this._allGroups.value, group]);
+                this._myGroups.next([...this._myGroups.value, group])
+            })
+        );
     }
 
     postNewGroup() {

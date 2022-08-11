@@ -37,7 +37,7 @@ export class CreateGroupPage implements OnInit {
     private platform: Platform,
     private profileStore: ProfileStore, 
     private router: Router,
-    private groupService: GroupFeatureService,
+    private groupStore: GroupFeatureStore,
     ) { }
 
   ngOnInit(): void {
@@ -64,8 +64,7 @@ export class CreateGroupPage implements OnInit {
       Admin: this.profileStore.currentUserProfile.Id,
     }
 
-    // TODO-L26: Use groupStore instead of groupService to create a group.
-    this.groupService.createGroup(newGroup).subscribe(res => {
+    this.groupStore.createGroup(newGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.Id]);
     })
   }
