@@ -1,21 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { User } from 'src/app/models/dto/user/user.dto';
+import { of } from 'rxjs';
 import { mockUserData_loggedInUser } from './mock-user-data.dto';
-import { tap } from 'rxjs/operators';
-import { UserRequest } from 'src/app/models/requests/user/user-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  getUserByUid(uid: string) {
-    const response = mockUserData_loggedInUser;
 
-    return of(response);
-  }
+  constructor() { }
 
-  createUser(user: UserRequest): Observable<User> {
+  getUserByUid(userUid: string) {
     const response = mockUserData_loggedInUser;
 
     return of(response);

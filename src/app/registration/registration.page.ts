@@ -2,10 +2,8 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
-import { UserRequest } from '../models/requests/user/user-request';
-import { AuthStore } from '../shared/services/authentication/auth-store';
-import { UserStore } from '../shared/services/user/user.store';
+import { UserRegistrationRequest } from '../models/requests/registration/user-registration-request';
+import { RegistrationService } from '../shared/services/registration/registration.service';
 
 @Component({
   selector: 'registration',
@@ -31,8 +29,7 @@ export class RegistrationPage {
 
   constructor(
     private fb: FormBuilder,
-    private authStore: AuthStore,
-    private userStore: UserStore,
+    private registrationService: RegistrationService,
     private router: Router,
     private location: Location
   ) { }
@@ -46,16 +43,14 @@ export class RegistrationPage {
   }
 
   onSubmit(): void {
-    const newUser: UserRequest = {
+    const userInfo: UserRegistrationRequest = {
       Username: this.registerForm.get('username').value,
-      DOB: null,
       Email: this.registerForm.get('email').value,
-      PhoneNumber: null
+      Password: this.registerForm.get('password').value,
+      HasReadTermsAndConditions: this.registerForm.get('hasReadTermsAndConditions').value
     }
-
-    this.authStore.registerUser(newUser.Email, this.registerForm.get('password').value).pipe(
-      switchMap(_ => this.userStore.createUser(newUser))
-    ).subscribe(_ => {
+    
+    this.registrationService.registerUser(userInfo).subscribe(_ => {
       this.registerForm.reset();
       this.router.navigate(['registration/registration-flow']);
     });

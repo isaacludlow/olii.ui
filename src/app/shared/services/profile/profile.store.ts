@@ -9,7 +9,6 @@ import { convertBlobToBase64 } from "../../utilities";
 import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
-import { UserStore } from "../user/user.store";
 
 @Injectable({
 	providedIn: 'root'
@@ -21,11 +20,10 @@ export class ProfileStore implements OnDestroy {
 
 	constructor(
 		private profileService: ProfileService,
-		private userStore: UserStore,
+		private authStore: AuthStore,
 		private httpClient: HttpClient
 	) {
-
-		this.subs.sink = this.userStore.user.pipe(
+		this.subs.sink = this.authStore.user.pipe(
 			switchMap(user => this.profileService.getProfileByUserId(user.Id))
 		).subscribe(profile => this.currentUserProfile = profile);
 	}
