@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
-import { from, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
@@ -10,8 +10,7 @@ import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
-import { switchMap, tap } from "rxjs/operators"
-import { ProfileService } from '../../profile/profile.service';
+import { ProfileStore } from '../../profile/profile.store';
 
 @Injectable({
     providedIn: 'root'
@@ -26,12 +25,10 @@ export class GroupFeatureService {
 
     constructor(
         private httpClient:HttpClient,
-        private profileService: ProfileService,
+        private profileStore: ProfileStore,
         private authStore: AuthStore
-        ) {
-        this.subs.sink = this.authStore.user.pipe(
-			switchMap(user => this.profileService.getProfileByUserId(user.Id))
-		).subscribe(profile => this.currentUserProfile = profile);
+    ) {
+        this.currentUserProfile = this.profileStore.currentUserProfile;
     }
 
     ExampleGroups:Group[] = [
@@ -273,12 +270,14 @@ export class GroupFeatureService {
             Description: newGroupInfo.Description,
             PrivacyLevel: newGroupInfo.PrivacyLevel,
             Posts: [],
-            Admins: [ {
-                Id: this.currentUserProfile.Id,
-                FirstName: this.currentUserProfile.FirstName,
-                LastName: this.currentUserProfile.LastName,
-                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
-            }],
+            Admins: [
+                {
+                    Id: this.currentUserProfile.Id,
+                    FirstName: this.currentUserProfile.FirstName,
+                    LastName: this.currentUserProfile.LastName,
+                    ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+                }
+            ],
             Members: []
         }
 
