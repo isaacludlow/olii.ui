@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, OnDestroy, OnInit } from "@angular/core";
-import { BehaviorSubject, from, Observable } from "rxjs";
-import { switchMap, tap } from "rxjs/operators"
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { switchMap } from "rxjs/operators"
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
@@ -14,7 +14,6 @@ import { ProfileRequest } from "src/app/models/requests/profile/profile-request"
 	providedIn: 'root'
 })
 export class ProfileStore implements OnDestroy {
-	private _profile = new BehaviorSubject<Profile>(null);
 	private _manualOverrideForProfileSection = new BehaviorSubject<Section>('photos');
 	private subs = new SubSink()
 	currentUserProfile: Profile;
@@ -37,17 +36,12 @@ export class ProfileStore implements OnDestroy {
 		const currentSection = this._manualOverrideForProfileSection.value;
 		this._manualOverrideForProfileSection.next('photos');
 
+
 		return currentSection;
 	}
 
 	getProfileById(profileId: number): Observable<Profile> {
-		if (!(this._profile.value)) {
-			// TODO-L29: GetProfileById() should match pattern in eventStore.getEventById().
-			return this.profileService.getProfileById(profileId).pipe(tap(profile => this._profile.next(profile)));
-		}
-		else {
-			return this._profile.asObservable();
-		}
+		return this.profileService.getProfileById(profileId);
 
 		// Use this code below for caching images in the future.
 		// .pipe(
@@ -61,8 +55,8 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
-	getProfileByUserId(userId: number) {
-		return this.profileService.getProfileByUserId(userId).pipe(tap(profile => this._profile.next(profile)));;
+	getProfileByUserId(userId: number): Observable<Profile> {
+		return this.profileService.getProfileByUserId(userId);
 	}
 
 	getFriends(userId: number): Observable<PartialProfile[]> {
