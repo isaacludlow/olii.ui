@@ -126,8 +126,8 @@ export class GroupDetailsPage implements OnInit {
       ImagesData: images,
     }
 
-    // TODO: ADD ERROR HANDLING
-    this.groupService.createGroupPost(newPost).subscribe(res => {
+    // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
+    this.groupStore.createGroupPost(newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');

@@ -5,6 +5,7 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
@@ -85,7 +86,7 @@ export class CommentCardComponent implements OnInit {
   addCommentInput = new FormControl('', Validators.required);
 
   constructor( 
-    private groupService: GroupFeatureService,
+    private groupStore: GroupFeatureStore,
     private profileStore: ProfileStore,
     private router: Router
    ) { }
@@ -123,7 +124,7 @@ export class CommentCardComponent implements OnInit {
             Date: new Date(Date.now()),
         }
     
-        this.groupService.addCommentToGroupPost(newComment).subscribe(res => {
+        this.groupStore.addCommentToGroupPost(newComment).subscribe(res => {
             this.addCommentInput = new FormControl('', Validators.required);
             this.toggleAddComment(false);
         });

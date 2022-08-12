@@ -4,6 +4,8 @@ import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
+import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
+import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
 
 @Injectable({
     providedIn: 'root'
@@ -64,8 +66,21 @@ export class GroupFeatureStore {
         );
     }
 
-    postNewGroup() {
+    updateGroup(groupRequest: GroupRequest): Observable<Group> {
+        return this.groupService.updateGroup(groupRequest).pipe(
+            tap(group => {
+                this._allGroups.next([...this._allGroups.value, group]);
+                this._myGroups.next([...this._myGroups.value, group]);
+            })
+        );
+    }
 
+    createGroupPost(groupPost: CreatePostRequest):Observable<Boolean> {
+        return this.groupService.createGroupPost(groupPost);
+    }
+
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
+        return this.groupService.addCommentToGroupPost(newCommentRequest);
     }
 
     // TODO-AfterBeta: Allow an admin to delete a group.

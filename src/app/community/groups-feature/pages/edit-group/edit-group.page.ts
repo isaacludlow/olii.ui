@@ -35,7 +35,6 @@ export class EditGroupPage implements OnInit {
     private domSanitizer: DomSanitizer,
     private platform: Platform,
     private groupStore: GroupFeatureStore,
-    private groupService: GroupFeatureService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -71,7 +70,7 @@ export class EditGroupPage implements OnInit {
       Admin: null,
     }
   
-    this.groupService.updateGroup(updatedGroup).subscribe(res => {
+    this.groupStore.updateGroup(updatedGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.Id]);
     })
   }
