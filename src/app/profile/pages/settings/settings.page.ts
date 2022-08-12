@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseAuthService } from 'src/app/shared/services/authentication/firebase-auth.service';
+import { AuthStore } from 'src/app/shared/services/authentication/auth-store';
+import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
   templateUrl: './settings.page.html',
@@ -11,15 +12,14 @@ export class SettingsPage implements OnInit {
   profileId: number;
 
   constructor(
-    private authService: FirebaseAuthService,
+    private authStore: AuthStore,
+    private profileStore: ProfileStore,
     private router: Router,
     private location: Location
   ) { }
 
   ngOnInit(): void {
-      // TODO-L36: Use the profileStore for profile settings properties.
-      // this.profileId = +this.authService.userCredentials.user.displayName;
-      this.profileId = 98 // Hard coding right now until displayName is populated with the profileId.
+      this.profileId = this.profileStore.currentUserProfile.Id;
   }
 
   navigateBack() {
@@ -27,7 +27,7 @@ export class SettingsPage implements OnInit {
   }
 
   async signOut(): Promise<void> {
-    await this.authService.signOut();
+    await this.authStore.signOut();
     this.router.navigate(['registration/slideshow'])
   }
 }
