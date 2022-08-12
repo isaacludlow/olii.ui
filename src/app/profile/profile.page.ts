@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { Profile } from '../models/dto/profile/profile.dto';
-import { FirebaseAuthService } from '../shared/services/authentication/firebase-auth.service';
+import { AuthStore } from '../shared/services/authentication/auth-store';
 import { ProfileStore } from '../shared/services/profile/profile.store';
 import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';
 
@@ -27,7 +27,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private profileStore: ProfileStore,
     private modalCtrl: ModalController,
-    private authService: FirebaseAuthService,
+    private authStore: AuthStore,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location
@@ -69,8 +69,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   async signOut(): Promise<void> {
-    // TODO-L34: Use the authStore instead of the authService.
-    await this.authService.signOut();
+    await this.authStore.signOut();
     this.router.navigate(['registration/slideshow']);
   }
 
