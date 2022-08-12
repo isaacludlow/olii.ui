@@ -21,8 +21,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   segmentToShow: string;
   subs = new SubSink();
   showBackButton: boolean;
-  // TODO-L32: Use the user property on the userStore.
-  isActiveUser = true;
 
   constructor(
     private profileStore: ProfileStore,
@@ -54,6 +52,14 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   navigateBack() {
     this.location.back();
+  }
+
+  // TODO-L32: Use the user property on the userStore.
+  isActiveUser() {
+    if (this.profile == this.profileStore.currentUserProfile) {
+      return true;
+    }
+    return false;
   }
 
   // viewControl(): void {

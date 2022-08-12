@@ -15,7 +15,7 @@
         <div class="profile-info">
             <div class="personal-info">
                 <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName }} {{ profile.LastName }}</h3></ion-text>
-                <!-- ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text-->
+                <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
                 <div class="bio color-medium">{{ profile.Bio }}</div>
             </div>
@@ -41,7 +41,7 @@
     </div>
     <div class="assets">
         <div class="menu-bar-container">
-            <div *ngIf="isActiveUser == true; else elseView">
+            <div *ngIf="isActiveUser(); else elseView">
                 <!-- TODO-L16: Change the photos section on the profile page to "About Me" or something like that. Talk to Tovi about possible wording. -->
                 <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
                     <ion-segment-button value="photos" layout="icon-start">
