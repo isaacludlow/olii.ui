@@ -29,4 +29,8 @@ export class AuthStore {
   login(email: string, password: string): Observable<firebase.auth.UserCredential> {
     return this.authService.login(email, password).pipe(tap(userCredentials => this._currentUser = userCredentials.user));
   }
+
+  signOut(): Promise<void> {
+    return this.authService.signOut();
+  }
 }
