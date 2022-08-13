@@ -21,8 +21,7 @@ export class CreateGroupPage implements OnInit {
   profile: Profile;
   friends: Profile[];
   subs = new SubSink();
-  groupPicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
-
+  groupPicture: GalleryPhoto;
 
   createGroupForm = this.fb.group({
     name: ['', Validators.required],

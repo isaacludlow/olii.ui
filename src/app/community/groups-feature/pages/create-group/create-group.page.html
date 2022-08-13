@@ -45,12 +45,17 @@
     <hr>
 
     <h4 class="form-label">Add Image</h4>
-    <div class="group-picture-container" (click)="setGroupPicture()">
-        <div class="group-picture">
-            <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
+    <div class="group-picture-container">
+        <div class="add-image" *ngIf="this.groupPicture" (click)="setGroupPicture()">
+            <div class="group-picture">
+                <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
+            </div>
+        </div>
+        <div class="add-image" *ngIf="this.groupPicture == null" (click)="setGroupPicture()">
+            <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid">Create Group</ion-button>
+    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid || this.groupPicture == null">Create Group</ion-button>
 
 </ion-content>
