@@ -10,11 +10,12 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
-import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 import { Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
+import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -22,11 +23,15 @@ import { Validators } from '@angular/forms';
 })
 export class GroupDetailsPage implements OnInit {
   // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
+
   group: Group;
   groupPosts$: Observable<GroupPost[]>;
+  pastEvents$: Observable<Event[]>;
+  futureEvents$: Observable<Event[]>;
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  subSegmentToShow: string = 'past';
   memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
@@ -42,15 +47,15 @@ export class GroupDetailsPage implements OnInit {
     private domSanitizer: DomSanitizer,
     private platform: Platform,
     private groupStore: GroupFeatureStore,
-    private groupService: GroupFeatureService,
+    private eventStore: EventsFeatureStore,
     private profileStore: ProfileStore,
-    private router: Router,
+    private router: Router, 
     private route: ActivatedRoute,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.segmentToShow = this.groupStore.groupSection;
 
+    this.segmentToShow = this.groupStore.groupSection;
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
@@ -58,8 +63,10 @@ export class GroupDetailsPage implements OnInit {
     ).subscribe(group => {
       this.group = group;
       this.sortGroupPosts();
-      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
       this.canView();
+      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
+      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Past).pipe();
+      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Future).pipe();
     });
   }
 
@@ -71,6 +78,10 @@ export class GroupDetailsPage implements OnInit {
 
   segmentChanged(event) {
     this.segmentToShow = event.detail.value;
+  }
+
+  subSegmentChanged(event) {
+    this.subSegmentToShow = event.detail.value;
   }
 
   toggleModal(): void {
