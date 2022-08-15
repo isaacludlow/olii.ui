@@ -122,7 +122,6 @@ export class GroupDetailsPage implements OnInit {
     // TODO-L23: Create logic on the group-details page to let the user request to join a group.
   }
 
-  // TODO-L24: Add form control to prevent an empty group post. Must have either an image or text.
   async writePost() {
     var images = [];
     for (const image of this.postPictures) {

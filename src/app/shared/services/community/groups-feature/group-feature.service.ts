@@ -256,9 +256,7 @@ export class GroupFeatureService {
     }
 
     getMyGroups(profileId: number): Observable<Group[]> {
-        // TODO: Create getMyGroups endpoint.
-        console.log('Fix the getMyGroups service call')
-        return of([])
+        return of(this.ExampleGroups)
     }
 
     createGroup(newGroupInfo: GroupRequest): Observable<Group> {

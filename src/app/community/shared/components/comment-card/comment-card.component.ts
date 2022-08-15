@@ -9,7 +9,7 @@ import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feat
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
-  selector: 'olii-comment-card', // TODO-AfterBeta: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into it's own component.
+  selector: 'olii-comment-card', // TODO-AfterBeta: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into its own component.
   template: `
     <div>
         <div class="card-content">

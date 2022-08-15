@@ -20,10 +20,9 @@ export class EditProfilePage implements OnInit {
   subs = new SubSink();
 
   profileForm = this.fb.group({
-    // TODO-L35: Change edit profile name form field to be two fields: firstName and lastName.
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    //number: [''],
+    // phoneNumber: [''],
     // TODO-M14: Country Selection should be from a dropdown to standardize country naming conventions
     homeCountry: [''],
     hostCountry: [''],
@@ -40,8 +39,6 @@ export class EditProfilePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO-M6: Remove reference to hard-coded user
-    //this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
     this.profile = this.profileStore.currentUserProfile;
 
     if (this.profile != null) {
@@ -67,7 +64,6 @@ export class EditProfilePage implements OnInit {
     selectImages(1).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
   }
 
-  // TODO-M12: Implement onSubmit for the form
   async onSubmit(): Promise<void> {
     const profileRequest: ProfileRequest = {
       FirstName: this.profileForm.get('firstName').value,

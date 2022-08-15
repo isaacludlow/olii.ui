@@ -19,7 +19,6 @@
     </ion-header>
     
     <div class="profile-image-container">
-        <!-- TODO-M4: Add profile picture changing functionality to Edit Profile page -->
         <div class="profile-image">
             <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>
         </div>
@@ -55,7 +54,6 @@
         </ion-item>
 
         <div class="save-button">
-            <!--TODO-M13: Add form validation to edit-profile page-->
             <ion-button type="submit" mode="ios" [disabled]="!profileForm.valid">Save</ion-button>
         </div>
     </form>
