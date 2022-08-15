@@ -54,9 +54,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  // TODO-L32: Use the user property on the userStore.
   isActiveUser() {
-    if (this.profile == this.profileStore.currentUserProfile) {
+    if (this.profile.Id == this.profileStore.currentUserProfile.Id) {
       return true;
     }
     return false;

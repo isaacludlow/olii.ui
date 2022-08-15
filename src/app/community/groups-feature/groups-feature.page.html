@@ -18,11 +18,10 @@
           </ion-toolbar>
           <div class="spacer"></div>
           <!-- <ion-toolbar class="searchbar" mode="ios">
-              <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
+              <ion-searchbar animated="true" placeholder="Search for groups"></ion-searchbar>
           </ion-toolbar> -->
       </ion-header>
 
-    <!-- TODO-L37: Add side margin to all elements of 8px or 0.5rem. -->
     <div class="my-groups-container">
         <div class="my-groups-header-container">
             <h3>My groups</h3>
@@ -30,15 +29,8 @@
         </div>
         <div class="my-groups-selector-container">
             <div class="group-links-container">
-                <olii-group-preview-icons [groups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
+                <olii-group-preview-icons [myGroups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
             </div>
-
-            <!-- <div id="new-group-button-id" class="new-group-button-container">
-                <div class="new-group-button" routerLink="./create">
-                    <olii-base-icon size="medium" name="add-outline"></olii-base-icon>
-                </div>
-                <div class="group-nav-group-name">+ New</div>
-            </div> -->
         </div>
     </div>
 
@@ -64,5 +56,4 @@
             </ion-card>
         </div>
     </div>
-
 </ion-content>

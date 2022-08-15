@@ -1,6 +1,5 @@
 <ion-content class="ion-padding-vertical">
     <div class="profile_options">
-        <!-- TODO-M7: Remove this from user profile view; We'll need a proper way to view other user's profiles -->
         <div *ngIf="showBackButton" class="back" (click)="navigateBack()">
             <olii-base-icon size="medium" color="primary" name="arrow-back-outline"></olii-base-icon>
         </div>
@@ -62,7 +61,6 @@
             </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <!-- TODO-L17: Fix the profile photo grid to match the style of the other grids in the app (3x3). -->
             <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls" aspectRatio="1/1" class="image-container">
                 <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
             </olii-responsive-aspect-ratio-container>

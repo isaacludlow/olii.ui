@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
-  groups: Group[];
+  myGroups: Group[];
   groupsLatest: GroupPostLatest[];
   partialGroups: PartialGroup[] = [];
   subs = new SubSink();
@@ -30,10 +30,9 @@ export class GroupsFeaturePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO-L20: Get groups associated with the user on the groups page.
     this.profile = this.profileStore.currentUserProfile;
-    this.subs.sink = this.groupStore.getGroups().subscribe(res =>  {
-      this.groups = res;
+    this.subs.sink = this.groupStore.getMyGroups(this.profile.Id).subscribe(res =>  {
+      this.myGroups = res;
       this.calcLatestPosts();
       this.calcPartialGroups();
     });
@@ -46,7 +45,7 @@ export class GroupsFeaturePage implements OnInit {
   calcLatestPosts() {
     this.groupsLatest = [];
     
-    for (const group of this.groups) {
+    for (const group of this.myGroups) {
       if (this.canView(group)) {
         var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
         posts.reverse().slice(0, this._postLimiter);
@@ -80,7 +79,7 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcPartialGroups() {
-    for (const group of this.groups) {
+    for (const group of this.myGroups) {
       this.partialGroups.push({
         GroupId: group.Id,
         GroupName: group.Name,

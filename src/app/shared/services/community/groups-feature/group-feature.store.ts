@@ -61,7 +61,7 @@ export class GroupFeatureStore {
         return this.groupService.createGroup(groupRequest).pipe(
             tap(group => {
                 this._allGroups.next([...this._allGroups.value, group]);
-                this._myGroups.next([...this._myGroups.value, group])
+                this._myGroups.next([...this._myGroups.value, group]);
             })
         );
     }
