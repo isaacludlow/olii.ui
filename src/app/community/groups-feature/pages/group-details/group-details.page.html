@@ -50,6 +50,32 @@
                 </ion-card>
             </div>
         </div>
+        <div *ngIf="segmentToShow == 'events'">
+            <div class="events-subsegment-options">
+                <ion-segment class="button-segment" mode="ios" (ionChange)="subSegmentChanged($event)" [value]="subSegmentToShow">
+                    <ion-segment-button value="past" layout="icon-start">
+                        <ion-icon name="arrow-undo-circle-outline"></ion-icon>
+                        <ion-label>Past</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="future" layout="icon-start">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                        <ion-label>Happening</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
+            <div class="subsegment-container" >
+                <div *ngIf="subSegmentToShow == 'past'">
+                    <div class="card-wrapper" *ngFor="let event of pastEvents$ | async">
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                    </div>
+                </div>
+                <div *ngIf="subSegmentToShow == 'future'">
+                    <div class="card-wrapper" *ngFor="let event of futureEvents$ | async">
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                    </div>
+                </div>
+            </div>
+        </div>
     
         <!-- TODO-L15: Add some sort of blurred background for "Write Post" and "Add Event" buttons so they don't blend in with the ion-content background. -->
         <div class="group-main-buttons">

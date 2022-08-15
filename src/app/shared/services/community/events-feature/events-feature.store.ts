@@ -57,6 +57,19 @@ export class EventsFeatureStore {
     }
   }
 
+  getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
+    switch (filter) {
+      case GroupEventsFilterOptions.Past:
+        return this.retrieveGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        );
+      case GroupEventsFilterOptions.Future:
+        return this.retrieveGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        );
+    }
+  }
+
   createEvent(eventRequest: EventRequest): Observable<Event> {
     return this.eventsService.createEvent(eventRequest).pipe(
       tap(event => {
@@ -75,6 +88,10 @@ export class EventsFeatureStore {
     }
   }
 
+  private retrieveGroupEvents(groupId: number): Observable<Event[]> {
+    return this.eventsService.getEventsByGroupId(groupId).pipe();
+  }
+
   private isCreator(event: Event, profileId: number): boolean {
     if (event.Creator.IdType !== 'Profile') {
       return false;
@@ -90,4 +107,9 @@ export enum MyEventsFilterOptions {
   Hosting,
   Past,
   All
+}
+
+export enum GroupEventsFilterOptions {
+  Past,
+  Future,
 }

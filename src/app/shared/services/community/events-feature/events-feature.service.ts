@@ -46,6 +46,13 @@ export class EventsFeatureService implements OnInit {
     return of(response);
   }
 
+  getEventsByGroupId(groupId: number): Observable<Event[]> {
+    const response = mockEventData_allEvents;
+
+    // TODO: Real version will need to query events by what events are associated with the group of a given id
+    return of(response);
+  }
+
   createEvent(eventRequest: EventRequest): Observable<Event> {
     const response: Event = {
       Id: this.fakeEventId,
