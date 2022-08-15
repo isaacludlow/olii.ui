@@ -17,7 +17,7 @@ export class FirebaseAuthService implements OnDestroy {
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
     return from(this.firebaseAuthService.createUserWithEmailAndPassword(email, password)).pipe(
       catchError(error => {
-        // TODO: Use ionic toast alert instead of the default alert?
+        // TODO-AfterBeta: Use ionic toast alert instead of the default alert?
         if (error.code === 'auth/email-already-in-use') {
           alert('This email address is already in use by another account.');
 
@@ -38,7 +38,7 @@ export class FirebaseAuthService implements OnDestroy {
   login(email: string, password: string): Observable<firebase.auth.UserCredential> {
     return from(this.firebaseAuthService.signInWithEmailAndPassword(email, password)).pipe(
       catchError(error => {
-        // TODO: Use ionic toast alert instead of the default alert?
+        // TODO-AfterBeta: Use ionic toast alert instead of the default alert?
         alert(error.message);
 
         throw new Error(error.message);

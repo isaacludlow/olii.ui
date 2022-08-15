@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
-import { from, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
@@ -10,14 +10,13 @@ import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
-import { switchMap, tap } from "rxjs/operators"
-import { ProfileService } from '../../profile/profile.service';
+import { ProfileStore } from '../../profile/profile.store';
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class GroupService {
+export class GroupFeatureService {
 
 	currentUserProfile: Profile;
     private subs = new SubSink()
@@ -26,12 +25,10 @@ export class GroupService {
 
     constructor(
         private httpClient:HttpClient,
-        private profileService: ProfileService,
-        private authStore: AuthStore,
-        ) {
-        this.subs.sink = this.authStore.user.pipe(
-			switchMap(user => this.profileService.getProfileByUserId(user.Id))
-		).subscribe(profile => this.currentUserProfile = profile);
+        private profileStore: ProfileStore,
+        private authStore: AuthStore
+    ) {
+        this.currentUserProfile = this.profileStore.currentUserProfile;
     }
 
     ExampleGroups:Group[] = [
@@ -125,7 +122,6 @@ export class GroupService {
               },
             ],
         },
-
         {
             Id: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -184,7 +180,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -216,7 +211,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -234,7 +228,6 @@ export class GroupService {
             ],
             Members: [],
         },
-
         {
             Id: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -254,21 +247,35 @@ export class GroupService {
         }
     ];
 
+    getGroups(offset: number, limit: number): Observable<Group[]> {
+        return of(this.ExampleGroups);
+    }
+
+    getGroupById(id: number): Observable<Group> {
+        return of(this.ExampleGroups.find(group => group.Id === id));
+    }
+
+    getMyGroups(profileId: number): Observable<Group[]> {
+        return of(this.ExampleGroups)
+    }
+
     createGroup(newGroupInfo: GroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
-            Id: this.dummyId, // 
+            Id: this.dummyId,
             CoverImageUrl: newGroupInfo.CoverImageData,
             Name: newGroupInfo.Name,
             Description: newGroupInfo.Description,
             PrivacyLevel: newGroupInfo.PrivacyLevel,
             Posts: [],
-            Admins: [ {
-                Id: this.currentUserProfile.Id,
-                FirstName: this.currentUserProfile.FirstName,
-                LastName: this.currentUserProfile.LastName,
-                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
-            }],
+            Admins: [
+                {
+                    Id: this.currentUserProfile.Id,
+                    FirstName: this.currentUserProfile.FirstName,
+                    LastName: this.currentUserProfile.LastName,
+                    ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+                }
+            ],
             Members: []
         }
 
@@ -287,14 +294,6 @@ export class GroupService {
             this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
         }
         return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
-    }
-
-    getGroupAll(): Observable<Group[]> {
-        return of(this.ExampleGroups);
-    }
-
-    getGroupById(id: number): Observable<Group> {
-        return of(this.ExampleGroups.find(group => group.Id === id));
     }
 
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {

@@ -10,7 +10,7 @@
 
     <div class="group-details">
         <h2 class="group-name">{{ group.Name }}</h2>
-        <div class="group-description">{{group.Description}}</div>
+        <p class="group-description">{{group.Description}}</p>
     </div>
 
     <div class="member-icons">
@@ -20,12 +20,13 @@
     <hr>
 
     <div *ngIf="canView() else requestToJoinView">
-        <div class="menu-bar-container">
-            <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
+        <div class="feed-events-segment-container">
+            <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
                 <ion-segment-button value="feed" layout="icon-start">
                     <ion-icon name="list-outline"></ion-icon>
                     <ion-label>Feed</ion-label>
                 </ion-segment-button>
+                <!-- TODO-L14: Create the events section component(s) for a group. -->
                 <ion-segment-button value="events" layout="icon-start">
                     <ion-icon name="calendar-outline"></ion-icon>
                     <ion-label>Events</ion-label>
@@ -50,6 +51,7 @@
             </div>
         </div>
     
+        <!-- TODO-L15: Add some sort of blurred background for "Write Post" and "Add Event" buttons so they don't blend in with the ion-content background. -->
         <div class="group-main-buttons">
             <ion-button class="side-button" type="button" mode="ios" size="small" (click)="toggleModal()" [disabled]="disableButtons">
                 <olii-base-icon name="pencil-outline"></olii-base-icon>
@@ -63,40 +65,40 @@
     
         <ion-modal class="create-post-popup-modal" [isOpen]="showPostModal">
             <ng-template>
-                
                 <div class="close-modal" (click)="toggleModal()">
-                    <olii-icon-with-off-white-square-background name="close"></olii-icon-with-off-white-square-background>
+                    <olii-icon-with-purple-square-background name="close"></olii-icon-with-purple-square-background>
                 </div>
                 <div class="modal-header">
                     <h3>Create a Post</h3>
                 </div>
     
               <ion-content class="modal-content">
-                    <form [formGroup]="createPostForm">
+                    <form [formGroup]="createPostForm" #form="ngForm">
                         <ion-item>
                             <ion-input placeholder="What's on your mind?" formControlName="postContent"></ion-input>
                         </ion-item>
+                        <ion-note color="danger" *ngIf="(createPostForm.controls.postContent.dirty || form.submitted) && !createPostForm.controls.postContent.valid">Please enter at lease 8 characters for your post</ion-note>
                     </form>
     
                     <h3>Add Image</h3>
     
                     <div class="post-pictures-container">
                         <div *ngFor="let picture of postPictures; let i = index">
-                            <div class="post-picture" [style]="{'--background': 'url(\'' + picture.webPath + '\')' }">
-                                <div class="remove-picture">
-                                    <olii-icon-with-off-white-square-background name="close-circle-outline" (click)="removePostPicture(i)"></olii-icon-with-off-white-square-background>
-                                </div>
+                            <div class="post-picture">
+                                <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                                    <ion-badge (click)="removePostPicture(i)"><ion-icon name="close"></ion-icon></ion-badge>
+                                    <olii-container-cover-image [imageUrl]="sanitizeUrl(picture.webPath)" boarderRadius="3%"></olii-container-cover-image>
+                                </olii-responsive-aspect-ratio-container>
                             </div>
                         </div>
-                        <div class="post-picture">
-                            <olii-container-cover-image [imageUrl]="sanitizeUrl(addPictureImage.webPath)" (click)="addPostPicture()"></olii-container-cover-image>  
+                        <div class="add-image" *ngIf="this.postPictures.length < 5" (click)="addPostPicture()">
+                            <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
                         </div>
                     </div>
     
                     <hr>
     
                     <div class="write-post-button-container">
-                        <!--<ion-button [disabled]="albumNameInput.invalid" color="primary" (click)="onCreateAlbum()" mode="ios">Create Album</ion-button>-->
                         <ion-button color="primary" [disabled]="!createPostForm.valid" (click)="writePost()" mode="ios">Write a Post</ion-button>
                     </div>
                 </ion-content>

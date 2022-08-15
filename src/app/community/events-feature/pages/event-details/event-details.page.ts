@@ -3,9 +3,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { SubSink } from 'subsink';
-import { GoogleMap } from '@capacitor/google-maps';
 
 @Component({
   templateUrl: './event-details.page.html',
@@ -35,7 +34,7 @@ export class EventDetailsPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    // TODO: Refactor to wait until call to get events is done.
+    // TODO-AfterBeta: Refactor to wait until call to get events is done.
     this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);
   }
 

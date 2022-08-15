@@ -6,7 +6,7 @@ import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { environment } from 'src/environments/environment';
-import { mockEventData_eventById } from '../events-feature/mock-event-data';
+import { mockEventData_eventById } from '../community/events-feature/mock-event-data';
 import { mockProfileData_yourProfile } from './mock-profile-data';
 
 @Injectable({
@@ -63,6 +63,10 @@ export class ProfileService {
       ];
 
     return of(exampleFriends);
+  }
+
+  updateProfile(profileRequest: ProfileRequest) {
+    
   }
 
   createNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {

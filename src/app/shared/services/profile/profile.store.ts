@@ -1,29 +1,30 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, OnDestroy, OnInit } from "@angular/core";
-import { BehaviorSubject, from, Observable } from "rxjs";
-import { switchMap, tap } from "rxjs/operators"
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { switchMap } from "rxjs/operators"
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 import { convertBlobToBase64 } from "../../utilities";
 import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
+import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
+import { UserStore } from "../user/user.store";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ProfileStore implements OnDestroy {
-	private _profile = new BehaviorSubject<Profile>(null);
 	private _manualOverrideForProfileSection = new BehaviorSubject<Section>('photos');
 	private subs = new SubSink()
 	currentUserProfile: Profile;
 
 	constructor(
 		private profileService: ProfileService,
-		private authStore: AuthStore,
+		private userStore: UserStore,
 		private httpClient: HttpClient
 	) {
-		this.subs.sink = this.authStore.user.pipe(
+		this.subs.sink = this.userStore.user.pipe(
 			switchMap(user => this.profileService.getProfileByUserId(user.Id))
 		).subscribe(profile => this.currentUserProfile = profile);
 	}
@@ -36,16 +37,12 @@ export class ProfileStore implements OnDestroy {
 		const currentSection = this._manualOverrideForProfileSection.value;
 		this._manualOverrideForProfileSection.next('photos');
 
+
 		return currentSection;
 	}
 
 	getProfileById(profileId: number): Observable<Profile> {
-		if (!(this._profile.value)) {
-			return this.profileService.getProfileById(profileId).pipe(tap(profile => this._profile.next(profile)));
-		}
-		else {
-			return this._profile.asObservable();
-		}
+		return this.profileService.getProfileById(profileId);
 
 		// Use this code below for caching images in the future.
 		// .pipe(
@@ -59,8 +56,8 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
-	getProfileByUserId(userId: number) {
-		return this.profileService.getProfileByUserId(userId).pipe(tap(profile => this._profile.next(profile)));;
+	getProfileByUserId(userId: number): Observable<Profile> {
+		return this.profileService.getProfileByUserId(userId);
 	}
 
 	getFriends(userId: number): Observable<PartialProfile[]> {
@@ -71,9 +68,13 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
 	}
 
-	getBase64Image(url: string) {
-		return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
+	updateProfile(profileRequest: ProfileRequest) {
+		return this.profileService.updateProfile(profileRequest);
 	}
+
+	// getBase64Image(url: string) {
+	// 	return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
+	// }
 
 	ngOnDestroy(): void {
 		this.subs.unsubscribe();

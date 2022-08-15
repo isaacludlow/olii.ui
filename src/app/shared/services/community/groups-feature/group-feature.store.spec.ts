@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { GroupStore } from './group.store';
+import { GroupFeatureStore } from './group-feature.store';
 
 describe('GroupService', () => {
-    let service: GroupStore;
+    let service: GroupFeatureStore;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(GroupStore);
+        service = TestBed.inject(GroupFeatureStore);
     });
 });

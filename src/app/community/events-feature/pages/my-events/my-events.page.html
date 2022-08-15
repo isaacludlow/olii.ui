@@ -47,16 +47,16 @@
     <div class="event-filter">
         <ion-segment class="button-segment" mode="ios" (ionChange)="eventFilterSegmentChanged($event)" [value]="currentEventFilterSegment">
             <ion-segment-button value="attending" layout="icon-start">
-                <ion-icon size="small" name="checkmark-circle"></ion-icon>
-                <ion-label>Attending</ion-label>
+                <ion-icon size="medium" name="checkmark-circle"></ion-icon>
+                <ion-label class="font-body-m">Attending</ion-label>
             </ion-segment-button>
             <ion-segment-button value="hosting" layout="icon-start">
-                <ion-icon size="small" name="home"></ion-icon>
-                <ion-label>Hosting</ion-label>
+                <ion-icon size="medium" name="home"></ion-icon>
+                <ion-label class="font-body-m">Hosting</ion-label>
             </ion-segment-button>
             <ion-segment-button value="past" layout="icon-start">
-                <ion-icon size="small" name="reload-circle"></ion-icon>
-                <ion-label>Past</ion-label>
+                <ion-icon size="medium" name="reload-circle"></ion-icon>
+                <ion-label class="font-body-m">Past</ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>

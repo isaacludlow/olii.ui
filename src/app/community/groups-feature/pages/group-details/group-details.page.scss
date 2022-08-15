@@ -1,6 +1,6 @@
 @supports (--custom:property) {
     .cover-image {
-        height: 20vh;
+        height: 30vh;
         width: 100%;
         display: flex;
         background-image: var(--background);
@@ -80,13 +80,8 @@ hr {
     border-top: 1px solid #eee;
   }
 
-.menu-bar-container {
-    margin: 0 2rem 0.5rem 2rem;
-}
-
-.menu-bar {
-    display: flex;
-    gap: 2.5rem;
+.feed-events-segment-container {
+    margin: 0 1rem 1rem 1rem;
 }
 
 ion-segment-button {
@@ -161,6 +156,37 @@ ion-item {
     align-items: center;
     justify-content: center;
     margin: 1rem auto 1rem auto;
+
+    .add-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+
+        olii-base-icon {
+            background-color: rgba(var(--color-primary-rgb), 0.125);
+            border-radius: 3px;
+            line-height: 0;
+            padding: 0.75rem;
+        }
+    }
+
+    olii-responsive-aspect-ratio-container {
+        position: relative;
+
+        ion-badge {
+            --background: #F2EFFF;
+            --color: var(--color-primary);
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            margin-top: -5px;
+            margin-right: -5px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
 
     .post-picture {
         margin-right: 0.5rem;

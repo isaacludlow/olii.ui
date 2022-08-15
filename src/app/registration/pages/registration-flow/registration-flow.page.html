@@ -46,12 +46,21 @@
               <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
             </div>
             <div class="location-inputs">
-              <ion-input>
-                <olii-places-autocomplete-field (autocompletedResult)="setHostLocation($event)" [responseType]="['(cities)']" [responseFieldType]="['name']" placeholder="Host City"></olii-places-autocomplete-field>
-              </ion-input>
-              <ion-input>
-                <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['name']" placeholder="Home Country"></olii-places-autocomplete-field>
-              </ion-input>
+              <ion-item>
+                <ion-input>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHostCity($event)" [responseType]="['(cities)']" [responseFieldType]="['vicinity']" placeholder="Host City"></olii-places-autocomplete-field>
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHostCountry($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Host Country"></olii-places-autocomplete-field>
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input>
+                  <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Home Country"></olii-places-autocomplete-field>
+                </ion-input>
+              </ion-item>
             </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
@@ -86,13 +95,14 @@
                 <ion-textarea formControlName="bio" placeholder="Write your profile bio here"></ion-textarea>
               </ion-item>
 
-              <div (click)="setProfileImages()">
-                <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
-                <olii-base-icon *ngIf="profileImages.length === 0" name="images-outline" size="display" color="medium"></olii-base-icon>
+              <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
+              <div class="add-image" *ngIf="profileImages.length < 9" (click)="addProfileImages()">
+                <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
               </div>
               <div *ngIf="profileImages.length > 0" class="profile-images-container">
-                <div *ngFor="let profileImage of profileImages" class="profile-image">
+                <div *ngFor="let profileImage of profileImages; let i = index" class="profile-image">
                   <olii-responsive-aspect-ratio-container aspectRatio="1/1">
+                    <ion-badge (click)="removeProfileImage(i)"><ion-icon name="close"></ion-icon></ion-badge>
                     <olii-container-cover-image [imageUrl]="sanitizeUrl(profileImage.webPath)" boarderRadius="5%"></olii-container-cover-image>
                   </olii-responsive-aspect-ratio-container>
                 </div>

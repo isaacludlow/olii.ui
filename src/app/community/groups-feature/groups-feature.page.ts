@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Group } from '../../models/dto/community/groups/group.dto';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.dto';
+import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'groups-feature',
@@ -15,24 +15,24 @@ import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.
   styleUrls: ['./groups-feature.page.scss']
 })
 export class GroupsFeaturePage implements OnInit {
-
+  private readonly _postLimiter: number = 10;
   profile: Profile;
-  groups: Group[];
+  myGroups: Group[];
   groupsLatest: GroupPostLatest[];
   partialGroups: PartialGroup[] = [];
   subs = new SubSink();
-  POSTLIMITER: number = 10;
 
   constructor(
     private profileStore: ProfileStore,
-    private groupStore: GroupStore, 
-    private domSanitizer: DomSanitizer) { }
+    private groupStore: GroupFeatureStore, 
+    private domSanitizer: DomSanitizer,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    // TODO: we need to get groups associated with the specific user
     this.profile = this.profileStore.currentUserProfile;
-    this.subs.sink = this.groupStore.getGroupAll().subscribe(res =>  {
-      this.groups = res;
+    this.subs.sink = this.groupStore.getMyGroups(this.profile.Id).subscribe(res =>  {
+      this.myGroups = res;
       this.calcLatestPosts();
       this.calcPartialGroups();
     });
@@ -45,9 +45,11 @@ export class GroupsFeaturePage implements OnInit {
   calcLatestPosts() {
     this.groupsLatest = [];
     
-    for (const group of this.groups) {
+    for (const group of this.myGroups) {
       if (this.canView(group)) {
-        var posts = group.Posts.slice(0, this.POSTLIMITER);
+        var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
+        posts.reverse().slice(0, this._postLimiter);
+
         for (const post of posts) {
           this.groupsLatest.push(
             {
@@ -68,8 +70,16 @@ export class GroupsFeaturePage implements OnInit {
     this.groupsLatest = this.groupsLatest.sort((a, b) => b.GroupPost.Date > a.GroupPost.Date ? 1 : -1);
   }
 
+  createGroup(): void {
+    // Creator type is 'Group' when creating an event from a group details page.
+    this.router.navigate(
+      ['community/groups/create'],
+      { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
+    );
+  }
+
   calcPartialGroups() {
-    for (const group of this.groups) {
+    for (const group of this.myGroups) {
       this.partialGroups.push({
         GroupId: group.Id,
         GroupName: group.Name,
@@ -91,7 +101,7 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcDisplayGroups() {
-    return Math.round((screen.width - this.convertRemToPixels(8)) / this.convertRemToPixels(4.8));
+    return Math.round((window.innerWidth - this.convertRemToPixels(5.8)) / this.convertRemToPixels(4.8));
   }
 
   convertRemToPixels(rem: number): number {    
