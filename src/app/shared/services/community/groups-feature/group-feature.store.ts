@@ -51,7 +51,6 @@ export class GroupFeatureStore {
 
     getMyGroups(profileId: number): Observable<Group[]> {
         if (this._myGroups.value === null) {
-            console.log('here')
             return this.groupService.getMyGroups(profileId).pipe(tap(groups => this._myGroups.next(groups)));
         } else {
             return this._myGroups.asObservable();
