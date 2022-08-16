@@ -13,7 +13,10 @@ export class UserStore {
   private _currentUser = new BehaviorSubject<User>(null);
 
     constructor(private userService: UserService, private authStore: AuthStore) {
-        this.userService.getUserByUid(this.authStore.user.uid).subscribe(user => this._currentUser.next(user));
+        this.userService.getUserByUid(this.authStore.user?.uid).subscribe(user => {
+            console.log(user)
+            this._currentUser.next(user)
+        });
     }
 
     get user(): Observable<User> {

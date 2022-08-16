@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FirebaseAuthService } from './firebase-auth.service';
 import firebase from 'firebase/compat';
@@ -9,9 +9,16 @@ import firebase from 'firebase/compat';
 })
 export class AuthStore {
   private _currentUser: firebase.User = null;
+  userIdToken = new BehaviorSubject<string>(null);
+
 
   constructor(private authService: FirebaseAuthService) {
-    this.authService.user.subscribe(userInfo => this._currentUser = userInfo)
+    this.authService.user.subscribe(userInfo => {
+      this._currentUser = userInfo;
+      if (!!userInfo) {
+        userInfo.getIdToken().then(idToken => this.userIdToken.next(idToken));
+      }
+    });
   }
 
   get user(): firebase.User {

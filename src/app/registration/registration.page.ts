@@ -46,9 +46,11 @@ export class RegistrationPage {
   }
 
   onSubmit(): void {
+    const dob = new Date(1999, 6, 4);
+
     const newUser: UserRequest = {
       Username: this.registerForm.get('username').value,
-      DOB: null,
+      DOB: `${dob.getFullYear()}/${dob.getMonth()}/${dob.getDate()}`,
       Email: this.registerForm.get('email').value,
       PhoneNumber: null
     }
