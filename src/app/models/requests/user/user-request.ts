@@ -1,6 +1,6 @@
 export interface UserRequest {
     Username: string;
-    DOB: Date;
+    DOB: string;
     PhoneNumber: string;
     Email: string;
 }

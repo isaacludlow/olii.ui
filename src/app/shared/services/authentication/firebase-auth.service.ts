@@ -8,9 +8,8 @@ import { SubSink } from 'subsink';
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseAuthService implements OnDestroy {
+export class FirebaseAuthService {
   user = this.firebaseAuthService.user;
-  subs = new SubSink();
 
   constructor(private firebaseAuthService: AngularFireAuth) { }
 
@@ -48,9 +47,5 @@ export class FirebaseAuthService implements OnDestroy {
 
   signOut(): Promise<void> {
     return this.firebaseAuthService.signOut();
-  }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
   }
 }
