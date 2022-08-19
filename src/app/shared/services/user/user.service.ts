@@ -18,16 +18,16 @@ export class UserService {
   getUserByUid(userIdToken?: string): Observable<User> {
     userIdToken = userIdToken ?? this.authStore.userIdToken;
     const response = this.httpClient.get<User>(`${environment.apiBaseUrl}/user`, { headers: { Authorization: userIdToken } }).pipe(
+      // TODO: Remove this line once profile call is set up.
       tap(user => user.Id = 98)
     );
 
     return response;
   }
 
-  // The userIdToken needs to be passed in when the user is registering for an account. After that the application will save it and get it from the authStore.
-  createUser(user: UserRequest, userIdToken?: string): Observable<User> {
-    userIdToken = userIdToken ?? this.authStore.userIdToken;
+  createUser(user: UserRequest, userIdToken: string): Observable<User> {
     const response = this.httpClient.post<User>(`${environment.apiBaseUrl}/user`, user, { headers: { Authorization: userIdToken } }).pipe(
+      // TODO: Remove this line once profile call is set up.
       tap(user => user.Id = 98)
     );
 
