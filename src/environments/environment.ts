@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  apiBaseUrl: 'https://virtserver.swaggerhub.com/isaac.ludlow/Olii.API/1.0.0',
+  apiBaseUrl: 'http://localhost:7071/api',
   mapsKey: 'AIzaSyBLAdsFxNLhjWztJ3dY6uruj856r6We_yo',
   production: false,
   firebase: {

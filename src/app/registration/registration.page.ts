@@ -6,6 +6,7 @@ import { UserRequest } from '../models/requests/user/user-request';
 import { AuthStore } from '../shared/services/authentication/auth-store';
 import { UserStore } from '../shared/services/user/user.store';
 import { switchMap } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'registration',
@@ -45,16 +46,19 @@ export class RegistrationPage {
     this.location.back();
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+    const fakeDob = new Date();
+
     const newUser: UserRequest = {
       Username: this.registerForm.get('username').value,
-      DOB: null,
+      DOB: `${fakeDob.getFullYear()}/${fakeDob.getMonth() +1 }/${fakeDob.getDate()}`,
       Email: this.registerForm.get('email').value,
-      PhoneNumber: null
+      PhoneNumber: ''
     }
 
     this.authStore.registerUser(newUser.Email, this.registerForm.get('password').value).pipe(
-      switchMap(_ => this.userStore.createUser(newUser))
+      switchMap(userCredential => from(userCredential.user.getIdToken())),
+      switchMap(userIdToken => this.userStore.createUser(newUser, userIdToken))
     ).subscribe(_ => {
       this.registerForm.reset();
       this.router.navigate(['registration/registration-flow']);

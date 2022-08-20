@@ -9,7 +9,6 @@ import gm = google.maps;
 import { ProfileService } from 'src/app/shared/services/profile/profile.service';
 import { Router } from '@angular/router';
 import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
-import { calculateBackoffMillis } from '@firebase/util';
 
 @Component({
   templateUrl: './registration-flow.page.html',
@@ -37,10 +36,6 @@ export class RegistrationFlowPage {
     private router: Router,
     private navBar: NavBarService,
   ) { }
-
-  ngOnInit() {
-    this.registerFlowForm.valueChanges.subscribe(value => console.log(value))
-  }
 
   nextSlide(): void {
     this.slides.slideNext();
