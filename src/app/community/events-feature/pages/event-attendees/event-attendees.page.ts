@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
-import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 
 @Component({
   templateUrl: './event-attendees.page.html',
