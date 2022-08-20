@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupsAllPage } from './groups-all.page';
+import { MyGroupsPage } from './my-groups.page';
 
-describe('GroupsAllPage', () => {
-  let component: GroupsAllPage;
-  let fixture: ComponentFixture<GroupsAllPage>;
+describe('MyGroupsPage', () => {
+  let component: MyGroupsPage;
+  let fixture: ComponentFixture<MyGroupsPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupsAllPage ]
+      declarations: [ MyGroupsPage ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupsAllPage);
+    fixture = TestBed.createComponent(MyGroupsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

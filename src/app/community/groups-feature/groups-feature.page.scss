@@ -1,12 +1,38 @@
-ion-toolbar {
-    --min-height: 4rem;
-}
-
-ion-content {
-    margin: 1rem;
-    --padding-top: 1rem;
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
     --padding-start: 1rem;
     --padding-end: 1rem;
+    --padding-bottom: 0.5rem;
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        .add-event {
+            margin-left: auto;
+        }
+
+        h2 {
+            margin-left: auto;
+            margin-right: -12vw;
+        }
+    }
+}
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
+ion-toolbar.searchbar {
+    --background: #FBFBFB;
+
+    ion-searchbar {
+        margin-top: 0.5rem;
+    }
+}
+
+.spacer {
+    margin-bottom: 1rem;
 }
 
 .section-title {
@@ -30,12 +56,16 @@ hr {
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 1rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
 
     .my-groups-selector-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
 
         .group-links-container {
             display: flex;
@@ -91,6 +121,8 @@ hr {
 .section-header {
     margin-top: 2rem;
     margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    
 }
 
 .see-all-link {
@@ -100,6 +132,8 @@ hr {
 
 .post {
     margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .card-content {

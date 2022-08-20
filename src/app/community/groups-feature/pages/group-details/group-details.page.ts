@@ -1,53 +1,61 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { switchMap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
-import { Profile } from 'src/app/models/dto/profile/profile.dto';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
-import { GroupService } from 'src/app/shared/services/community/groups/group.service';
 import { Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
+import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 
 @Component({
   templateUrl: './group-details.page.html',
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit {
+  // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
+
   group: Group;
   groupPosts$: Observable<GroupPost[]>;
+  pastEvents$: Observable<Event[]>;
+  futureEvents$: Observable<Event[]>;
   showPostModal: boolean
   subs = new SubSink();
   segmentToShow: string;
+  subSegmentToShow: string = 'past';
   memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
-    postContent: ['', Validators.required],
-  })
+    postContent: ['', [Validators.required, Validators.minLength(8)]],
+  },
+  { updateOn: 'blur' }
+  )
 
   constructor(
     private fb: FormBuilder,
     private domSanitizer: DomSanitizer,
     private platform: Platform,
-    private groupStore: GroupStore,
-    private groupService: GroupService,
+    private groupStore: GroupFeatureStore,
+    private eventStore: EventsFeatureStore,
     private profileStore: ProfileStore,
+    private router: Router, 
     private route: ActivatedRoute,
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.segmentToShow = this.groupStore.groupSection;
 
+    this.segmentToShow = this.groupStore.groupSection;
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
@@ -55,17 +63,25 @@ export class GroupDetailsPage implements OnInit {
     ).subscribe(group => {
       this.group = group;
       this.sortGroupPosts();
-      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
       this.canView();
+      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
+      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Past).pipe();
+      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Future).pipe();
     });
   }
 
+  // TODO-AfterBeta: Double check that we need to sort group posts.
+  // I think they will naturally be in the order people add them, which will be in chronological order.
   sortGroupPosts() {
     this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
   }
 
   segmentChanged(event) {
     this.segmentToShow = event.detail.value;
+  }
+
+  subSegmentChanged(event) {
+    this.subSegmentToShow = event.detail.value;
   }
 
   toggleModal(): void {
@@ -103,12 +119,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   requestToJoinGroup() {
-    // TODO: Connect to request feature (pending)
+    // TODO-L23: Create logic on the group-details page to let the user request to join a group.
   }
 
-  // TODO: Add form control to prevent empty posting.  Must have either an image or text or both
   async writePost() {
-
     var images = [];
     for (const image of this.postPictures) {
       images.push(await readPhotoAsBase64(image, this.platform));
@@ -122,8 +136,8 @@ export class GroupDetailsPage implements OnInit {
       ImagesData: images,
     }
 
-    // TODO: ADD ERROR HANDLING
-    this.groupService.createGroupPost(newPost).subscribe(res => {
+    // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
+    this.groupStore.createGroupPost(newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
@@ -132,7 +146,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   addEvent() {
-    // TODO: Implement screen/modal once we have the mock up for it
+    this.router.navigate(
+      ['community/events/create'],
+      { queryParams: { creatorType: 'Group', creatorId: this.group.Id } }
+    );
   }
 
 }

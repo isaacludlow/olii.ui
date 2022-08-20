@@ -15,11 +15,15 @@ export class EventsFeatureStore {
 
   constructor(private eventsService: EventsFeatureService) { }
 
-  getEvents(offset: number = 0, limit: number = null): Observable<Event[]> {
-    return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
+  getEvents(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Event[]> {
+    if (this._allEvents.value === null || refresh) {
+      return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
+    } else {
+      return this._allEvents.asObservable();
+    }
   }
 
-  getEventById(eventId: number) {
+  getEventById(eventId: number): Observable<Event> {
     if (this._allEvents.value === null) {
       return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
@@ -53,12 +57,26 @@ export class EventsFeatureStore {
     }
   }
 
+  getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
+    switch (filter) {
+      case GroupEventsFilterOptions.Past:
+        return this.retrieveGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        );
+      case GroupEventsFilterOptions.Future:
+        return this.retrieveGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        );
+    }
+  }
+
   createEvent(eventRequest: EventRequest): Observable<Event> {
     return this.eventsService.createEvent(eventRequest).pipe(
       tap(event => {
         this._allEvents.next([...this._allEvents.value, event]);
         this._myEvents.next([...this._myEvents.value, event]);
-      }));
+      })
+    );
   }
 
   //#region getMyEvents() helper methods.
@@ -66,8 +84,12 @@ export class EventsFeatureStore {
     if (this._myEvents.value === null) {
       return this.eventsService.getMyEvents(profileId).pipe(tap(events => this._myEvents.next(events)));
     } else {
-      return this._myEvents;
+      return this._myEvents.asObservable();
     }
+  }
+
+  private retrieveGroupEvents(groupId: number): Observable<Event[]> {
+    return this.eventsService.getEventsByGroupId(groupId).pipe();
   }
 
   private isCreator(event: Event, profileId: number): boolean {
@@ -85,4 +107,9 @@ export enum MyEventsFilterOptions {
   Hosting,
   Past,
   All
+}
+
+export enum GroupEventsFilterOptions {
+  Past,
+  Future,
 }

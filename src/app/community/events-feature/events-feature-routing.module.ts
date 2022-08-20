@@ -16,7 +16,7 @@ const routes: Routes = [
     component: MyEventsPage
   },
   {
-    path: 'create-event',
+    path: 'create',
     component: CreateEventPage
   },
   {

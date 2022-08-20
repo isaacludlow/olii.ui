@@ -1,12 +1,19 @@
-<ion-toolbar color="primary" mode="ios">
-    <ion-title>
-        <h2 class="section-title">My Groups</h2>
-    </ion-title>
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">My Groups</ion-title>
+    </ion-toolbar>
+</ion-header>
 
-    <div class="back-icon">
-        <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-    </div>
-</ion-toolbar>
+<ion-header collapse="condense" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+        <div class="header">
+            <div class="back">
+                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+            </div>
+            <h2 class="color-light">My Groups</h2>
+        </div>
+    </ion-toolbar>
+</ion-header>
 
 <ion-content>
     <div class="groups-container">

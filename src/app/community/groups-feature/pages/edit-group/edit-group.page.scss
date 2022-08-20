@@ -1,11 +1,25 @@
-ion-toolbar {
-    --min-height: 4rem;
+ion-content {
+    --padding-top: 0.5rem;
+    --padding-start: 0.5rem;
+    --padding-end: 0.5rem;
 }
 
-ion-content {
-    --padding-top: 1rem;
-    --padding-start: 1rem;
-    --padding-end: 1rem;
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        h2 {
+            margin-left: 14vw;
+            margin-right: auto;
+        }
+    }
+}
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
 }
 
 ion-item {

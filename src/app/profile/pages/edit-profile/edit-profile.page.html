@@ -1,39 +1,48 @@
-<ion-toolbar color="primary" mode="ios">
-    <ion-buttons slot="start" mode="ios">
-        <!--TODO: Make a new component that allows you to also change the color of the icon?-->
-        <div class="back-icon">
-            <olii-colored-square-background backgroundColor="purple-tinted-white" routerLink="/profile/settings">
-                <olii-base-icon name="arrow-back-outline" color="primary"></olii-base-icon>
-            </olii-colored-square-background>
-        </div>
-    </ion-buttons>
-    <ion-title color="light">Edit Profile</ion-title>
-</ion-toolbar>
+ <ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+        <ion-title color="light">Edit Profile</ion-title>
+    </ion-toolbar>
+</ion-header>
 
-<ion-content>
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
+                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
+                    </olii-colored-square-background>
+                </div>
+                <h2 class="color-light">Edit Profile</h2>
+            </div>
+        </ion-toolbar>
+    </ion-header>
     
     <div class="profile-image-container">
         <div class="profile-image">
-            <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
+            <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>
         </div>
-        <div class="change-profile-pic-label">
-            Change Profile Pic
-        </div>
+        <div class="change-profile-pic-label" (click)="setProfilePicture()">Change Profile Pic</div>
     </div>
 
-    <form [formGroup]="profileForm">
-        <!-- Profile should include name, number and age as well?-->
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <ion-item>
-            <ion-label color="tertiary" position="stacked">Name</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="name" clearInput="true"></ion-input>
+            <ion-label color="tertiary" position="stacked">First Name</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="firstName" clearInput="true"></ion-input>
         </ion-item>
+        <ion-note color="danger" *ngIf="!profileForm.controls.firstName.valid">First name cannot be left blank</ion-note>
         <ion-item>
-            <ion-label color="tertiary" position="stacked">Number</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" clearInput="true" type="number" formControlName="number"></ion-input>
+            <ion-label color="tertiary" position="stacked">Last Name</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="lastName" clearInput="true"></ion-input>
         </ion-item>
+        <ion-note color="danger" *ngIf="!profileForm.controls.lastName.valid">Last name cannot be left blank</ion-note>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Home Country</ion-label>
             <ion-input color="tertiary" mode="ios" type="text" formControlName="homeCountry" clearInput="true"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="tertiary" position="stacked">Host Country</ion-label>
+            <ion-input color="tertiary" mode="ios" type="text" formControlName="hostCountry" clearInput="true"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Current City</ion-label>
@@ -43,9 +52,10 @@
             <ion-label color="tertiary" position="stacked">Bio</ion-label>
             <ion-input color="tertiary" mode="ios" type="text" [value]="profile.Bio" clearInput="true"></ion-input>
         </ion-item>
+
+        <div class="save-button">
+            <ion-button type="submit" mode="ios" [disabled]="!profileForm.valid">Save</ion-button>
+        </div>
     </form>
-    
-    <div class="save-button">
-        <ion-button mode="ios">Save</ion-button>
-    </div>
+
 </ion-content>

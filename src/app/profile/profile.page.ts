@@ -1,9 +1,12 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { Profile } from '../models/dto/profile/profile.dto';
-import { FirebaseAuthService } from '../shared/services/authentication/firebase-auth.service';
+import { AuthStore } from '../shared/services/authentication/auth-store';
 import { ProfileStore } from '../shared/services/profile/profile.store';
 import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';
 
@@ -17,39 +20,61 @@ export class ProfilePage implements OnInit, OnDestroy {
   profilePostUrls: string[];
   segmentToShow: string;
   subs = new SubSink();
-  // TODO: We probably don't want to default this to true...
-  isActiveUser = true;
+  showBackButton: boolean;
 
   constructor(
     private profileStore: ProfileStore,
     private modalCtrl: ModalController,
-    private authService: FirebaseAuthService,
-    private router: Router
+    private authStore: AuthStore,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
-    this.subs.sink = this.profileStore.getProfileById(98).subscribe(res => this.profile = res);
+    this.route.queryParamMap.pipe(
+      switchMap(paramMap => {
+        if (paramMap.has('profileId')) {
+          return this.profileStore.getProfileById(+paramMap.get('profileId'));
+        } else {
+          return of(this.profileStore.currentUserProfile);
+        }
+      })
+    ).subscribe(profile => this.profile = profile);
+
     this.segmentToShow = this.profileStore.profileSection;
+    this.route.queryParamMap.subscribe(paramMap => this.showBackButton = paramMap.get('showBackButton') === 'true');
   }
 
   segmentChanged(event) {
     this.segmentToShow = event.detail.value;
   }
 
-  viewControl(): void {
-    // TODO: Meant to control the view based on whether you are viewing 
-    // your own profile or someone elses.  Will have to change the
-    // logic in the future to compare userIds
-      this.isActiveUser = !this.isActiveUser;
-      this.segmentToShow = (this.isActiveUser == false ? "photos" : "photos");
+  navigateBack() {
+    this.location.back();
   }
+
+  isActiveUser() {
+    if (this.profile.Id == this.profileStore.currentUserProfile.Id) {
+      return true;
+    }
+    return false;
+  }
+
+  // viewControl(): void {
+  //   // TODO: Meant to control the view based on whether you are viewing 
+  //   // your own profile or someone elses.  Will have to change the
+  //   // logic in the future to compare userIds
+  //     this.isActiveUser = !this.isActiveUser;
+  //     this.segmentToShow = (this.isActiveUser == false ? "photos" : "photos");
+  // }
 
   followUser(): void {
     // TODO: Send an api update to the database to follow this user
   }
 
   async signOut(): Promise<void> {
-    await this.authService.signOut();
+    await this.authStore.signOut();
     this.router.navigate(['registration/slideshow']);
   }
 

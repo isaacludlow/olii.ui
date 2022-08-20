@@ -1,10 +1,26 @@
-<ion-toolbar color="primary" mode="ios">
-    <ion-title>
-        <h2 class="section-title">Groups</h2>
-    </ion-title>
-</ion-toolbar>
-
-<ion-content id="content-id">
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Groups</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content fullscreen="true" scrollY="true">
+      <ion-header collapse="condense" mode="ios">
+          <ion-toolbar class="purple-background" mode="ios">
+              <div class="header">
+                  <h2 class="color-light">Groups</h2>
+                  <div class="add-event">
+                      <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="createGroup()">
+                          <olii-base-icon name="add" color="primary" size="small"></olii-base-icon>
+                      </olii-colored-square-background>
+                  </div>
+              </div>
+          </ion-toolbar>
+          <div class="spacer"></div>
+          <!-- <ion-toolbar class="searchbar" mode="ios">
+              <ion-searchbar animated="true" placeholder="Search for groups"></ion-searchbar>
+          </ion-toolbar> -->
+      </ion-header>
 
     <div class="my-groups-container">
         <div class="my-groups-header-container">
@@ -15,13 +31,6 @@
             <div class="group-links-container">
                 <olii-group-preview-icons [groups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
             </div>
-
-            <div id="new-group-button-id" class="new-group-button-container">
-                <div class="new-group-button" routerLink="./create">
-                    <olii-base-icon size="medium" name="add-outline"></olii-base-icon>
-                </div>
-                <div class="group-nav-group-name">+ New</div>
-            </div>
         </div>
     </div>
 
@@ -29,12 +38,10 @@
 
     <div>
         <h3 class="section-header">Latest</h3>
-
         <div class="post" *ngFor="let postWrapper of groupsLatest">
             <ion-card>
                 <div class="card-content">
-                    
-                    <div class="post-group-header">
+                    <div class="post-group-header" [routerLink]="['./group', postWrapper.GroupId]">
                         <div class="group-info">
                             <div class="group-image">
                                 <olii-container-cover-image [imageUrl]="postWrapper.GroupImageUrl" boarderRadius="50%"></olii-container-cover-image>
@@ -49,5 +56,4 @@
             </ion-card>
         </div>
     </div>
-
 </ion-content>

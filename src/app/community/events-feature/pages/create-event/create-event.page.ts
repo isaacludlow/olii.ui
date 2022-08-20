@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { EventsFeatureStore } from 'src/app/shared/services/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
@@ -28,18 +28,19 @@ export class CreateEventPage implements OnInit, OnDestroy {
   eventDateTimeInput: Date;
   eventCoverImage: GalleryPhoto = null;
   eventImages: GalleryPhoto[] = [];
-  // TODO: Need to build visualization for the user for when a validator has not been satisfied.
   createEventForm = this.fb.group({
     coverImage: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
-    description: [null, [Validators.required, Validators.minLength(5)]],
+    description: [null, [Validators.required, Validators.minLength(8)]],
     creatorType: [null, Validators.required],
     creatorId: [null, Validators.required],
     dateTime: [null, Validators.required],
     location: [null, Validators.required],
     // privacyLevel: [null, Validators.required],
     images: [null]
-  });
+  },
+  { updateOn: 'blur' }
+  );
   subs = new SubSink();
 
   constructor(
@@ -60,7 +61,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    // TODO: Refactor to wait until call to get events is done.
+    // TODO-AfterBeta: Refactor to wait until call to get events is done.
     this.createMap();
   }
 
@@ -141,12 +142,11 @@ export class CreateEventPage implements OnInit, OnDestroy {
     });
 
     const eventRequest: EventRequest = {
-      CoverImage: await readPhotoAsBase64(this.eventCoverImage, this.platform),
+      CoverImageData: await readPhotoAsBase64(this.eventCoverImage, this.platform),
       Title: this.createEventForm.get('title').value,
       Description: this.createEventForm.get('description').value,
       CreatorType: this.createEventForm.get('creatorType').value as EventCreatorIdType,
       CreatorId: this.createEventForm.get('creatorId').value as number,
-      // Need to figure out how to convert to UTC date and handle dates in the UI and API layers.
       Date: new Date(this.createEventForm.get('dateTime').value),
       PrivacyLevel: 'Public',
       Location: this.createEventForm.get('location').value as EventLocation,

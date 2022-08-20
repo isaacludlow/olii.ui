@@ -7,16 +7,19 @@
             <p class="color-medium font-thin">Create awesome plans and meet new exchange students</p>
         </div>
     
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" #form="ngForm">
             <ion-item>
                 <ion-input formControlName="username" type="text" placeholder="Username"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
             </ion-item>
+            <ion-note color="danger" *ngIf="(registerForm.controls.email.dirty || form.submitted) && !registerForm.controls.email.valid">Please enter a valid email</ion-note>
+
             <ion-item>
                 <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
             </ion-item>
+            <ion-note color="danger" *ngIf="(registerForm.controls.password.dirty || form.submitted) && !registerForm.controls.password.valid">Password must be at lease 8 characters</ion-note>
     
             <div class="other-options">
                 <div class="checkbox">
@@ -35,6 +38,7 @@
           <ion-content>
               <div class="model-content full-page-side-margin">
                   <olii-base-icon name="close" color="primary" size="medium" (click)="toggleModel()"></olii-base-icon>
+                  <!-- TODO: Fill in terms and conditions, and privacy policy. -->
                   <div class="term-and-conditions">
                       <h2>Term and Conditions</h2>
                       <p>This is the start to some very boring legal stuff.</p>

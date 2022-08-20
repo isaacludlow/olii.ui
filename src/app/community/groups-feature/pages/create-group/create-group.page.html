@@ -1,12 +1,19 @@
-<ion-toolbar color="primary" mode="ios">
-    <ion-title>
-        <h2 class="section-title">Create Group</h2>
-    </ion-title>
+<ion-header collapse="fade" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+      <ion-title color="light">Create Group</ion-title>
+    </ion-toolbar>
+</ion-header>
 
-    <div class="back-icon">
-        <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-    </div>
-</ion-toolbar>
+<ion-header collapse="condense" mode="ios">
+    <ion-toolbar class="purple-background" mode="ios">
+        <div class="header">
+            <div class="back-icon">
+                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+            </div>
+            <h2 class="color-light">Create Group</h2>
+        </div>
+    </ion-toolbar>
+</ion-header>
 
 <ion-content>
     <form [formGroup]="createGroupForm">
@@ -38,12 +45,17 @@
     <hr>
 
     <h4 class="form-label">Add Image</h4>
-    <div class="group-picture-container" (click)="setGroupPicture()">
-        <div class="group-picture">
-            <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
+    <div class="group-picture-container">
+        <div class="add-image" *ngIf="this.groupPicture" (click)="setGroupPicture()">
+            <div class="group-picture">
+                <olii-container-cover-image [imageUrl]="sanitizeUrl(groupPicture.webPath)"></olii-container-cover-image>  
+            </div>
+        </div>
+        <div class="add-image" *ngIf="this.groupPicture == null" (click)="setGroupPicture()">
+            <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid">Create Group</ion-button>
+    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid || this.groupPicture == null">Create Group</ion-button>
 
 </ion-content>

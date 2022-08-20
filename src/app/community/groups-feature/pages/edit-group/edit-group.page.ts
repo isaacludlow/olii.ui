@@ -4,7 +4,7 @@ import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { SubSink } from 'subsink';
 import { switchMap } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
-import { GroupStore } from 'src/app/shared/services/community/groups/group.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
@@ -12,7 +12,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { GroupService } from 'src/app/shared/services/community/groups/group.service';
+import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -34,8 +34,7 @@ export class EditGroupPage implements OnInit {
     private fb: FormBuilder,
     private domSanitizer: DomSanitizer,
     private platform: Platform,
-    private groupStore: GroupStore,
-    private groupService: GroupService,
+    private groupStore: GroupFeatureStore,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -71,7 +70,7 @@ export class EditGroupPage implements OnInit {
       Admin: null,
     }
   
-    this.groupService.updateGroup(updatedGroup).subscribe(res => {
+    this.groupStore.updateGroup(updatedGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.Id]);
     })
   }

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseAuthService } from 'src/app/shared/services/authentication/firebase-auth.service';
+import { AuthStore } from 'src/app/shared/services/authentication/auth-store';
 
 @Component({
   templateUrl: './sign-in.page.html',
@@ -22,7 +22,7 @@ export class SignInPage {
 
   constructor(
     private fb: FormBuilder,
-    private authService: FirebaseAuthService,
+    private authStore: AuthStore,
     private router: Router,
     private location: Location
   ) { }
@@ -31,7 +31,7 @@ export class SignInPage {
     const email = this.signInForm.get('email').value;
     const password = this.signInForm.get('password').value;
 
-    this.authService.login(email, password).subscribe(_ => {
+    this.authStore.login(email, password).subscribe(_ => {
       this.signInForm.reset();
       this.router.navigate(['registration/registration-flow']);
     });
