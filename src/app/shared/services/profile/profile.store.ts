@@ -25,7 +25,7 @@ export class ProfileStore implements OnDestroy {
 		private httpClient: HttpClient
 	) {
 		this.subs.sink = this.userStore.user.pipe(
-			switchMap(user => this.profileService.getProfileByUserId(user.Id))
+			switchMap(user => this.profileService.getProfileByUserId(user?.Id))
 		).subscribe(profile => this.currentUserProfile = profile);
 	}
 

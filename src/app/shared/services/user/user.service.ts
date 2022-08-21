@@ -4,26 +4,30 @@ import { User } from 'src/app/models/dto/user/user.dto';
 import { mockUserData_loggedInUser } from './mock-user-data.dto';
 import { UserRequest } from 'src/app/models/requests/user/user-request';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { AuthStore } from '../authentication/auth-store';
+import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private httpClient: HttpClient, private authStore: AuthStore) {}
+  constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
-  getUserByUid(uid: string): Observable<User> {
-    const response = this.httpClient.get<User>(`${environment.apiBaseUrl}/user`, { headers: { Authorization: this.authStore.userIdToken.value } }).pipe(
+  // The userIdToken needs to be passed in when the user is registering for an account. After that the application will save it and get it from the authStore.
+  getUserByUid(userIdToken?: string): Observable<User> {
+    userIdToken = userIdToken ?? this.authStore.userIdToken;
+    const response = this.httpClient.get<User>(`${environment.apiBaseUrl}/user`, { headers: { Authorization: userIdToken } }).pipe(
+      // TODO: Remove this line once profile call is set up.
       tap(user => user.Id = 98)
     );
 
     return response;
   }
 
-  createUser(user: UserRequest): Observable<User> {
-    const response = this.httpClient.post<User>(`${environment.apiBaseUrl}/user`, user, { headers: { Authorization: this.authStore.userIdToken.value } }).pipe(
+  createUser(user: UserRequest, userIdToken: string): Observable<User> {
+    const response = this.httpClient.post<User>(`${environment.apiBaseUrl}/user`, user, { headers: { Authorization: userIdToken } }).pipe(
+      // TODO: Remove this line once profile call is set up.
       tap(user => user.Id = 98)
     );
 

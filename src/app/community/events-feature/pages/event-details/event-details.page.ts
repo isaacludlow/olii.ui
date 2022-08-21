@@ -1,6 +1,5 @@
-import { Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
@@ -21,7 +20,7 @@ export class EventDetailsPage implements OnInit {
   constructor(
     private eventsStore: EventsFeatureStore,
     private route: ActivatedRoute,
-    private location: Location
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +51,6 @@ export class EventDetailsPage implements OnInit {
   }
 
   navigateBack(): void {
-    this.location.back();
+    this.router.navigate(['community/events']);
   }
 }

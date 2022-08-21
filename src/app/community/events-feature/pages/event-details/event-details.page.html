@@ -39,11 +39,13 @@
         </div>
         <div class="attendees">
             <h4>Attending</h4>
-            <olii-profile-preview-icons
+            <div [routerLink]="['/community/events', event.Id, 'attendees']">
+                <olii-profile-preview-icons
                 [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
                 profileIconSize="large"
                 [additionalDisplayNumber]="attendingProfilePictures.length - 5">
             </olii-profile-preview-icons> 
+        </div>
         </div>
         <div class="location">
             <h4>Location</h4>

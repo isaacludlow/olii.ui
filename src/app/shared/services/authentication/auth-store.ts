@@ -1,28 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FirebaseAuthService } from './firebase-auth.service';
 import firebase from 'firebase/compat';
+import { SubSink } from 'subsink';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthStore {
-  private _currentUser: firebase.User = null;
-  userIdToken = new BehaviorSubject<string>(null);
-
+export class AuthStore implements OnDestroy {
+  private _currentUser = new BehaviorSubject<firebase.User>(null);
+  private subs = new SubSink();
+  userIdToken: string = null;
 
   constructor(private authService: FirebaseAuthService) {
-    this.authService.user.subscribe(userInfo => {
-      this._currentUser = userInfo;
-      if (!!userInfo) {
-        userInfo.getIdToken().then(idToken => this.userIdToken.next(idToken));
-      }
+    this.subs.sink = this.authService.user.subscribe(user => {
+      this._currentUser.next(user);
+      user?.getIdToken().then(idToken => this.userIdToken = idToken);
     });
   }
 
-  get user(): firebase.User {
-    return this._currentUser;
+  get user(): Observable<firebase.User> {
+    return this._currentUser.asObservable();
   }
 
   get isAuthenticated(): Observable<boolean> {
@@ -30,14 +29,18 @@ export class AuthStore {
   }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
-    return this.authService.registerUser(email, password).pipe(tap(userCredentials => this._currentUser = userCredentials.user));
+    return this.authService.registerUser(email, password);
   }
 
   login(email: string, password: string): Observable<firebase.auth.UserCredential> {
-    return this.authService.login(email, password).pipe(tap(userCredentials => this._currentUser = userCredentials.user));
+    return this.authService.login(email, password);
   }
 
   signOut(): Promise<void> {
     return this.authService.signOut();
+  }
+  
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
