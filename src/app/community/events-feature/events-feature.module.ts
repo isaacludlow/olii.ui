@@ -12,13 +12,15 @@ import { CommunityModule } from '../community.module';
 import { MyEventsPage } from './pages/my-events/my-events.page';
 import { CreateEventPage } from './pages/create-event/create-event.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EventAttendeesPage } from './pages/event-attendees/event-attendees.page';
 
 @NgModule({
   declarations: [
     EventsFeaturePage,
     EventDetailsPage,
     MyEventsPage,
-    CreateEventPage
+    CreateEventPage,
+    EventAttendeesPage
   ],
   imports: [
     CommonModule,
