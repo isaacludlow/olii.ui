@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { FormControl, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { ProfileRequestSavedAlbum } from 'src/app/models/requests/profile/profile-request-saved-album';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 
 @Component({
   selector: 'create-album-pop-up',
@@ -64,7 +66,17 @@ export class CreateAlbumPopUpComponent implements OnInit {
   }
 
   onCreateAlbum() {
-    this.profileStore.postNewAlbum(this.albumNameInput.value, this.albumDescriptionInput.value, this.albumVisibility);
+
+    const newAlbum: ProfileRequestSavedAlbum = {
+      Id: this.profileStore.currentUserProfile.Id,
+      CoverImageFile: null,
+      Title: this.albumNameInput.value,
+      Description: this.albumDescriptionInput.value,
+      PrivacyLevel: this.albumVisibility as PrivacyLevel,
+      ImageFiles: null,
+    }
+
+    this.profileStore.createAlbum(this.albumNameInput.value, this.albumDescriptionInput.value, this.albumVisibility);
     this.dismissModal();
   }
 

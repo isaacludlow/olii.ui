@@ -7,19 +7,22 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { environment } from 'src/environments/environment';
 import { mockEventData_eventById } from '../community/events-feature/mock-event-data';
+import { AuthStore } from '../authentication/auth-store';
 import { mockProfileData_yourProfile } from './mock-profile-data';
+import { SavedAlbum } from 'src/app/models/dto/profile/saved-album.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
   getProfileById(profileId: number): Observable<Profile> {
-    const response = mockProfileData_yourProfile;
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken.value }}).pipe();
+    //const response = mockProfileData_yourProfile;
     
-    return of(response);
+    return response;
   }
 
   getProfileByUserId(userId: number): Observable<Profile> {
@@ -69,8 +72,9 @@ export class ProfileService {
     
   }
 
-  createNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
+  createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
     // Add API call code here
+    //const response = this.httpClient.post<SavedAlbum>(`${environment.apiBaseUrl}/profile/saved-album`, )
     return true;
   }
 }

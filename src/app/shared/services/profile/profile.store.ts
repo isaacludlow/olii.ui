@@ -42,7 +42,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: number): Observable<Profile> {
-		return this.profileService.getProfileById(profileId);
+		return this.profileService.getProfileById(profileId).pipe();
 
 		// Use this code below for caching images in the future.
 		// .pipe(
@@ -64,8 +64,8 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.getFriends(userId);
 	}
 
-	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
-		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
+	createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
+		return this.profileService.createAlbum(albumName, albumDescription, albumVisibility);
 	}
 
 	updateProfile(profileRequest: ProfileRequest) {
