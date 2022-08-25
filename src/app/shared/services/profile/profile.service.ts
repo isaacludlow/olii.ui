@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConnectedSocial } from 'src/app/models/dto/profile/connected-social.dto';
@@ -19,20 +19,19 @@ export class ProfileService {
   constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
   getProfileById(profileId: number): Observable<Profile> {
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken.value }}).pipe();
-    //const response = mockProfileData_yourProfile;
-    
+    let params = new HttpParams().set('profileid', profileId);
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params }).pipe();    
     return response;
   }
 
   getProfileByUserId(userId: number): Observable<Profile> {
-    const response = mockProfileData_yourProfile;
-
-    return of(response);
+    let params = new HttpParams().set('userid', userId);
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params }).pipe();
+    return response;
   }
   
   createNewProfile(profile: ProfileRequest) {
-    return this.httpClient.post(`${environment.apiBaseUrl}`, profile);
+    return this.httpClient.post(`${environment.apiBaseUrl}/profile`, profile, { headers: { Authorization: this.authStore.userIdToken } });
   }
 
   getFriends(id: number): Observable<PartialProfile[]> {

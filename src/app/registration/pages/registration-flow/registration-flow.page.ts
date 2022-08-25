@@ -77,7 +77,7 @@ export class RegistrationFlowPage {
 
   async submit() {
     const profileData = await this.createProfileRequest();
-    const res = this.profileService.createNewProfile(profileData);
+    const res = this.profileService.createNewProfile(profileData).subscribe();
     this.navBar.setNavBarVisibility(true);
     this.router.navigate(['community/events'])
   }

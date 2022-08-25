@@ -33,7 +33,7 @@ export class SignInPage {
 
     this.authStore.login(email, password).subscribe(_ => {
       this.signInForm.reset();
-      this.router.navigate(['registration/registration-flow']);
+      this.router.navigate(['community/events']);
     });
   }
 
