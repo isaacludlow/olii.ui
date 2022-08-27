@@ -8,7 +8,7 @@ import { IonModal, Platform } from '@ionic/angular';
 import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
@@ -151,7 +151,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
       CreatorTypeParamId: this.createEventForm.get('creatorType').value as EventCreatorIdType,
       CreatorId: this.createEventForm.get('creatorId').value as number,
       Date: new Date(this.createEventForm.get('dateTime').value),
-      PrivacyLevelParamId: PrivacyLevel.Public,
+      PrivacyLevelParamId: PrivacyLevelRequest.Public,
       LocationDisplayName: location.DisplayName,
       Latitude: location.Latitude,
       Longitude: location.Longitude,

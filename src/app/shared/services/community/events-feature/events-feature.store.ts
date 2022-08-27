@@ -16,7 +16,7 @@ export class EventsFeatureStore {
 
   constructor(private eventsService: EventsFeatureService) { }
 
-  getEvents(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Event[]> {
+  getEvents(refresh: boolean = false, offset?: number, limit?: number): Observable<Event[]> {
     if (this._allEvents.value === null || refresh) {
       return this.eventsService.getEvents(offset, limit).pipe(switchMap(events => {
         this._allEvents.next(events);

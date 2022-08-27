@@ -1,7 +1,7 @@
 import { EntityPreview } from "../../misc/entity-preview.dto";
 import { EventLocation } from "../../misc/event-location.dto";
-import { PrivacyLevel } from "../../misc/privacy-level.do";
 import { PartialProfile } from "../../profile/partial-profile.dto";
+import { PrivacyLevel } from "../../misc/privacy-level.dto";
 
 export interface Event {
     EventId: number;

@@ -8,7 +8,7 @@ import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feat
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
@@ -66,7 +66,7 @@ export class EditGroupPage implements OnInit {
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevel: this.editGroupForm.get('groupVisibility').value as PrivacyLevel,
+      PrivacyLevel: this.editGroupForm.get('groupVisibility').value as PrivacyLevelRequest,
       Admin: null,
     }
   

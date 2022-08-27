@@ -19,9 +19,12 @@ export class EventsFeatureService {
 
   // TODO: All of these methods should have error handling once we connect to the api.
   getEvents(offset: number, limit: number): Observable<Event[]> {
-    const response = mockEventData_allEvents;
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
+      params: { offset: offset, limit: limit },
+      headers: { Authorization: this.authStore.userIdToken }
+    });
 
-    return of(response);
+    return response;
   }
 
   getEventById(eventId: number): Observable<Event> {
