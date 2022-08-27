@@ -160,7 +160,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
     };
 
     await this.eventStore.createEvent(eventRequest).toPromise();
-    // this.createEventForm.reset();
+    this.createEventForm.reset();
     this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
   }
   

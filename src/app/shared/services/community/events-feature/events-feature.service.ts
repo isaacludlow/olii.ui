@@ -48,7 +48,7 @@ export class EventsFeatureService {
       `${environment.apiBaseUrl}/event`,
       eventRequest,
       { headers: { Authorization: this.authStore.userIdToken } }
-    ).pipe(tap(event => event.Creator.Id = 98));
+    );
 
     return response;
   }
