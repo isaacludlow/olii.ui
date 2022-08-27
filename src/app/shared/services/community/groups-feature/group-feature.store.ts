@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, from, Observable } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
-import { map, tap } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
@@ -31,7 +31,10 @@ export class GroupFeatureStore {
 
     getGroups(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Group[]> {
         if (this._allGroups.value === null || refresh) {
-            return this.groupService.getGroups(offset, limit).pipe(tap(groups => this._allGroups.next(groups)));
+            return this.groupService.getGroups(offset, limit).pipe(switchMap(groups => {
+                this._allGroups.next(groups);
+                return this._allGroups.asObservable();
+            }));
         } else {
             return this._allGroups.asObservable();
         }
@@ -51,7 +54,10 @@ export class GroupFeatureStore {
 
     getMyGroups(profileId: number): Observable<Group[]> {
         if (this._myGroups.value === null) {
-            return this.groupService.getMyGroups(profileId).pipe(tap(groups => this._myGroups.next(groups)));
+            return this.groupService.getMyGroups(profileId).pipe(switchMap(groups => {
+                this._myGroups.next(groups);
+                return this._myGroups.asObservable();
+            }));
         } else {
             return this._myGroups.asObservable();
         }

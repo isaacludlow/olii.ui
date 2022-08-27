@@ -13,5 +13,5 @@ export interface Event {
     PrivacyLevel: PrivacyLevel;
     Location: EventLocation;
     ImageUrls: string[];
-    Attendees: PartialProfile[];
+    AttendeeProfiles: PartialProfile[];
 }
