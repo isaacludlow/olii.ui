@@ -17,6 +17,7 @@ import { Validators } from '@angular/forms';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -149,7 +150,7 @@ export class GroupDetailsPage implements OnInit {
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: 7, creatorId: this.group.Id } }
+      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.Id } }
     );
   }
 
