@@ -28,9 +28,9 @@ export class EventsFeatureService {
   }
 
   getEventById(eventId: number): Observable<Event> {
-    const response = mockEventData_eventById;
+    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, { headers: { Authorization: this.authStore.userIdToken } });
 
-    return of(response);
+    return response;
   }
 
   getMyEvents(profileId: number): Observable<Event[]> {
