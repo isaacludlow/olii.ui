@@ -28,7 +28,7 @@ export class EventDetailsPage implements OnInit {
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
-      this.attendingProfilePictures = this.event.Attendees.map(attendee => attendee.ProfilePictureUrl);
+      this.attendingProfilePictures = this.event.AttendeeProfiles.map(attendee => attendee.ProfilePictureUrl);
     });
   }
 

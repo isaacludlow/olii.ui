@@ -4,7 +4,7 @@ import { PrivacyLevel } from "../../misc/privacy-level.do";
 import { PartialProfile } from "../../profile/partial-profile.dto";
 
 export interface Event {
-    Id: number;
+    EventId: number;
     CoverImageUrl: string;
     Title: string;
     Description: string;
@@ -13,5 +13,5 @@ export interface Event {
     PrivacyLevel: PrivacyLevel;
     Location: EventLocation;
     ImageUrls: string[];
-    Attendees: PartialProfile[];
+    AttendeeProfiles: PartialProfile[];
 }

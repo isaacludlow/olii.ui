@@ -1,3 +1,4 @@
+import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
 import { ConnectedSocial } from "src/app/models/dto/profile/connected-social.dto";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 
@@ -28,7 +29,7 @@ export let mockProfileData_yourProfile: Profile = {
         Id: 1,
         // TODO: Setting of album cover image should be done in the Olii API.
         CoverImageUrl: 'https://images.unsplash.com/photo-1466921583968-f07aa80c526e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80',
-        Title: 'My Photos', Description: 'Personal photos that mean a lot to you.', PrivacyLevel: 'Private',
+        Title: 'My Photos', Description: 'Personal photos that mean a lot to you.', PrivacyLevel: PrivacyLevel.Private,
         ImageUrls: [
           'https://images.unsplash.com/photo-1466921583968-f07aa80c526e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80',
           'https://images.unsplash.com/photo-1496024840928-4c417adf211d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80',
@@ -39,7 +40,7 @@ export let mockProfileData_yourProfile: Profile = {
         Id: 2,
         // TODO: Setting of album cover image should be done in the Olii API.
         CoverImageUrl: 'https://images.unsplash.com/photo-1619537901863-9807597cb0b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80',
-        Title: 'Saved Photos', Description: 'All your random pics from things you don\'t want to lose track of.', PrivacyLevel: 'Public',
+        Title: 'Saved Photos', Description: 'All your random pics from things you don\'t want to lose track of.', PrivacyLevel: PrivacyLevel.Public,
         ImageUrls: [
           'https://images.unsplash.com/photo-1619537901863-9807597cb0b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1365&q=80',
           'https://images.unsplash.com/photo-1564245709234-fd3de5cacd40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjd8fGZ1bnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60',

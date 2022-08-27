@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { EventsFeatureService } from './events-feature.service';
 
@@ -17,7 +18,10 @@ export class EventsFeatureStore {
 
   getEvents(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Event[]> {
     if (this._allEvents.value === null || refresh) {
-      return this.eventsService.getEvents(offset, limit).pipe(tap(events => this._allEvents.next(events)));
+      return this.eventsService.getEvents(offset, limit).pipe(switchMap(events => {
+        this._allEvents.next(events);
+        return this._allEvents.asObservable();
+      }));
     } else {
       return this._allEvents.asObservable();
     }
@@ -27,7 +31,7 @@ export class EventsFeatureStore {
     if (this._allEvents.value === null) {
       return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
-      const event = this._allEvents.pipe(map(events => events.find(event => event.Id === eventId)));
+      const event = this._allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
 
       return event === undefined
         ? this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([...this._allEvents.value, event])))
@@ -82,18 +86,21 @@ export class EventsFeatureStore {
   //#region getMyEvents() helper methods.
   private retrieveMyEvents(profileId: number): Observable<Event[]> {
     if (this._myEvents.value === null) {
-      return this.eventsService.getMyEvents(profileId).pipe(tap(events => this._myEvents.next(events)));
+      return this.eventsService.getMyEvents(profileId).pipe(switchMap(events => {
+        this._myEvents.next(events);
+        return this._myEvents.asObservable();
+      }));
     } else {
       return this._myEvents.asObservable();
     }
   }
 
   private retrieveGroupEvents(groupId: number): Observable<Event[]> {
-    return this.eventsService.getEventsByGroupId(groupId).pipe();
+    return this.eventsService.getEventsByGroupId(groupId);
   }
 
   private isCreator(event: Event, profileId: number): boolean {
-    if (event.Creator.IdType !== 'Profile') {
+    if (event.Creator.IdType !== EventCreatorIdType.Profile) {
       return false;
     } else {
       return event.Creator.Id === profileId;
