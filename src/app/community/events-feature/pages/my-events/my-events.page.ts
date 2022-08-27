@@ -18,7 +18,6 @@ export class MyEventsPage implements OnInit {
   pastEvents$: Observable<Event[]>;
 
   constructor(
-    private location: Location,
     private route: ActivatedRoute,
     private eventStore: EventsFeatureStore,
     private profileStore: ProfileStore
@@ -44,9 +43,5 @@ export class MyEventsPage implements OnInit {
 
   eventFilterSegmentChanged(event) {
     this.currentEventFilterSegment = event.detail.value;
-  }
-
-  navigateBack(): void {
-    this.location.back();
   }
 }

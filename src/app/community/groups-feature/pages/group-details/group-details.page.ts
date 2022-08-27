@@ -16,6 +16,7 @@ import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -103,10 +104,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   canView(): boolean {
-    if (this.group.PrivacyLevel == 'Public') {
+    if (this.group.PrivacyLevel == PrivacyLevel.Public) {
       return true;
     }
-    else if (this.group.PrivacyLevel == "Private") {
+    else if (this.group.PrivacyLevel == PrivacyLevel.Private) {
       if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }
@@ -148,7 +149,7 @@ export class GroupDetailsPage implements OnInit {
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: 'Group', creatorId: this.group.Id } }
+      { queryParams: { creatorType: 7, creatorId: this.group.Id } }
     );
   }
 

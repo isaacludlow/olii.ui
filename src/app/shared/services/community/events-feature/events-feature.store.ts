@@ -3,6 +3,7 @@ import { isAfter, isBefore } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { EventsFeatureService } from './events-feature.service';
 
@@ -27,7 +28,7 @@ export class EventsFeatureStore {
     if (this._allEvents.value === null) {
       return this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([event])));
     } else {
-      const event = this._allEvents.pipe(map(events => events.find(event => event.Id === eventId)));
+      const event = this._allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
 
       return event === undefined
         ? this.eventsService.getEventById(eventId).pipe(tap(event => this._allEvents.next([...this._allEvents.value, event])))
@@ -75,6 +76,7 @@ export class EventsFeatureStore {
       tap(event => {
         this._allEvents.next([...this._allEvents.value, event]);
         this._myEvents.next([...this._myEvents.value, event]);
+        console.log(this._allEvents.value)
       })
     );
   }
@@ -93,7 +95,7 @@ export class EventsFeatureStore {
   }
 
   private isCreator(event: Event, profileId: number): boolean {
-    if (event.Creator.IdType !== 'Profile') {
+    if (event.Creator.IdType !== EventCreatorIdType.Profile) {
       return false;
     } else {
       return event.Creator.Id === profileId;

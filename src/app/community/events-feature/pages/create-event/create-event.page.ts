@@ -8,6 +8,7 @@ import { IonModal, Platform } from '@ionic/angular';
 import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
@@ -141,19 +142,25 @@ export class CreateEventPage implements OnInit, OnDestroy {
       eventBase64Images.push(await readPhotoAsBase64(image, this.platform))
     });
 
+    const location = this.createEventForm.get('location').value as EventLocation
+
     const eventRequest: EventRequest = {
       CoverImageData: await readPhotoAsBase64(this.eventCoverImage, this.platform),
       Title: this.createEventForm.get('title').value,
       Description: this.createEventForm.get('description').value,
-      CreatorType: this.createEventForm.get('creatorType').value as EventCreatorIdType,
+      CreatorTypeParamId: this.createEventForm.get('creatorType').value as EventCreatorIdType,
       CreatorId: this.createEventForm.get('creatorId').value as number,
       Date: new Date(this.createEventForm.get('dateTime').value),
-      PrivacyLevel: 'Public',
-      Location: this.createEventForm.get('location').value as EventLocation,
-      Images: eventBase64Images
+      PrivacyLevelParamId: PrivacyLevel.Public,
+      LocationDisplayName: location.DisplayName,
+      Latitude: location.Latitude,
+      Longitude: location.Longitude,
+      Images: eventBase64Images,
+      AttendeeProfileIds: []
     };
 
-    this.eventStore.createEvent(eventRequest).subscribe();
+    await this.eventStore.createEvent(eventRequest).toPromise();
+    // this.createEventForm.reset();
     this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
   }
   
