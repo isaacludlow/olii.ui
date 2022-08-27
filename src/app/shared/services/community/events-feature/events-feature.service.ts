@@ -43,10 +43,12 @@ export class EventsFeatureService {
   }
 
   getEventsByGroupId(groupId: number): Observable<Event[]> {
-    const response = mockEventData_allEvents;
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
+      params: { profileId: groupId },
+      headers: { Authorization: this.authStore.userIdToken }
+    });
 
-    // TODO: Real version will need to query events by what events are associated with the group of a given id
-    return of(response);
+    return response;
   }
 
   createEvent(eventRequest: EventRequest): Observable<Event> {
