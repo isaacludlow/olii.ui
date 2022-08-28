@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -19,8 +19,13 @@ export class EventsFeatureService {
 
   // TODO: All of these methods should have error handling once we connect to the api.
   getEvents(offset: number, limit: number): Observable<Event[]> {
+    const getEventParams = new HttpParams();
+
+    if (offset !== null) getEventParams.set('offset', offset);
+    if (limit !== null) getEventParams.set('limit', limit);
+
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
-      params: { offset: offset, limit: limit },
+      params: getEventParams,
       headers: { Authorization: this.authStore.userIdToken }
     });
 
