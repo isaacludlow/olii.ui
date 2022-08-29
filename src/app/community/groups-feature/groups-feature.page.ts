@@ -8,7 +8,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
 import { Router } from '@angular/router';
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 
 @Component({
   selector: 'groups-feature',
@@ -90,10 +90,10 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   canView(group: Group): boolean {
-    if (group.PrivacyLevel == PrivacyLevel.Public) {
+    if (group.PrivacyLevel == PrivacyLevelRequest.Public) {
       return true;
     }
-    else if (group.PrivacyLevel == PrivacyLevel.Private) {
+    else if (group.PrivacyLevel == PrivacyLevelRequest.Private) {
       if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
         return true;
       }

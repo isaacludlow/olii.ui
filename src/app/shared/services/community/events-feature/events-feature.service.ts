@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { parseISO } from 'date-fns';
+import { observable, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { environment } from 'src/environments/environment';
@@ -19,28 +20,42 @@ export class EventsFeatureService {
 
   // TODO: All of these methods should have error handling once we connect to the api.
   getEvents(offset: number, limit: number): Observable<Event[]> {
-    const response = mockEventData_allEvents;
+    const getEventParams = new HttpParams();
 
-    return of(response);
+    if (offset !== null) getEventParams.set('offset', offset);
+    if (limit !== null) getEventParams.set('limit', limit);
+
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
+      params: getEventParams,
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
+
+    return response;
   }
 
   getEventById(eventId: number): Observable<Event> {
-    const response = mockEventData_eventById;
+    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, { headers: { Authorization: this.authStore.userIdToken } })
+    .pipe(tap(event => event.Date = parseISO(<any>event.Date)));
 
-    return of(response);
+    return response;
   }
 
   getMyEvents(profileId: number): Observable<Event[]> {
-    const response = mockEventData_myEvents;
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
+      params: { profileId: profileId },
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
 
-    return of(response);
+    return response;
   }
 
   getEventsByGroupId(groupId: number): Observable<Event[]> {
-    const response = mockEventData_allEvents;
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
+      params: { profileId: groupId },
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
 
-    // TODO: Real version will need to query events by what events are associated with the group of a given id
-    return of(response);
+    return response;
   }
 
   createEvent(eventRequest: EventRequest): Observable<Event> {
@@ -48,7 +63,7 @@ export class EventsFeatureService {
       `${environment.apiBaseUrl}/event`,
       eventRequest,
       { headers: { Authorization: this.authStore.userIdToken } }
-    ).pipe(tap(event => event.Creator.Id = 98));
+    ).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
 
     return response;
   }

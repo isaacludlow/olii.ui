@@ -1,7 +1,7 @@
 import { addDays } from "date-fns";
 import { Event } from "src/app/models/dto/community/events/event.dto";
 import { EventCreatorIdType } from "src/app/models/dto/misc/entity-preview-id-type.dto";
-import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
+import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.dto";
 import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 
 export let mockEventData_allEvents: Event[];

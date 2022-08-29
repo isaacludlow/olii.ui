@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { ProfileStore } from '../../profile/profile.store';
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 
 @Injectable({
     providedIn: 'root'
@@ -38,7 +38,7 @@ export class GroupFeatureService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80%27',
             Name: 'World Exchangers',
             Description: 'If you enjoy partying and want to keep up to date with all that\'s going down here in Switzerland, this is the spot for you',
-            PrivacyLevel: PrivacyLevel.Public,
+            PrivacyLevel: PrivacyLevelRequest.Public,
             Posts: [
                 {
                     Id: 25,
@@ -128,7 +128,7 @@ export class GroupFeatureService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
             Description: 'This group is public',
-            PrivacyLevel: PrivacyLevel.Public,
+            PrivacyLevel: PrivacyLevelRequest.Public,
             Posts: [
                 {
                     Id: 26,
@@ -186,7 +186,7 @@ export class GroupFeatureService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
             Description: 'This group is private',
-            PrivacyLevel: PrivacyLevel.Private,
+            PrivacyLevel: PrivacyLevelRequest.Private,
             Posts: [
                 {
                     Id: 21000,
@@ -217,7 +217,7 @@ export class GroupFeatureService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is private',
-            PrivacyLevel: PrivacyLevel.Private,
+            PrivacyLevel: PrivacyLevelRequest.Private,
             Posts: [],
             Admins: [
                 {
@@ -234,7 +234,7 @@ export class GroupFeatureService {
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is public',
-            PrivacyLevel: PrivacyLevel.Public,
+            PrivacyLevel: PrivacyLevelRequest.Public,
             Posts: [],
             Admins: [
                 {

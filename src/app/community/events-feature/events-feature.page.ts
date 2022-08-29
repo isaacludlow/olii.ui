@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
@@ -30,7 +31,7 @@ export class EventsFeaturePage implements OnInit {
     // Creator type is 'Group' when creating an event from a group details page.
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: 6, creatorId: this.profileStore.currentUserProfile.Id } }
+      { queryParams: { creatorType: EventCreatorIdType.Profile, creatorId: this.profileStore.currentUserProfile.Id } }
     );
   }
 }

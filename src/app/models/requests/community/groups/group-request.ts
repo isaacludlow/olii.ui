@@ -1,10 +1,10 @@
-import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
+import { PrivacyLevelRequest } from "src/app/models/requests/misc/privacy-level-request.do";
 
 export interface GroupRequest {
     Id: number;
     CoverImageData: string;
     Name: string;
     Description: string;
-    PrivacyLevel: PrivacyLevel;
+    PrivacyLevel: PrivacyLevelRequest;
     Admin: number,
 }

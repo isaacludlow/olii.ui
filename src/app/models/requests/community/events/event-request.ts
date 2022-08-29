@@ -3,7 +3,7 @@ import { EventCreatorIdType } from "src/app/models/dto/misc/entity-preview-id-ty
 // Will use this in the future. Had to put the location data directly on the eventRequest bc of how the api was written.
 import { EventLocation } from "src/app/models/dto/misc/event-location.dto";
 
-import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.do";
+import { PrivacyLevelRequest } from "src/app/models/requests/misc/privacy-level-request.do";
 
 export interface EventRequest {
     CoverImageData: string;
@@ -12,7 +12,7 @@ export interface EventRequest {
     CreatorId: number;
     CreatorTypeParamId: EventCreatorIdType;
     Date: Date;
-    PrivacyLevelParamId: PrivacyLevel;
+    PrivacyLevelParamId: PrivacyLevelRequest;
     LocationDisplayName: string;
     Latitude: number;
     Longitude: number;
