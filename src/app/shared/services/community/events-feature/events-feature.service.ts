@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { parseISO } from 'date-fns';
+import { observable, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { environment } from 'src/environments/environment';
@@ -27,13 +28,14 @@ export class EventsFeatureService {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
       params: getEventParams,
       headers: { Authorization: this.authStore.userIdToken }
-    });
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
 
     return response;
   }
 
   getEventById(eventId: number): Observable<Event> {
-    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, { headers: { Authorization: this.authStore.userIdToken } });
+    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, { headers: { Authorization: this.authStore.userIdToken } })
+    .pipe(tap(event => event.Date = parseISO(<any>event.Date)));
 
     return response;
   }
@@ -42,7 +44,7 @@ export class EventsFeatureService {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { profileId: profileId },
       headers: { Authorization: this.authStore.userIdToken }
-    });
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
 
     return response;
   }
@@ -51,7 +53,7 @@ export class EventsFeatureService {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { profileId: groupId },
       headers: { Authorization: this.authStore.userIdToken }
-    });
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
 
     return response;
   }
@@ -61,7 +63,7 @@ export class EventsFeatureService {
       `${environment.apiBaseUrl}/event`,
       eventRequest,
       { headers: { Authorization: this.authStore.userIdToken } }
-    );
+    ).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
 
     return response;
   }
