@@ -37,9 +37,9 @@
                 </div>
             </div>
         </div>
-        <div class="attendees">
+        <div *ngIf="attendingProfilePictures.length > 0" class="attendees">
             <h4>Attending</h4>
-            <div [routerLink]="['/community/events', event.Id, 'attendees']">
+            <div [routerLink]="['/community/events', event.EventId, 'attendees']">
                 <olii-profile-preview-icons
                 [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
                 profileIconSize="large"
@@ -51,7 +51,7 @@
             <h4>Location</h4>
             <capacitor-google-map #map></capacitor-google-map>
         </div>
-        <div class="images">
+        <div *ngIf="event.ImageUrls.length > 0" class="images">
             <h4>Pictures</h4>
             <div class="images-container">
                 <div *ngFor="let imageUrl of event.ImageUrls" class="image-container">
