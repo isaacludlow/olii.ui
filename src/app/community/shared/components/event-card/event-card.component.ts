@@ -14,7 +14,7 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
         <div class="event-details">
           <h4>{{ event.Title | truncate:21:'...' }}</h4>
           <div class="location-time">
-            <olii-location-preview locationText="Fake location from Google Maps"></olii-location-preview>
+            <olii-location-preview [locationText]="event.Location.DisplayName"></olii-location-preview>
             <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           </div>
           <olii-profile-preview-icons
