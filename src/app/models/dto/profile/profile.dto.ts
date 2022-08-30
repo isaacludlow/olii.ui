@@ -3,7 +3,7 @@ import { SavedAlbum } from "./saved-album.dto";
 
 export interface Profile {
     /** Id of the profile. */
-    Id: number;
+    ProfileId: number;
     /** The user's first name. */
     FirstName: string;
     /** The user's last name. */

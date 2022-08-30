@@ -21,7 +21,7 @@ export class MyGroupsPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.subs.sink = this.groupStore.getMyGroups(this.profileStore.currentUserProfile.Id).subscribe(res => this.groups = res);
+    this.subs.sink = this.groupStore.getMyGroups(this.profileStore.currentProfile.value.ProfileId).subscribe(res => this.groups = res);
   }
 
   sanitizeUrl(url: string): string {

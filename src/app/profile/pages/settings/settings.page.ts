@@ -19,7 +19,11 @@ export class SettingsPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.profileId = this.profileStore.currentUserProfile.Id;
+    this.profileStore.currentProfile.subscribe(profile => {
+      //console.log(profile);
+      this.profileId = profile?.ProfileId
+    });
+    //this.profileId = this.profileStore.currentProfile.value.Id;
   }
 
   navigateBack() {

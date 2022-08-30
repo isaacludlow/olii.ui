@@ -107,7 +107,7 @@ export class GroupDetailsPage implements OnInit {
       return true;
     }
     else if (this.group.PrivacyLevel == "Private") {
-      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
+      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentProfile.value.ProfileId)) {
         return true;
       }
     }
@@ -130,7 +130,7 @@ export class GroupDetailsPage implements OnInit {
 
     const newPost: CreatePostRequest = {
       Group: this.group.Id,
-      Author: this.profileStore.currentUserProfile.Id,
+      Author: this.profileStore.currentProfile.value.ProfileId,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
       ImagesData: images,

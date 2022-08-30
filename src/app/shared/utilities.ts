@@ -25,7 +25,9 @@ export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: P
     else {
       // Fetch the photo, read as a blob, then convert to base64 format
       // TODO: convert this to use observables so the user gets one image at a time instead of waiting for all to be done.
-      const response = await fetch(photo.webPath);
+      const response = await fetch(photo.webPath, {
+        mode: "no-cors"
+      });
       const blob = await response.blob();
   
       return await convertBlobToBase64(blob);

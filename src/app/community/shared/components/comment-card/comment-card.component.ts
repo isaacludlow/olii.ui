@@ -92,7 +92,7 @@ export class CommentCardComponent implements OnInit {
    ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
+    this.profile = this.profileStore.currentProfile.value;
     this.showAddComment = false;
     this.showComments = false;
   }
@@ -119,7 +119,12 @@ export class CommentCardComponent implements OnInit {
         const newComment: GroupPostCommentRequest = {
             OriginGroup: this.groupId,
             ParentId: this.post.Id,
-            Author: this.profile,
+            Author: {
+                Id: this.profile.ProfileId,
+                FirstName: this.profile.FirstName,
+                LastName: this.profile.LastName,
+                ProfilePictureUrl: this.profile.ProfilePictureUrl,
+            },
             Content: this.addCommentInput.value,
             Date: new Date(Date.now()),
         }

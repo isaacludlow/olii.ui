@@ -18,7 +18,7 @@ import { ProfileStore } from '../../profile/profile.store';
 
 export class GroupFeatureService {
 
-	currentUserProfile: Profile;
+	currentProfile: Profile;
     private subs = new SubSink()
 
     dummyId = 32;
@@ -28,7 +28,7 @@ export class GroupFeatureService {
         private profileStore: ProfileStore,
         private authStore: AuthStore
     ) {
-        this.currentUserProfile = this.profileStore.currentUserProfile;
+        this.profileStore.currentProfile.subscribe(profile => this.currentProfile = profile);
     }
 
     ExampleGroups:Group[] = [
@@ -270,10 +270,10 @@ export class GroupFeatureService {
             Posts: [],
             Admins: [
                 {
-                    Id: this.currentUserProfile.Id,
-                    FirstName: this.currentUserProfile.FirstName,
-                    LastName: this.currentUserProfile.LastName,
-                    ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+                    Id: this.currentProfile.ProfileId,
+                    FirstName: this.currentProfile.FirstName,
+                    LastName: this.currentProfile.LastName,
+                    ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
                 }
             ],
             Members: []
@@ -300,10 +300,10 @@ export class GroupFeatureService {
         const newPost: GroupPost = {
             Id: this.dummyId,
             Author: {
-                Id: this.currentUserProfile.Id,
-                FirstName: this.currentUserProfile.FirstName,
-                LastName: this.currentUserProfile.LastName,
-                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
+                Id: this.currentProfile.ProfileId,
+                FirstName: this.currentProfile.FirstName,
+                LastName: this.currentProfile.LastName,
+                ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
             },
             Content: newPostRequest.Content,
             Date: newPostRequest.Date,

@@ -30,12 +30,15 @@ export class GroupsFeaturePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
-    this.subs.sink = this.groupStore.getMyGroups(this.profile.Id).subscribe(res =>  {
-      this.myGroups = res;
-      this.calcLatestPosts();
-      this.calcPartialGroups();
-    });
+    //this.profile = this.profileStore.currentProfile.value;
+    this.profileStore.currentProfile.subscribe(profile => {
+      this.profile = profile;
+      this.subs.sink = this.groupStore.getMyGroups(this.profile?.ProfileId).subscribe(res =>  {
+        this.myGroups = res;
+        this.calcLatestPosts();
+        this.calcPartialGroups();
+      });
+    })
   }
 
   sanitizeUrl(url: string): string {
@@ -74,7 +77,7 @@ export class GroupsFeaturePage implements OnInit {
     // Creator type is 'Group' when creating an event from a group details page.
     this.router.navigate(
       ['community/groups/create'],
-      { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
+      { queryParams: { creatorType: 'Profile', creatorId: this.profile?.ProfileId } }
     );
   }
 
@@ -93,7 +96,7 @@ export class GroupsFeaturePage implements OnInit {
       return true;
     }
     else if (group.PrivacyLevel == "Private") {
-      if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
+      if (group.Members.concat(group.Admins).find(member => member.Id === this.profile?.ProfileId)) {
         return true;
       }
     }

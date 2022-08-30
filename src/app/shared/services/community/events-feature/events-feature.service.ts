@@ -12,7 +12,7 @@ import { mockEventData_allEvents, mockEventData_eventById, mockEventData_myEvent
 })
 export class EventsFeatureService implements OnInit {
   private _fakeEventId = 9;
-  private currentUserProfile: Profile
+  private currentProfile: Profile
 
   constructor(
     private httpClient: HttpClient,
@@ -20,7 +20,7 @@ export class EventsFeatureService implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentUserProfile = this.profileStore.currentUserProfile;
+    this.profileStore.currentProfile.subscribe(profile => this.currentProfile = profile);
   }
 
   get fakeEventId() {
@@ -60,10 +60,10 @@ export class EventsFeatureService implements OnInit {
       Title: eventRequest.Title,
       Description: eventRequest.Description,
       Creator: {
-        Id: this.currentUserProfile.Id,
+        Id: this.currentProfile.ProfileId,
         IdType: 'Profile',
-        DisplayName: this.currentUserProfile.FirstName + this.currentUserProfile.LastName,
-        ImageUrl: this.currentUserProfile.ProfilePictureUrl
+        DisplayName: this.currentProfile.FirstName + this.currentProfile.LastName,
+        ImageUrl: this.currentProfile.ProfilePictureUrl
       },
       Date: eventRequest.Date,
       Location: eventRequest.Location,

@@ -2,7 +2,7 @@ import { ConnectedSocial } from "src/app/models/dto/profile/connected-social.dto
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 
 export let mockProfileData_yourProfile: Profile = {
-    Id: 98,
+    ProfileId: 98,
     FirstName: 'John',
     LastName: 'Doe',
     Friends: 127,

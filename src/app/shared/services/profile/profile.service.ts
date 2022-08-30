@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConnectedSocial } from 'src/app/models/dto/profile/connected-social.dto';
@@ -18,22 +18,35 @@ export class ProfileService {
 
   constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
-  getProfileById(profileId: number): Observable<Profile> {
-    let params = new HttpParams().set('profileid', profileId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params }).pipe();    
-    return response;
-  }
-
-  getProfileByUserId(userId: number): Observable<Profile> {
-    let params = new HttpParams().set('userid', userId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params }).pipe();
-    return response;
-  }
-  
   createNewProfile(profile: ProfileRequest) {
     return this.httpClient.post(`${environment.apiBaseUrl}/profile`, profile, { headers: { Authorization: this.authStore.userIdToken } });
   }
 
+  getProfileById(profileId: number): Observable<Profile> {
+    // Temporary for testing
+    //let params = new HttpParams().set('profileid', profileId);
+    let params = new HttpParams().set('profileid', 31);
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params });    
+    return response;
+  }
+
+  getProfileByUserId(userId: number): Observable<Profile> {
+    //let params = new HttpParams().set('userid', userId);
+    let params = new HttpParams().set('userid', 31);
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params });
+    //console.log(response);
+    return response;
+  }
+
+  updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
+    //let params = new HttpParams().set('profileid', profileId);
+    let params = new HttpParams().set('profileid', 31);
+    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params });
+    //const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, { headers: new HttpHeaders({'Authorization': this.authStore.userIdToken}), params: params });
+    return response;
+  }
+
+  // TODO: I don't think we actually use this... at least not yet because private groups are strictly invite only
   getFriends(id: number): Observable<PartialProfile[]> {
     var exampleFriends: PartialProfile[] = 
       [
@@ -65,10 +78,6 @@ export class ProfileService {
       ];
 
     return of(exampleFriends);
-  }
-
-  updateProfile(profileRequest: ProfileRequest) {
-    
   }
 
   createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {

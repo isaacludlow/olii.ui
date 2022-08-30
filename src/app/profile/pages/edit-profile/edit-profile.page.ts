@@ -39,7 +39,7 @@ export class EditProfilePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
+    this.profile = this.profileStore.currentProfile.value;
 
     if (this.profile != null) {
       this.profilePicture = <GalleryPhoto>{ webPath: this.profile.ProfilePictureUrl };
@@ -79,7 +79,7 @@ export class EditProfilePage implements OnInit {
       SavedAlbums: null,
     };
 
-    this.profileStore.updateProfile(profileRequest);
+    this.profileStore.updateProfile(this.profile.ProfileId, profileRequest).subscribe();
   }
 
 }

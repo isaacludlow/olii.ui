@@ -68,7 +68,7 @@ export class CreateAlbumPopUpComponent implements OnInit {
   onCreateAlbum() {
 
     const newAlbum: ProfileRequestSavedAlbum = {
-      Id: this.profileStore.currentUserProfile.Id,
+      Id: this.profileStore.currentProfile.value.ProfileId,
       CoverImageFile: null,
       Title: this.albumNameInput.value,
       Description: this.albumDescriptionInput.value,

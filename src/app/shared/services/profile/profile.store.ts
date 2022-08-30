@@ -17,7 +17,7 @@ import { UserStore } from "../user/user.store";
 export class ProfileStore implements OnDestroy {
 	private _manualOverrideForProfileSection = new BehaviorSubject<Section>('photos');
 	private subs = new SubSink()
-	currentUserProfile: Profile;
+	currentProfile = new BehaviorSubject<Profile>(null);
 
 	constructor(
 		private profileService: ProfileService,
@@ -26,12 +26,18 @@ export class ProfileStore implements OnDestroy {
 	) {
 		this.subs.sink = this.userStore.user.pipe(
 			switchMap(user => this.profileService.getProfileByUserId(user?.Id))
-		).subscribe(profile => this.currentUserProfile = profile);
+		).subscribe(profile => this.currentProfile.next(profile));
+
+		//this.userStore.user.subscribe(async user => {
+		//	if (user !== null) {
+		//		this.subs.sink = this.profileService.getProfileByUserId(user.Id).subscribe(profile => this.currentProfile.next(profile));
+		//	}
+		//});
 	}
 
 	set profileSection(section: Section) {
 		this._manualOverrideForProfileSection.next(section);
-	}	
+	}
 
 	get profileSection() {
 		const currentSection = this._manualOverrideForProfileSection.value;
@@ -60,16 +66,16 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.getProfileByUserId(userId);
 	}
 
+	updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
+		return this.profileService.updateProfile(profileId, profileRequest);
+	}
+
 	getFriends(userId: number): Observable<PartialProfile[]> {
 		return this.profileService.getFriends(userId);
 	}
 
 	createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
 		return this.profileService.createAlbum(albumName, albumDescription, albumVisibility);
-	}
-
-	updateProfile(profileRequest: ProfileRequest) {
-		return this.profileService.updateProfile(profileRequest);
 	}
 
 	// getBase64Image(url: string) {

@@ -39,7 +39,7 @@ export class CreateGroupPage implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
+    this.profile = this.profileStore.currentProfile.value;
     // TODO: Add the ability to invite friends to a newly create group in the future.
   }
 
@@ -59,7 +59,7 @@ export class CreateGroupPage implements OnInit {
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
       PrivacyLevel: this.createGroupForm.get('groupVisibility').value as PrivacyLevel,
-      Admin: this.profileStore.currentUserProfile.Id,
+      Admin: this.profileStore.currentProfile.value.ProfileId,
     }
 
     this.groupStore.createGroup(newGroup).subscribe(res => {

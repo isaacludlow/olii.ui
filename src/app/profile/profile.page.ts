@@ -37,7 +37,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         if (paramMap.has('profileId')) {
           return this.profileStore.getProfileById(+paramMap.get('profileId'));
         } else {
-          return of(this.profileStore.currentUserProfile);
+          return this.profileStore.currentProfile.asObservable();
         }
       })
     ).subscribe(profile => this.profile = profile);
@@ -55,7 +55,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   isActiveUser() {
-    if (this.profile.Id == this.profileStore.currentUserProfile.Id) {
+    if (this.profile.ProfileId == this.profile?.ProfileId) {
       return true;
     }
     return false;
