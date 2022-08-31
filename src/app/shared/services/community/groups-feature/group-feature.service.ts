@@ -41,7 +41,7 @@ export class GroupFeatureService {
             PrivacyLevel: PrivacyLevelRequest.Public,
             Posts: [
                 {
-                    Id: 25,
+                    GroupPostId: 25,
                     Author: {
                       Id: 98,
                       FirstName: 'John',
@@ -67,7 +67,7 @@ export class GroupFeatureService {
                     ],
                 },
                 {
-                    Id: 27,
+                    GroupPostId: 27,
                     Author: {
                       Id: 98,
                       FirstName: 'John',
@@ -80,7 +80,7 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    GroupPostId: 26,
                     Author: {
                       Id: 99,
                       FirstName: 'Steven',
@@ -131,7 +131,7 @@ export class GroupFeatureService {
             PrivacyLevel: PrivacyLevelRequest.Public,
             Posts: [
                 {
-                    Id: 26,
+                    GroupPostId: 26,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -144,7 +144,7 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 27,
+                    GroupPostId: 27,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -157,7 +157,7 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 28,
+                    GroupPostId: 28,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -189,7 +189,7 @@ export class GroupFeatureService {
             PrivacyLevel: PrivacyLevelRequest.Private,
             Posts: [
                 {
-                    Id: 21000,
+                    GroupPostId: 21000,
                     Author: {
                         Id: 102,
                         FirstName: 'Mark',
@@ -299,7 +299,7 @@ export class GroupFeatureService {
 
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
         const newPost: GroupPost = {
-            Id: this.dummyId,
+            GroupPostId: this.dummyId,
             Author: {
                 Id: this.currentUserProfile.Id,
                 FirstName: this.currentUserProfile.FirstName,
@@ -327,7 +327,7 @@ export class GroupFeatureService {
             Date: newCommentRequest.Date
         }
 
-        this.ExampleGroups.find(group => group.Id == newCommentRequest.OriginGroup).Posts.find(post => post.Id == newCommentRequest.ParentId).Comments.push(newComment);
+        this.ExampleGroups.find(group => group.Id == newCommentRequest.OriginGroup).Posts.find(post => post.GroupPostId == newCommentRequest.ParentId).Comments.push(newComment);
         this.dummyId++;
 
         return of(true);

@@ -118,7 +118,7 @@ export class CommentCardComponent implements OnInit {
     if (!this.addCommentInput.invalid) {
         const newComment: GroupPostCommentRequest = {
             OriginGroup: this.groupId,
-            ParentId: this.post.Id,
+            ParentId: this.post.GroupPostId,
             Author: this.profile,
             Content: this.addCommentInput.value,
             Date: new Date(Date.now()),
