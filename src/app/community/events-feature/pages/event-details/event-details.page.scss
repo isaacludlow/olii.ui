@@ -83,6 +83,16 @@
         }
     }
 
+    .rsvp {
+        display: flex;
+        justify-content: center;
+
+        ion-button {
+            --padding-start: 3rem;
+            --padding-end: 3rem;
+        }
+    }
+
     .images {
         .images-container {
             display: flex;

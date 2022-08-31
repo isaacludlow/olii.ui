@@ -4,6 +4,8 @@ import { Filesystem } from '@capacitor/filesystem';
 import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { PartialProfile } from '../models/dto/profile/partial-profile.dto';
+import { EventsFeatureStore } from './services/community/events-feature/events-feature.store';
 
 export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
     const galleryPhoto = from(Camera.pickImages({limit: maxNumberOfImages}));
@@ -32,11 +34,41 @@ export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: P
     }
   }
 
-  export function convertBlobToBase64(blob: Blob): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-        const reader = new FileReader;
-        reader.onerror = () => reject(reader.error);
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(blob);
-    });
+export function convertBlobToBase64(blob: Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader;
+      reader.onerror = () => reject(reader.error);
+      reader.onload = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+  });
+}
+
+export function removeAttendeeFromCachedEvents(profileId: number, eventId: number, eventStore: EventsFeatureStore): void {
+  const allEvents = eventStore.allEvents.value;
+
+  let attendees = allEvents.find(e => e.EventId === eventId).AttendeeProfiles;
+  let attendeeIndex = attendees.findIndex(x => x.Id === profileId);
+  attendees.splice(attendeeIndex, 1);
+  eventStore.allEvents.next(allEvents);
+
+  let myEvents = eventStore.myEvents.value;
+
+  attendees = myEvents.find(e => e.EventId === eventId).AttendeeProfiles;
+  attendeeIndex = attendees.findIndex(x => x.Id === profileId);
+  attendees.splice(attendeeIndex, 1);
+  eventStore.myEvents.next(myEvents);
+}
+
+export function addAttendeeToCachedEvents(partialProfile: PartialProfile, eventId: number, eventStore: EventsFeatureStore): void {
+  const allEvents = eventStore.allEvents.value;
+  
+  let attendees = allEvents.find(e => e.EventId === eventId).AttendeeProfiles;
+  attendees.push(partialProfile);
+  eventStore.allEvents.next(allEvents);
+
+  let myEvents = eventStore.myEvents.value;
+
+  attendees = myEvents.find(e => e.EventId === eventId).AttendeeProfiles;
+  eventStore.myEvents.next(myEvents);
+  attendees.push(partialProfile);
 }
