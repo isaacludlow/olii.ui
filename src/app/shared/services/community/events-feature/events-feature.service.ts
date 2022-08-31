@@ -16,54 +16,79 @@ export class EventsFeatureService {
   constructor(
     private httpClient: HttpClient,
     private authStore: AuthStore
-  ) { }
-
-  // TODO: All of these methods should have error handling once we connect to the api.
-  getEvents(offset: number, limit: number): Observable<Event[]> {
-    const getEventParams = new HttpParams();
-
-    if (offset !== null) getEventParams.set('offset', offset);
-    if (limit !== null) getEventParams.set('limit', limit);
-
+    ) { }
+    
+    // TODO: All of these methods should have error handling once we connect to the api.
+    getEvents(offset: number, limit: number): Observable<Event[]> {
+      const getEventParams = new HttpParams();
+      
+      if (offset !== null) getEventParams.set('offset', offset);
+      if (limit !== null) getEventParams.set('limit', limit);
+    
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
       params: getEventParams,
       headers: { Authorization: this.authStore.userIdToken }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
-
+    
     return response;
   }
-
+  
   getEventById(eventId: number): Observable<Event> {
-    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, { headers: { Authorization: this.authStore.userIdToken } })
-    .pipe(tap(event => event.Date = parseISO(<any>event.Date)));
-
+    const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, {
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
+    
     return response;
   }
-
+  
   getMyEvents(profileId: number): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { profileId: profileId },
       headers: { Authorization: this.authStore.userIdToken }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
-
+    
     return response;
   }
-
+  
   getEventsByGroupId(groupId: number): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { profileId: groupId },
       headers: { Authorization: this.authStore.userIdToken }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
+    
+    return response;
+  }
+  
+  createEvent(eventRequest: EventRequest): Observable<Event> {
+    const response = this.httpClient.post<Event>(`${environment.apiBaseUrl}/event`, eventRequest, {
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
+    
+    return response;
+  }
+  
+  isAttendingEvent(eventId: number, profileId): Observable<boolean> {
+    const response = this.httpClient.get<boolean>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
+      headers: { Authorization: this.authStore.userIdToken }
+    });
+    
+    return response;
+  }
+  
+  rsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+    const response = this.httpClient.post<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {}, {
+      headers: { Authorization: this.authStore.userIdToken },
+      observe: 'response'
+    }).pipe(map(res => res.ok));
 
     return response;
   }
 
-  createEvent(eventRequest: EventRequest): Observable<Event> {
-    const response = this.httpClient.post<Event>(
-      `${environment.apiBaseUrl}/event`,
-      eventRequest,
-      { headers: { Authorization: this.authStore.userIdToken } }
-    ).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
+  cancelRsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+    const response = this.httpClient.delete<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
+      headers: { Authorization: this.authStore.userIdToken },
+      observe: 'response'
+    }).pipe(map(res => res.ok));
 
     return response;
   }

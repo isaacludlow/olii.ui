@@ -37,6 +37,18 @@
                 </div>
             </div>
         </div>
+        <div class="rsvp">
+            <ion-button *ngIf="!attending" mode="ios" color="primary" (click)="rsvpToEvent()">Attend</ion-button>
+
+            <ion-accordion-group *ngIf="attending" expand="inset" mode="md">
+                <ion-accordion value="first">
+                  <ion-item slot="header" color="light">
+                    <ion-label>Attending</ion-label>
+                  </ion-item>
+                  <div class="ion-padding" slot="content" (click)="cancelRsvpToEvent()">Cancel</div>
+                </ion-accordion>
+              </ion-accordion-group>
+        </div>
         <div *ngIf="attendingProfilePictures.length > 0" class="attendees">
             <h4>Attending</h4>
             <div [routerLink]="['/community/events', event.EventId, 'attendees']">
