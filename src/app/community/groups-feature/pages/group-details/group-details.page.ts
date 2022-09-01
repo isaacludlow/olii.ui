@@ -40,9 +40,7 @@ export class GroupDetailsPage implements OnInit {
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
-  },
-  { updateOn: 'blur' }
-  )
+  })
 
   constructor(
     private fb: FormBuilder,
@@ -131,15 +129,14 @@ export class GroupDetailsPage implements OnInit {
     }
 
     const newPost: CreatePostRequest = {
-      Group: this.group.Id,
-      Author: this.profileStore.currentUserProfile.Id,
+      ProfileId: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
-      Date: new Date(Date.now()),
+      Date: new Date(),
       ImagesData: images,
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.groupStore.createGroupPost(this.group.Id, newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');

@@ -66,12 +66,12 @@
             <div class="subsegment-container" >
                 <div *ngIf="subSegmentToShow == 'past'">
                     <div class="card-wrapper" *ngFor="let event of pastEvents$ | async">
-                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
                     </div>
                 </div>
                 <div *ngIf="subSegmentToShow == 'future'">
                     <div class="card-wrapper" *ngFor="let event of futureEvents$ | async">
-                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
                     </div>
                 </div>
             </div>

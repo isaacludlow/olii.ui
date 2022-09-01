@@ -20,7 +20,10 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
                     </div>
                     <div class="poster-name">{{post.Author.FirstName}} {{post.Author.LastName}}</div>
                 </div>
-                <div>{{post.Date.toDateString()}}</div>
+                <div class="post-datetime">
+                    <ion-text class="font-body-xs" color="medium">{{post.Date | date:'EE MMM d' }}</ion-text>
+                    <ion-text class="font-body-xs" color="medium">{{post.Date | date:'h:mm a' }}</ion-text>
+                </div>
             </div>
             {{post.Content}}
             <div class="post-images">
@@ -29,7 +32,8 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
                 </olii-responsive-aspect-ratio-container>
             </div>
 
-            <div class="comments-container" *ngIf="post.Comments.length > 0">
+            <!-- Removing comments for the initial release of the beta. -->
+            <!-- <div class="comments-container" *ngIf="post.Comments.length > 0">
                 <hr>
                 <div *ngIf="showComments">
                     <div class="post-comment" *ngFor="let comment of post.Comments">
@@ -69,7 +73,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
                 <div class="icon">
                     <olii-icon-with-off-white-square-background size="medium" name="send" (click)="sendComment()"></olii-icon-with-off-white-square-background>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
   `,

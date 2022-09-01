@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable } from "rxjs";
+import { BehaviorSubject, from, Observable, of } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -81,8 +81,25 @@ export class GroupFeatureStore {
         );
     }
 
-    createGroupPost(groupPost: CreatePostRequest):Observable<Boolean> {
-        return this.groupService.createGroupPost(groupPost);
+    createGroupPost(groupId: number, groupPost: CreatePostRequest):Observable<Boolean> {
+        return this.groupService.createGroupPost(groupId, groupPost).pipe(
+            switchMap(groupPost => {
+                let allGroups = this._allGroups.value;
+                let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+                let myGroups = this._myGroups.value;
+                let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+
+                if (foundFromAllGroups != undefined) {
+                    foundFromAllGroups.Posts.push(groupPost);
+                }
+
+                if (foundFromMyGroups != undefined) {
+                    foundFromMyGroups.Posts.push(groupPost);
+                }
+
+                return of(true);
+            })
+        );
     }
 
     addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {

@@ -12,13 +12,13 @@ import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { ProfileStore } from '../../profile/profile.store';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class GroupFeatureService {
-
 	currentUserProfile: Profile;
     private subs = new SubSink()
 
@@ -297,25 +297,14 @@ export class GroupFeatureService {
         return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
     }
 
-    createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
-        const newPost: GroupPost = {
-            GroupPostId: this.dummyId,
-            Author: {
-                Id: this.currentUserProfile.Id,
-                FirstName: this.currentUserProfile.FirstName,
-                LastName: this.currentUserProfile.LastName,
-                ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
-            },
-            Content: newPostRequest.Content,
-            Date: newPostRequest.Date,
-            ImageUrls: newPostRequest.ImagesData,
-            Comments: [],
-        }
+    createGroupPost(groupId: number, newPostRequest: CreatePostRequest):Observable<GroupPost> {
+        const response = this.httpClient.post<GroupPost>(
+            `${environment.apiBaseUrl}/group/${groupId}/post`,
+            newPostRequest,
+            { headers: { Authorization: this.authStore.userIdToken } }
+        );
 
-        this.ExampleGroups.find(group => group.Id == newPostRequest.Group).Posts.push(newPost);
-        this.dummyId++;
-
-        return of(true);
+        return response;
     }
 
     addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {

@@ -127,11 +127,12 @@ ion-segment-button {
     margin-left: 0.5rem;
 }
 
-.side-button {
-    --background: var(--color-primary-contrast);
-    --background-activated: var(--color-light-shade);
-    --color: var(--color-secondary);
-}
+// Commenting out so that the buttons have better contrast.
+// .side-button {
+//     --background: var(--color-primary-contrast);
+//     --background-activated: var(--color-light-shade);
+//     --color: var(--color-secondary);
+// }
 
 ion-item {
     --padding-start: 0;

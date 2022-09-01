@@ -14,6 +14,10 @@
 }
 
 /* Text Size */
+.extra-small {
+    @extend %font-body-xs;
+}
+
 .small {
     @extend %font-body-s;
 }
