@@ -53,7 +53,7 @@ export class GroupDetailsPage implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
     this.segmentToShow = this.groupStore.groupSection;
     this.subs.sink = this.route.paramMap.pipe(
@@ -62,18 +62,13 @@ export class GroupDetailsPage implements OnInit {
       )
     ).subscribe(group => {
       this.group = group;
-      this.sortGroupPosts();
+      this.groupPosts$ = this.groupStore.getPostsByGroupId(group.Id);
+
       this.canView();
       this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
       this.pastEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Past).pipe();
       this.futureEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Future).pipe();
     });
-  }
-
-  // TODO-AfterBeta: Double check that we need to sort group posts.
-  // I think they will naturally be in the order people add them, which will be in chronological order.
-  sortGroupPosts() {
-    this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
   }
 
   segmentChanged(event) {

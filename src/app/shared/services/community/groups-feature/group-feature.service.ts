@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
@@ -13,6 +13,8 @@ import { AuthStore } from '../../authentication/auth-store';
 import { ProfileStore } from '../../profile/profile.store';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
+import parseISO from 'date-fns/parseISO';
 
 @Injectable({
     providedIn: 'root'
@@ -248,7 +250,7 @@ export class GroupFeatureService {
         }
     ];
 
-    getGroups(offset: number, limit: number): Observable<Group[]> {
+    getGroups(limit: number, offset: number): Observable<Group[]> {
         return of(this.ExampleGroups);
     }
 
@@ -259,7 +261,7 @@ export class GroupFeatureService {
     getMyGroups(profileId: number): Observable<Group[]> {
         return of(this.ExampleGroups)
     }
-
+    
     createGroup(newGroupInfo: GroupRequest): Observable<Group> {
         // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
         const newGroup: Group = {
@@ -282,7 +284,7 @@ export class GroupFeatureService {
 
         this.ExampleGroups.push(newGroup);
         this.dummyId++;
-
+        
         return of(newGroup);
     }
 
@@ -297,7 +299,21 @@ export class GroupFeatureService {
         return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
     }
 
-    createGroupPost(groupId: number, newPostRequest: CreatePostRequest):Observable<GroupPost> {
+    getPostsByGroupId(groupId: number, limit: number, offset: number): Observable<GroupPost[]> {
+        const getEventParams = new HttpParams();
+
+        if (offset !== null) getEventParams.set('offset', offset);
+        if (limit !== null) getEventParams.set('limit', limit);
+
+        const response = this.httpClient.get<GroupPost[]>(`${environment.apiBaseUrl}/group/${groupId}/post`, {
+        params: getEventParams,
+        headers: { Authorization: this.authStore.userIdToken }
+        }).pipe(tap(posts => posts.forEach(post => post.Date = parseISO(<any>post.Date))));
+
+        return response;
+    }
+    
+    createGroupPost(groupId: number, newPostRequest: CreatePostRequest): Observable<GroupPost> {
         const response = this.httpClient.post<GroupPost>(
             `${environment.apiBaseUrl}/group/${groupId}/post`,
             newPostRequest,
@@ -307,7 +323,7 @@ export class GroupFeatureService {
         return response;
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest): Observable<Boolean> {
         const newComment: GroupPostComment = {
             Id: this.dummyId,
             ParentId: newCommentRequest.ParentId,
@@ -316,7 +332,10 @@ export class GroupFeatureService {
             Date: newCommentRequest.Date
         }
 
-        this.ExampleGroups.find(group => group.Id == newCommentRequest.OriginGroup).Posts.find(post => post.GroupPostId == newCommentRequest.ParentId).Comments.push(newComment);
+        this.ExampleGroups
+            .find(group => group.Id == newCommentRequest.OriginGroup).Posts
+            .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
+            .push(newComment);
         this.dummyId++;
 
         return of(true);

@@ -6,6 +6,7 @@ import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
+import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -29,9 +30,9 @@ export class GroupFeatureStore {
 		return currentSection;
 	}
 
-    getGroups(offset: number = 0, limit: number = 10, refresh: boolean = false): Observable<Group[]> {
+    getGroups(refresh: boolean = false, limit: number = null, offset: number = null): Observable<Group[]> {
         if (this._allGroups.value === null || refresh) {
-            return this.groupService.getGroups(offset, limit).pipe(switchMap(groups => {
+            return this.groupService.getGroups(limit, offset).pipe(switchMap(groups => {
                 this._allGroups.next(groups);
                 return this._allGroups.asObservable();
             }));
@@ -81,9 +82,41 @@ export class GroupFeatureStore {
         );
     }
 
-    createGroupPost(groupId: number, groupPost: CreatePostRequest):Observable<Boolean> {
+    getPostsByGroupId(groupId: number, refresh?: boolean, limit: number = null, offset: number = null): Observable<GroupPost[]> {
+        let allGroups = this._allGroups.value;
+        let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+        let myGroups = this._myGroups.value;
+        let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+
+        // if (foundFromAllGroups != undefined && foundFromAllGroups.Posts.length > 0) {
+        //     return of(foundFromAllGroups.Posts);
+        // }
+
+        // if (foundFromMyGroups != undefined && foundFromMyGroups.Posts.length > 0) {
+        //     return of(foundFromMyGroups.Posts);
+        // }
+
+        return this.groupService.getPostsByGroupId(groupId, limit, offset).pipe(
+            tap(posts => {
+                let allGroups = this._allGroups.value;
+                let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+                let myGroups = this._myGroups.value;
+                let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+
+                if (foundFromAllGroups != undefined) {
+                    foundFromAllGroups.Posts.push(...posts);
+                }
+
+                if (foundFromMyGroups != undefined) {
+                    foundFromMyGroups.Posts.push(...posts);
+                }
+            })
+        );
+    }
+
+    createGroupPost(groupId: number, groupPost: CreatePostRequest): Observable<Boolean> {
         return this.groupService.createGroupPost(groupId, groupPost).pipe(
-            switchMap(groupPost => {
+            map(groupPost => {
                 let allGroups = this._allGroups.value;
                 let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
                 let myGroups = this._myGroups.value;
@@ -97,7 +130,7 @@ export class GroupFeatureStore {
                     foundFromMyGroups.Posts.push(groupPost);
                 }
 
-                return of(true);
+                return true;
             })
         );
     }
