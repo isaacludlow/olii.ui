@@ -83,8 +83,10 @@ export class GroupsFeaturePage implements OnInit {
     for (const group of this.myGroups) {
       this.partialGroups.push({
         GroupId: group.GroupId,
-        GroupName: group.Name,
+        Name: group.Name,
         CoverImageUrl: group.CoverImageUrl,
+        Description: '',
+        PrivacyLevel: PrivacyLevel.Public
       })
     }
   }

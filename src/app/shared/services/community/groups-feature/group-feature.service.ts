@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
@@ -250,7 +250,17 @@ export class GroupFeatureService {
     ];
 
     getGroups(offset: number, limit: number): Observable<Group[]> {
-        return of(this.ExampleGroups);
+        const getEventParams = new HttpParams();
+      
+        if (offset !== null) getEventParams.set('offset', offset);
+        if (limit !== null) getEventParams.set('limit', limit);
+        
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: getEventParams,
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+        
+        return response;
     }
 
     getGroupById(id: number): Observable<Group> {
