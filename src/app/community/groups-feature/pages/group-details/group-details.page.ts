@@ -24,8 +24,6 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit, OnDestroy {
-  // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
-
   groupId: number;
   group$: Observable<Group>;
   canViewGroup: boolean;

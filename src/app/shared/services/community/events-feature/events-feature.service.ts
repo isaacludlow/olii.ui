@@ -20,13 +20,13 @@ export class EventsFeatureService {
     
     // TODO: All of these methods should have error handling once we connect to the api.
     getEvents(offset: number, limit: number): Observable<Event[]> {
-      const getEventParams = new HttpParams();
+      let params = new HttpParams();
 
-      if (offset !== null) getEventParams.set('offset', offset);
-      if (limit !== null) getEventParams.set('limit', limit);
+      if (offset !== null) params = params.set('offset', offset);
+      if (limit !== null) params = params.set('limit', limit);
     
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
-      params: getEventParams,
+      params: params,
       headers: { Authorization: this.authStore.userIdToken }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     

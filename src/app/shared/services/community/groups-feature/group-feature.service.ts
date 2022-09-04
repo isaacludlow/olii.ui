@@ -250,10 +250,10 @@ export class GroupFeatureService {
     ];
 
     getGroups(offset: number, limit: number): Observable<Group[]> {
-        const params = new HttpParams();
+        let params = new HttpParams();
         
-        if (offset !== null) params.set('offset', offset);
-        if (limit !== null) params.set('limit', limit);
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
         
         const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
             params: params,
