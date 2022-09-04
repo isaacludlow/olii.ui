@@ -88,8 +88,15 @@ export class GroupFeatureStore {
     updateGroup(groupRequest: GroupRequest): Observable<Group> {
         return this.groupService.updateGroup(groupRequest).pipe(
             tap(group => {
-                this._allGroups.next([...this._allGroups.value, group]);
-                this._myGroups.next([...this._myGroups.value, group]);
+                let allGroups = this._allGroups.value;
+                let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+                allGroups.splice(allGroupsIndex, 1, group);
+                this._allGroups.next([...allGroups]);
+
+                let myGroups = this._myGroups.value;
+                let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+                myGroups.splice(myGroupsIndex, 1, group);
+                this._myGroups.next([...myGroups]);
             })
         );
     }

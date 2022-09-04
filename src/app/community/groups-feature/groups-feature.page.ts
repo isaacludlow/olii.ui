@@ -80,15 +80,18 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcPartialGroups() {
+    let partialGroups = [];
     for (const group of this.myGroups) {
-      this.partialGroups.push({
+      partialGroups.push({
         GroupId: group.GroupId,
         Name: group.Name,
         CoverImageUrl: group.CoverImageUrl,
         Description: '',
         PrivacyLevel: PrivacyLevel.Public
-      })
+      });
     }
+
+    this.partialGroups = partialGroups;
   }
 
   canView(group: Group): boolean {
