@@ -42,12 +42,18 @@ export class GroupFeatureStore {
 
     getGroupById(groupId: number): Observable<Group> {
         if (this._allGroups.value === null) {
-            return this.groupService.getGroupById(groupId).pipe(tap(group => this._allGroups.next([group])));
+            return this.groupService.getGroupById(groupId).pipe(switchMap(group => {
+                this._allGroups.next([group]);
+                return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+            }));
         } else {
-            const group = this._allGroups.pipe(map(groups => groups.find(group => group.Id === groupId)));
+            const group = this._allGroups.pipe(map(groups => groups.find(group => group.GroupId === groupId)));
 
             return group === undefined
-                ? this.groupService.getGroupById(groupId).pipe(tap(group => this._allGroups.next([...this._allGroups.value, group])))
+                ? this.groupService.getGroupById(groupId).pipe(switchMap(group => {
+                    this._allGroups.next([...this._allGroups.value, group]);
+                    return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+                }))
                 : group;
         }
     }
@@ -63,11 +69,18 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(groupRequest: GroupRequest): Observable<Group> {
-        return this.groupService.createGroup(groupRequest).pipe(
+    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+        return this.groupService.createGroup(creatorProfileId, groupRequest).pipe(
             tap(group => {
-                this._allGroups.next([...this._allGroups.value, group]);
-                this._myGroups.next([...this._myGroups.value, group]);
+                if (this._allGroups.value === null)
+                    this._allGroups.next([group]);
+                else
+                    this._allGroups.next([...this._allGroups.value, group]);
+
+                if (this._myGroups.value === null)
+                    this._myGroups.next([group]);
+                else
+                    this._myGroups.next([...this._myGroups.value, group]);
             })
         );
     }
@@ -75,8 +88,15 @@ export class GroupFeatureStore {
     updateGroup(groupRequest: GroupRequest): Observable<Group> {
         return this.groupService.updateGroup(groupRequest).pipe(
             tap(group => {
-                this._allGroups.next([...this._allGroups.value, group]);
-                this._myGroups.next([...this._myGroups.value, group]);
+                let allGroups = this._allGroups.value;
+                let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+                allGroups.splice(allGroupsIndex, 1, group);
+                this._allGroups.next([...allGroups]);
+
+                let myGroups = this._myGroups.value;
+                let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+                myGroups.splice(myGroupsIndex, 1, group);
+                this._myGroups.next([...myGroups]);
             })
         );
     }

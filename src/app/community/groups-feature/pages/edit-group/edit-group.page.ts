@@ -21,13 +21,14 @@ import { GroupFeatureService } from 'src/app/shared/services/community/groups-fe
 export class EditGroupPage implements OnInit {
 
   group: Group;
-  groupPicture: GalleryPhoto;
+  groupPicture: GalleryPhoto = null;
   subs = new SubSink();
 
   editGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    groupVisibility: [null, Validators.required],
+    coverImage: [null]
+    // groupVisibility: [null, Validators.required],
   })
 
   constructor(
@@ -45,14 +46,14 @@ export class EditGroupPage implements OnInit {
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
-    this.editGroupForm.get('groupVisibility').setValue(this.group.PrivacyLevel);
+    // this.editGroupForm.get('groupVisibility').setValue(this.group.PrivacyLevel);
     this.groupPicture = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
     this.editGroupForm.controls['name'].setValue(this.group.Name);
     this.editGroupForm.controls['description'].setValue(this.group.Description);
   }
 
   setGroupPicture() {
-    selectImages(1).subscribe(galleryPhotos => this.groupPicture = galleryPhotos.shift());
+    selectImages(1).subscribe(galleryPhotos => this.editGroupForm.get('coverImage').setValue(galleryPhotos.shift()));
   }
 
   sanitizeUrl(url: string): string {
@@ -60,19 +61,16 @@ export class EditGroupPage implements OnInit {
   }
 
   async updateGroup() {
-    
     const updatedGroup: GroupRequest = {
-      Id: this.group.Id,
-      CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
+      GroupId: this.group.GroupId,
+      CoverImageData: this.editGroupForm.get('coverImage').value ? await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform) : null,
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevel: this.editGroupForm.get('groupVisibility').value as PrivacyLevelRequest,
-      Admin: null,
+      PrivacyLevelParamId: PrivacyLevelRequest.Public
     }
   
-    this.groupStore.updateGroup(updatedGroup).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.Id]);
+    this.subs.sink = this.groupStore.updateGroup(updatedGroup).subscribe(res => {
+      this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }
-
 }
