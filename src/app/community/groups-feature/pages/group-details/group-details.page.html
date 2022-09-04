@@ -14,7 +14,12 @@
     </div>
 
     <div class="member-icons">
-        <olii-profile-preview-icons routerLink= "./members" [profilePictureUrls]="memberProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="memberProfilePictures.length - 5"></olii-profile-preview-icons> 
+        <olii-profile-preview-icons
+            routerLink= "./members"
+            [profilePictureUrls]="memberProfilePictures?.slice(0, 5)"
+            profileIconSize="large"
+            [additionalDisplayNumber]="memberProfilePictures.length - 5">
+        </olii-profile-preview-icons> 
     </div>
 
     <hr>
@@ -46,7 +51,7 @@
         <div *ngIf="segmentToShow == 'feed'">
             <div class="post" *ngFor="let post of groupPosts$ | async">
                 <ion-card>
-                    <olii-comment-card [post]="post" [groupId]="group.Id"></olii-comment-card>
+                    <olii-comment-card [post]="post" [groupId]="group.GroupId"></olii-comment-card>
                 </ion-card>
             </div>
         </div>

@@ -48,8 +48,8 @@ export class GroupsFeaturePage implements OnInit {
     
     for (const group of this.myGroups) {
       if (this.canView(group)) {
-        var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
-        posts.reverse().slice(0, this._postLimiter);
+        var posts = [...(group.Posts)]; // Creating new array so the reverse() method doesn't mutate the original array.
+        posts?.reverse().slice(0, this._postLimiter);
 
         for (const post of posts) {
           this.groupsLatest.push(

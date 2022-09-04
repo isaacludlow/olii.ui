@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
@@ -23,7 +23,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
   templateUrl: './group-details.page.html',
   styleUrls: ['./group-details.page.scss']
 })
-export class GroupDetailsPage implements OnInit {
+export class GroupDetailsPage implements OnInit, OnDestroy {
   // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
 
   group: Group;
@@ -55,7 +55,7 @@ export class GroupDetailsPage implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
     this.segmentToShow = this.groupStore.groupSection;
     this.subs.sink = this.route.paramMap.pipe(
@@ -67,8 +67,8 @@ export class GroupDetailsPage implements OnInit {
       this.sortGroupPosts();
       this.canView();
       this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
-      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Past).pipe();
-      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Future).pipe();
+      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Past);
+      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Future);
     });
   }
 
@@ -96,7 +96,7 @@ export class GroupDetailsPage implements OnInit {
 
   addPostPicture() {
     if (this.postPictures.length < 5) {
-      selectImages(1).subscribe(galleryPhotos => this.postPictures.push(galleryPhotos.shift()));
+      this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.postPictures.push(galleryPhotos.shift()));
     }
   }
 
@@ -139,7 +139,7 @@ export class GroupDetailsPage implements OnInit {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
@@ -153,5 +153,8 @@ export class GroupDetailsPage implements OnInit {
       { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.GroupId } }
     );
   }
-
+  
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }

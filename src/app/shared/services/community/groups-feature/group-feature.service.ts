@@ -281,11 +281,8 @@ export class GroupFeatureService {
     }
 
     createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
-        const params = new HttpParams();
-        
-        params.set('creatorProfileId', creatorProfileId);
-
         const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
+            params: { CreatorProfileId: creatorProfileId },
             headers: { Authorization: this.authStore.userIdToken }
         });
           
