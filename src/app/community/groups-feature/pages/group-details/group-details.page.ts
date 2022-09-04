@@ -129,7 +129,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.groupStore.createGroupPost(this.group.Id, newPost).subscribe(res => {
+    this.groupStore.createGroupPost(this.groupId, newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');

@@ -104,9 +104,9 @@ export class GroupFeatureStore {
 
     getPostsByGroupId(groupId: number, refresh?: boolean, limit: number = null, offset: number = null): Observable<GroupPost[]> {
         let allGroups = this._allGroups.value;
-        let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+        let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
         let myGroups = this._myGroups.value;
-        let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+        let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
 
         // if (foundFromAllGroups != undefined && foundFromAllGroups.Posts.length > 0) {
         //     return of(foundFromAllGroups.Posts);
@@ -119,9 +119,9 @@ export class GroupFeatureStore {
         return this.groupService.getPostsByGroupId(groupId, limit, offset).pipe(
             tap(posts => {
                 let allGroups = this._allGroups.value;
-                let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+                let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
                 let myGroups = this._myGroups.value;
-                let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+                let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
 
                 if (foundFromAllGroups != undefined) {
                     foundFromAllGroups.Posts.push(...posts);
@@ -138,9 +138,9 @@ export class GroupFeatureStore {
         return this.groupService.createGroupPost(groupId, groupPost).pipe(
             map(groupPost => {
                 let allGroups = this._allGroups.value;
-                let foundFromAllGroups = allGroups.find(x => x.Id === groupId);
+                let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
                 let myGroups = this._myGroups.value;
-                let foundFromMyGroups = myGroups.find(x => x.Id === groupId);
+                let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
 
                 if (foundFromAllGroups != undefined) {
                     foundFromAllGroups.Posts.push(groupPost);

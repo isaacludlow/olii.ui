@@ -15,6 +15,7 @@ import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import parseISO from 'date-fns/parseISO';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -332,7 +333,7 @@ export class GroupFeatureService {
         }
 
         this.ExampleGroups
-            .find(group => group.Id == newCommentRequest.OriginGroup).Posts
+            .find(group => group.GroupId == newCommentRequest.OriginGroup).Posts
             .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
             .push(newComment);
         this.dummyId++;
