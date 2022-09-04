@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
@@ -26,7 +26,9 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 export class GroupDetailsPage implements OnInit, OnDestroy {
   // TODO-AfterBeta: Convert group to an observable stream, like groupPosts$.
 
-  group: Group;
+  groupId: number;
+  group$: Observable<Group>;
+  canViewGroup: boolean;
   groupPosts$: Observable<GroupPost[]>;
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
@@ -56,26 +58,18 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
     this.segmentToShow = this.groupStore.groupSection;
-    this.subs.sink = this.route.paramMap.pipe(
+    this.group$ = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
         this.groupStore.getGroupById(+paramMap.get('groupId'))
       )
-    ).subscribe(group => {
-      this.group = group;
-      this.sortGroupPosts();
-      this.canView();
-      this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
-      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Past);
-      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Future);
-    });
-  }
-
-  // TODO-AfterBeta: Double check that we need to sort group posts.
-  // I think they will naturally be in the order people add them, which will be in chronological order.
-  sortGroupPosts() {
-    this.groupPosts$ = of(this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1));
+    ).pipe(
+      tap(group => {
+        this.canViewGroup = this.canView(group, this.profileStore.currentUserProfile.Id)
+        this.pastEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Past);
+        this.futureEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Future);
+      })
+    );
   }
 
   segmentChanged(event) {
@@ -104,15 +98,16 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     this.postPictures.splice(index, 1);
   }
 
-  canView(): boolean {
-    if (this.group.PrivacyLevel == PrivacyLevel.Public) {
+  canView(group: Group, profileId: number): boolean {
+    if (group.PrivacyLevel == PrivacyLevel.Public) {
       return true;
     }
-    else if (this.group.PrivacyLevel == PrivacyLevel.Private) {
-      if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
+    else if (group.PrivacyLevel == PrivacyLevel.Private) {
+      if (group.Members.concat(group.Admins).find(member => member.Id === profileId)) {
         return true;
       }
     }
+
     const content = document.getElementById("group-content");
     content.style.setProperty('--webkit-filter', 'blur(8px)');
     content.style.filter = "blur(8px)";
@@ -131,7 +126,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     const newPost: CreatePostRequest = {
-      Group: this.group.GroupId,
+      Group: this.groupId,
       Author: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
@@ -143,14 +138,14 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
-      this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
+      // this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
     });
   }
 
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.GroupId } }
+      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.groupId } }
     );
   }
   

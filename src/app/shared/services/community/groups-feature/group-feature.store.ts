@@ -42,12 +42,18 @@ export class GroupFeatureStore {
 
     getGroupById(groupId: number): Observable<Group> {
         if (this._allGroups.value === null) {
-            return this.groupService.getGroupById(groupId).pipe(tap(group => this._allGroups.next([group])));
+            return this.groupService.getGroupById(groupId).pipe(switchMap(group => {
+                this._allGroups.next([group]);
+                return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+            }));
         } else {
             const group = this._allGroups.pipe(map(groups => groups.find(group => group.GroupId === groupId)));
 
             return group === undefined
-                ? this.groupService.getGroupById(groupId).pipe(tap(group => this._allGroups.next([...this._allGroups.value, group])))
+                ? this.groupService.getGroupById(groupId).pipe(switchMap(group => {
+                    this._allGroups.next([...this._allGroups.value, group]);
+                    return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+                }))
                 : group;
         }
     }

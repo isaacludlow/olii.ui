@@ -289,15 +289,12 @@ export class GroupFeatureService {
         return response;
     }
 
-    updateGroup(updatedGroup: GroupRequest): Observable<Group> {
-        const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.GroupId === updatedGroup.GroupId));
-        if (index !== -1) {
-            this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
-            this.ExampleGroups[index].Name = updatedGroup.Name;
-            this.ExampleGroups[index].Description = updatedGroup.Description;
-            // this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevelParamId;
-        }
-        return of(this.ExampleGroups.find(group => group.GroupId === updatedGroup.GroupId));
+    updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
+        const response = this.httpClient.put<Group>(`${environment.apiBaseUrl}/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
     createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {

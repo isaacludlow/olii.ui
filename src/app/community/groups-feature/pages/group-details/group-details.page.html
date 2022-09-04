@@ -1,5 +1,5 @@
 <ion-content>
-    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
+    <div class="cover-image" [style]="{'--background': 'url(\'' + (group$ | async)?.CoverImageUrl + '\')' }">
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
@@ -9,8 +9,8 @@
     </div>
 
     <div class="group-details">
-        <h2 class="group-name">{{ group.Name }}</h2>
-        <p class="group-description">{{group.Description}}</p>
+        <h2 class="group-name">{{ (group$ | async)?.Name }}</h2>
+        <p class="group-description">{{(group$ | async)?.Description}}</p>
     </div>
 
     <div class="member-icons">
@@ -18,13 +18,13 @@
             routerLink= "./members"
             [profilePictureUrls]="memberProfilePictures?.slice(0, 5)"
             profileIconSize="large"
-            [additionalDisplayNumber]="memberProfilePictures.length - 5">
+            [additionalDisplayNumber]="memberProfilePictures?.length - 5">
         </olii-profile-preview-icons> 
     </div>
 
     <hr>
 
-    <div *ngIf="canView() else requestToJoinView">
+    <div *ngIf="canViewGroup else requestToJoinView">
         <div class="feed-events-segment-container">
             <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
                 <ion-segment-button value="feed" layout="icon-start">
@@ -51,7 +51,7 @@
         <div *ngIf="segmentToShow == 'feed'">
             <div class="post" *ngFor="let post of groupPosts$ | async">
                 <ion-card>
-                    <olii-comment-card [post]="post" [groupId]="group.GroupId"></olii-comment-card>
+                    <olii-comment-card [post]="post" [groupId]="(group$ | async).GroupId"></olii-comment-card>
                 </ion-card>
             </div>
         </div>

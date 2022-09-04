@@ -66,7 +66,7 @@ export class EditGroupPage implements OnInit {
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevelParamId: this.editGroupForm.get('groupVisibility').value as PrivacyLevelRequest
+      PrivacyLevelParamId: PrivacyLevelRequest.Public
     }
   
     this.groupStore.updateGroup(updatedGroup).subscribe(res => {

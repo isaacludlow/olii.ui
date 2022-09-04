@@ -29,12 +29,18 @@ export class EventsFeatureStore {
   
   getEventById(eventId: number): Observable<Event> {
     if (this.allEvents.value === null) {
-      return this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.next([event])));
+      return this.eventsService.getEventById(eventId).pipe(switchMap(event => {
+        this.allEvents.next([event]);
+        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
+      }));
     } else {
       const event = this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
       
       return event === undefined
-      ? this.eventsService.getEventById(eventId).pipe(tap(event => this.allEvents.next([...this.allEvents.value, event])))
+      ? this.eventsService.getEventById(eventId).pipe(switchMap(event => {
+        this.allEvents.next([...this.allEvents.value, event]);
+        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
+      }))
       : event;
     }
   }
