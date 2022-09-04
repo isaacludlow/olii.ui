@@ -16,9 +16,7 @@ import { Platform } from '@ionic/angular';
   templateUrl: './create-group.page.html',
   styleUrls: ['./create-group.page.scss']
 })
-export class CreateGroupPage implements OnInit {
-
-  profile: Profile;
+export class CreateGroupPage {
   friends: Profile[];
   subs = new SubSink();
   groupPicture: GalleryPhoto;
@@ -26,7 +24,7 @@ export class CreateGroupPage implements OnInit {
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    groupVisibility: [null, Validators.required],
+    // groupVisibility: [null, Validators.required]
   });
 
   constructor(
@@ -38,14 +36,8 @@ export class CreateGroupPage implements OnInit {
     private groupStore: GroupFeatureStore,
     ) { }
 
-  ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
-    // TODO: Add the ability to invite friends to a newly create group in the future.
-  }
-
-  
   setGroupPicture() {
-    selectImages(1).subscribe(galleryPhotos => this.groupPicture = galleryPhotos.shift());
+    this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.groupPicture = galleryPhotos.shift());
   }
 
   sanitizeUrl(url: string): string {
@@ -54,17 +46,19 @@ export class CreateGroupPage implements OnInit {
 
   async createGroup() {
     const newGroup: GroupRequest = {
-      Id: null,
+      GroupId: 0,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
-      PrivacyLevel: this.createGroupForm.get('groupVisibility').value as PrivacyLevelRequest,
-      Admin: this.profileStore.currentUserProfile.Id,
-    }
+      PrivacyLevelParamId: PrivacyLevelRequest.Public
+    };
 
-    this.groupStore.createGroup(newGroup).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.Id]);
+    this.subs.sink = this.groupStore.createGroup(this.profileStore.currentUserProfile.Id, newGroup).subscribe(res => {
+      this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }

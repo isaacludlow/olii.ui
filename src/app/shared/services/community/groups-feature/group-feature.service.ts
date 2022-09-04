@@ -36,11 +36,11 @@ export class GroupFeatureService {
 
     ExampleGroups:Group[] = [
         {
-            Id: 1,
+            GroupId: 1,
             CoverImageUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80%27',
             Name: 'World Exchangers',
             Description: 'If you enjoy partying and want to keep up to date with all that\'s going down here in Switzerland, this is the spot for you',
-            PrivacyLevel: PrivacyLevelRequest.Public,
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [
                 {
                     GroupPostId: 25,
@@ -126,11 +126,11 @@ export class GroupFeatureService {
             ],
         },
         {
-            Id: 2,
+            GroupId: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
             Description: 'This group is public',
-            PrivacyLevel: PrivacyLevelRequest.Public,
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [
                 {
                     GroupPostId: 26,
@@ -184,11 +184,11 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 3,
+            GroupId: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
             Description: 'This group is private',
-            PrivacyLevel: PrivacyLevelRequest.Private,
+            PrivacyLevel: PrivacyLevel.Private,
             Posts: [
                 {
                     GroupPostId: 21000,
@@ -215,11 +215,11 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 4,
+            GroupId: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is private',
-            PrivacyLevel: PrivacyLevelRequest.Private,
+            PrivacyLevel: PrivacyLevel.Private,
             Posts: [],
             Admins: [
                 {
@@ -232,11 +232,11 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 5,
+            GroupId: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is public',
-            PrivacyLevel: PrivacyLevelRequest.Public,
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [],
             Admins: [
                 {
@@ -250,53 +250,52 @@ export class GroupFeatureService {
         }
     ];
 
-    getGroups(limit: number, offset: number): Observable<Group[]> {
-        return of(this.ExampleGroups);
+    getGroups(offset: number, limit: number): Observable<Group[]> {
+        let params = new HttpParams();
+        
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
+        
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: params,
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+        
+        return response;
     }
 
-    getGroupById(id: number): Observable<Group> {
-        return of(this.ExampleGroups.find(group => group.Id === id));
+    getGroupById(groupId: number): Observable<Group> {
+        const response = this.httpClient.get<Group>(`${environment.apiBaseUrl}/group/${groupId}`, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
     getMyGroups(profileId: number): Observable<Group[]> {
-        return of(this.ExampleGroups)
-    }
-    
-    createGroup(newGroupInfo: GroupRequest): Observable<Group> {
-        // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
-        const newGroup: Group = {
-            Id: this.dummyId,
-            CoverImageUrl: newGroupInfo.CoverImageData,
-            Name: newGroupInfo.Name,
-            Description: newGroupInfo.Description,
-            PrivacyLevel: newGroupInfo.PrivacyLevel,
-            Posts: [],
-            Admins: [
-                {
-                    Id: this.currentUserProfile.Id,
-                    FirstName: this.currentUserProfile.FirstName,
-                    LastName: this.currentUserProfile.LastName,
-                    ProfilePictureUrl: this.currentUserProfile.ProfilePictureUrl
-                }
-            ],
-            Members: []
-        }
-
-        this.ExampleGroups.push(newGroup);
-        this.dummyId++;
-        
-        return of(newGroup);
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: { profileId: profileId },
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
-    updateGroup(updatedGroup: GroupRequest): Observable<Group> {
-        const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
-        if (index !== -1) {
-            this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
-            this.ExampleGroups[index].Name = updatedGroup.Name;
-            this.ExampleGroups[index].Description = updatedGroup.Description;
-            this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
-        }
-        return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
+    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+        const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
+            params: { CreatorProfileId: creatorProfileId },
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
+    }
+
+    updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
+        const response = this.httpClient.put<Group>(`${environment.apiBaseUrl}/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
     getPostsByGroupId(groupId: number, limit: number, offset: number): Observable<GroupPost[]> {

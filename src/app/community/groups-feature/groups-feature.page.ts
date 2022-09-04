@@ -8,7 +8,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
 import { Router } from '@angular/router';
-import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Component({
   selector: 'groups-feature',
@@ -48,13 +48,13 @@ export class GroupsFeaturePage implements OnInit {
     
     for (const group of this.myGroups) {
       if (this.canView(group)) {
-        var posts = [...group.Posts]; // Creating new array so the reverse() method doesn't mutate the original array.
-        posts.reverse().slice(0, this._postLimiter);
+        var posts = [...(group.Posts)]; // Creating new array so the reverse() method doesn't mutate the original array.
+        posts?.reverse().slice(0, this._postLimiter);
 
         for (const post of posts) {
           this.groupsLatest.push(
             {
-              GroupId: group.Id,
+              GroupId: group.GroupId,
               GroupName: group.Name,
               GroupImageUrl: group.CoverImageUrl,
               GroupPost: post,
@@ -80,20 +80,25 @@ export class GroupsFeaturePage implements OnInit {
   }
 
   calcPartialGroups() {
+    let partialGroups = [];
     for (const group of this.myGroups) {
-      this.partialGroups.push({
-        GroupId: group.Id,
-        GroupName: group.Name,
+      partialGroups.push({
+        GroupId: group.GroupId,
+        Name: group.Name,
         CoverImageUrl: group.CoverImageUrl,
-      })
+        Description: '',
+        PrivacyLevel: PrivacyLevel.Public
+      });
     }
+
+    this.partialGroups = partialGroups;
   }
 
   canView(group: Group): boolean {
-    if (group.PrivacyLevel == PrivacyLevelRequest.Public) {
+    if (group.PrivacyLevel == PrivacyLevel.Public) {
       return true;
     }
-    else if (group.PrivacyLevel == PrivacyLevelRequest.Private) {
+    else if (group.PrivacyLevel == PrivacyLevel.Private) {
       if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
         return true;
       }
