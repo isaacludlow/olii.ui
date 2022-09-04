@@ -63,8 +63,8 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(groupRequest: GroupRequest): Observable<Group> {
-        return this.groupService.createGroup(groupRequest).pipe(
+    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+        return this.groupService.createGroup(creatorProfileId, groupRequest).pipe(
             tap(group => {
                 if (this._allGroups.value === null)
                     this._allGroups.next([group]);

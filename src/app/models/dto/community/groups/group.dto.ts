@@ -8,7 +8,7 @@ export interface Group {
     Name: string;
     Description: string;
     PrivacyLevel: PrivacyLevel;
-    Posts: GroupPost[];
-    Admins: PartialProfile[]; // Get the admins with the initial call to get a group.
-    Members: PartialProfile[]; // Get the members only when the user navigates to the members page for a group.
+    Posts?: GroupPost[]; // Get the members only when the user navigates to the members page for a group.
+    Admins?: PartialProfile[]; // Get the admins with the initial call to get a group.
+    Members?: PartialProfile[]; // Get the members only when the user navigates to the members page for a group.
 }

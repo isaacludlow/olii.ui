@@ -250,28 +250,41 @@ export class GroupFeatureService {
     ];
 
     getGroups(offset: number, limit: number): Observable<Group[]> {
-        const getEventParams = new HttpParams();
-      
-        if (offset !== null) getEventParams.set('offset', offset);
-        if (limit !== null) getEventParams.set('limit', limit);
+        const params = new HttpParams();
+        
+        if (offset !== null) params.set('offset', offset);
+        if (limit !== null) params.set('limit', limit);
         
         const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
-            params: getEventParams,
+            params: params,
             headers: { Authorization: this.authStore.userIdToken }
         });
         
         return response;
     }
 
-    getGroupById(id: number): Observable<Group> {
-        return of(this.ExampleGroups.find(group => group.GroupId === id));
+    getGroupById(groupId: number): Observable<Group> {
+        const response = this.httpClient.get<Group>(`${environment.apiBaseUrl}/group/${groupId}`, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
     getMyGroups(profileId: number): Observable<Group[]> {
-        return of(this.ExampleGroups)
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: { profileId: profileId },
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
-    createGroup(groupRequest: GroupRequest): Observable<Group> {
+    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+        const params = new HttpParams();
+        
+        params.set('creatorProfileId', creatorProfileId);
+
         const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
             headers: { Authorization: this.authStore.userIdToken }
         });
