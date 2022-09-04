@@ -1,14 +1,14 @@
+import { PrivacyLevel } from "../../misc/privacy-level.dto";
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { GroupPost } from "./group-post.dto";
-import { PrivacyLevelRequest } from "../../../requests/misc/privacy-level-request.do";
 
 export interface Group {
-    Id: number;
+    GroupId: number;
     CoverImageUrl: string;
     Name: string;
     Description: string;
-    PrivacyLevel: PrivacyLevelRequest;
+    PrivacyLevel: PrivacyLevel;
     Posts: GroupPost[];
-    Admins: PartialProfile[];
-    Members: PartialProfile[];
+    Admins: PartialProfile[]; // Get the admins with the initial call to get a group.
+    Members: PartialProfile[]; // Get the members only when the user navigates to the members page for a group.
 }

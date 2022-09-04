@@ -62,16 +62,15 @@ export class EditGroupPage implements OnInit {
   async updateGroup() {
     
     const updatedGroup: GroupRequest = {
-      Id: this.group.Id,
+      GroupId: this.group.GroupId,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevel: this.editGroupForm.get('groupVisibility').value as PrivacyLevelRequest,
-      Admin: null,
+      PrivacyLevelParamId: this.editGroupForm.get('groupVisibility').value as PrivacyLevelRequest
     }
   
     this.groupStore.updateGroup(updatedGroup).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.Id]);
+      this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }
 

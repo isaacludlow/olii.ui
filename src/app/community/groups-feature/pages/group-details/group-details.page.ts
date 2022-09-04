@@ -16,8 +16,8 @@ import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
-import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -67,8 +67,8 @@ export class GroupDetailsPage implements OnInit {
       this.sortGroupPosts();
       this.canView();
       this.memberProfilePictures = this.group.Members.map(member => member.ProfilePictureUrl);
-      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Past).pipe();
-      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.Id, GroupEventsFilterOptions.Future).pipe();
+      this.pastEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Past).pipe();
+      this.futureEvents$ = this.eventStore.getGroupEvents(this.group.GroupId, GroupEventsFilterOptions.Future).pipe();
     });
   }
 
@@ -105,10 +105,10 @@ export class GroupDetailsPage implements OnInit {
   }
 
   canView(): boolean {
-    if (this.group.PrivacyLevel == PrivacyLevelRequest.Public) {
+    if (this.group.PrivacyLevel == PrivacyLevel.Public) {
       return true;
     }
-    else if (this.group.PrivacyLevel == PrivacyLevelRequest.Private) {
+    else if (this.group.PrivacyLevel == PrivacyLevel.Private) {
       if (this.group.Members.concat(this.group.Admins).find(member => member.Id === this.profileStore.currentUserProfile.Id)) {
         return true;
       }
@@ -131,7 +131,7 @@ export class GroupDetailsPage implements OnInit {
     }
 
     const newPost: CreatePostRequest = {
-      Group: this.group.Id,
+      Group: this.group.GroupId,
       Author: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(Date.now()),
@@ -150,7 +150,7 @@ export class GroupDetailsPage implements OnInit {
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.Id } }
+      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.GroupId } }
     );
   }
 

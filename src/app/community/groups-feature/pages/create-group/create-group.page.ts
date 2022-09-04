@@ -26,7 +26,7 @@ export class CreateGroupPage implements OnInit {
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    groupVisibility: [null, Validators.required],
+    // groupVisibility: [null, Validators.required]
   });
 
   constructor(
@@ -54,17 +54,15 @@ export class CreateGroupPage implements OnInit {
 
   async createGroup() {
     const newGroup: GroupRequest = {
-      Id: null,
+      GroupId: 0,
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
-      PrivacyLevel: this.createGroupForm.get('groupVisibility').value as PrivacyLevelRequest,
-      Admin: this.profileStore.currentUserProfile.Id,
-    }
+      PrivacyLevelParamId: PrivacyLevelRequest.Public
+    };
 
     this.groupStore.createGroup(newGroup).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.Id]);
+      this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }
-
 }
