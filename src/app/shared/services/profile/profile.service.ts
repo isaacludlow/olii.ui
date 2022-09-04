@@ -24,8 +24,8 @@ export class ProfileService {
 
   getProfileById(profileId: number): Observable<Profile> {
     // Temporary for testing
-    //let params = new HttpParams().set('profileid', profileId);
-    let params = new HttpParams().set('profileid', 31);
+    let params = new HttpParams().set('profileid', profileId);
+    //let params = new HttpParams().set('profileid', 31);
     const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params });    
     return response;
   }
@@ -39,9 +39,9 @@ export class ProfileService {
   }
 
   updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
-    //let params = new HttpParams().set('profileid', profileId);
-    let params = new HttpParams().set('profileid', 31);
-    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken }, params: params });
+    let params = new HttpParams().set('profileid', profileId);
+    //let params = new HttpParams().set('profileid', 31);
+    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, profileRequest, { headers: { Authorization: this.authStore.userIdToken }, params: params });
     //const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, { headers: new HttpHeaders({'Authorization': this.authStore.userIdToken}), params: params });
     return response;
   }

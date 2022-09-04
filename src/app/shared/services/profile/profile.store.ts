@@ -24,15 +24,15 @@ export class ProfileStore implements OnDestroy {
 		private userStore: UserStore,
 		private httpClient: HttpClient
 	) {
-		this.subs.sink = this.userStore.user.pipe(
-			switchMap(user => this.profileService.getProfileByUserId(user?.Id))
-		).subscribe(profile => this.currentProfile.next(profile));
+		//this.subs.sink = this.userStore.user.pipe(
+		//	switchMap(user => this.profileService.getProfileByUserId(user?.Id))
+		//).subscribe(profile => this.currentProfile.next(profile));
 
-		//this.userStore.user.subscribe(async user => {
-		//	if (user !== null) {
-		//		this.subs.sink = this.profileService.getProfileByUserId(user.Id).subscribe(profile => this.currentProfile.next(profile));
-		//	}
-		//});
+		this.userStore.user.subscribe(async user => {
+			if (user !== null) {
+				this.subs.sink = this.profileService.getProfileByUserId(user.Id).subscribe(profile => this.currentProfile.next(profile));
+			}
+		});
 	}
 
 	set profileSection(section: Section) {
