@@ -45,7 +45,7 @@ export class GroupFeatureStore {
     getGroupById(groupId: number): Observable<Group> {
         if (this._allGroups.value === null) {
             return this.groupService.getGroupById(groupId).pipe(switchMap(group => {
-                this._allGroups.next([ group]);
+                this._allGroups.next([group]);
                 return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
             }));
         } else {
@@ -108,14 +108,6 @@ export class GroupFeatureStore {
     }
 
     getPostsByGroupId(groupId: number, refresh: boolean = false, limit: number = null, offset: number = null): Observable<GroupPost[]> {
-        // if (foundFromAllGroups != undefined && foundFromAllGroups.Posts.length > 0) {
-        //     return of(foundFromAllGroups.Posts);
-        // }
-
-        // if (foundFromMyGroups != undefined && foundFromMyGroups.Posts.length > 0) {
-        //     return of(foundFromMyGroups.Posts);
-        // }
-
         return this.groupService.getPostsByGroupId(groupId, limit, offset).pipe(
             tap(posts => {
                 let allGroups = this._allGroups.value;

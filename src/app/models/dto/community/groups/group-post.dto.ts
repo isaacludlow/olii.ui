@@ -8,6 +8,6 @@ export interface GroupPost {
     Date: Date;
     ImageUrls: string[];
     
-    // Not sure if these should be here or if we'll just make a separate call to get them as we need them.
+    // These will come from a separate call to the database than the above properties.
     Comments: GroupPostComment[];
 }

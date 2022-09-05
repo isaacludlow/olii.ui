@@ -33,9 +33,9 @@
 
                 </ng-container>
                 <olii-group-preview-icons
-                [groups]="partialGroups.slice(0,calcDisplayGroups())"
+                [groups]="myGroups?.slice(0,calcDisplayGroups())"
                 groupIconSize="large"
-                [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()">
+                [additionalDisplayNumber]="myGroups?.length - calcDisplayGroups()">
             </olii-group-preview-icons>
             </div>
         </div>
