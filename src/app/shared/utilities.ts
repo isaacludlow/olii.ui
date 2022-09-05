@@ -47,14 +47,14 @@ export function removeAttendeeFromCachedEvents(profileId: number, eventId: numbe
   const allEvents = eventStore.allEvents.value;
 
   let attendees = allEvents.find(e => e.EventId === eventId).AttendeeProfiles;
-  let attendeeIndex = attendees.findIndex(x => x.Id === profileId);
+  let attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
   attendees.splice(attendeeIndex, 1);
   eventStore.allEvents.next(allEvents);
 
   let myEvents = eventStore.myEvents.value;
 
   attendees = myEvents.find(e => e.EventId === eventId).AttendeeProfiles;
-  attendeeIndex = attendees.findIndex(x => x.Id === profileId);
+  attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
   attendees.splice(attendeeIndex, 1);
   eventStore.myEvents.next(myEvents);
 }

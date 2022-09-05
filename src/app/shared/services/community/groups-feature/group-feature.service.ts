@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import parseISO from 'date-fns/parseISO';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -46,7 +47,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 25,
                     Author: {
-                      Id: 98,
+                      ProfileId: 98,
                       FirstName: 'John',
                       LastName: 'Doe',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -59,7 +60,7 @@ export class GroupFeatureService {
                             Id: 1000,
                             ParentId: 25,
                             Author: {
-                                Id: 99,
+                                ProfileId: 99,
                                 FirstName: 'Steven',
                                 LastName: 'Jobs',
                                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
@@ -72,7 +73,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 27,
                     Author: {
-                      Id: 98,
+                      ProfileId: 98,
                       FirstName: 'John',
                       LastName: 'Doe',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -85,7 +86,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 26,
                     Author: {
-                      Id: 99,
+                      ProfileId: 99,
                       FirstName: 'Steven',
                       LastName: 'Jobs',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
@@ -99,7 +100,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 98,
+                    ProfileId: 98,
                     FirstName: 'John',
                     LastName: 'Doe',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -107,19 +108,19 @@ export class GroupFeatureService {
             ],
             Members: [
               {
-                Id: 99,
+                ProfileId: 99,
                 FirstName: 'Steven',
                 LastName: 'Jobs',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
               },
               {
-                Id: 102,
+                ProfileId: 102,
                 FirstName: 'Mark',
                 LastName: 'Rober',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
               },
               {
-                Id: 152,
+                ProfileId: 152,
                 FirstName: 'Jim',
                 LastName: 'Browning',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -136,7 +137,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 26,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -149,7 +150,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 27,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -162,7 +163,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 28,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -176,7 +177,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 102,
+                    ProfileId: 102,
                     FirstName: 'Mark',
                     LastName: 'Rober',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -194,7 +195,7 @@ export class GroupFeatureService {
                 {
                     GroupPostId: 21000,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -207,7 +208,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 152,
+                    ProfileId: 152,
                     FirstName: 'Jim',
                     LastName: 'Browning',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -224,7 +225,7 @@ export class GroupFeatureService {
             Posts: [],
             Admins: [
                 {
-                    Id: 102,
+                    ProfileId: 102,
                     FirstName: 'Mark',
                     LastName: 'Rober',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -241,7 +242,7 @@ export class GroupFeatureService {
             Posts: [],
             Admins: [
                 {
-                    Id: 152,
+                    ProfileId: 152,
                     FirstName: 'Jim',
                     LastName: 'Browning',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -299,14 +300,32 @@ export class GroupFeatureService {
         return response;
     }
 
-    getPostsByGroupId(groupId: number, limit: number, offset: number): Observable<GroupPost[]> {
-        const getEventParams = new HttpParams();
+    getLatestPosts(groupIds: number[], limit: number, offset: number): Observable<LatestGroupPost[]> {
+        let params = new HttpParams();
 
-        if (offset !== null) getEventParams.set('offset', offset);
-        if (limit !== null) getEventParams.set('limit', limit);
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
+
+        const response = this.httpClient.get<LatestGroupPost[]>(`${environment.apiBaseUrl}/posts`, {
+        params: params,
+        headers: { Authorization: this.authStore.userIdToken, GroupIds: groupIds.map(x => x.toString()) }
+        }).pipe(
+            tap(latestGroupPosts => latestGroupPosts.forEach(latestGroupPost =>
+                latestGroupPost.GroupPost.Date = parseISO(<any>latestGroupPost.GroupPost.Date)
+            ))
+        );
+
+        return response;
+    }
+
+    getPostsByGroupId(groupId: number, limit: number, offset: number): Observable<GroupPost[]> {
+        let params = new HttpParams();
+
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
 
         const response = this.httpClient.get<GroupPost[]>(`${environment.apiBaseUrl}/group/${groupId}/post`, {
-        params: getEventParams,
+        params: params,
         headers: { Authorization: this.authStore.userIdToken }
         }).pipe(tap(posts => posts.forEach(post => post.Date = parseISO(<any>post.Date))));
 

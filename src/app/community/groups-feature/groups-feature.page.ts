@@ -3,12 +3,15 @@ import { Group } from '../../models/dto/community/groups/group.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 import { DomSanitizer } from '@angular/platform-browser';
-import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-latest-post.dto';
+import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
 import { Router } from '@angular/router';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 
 @Component({
   selector: 'groups-feature',
@@ -19,7 +22,9 @@ export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
   myGroups: Group[];
-  groupsLatest: GroupPostLatest[];
+  myGroups$: Observable<Group[]>;
+  latestGroupPosts$: Observable<LatestGroupPost[]>;
+  groupsLatest: LatestGroupPost[];
   partialGroups: PartialGroup[] = [];
   subs = new SubSink();
 
@@ -37,6 +42,10 @@ export class GroupsFeaturePage implements OnInit {
       this.calcLatestPosts();
       this.calcPartialGroups();
     });
+
+    this.myGroups$ = this.groupStore.getMyGroups(this.profile.Id).pipe(tap(myGroups => {
+      this.latestGroupPosts$ = this.groupStore.getLatestPosts(myGroups.map(x => x.GroupId));
+    }));
   }
 
   sanitizeUrl(url: string): string {
@@ -56,8 +65,8 @@ export class GroupsFeaturePage implements OnInit {
             {
               GroupId: group.GroupId,
               GroupName: group.Name,
-              GroupImageUrl: group.CoverImageUrl,
-              GroupPost: post,
+              GroupCoverImageUrl: group.CoverImageUrl,
+              GroupPost: post
             }
           )
         }
@@ -99,7 +108,7 @@ export class GroupsFeaturePage implements OnInit {
       return true;
     }
     else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
+      if (group.Members.concat(group.Admins).find(member => member.ProfileId === this.profile.Id)) {
         return true;
       }
     }

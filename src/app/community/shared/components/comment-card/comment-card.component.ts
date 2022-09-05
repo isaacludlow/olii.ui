@@ -14,7 +14,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
     <div>
         <div class="card-content">
             <div class="post-header">
-                <div class="poster-info" (click)="navigateToUserProfile(post.Author.Id)">
+                <div class="poster-info" (click)="navigateToUserProfile(post.Author.ProfileId)">
                     <div class="poster-image">
                         <olii-container-cover-image [imageUrl]="post.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
                     </div>
@@ -123,7 +123,12 @@ export class CommentCardComponent implements OnInit {
         const newComment: GroupPostCommentRequest = {
             OriginGroup: this.groupId,
             ParentId: this.post.GroupPostId,
-            Author: this.profile,
+            Author: {
+                ProfileId: this.profile.Id,
+                FirstName: this.profile.FirstName,
+                LastName: this.profile.LastName,
+                ProfilePictureUrl: this.profile.ProfilePictureUrl
+            },
             Content: this.addCommentInput.value,
             Date: new Date(Date.now()),
         }

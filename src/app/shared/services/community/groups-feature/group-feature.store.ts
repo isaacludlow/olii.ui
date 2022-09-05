@@ -7,6 +7,7 @@ import { GroupRequest } from "src/app/models/requests/community/groups/group-req
 import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
+import { LatestGroupPost } from "src/app/models/dto/community/groups/group-latest-post.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -44,18 +45,18 @@ export class GroupFeatureStore {
     getGroupById(groupId: number): Observable<Group> {
         if (this._allGroups.value === null) {
             return this.groupService.getGroupById(groupId).pipe(switchMap(group => {
-                this._allGroups.next([group]);
+                this._allGroups.next([ group]);
                 return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
             }));
         } else {
-            const group = this._allGroups.pipe(map(groups => groups.find(group => group.GroupId === groupId)));
+            const group = this._allGroups.value.find(group => group.GroupId === groupId);
 
             return group === undefined
-                ? this.groupService.getGroupById(groupId).pipe(switchMap(group => {
-                    this._allGroups.next([...this._allGroups.value, group]);
-                    return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
-                }))
-                : group;
+            ? this.groupService.getGroupById(groupId).pipe(switchMap(group => {
+                this._allGroups.next([...this._allGroups.value, group]);
+                return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+            }))
+            : this._allGroups.asObservable().pipe(map(groups => groups.find(group => group.GroupId === groupId)));
         }
     }
 
@@ -102,12 +103,11 @@ export class GroupFeatureStore {
         );
     }
 
-    getPostsByGroupId(groupId: number, refresh?: boolean, limit: number = null, offset: number = null): Observable<GroupPost[]> {
-        let allGroups = this._allGroups.value;
-        let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
-        let myGroups = this._myGroups.value;
-        let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
+    getLatestPosts(groupIds: number[], refresh: boolean = false, limit: number = null, offset: number = null): Observable<LatestGroupPost[]> {
+        return this.groupService.getLatestPosts(groupIds, limit, offset);
+    }
 
+    getPostsByGroupId(groupId: number, refresh: boolean = false, limit: number = null, offset: number = null): Observable<GroupPost[]> {
         // if (foundFromAllGroups != undefined && foundFromAllGroups.Posts.length > 0) {
         //     return of(foundFromAllGroups.Posts);
         // }
