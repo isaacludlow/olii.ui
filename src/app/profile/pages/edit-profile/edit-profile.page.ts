@@ -86,5 +86,4 @@ export class EditProfilePage implements OnInit {
 
     this.profileStore.updateProfile(this.profile.ProfileId, profileRequest).subscribe(profile => this.profile = profile);
   }
-
 }

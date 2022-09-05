@@ -31,7 +31,8 @@ export class ProfileStore implements OnDestroy {
 
 		this.userStore.user.subscribe(async user => {
 			if (user !== null) {
-				this.subs.sink = this.profileService.getProfileByUserId(user.Id).subscribe(profile => this.currentProfile.next(profile));
+				let profile = await this.profileService.getProfileByUserId(user.UserId).toPromise();
+				this.currentProfile.next(profile);
 			}
 		});
 	}

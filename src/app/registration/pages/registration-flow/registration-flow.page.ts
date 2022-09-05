@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { IonSlides, Platform } from '@ionic/angular';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
@@ -9,12 +9,13 @@ import gm = google.maps;
 import { ProfileService } from 'src/app/shared/services/profile/profile.service';
 import { Router } from '@angular/router';
 import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
+import { SubSink } from 'subsink';
 
 @Component({
   templateUrl: './registration-flow.page.html',
   styleUrls: ['./registration-flow.page.scss']
 })
-export class RegistrationFlowPage {
+export class RegistrationFlowPage implements OnDestroy {
   @ViewChild('slider') slides: IonSlides;
   slideOptions = { initialSlide: 0, speed: 400, allowTouchMove: false };
   registerFlowForm = this.fb.group({
@@ -27,6 +28,7 @@ export class RegistrationFlowPage {
   });
   profilePicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   profileImages: GalleryPhoto[] = [];
+  subs = new SubSink();
 
   constructor(
     private fb: FormBuilder,
@@ -77,9 +79,10 @@ export class RegistrationFlowPage {
 
   async submit() {
     const profileData = await this.createProfileRequest();
-    const res = this.profileService.createNewProfile(profileData).subscribe();
-    this.navBar.setNavBarVisibility(true);
-    this.router.navigate(['community/events'])
+    this.subs.sink = this.profileService.createNewProfile(profileData).subscribe(_ => {
+      this.navBar.setNavBarVisibility(true);
+      this.router.navigate(['community/events'])
+    });
   }
 
   async createProfileRequest() {
@@ -103,5 +106,9 @@ export class RegistrationFlowPage {
     };
 
     return profileRequest
+  }
+
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
   }
 }
