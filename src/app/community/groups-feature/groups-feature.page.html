@@ -29,7 +29,14 @@
         </div>
         <div class="my-groups-selector-container">
             <div class="group-links-container">
-                <olii-group-preview-icons [groups]="partialGroups.slice(0,calcDisplayGroups())" groupIconSize="large" [additionalDisplayNumber]="partialGroups.length - calcDisplayGroups()"> </olii-group-preview-icons>
+                <ng-container *ngIf="myGroups$ | async as myGroups">
+
+                </ng-container>
+                <olii-group-preview-icons
+                [groups]="myGroups?.slice(0,calcDisplayGroups())"
+                groupIconSize="large"
+                [additionalDisplayNumber]="myGroups?.length - calcDisplayGroups()">
+            </olii-group-preview-icons>
             </div>
         </div>
     </div>
@@ -38,13 +45,13 @@
 
     <div>
         <h3 class="section-header">Latest</h3>
-        <div class="post" *ngFor="let postWrapper of groupsLatest">
+        <div class="post" *ngFor="let postWrapper of latestGroupPosts$ | async">
             <ion-card>
                 <div class="card-content">
                     <div class="post-group-header" [routerLink]="['./group', postWrapper.GroupId]">
                         <div class="group-info">
                             <div class="group-image">
-                                <olii-container-cover-image [imageUrl]="postWrapper.GroupImageUrl" boarderRadius="50%"></olii-container-cover-image>
+                                <olii-container-cover-image [imageUrl]="postWrapper.GroupCoverImageUrl" boarderRadius="50%"></olii-container-cover-image>
                             </div>
                             <div class="group-name">{{postWrapper.GroupName}}</div>
                         </div>

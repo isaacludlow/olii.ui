@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Injectable } from "@angular/core";
@@ -11,6 +11,12 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { ProfileStore } from '../../profile/profile.store';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
+import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
+import parseISO from 'date-fns/parseISO';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -33,16 +39,16 @@ export class GroupFeatureService {
 
     ExampleGroups:Group[] = [
         {
-            Id: 1,
+            GroupId: 1,
             CoverImageUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80%27',
             Name: 'World Exchangers',
             Description: 'If you enjoy partying and want to keep up to date with all that\'s going down here in Switzerland, this is the spot for you',
-            PrivacyLevel: "Public",
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [
                 {
-                    Id: 25,
+                    GroupPostId: 25,
                     Author: {
-                      Id: 98,
+                      ProfileId: 98,
                       FirstName: 'John',
                       LastName: 'Doe',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -55,7 +61,7 @@ export class GroupFeatureService {
                             Id: 1000,
                             ParentId: 25,
                             Author: {
-                                Id: 99,
+                                ProfileId: 99,
                                 FirstName: 'Steven',
                                 LastName: 'Jobs',
                                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
@@ -66,9 +72,9 @@ export class GroupFeatureService {
                     ],
                 },
                 {
-                    Id: 27,
+                    GroupPostId: 27,
                     Author: {
-                      Id: 98,
+                      ProfileId: 98,
                       FirstName: 'John',
                       LastName: 'Doe',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -79,9 +85,9 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 26,
+                    GroupPostId: 26,
                     Author: {
-                      Id: 99,
+                      ProfileId: 99,
                       FirstName: 'Steven',
                       LastName: 'Jobs',
                       ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
@@ -95,7 +101,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 98,
+                    ProfileId: 98,
                     FirstName: 'John',
                     LastName: 'Doe',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
@@ -103,19 +109,19 @@ export class GroupFeatureService {
             ],
             Members: [
               {
-                Id: 99,
+                ProfileId: 99,
                 FirstName: 'Steven',
                 LastName: 'Jobs',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1502224562085-639556652f33?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
               },
               {
-                Id: 102,
+                ProfileId: 102,
                 FirstName: 'Mark',
                 LastName: 'Rober',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
               },
               {
-                Id: 152,
+                ProfileId: 152,
                 FirstName: 'Jim',
                 LastName: 'Browning',
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -123,16 +129,16 @@ export class GroupFeatureService {
             ],
         },
         {
-            Id: 2,
+            GroupId: 2,
             CoverImageUrl: 'https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFjdGl2ZXxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Party Hard',
             Description: 'This group is public',
-            PrivacyLevel: "Public",
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [
                 {
-                    Id: 26,
+                    GroupPostId: 26,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -143,9 +149,9 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 27,
+                    GroupPostId: 27,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -156,9 +162,9 @@ export class GroupFeatureService {
                     Comments: [],
                 },
                 {
-                    Id: 28,
+                    GroupPostId: 28,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -172,7 +178,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 102,
+                    ProfileId: 102,
                     FirstName: 'Mark',
                     LastName: 'Rober',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -181,16 +187,16 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 3,
+            GroupId: 3,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Riverside Eventhub',
             Description: 'This group is private',
-            PrivacyLevel: "Private",
+            PrivacyLevel: PrivacyLevel.Private,
             Posts: [
                 {
-                    Id: 21000,
+                    GroupPostId: 21000,
                     Author: {
-                        Id: 102,
+                        ProfileId: 102,
                         FirstName: 'Mark',
                         LastName: 'Rober',
                         ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -203,7 +209,7 @@ export class GroupFeatureService {
             ],
             Admins: [
                 {
-                    Id: 152,
+                    ProfileId: 152,
                     FirstName: 'Jim',
                     LastName: 'Browning',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -212,15 +218,15 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 4,
+            GroupId: 4,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is private',
-            PrivacyLevel: "Private",
+            PrivacyLevel: PrivacyLevel.Private,
             Posts: [],
             Admins: [
                 {
-                    Id: 102,
+                    ProfileId: 102,
                     FirstName: 'Mark',
                     LastName: 'Rober',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
@@ -229,15 +235,15 @@ export class GroupFeatureService {
             Members: [],
         },
         {
-            Id: 5,
+            GroupId: 5,
             CoverImageUrl: 'https://images.unsplash.com/photo-1490077476659-095159692ab5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bXlhbm1hcnxlbnwwfHwwfHw%3D&w=1000&q=80',
             Name: 'Kekw',
             Description: 'This group is public',
-            PrivacyLevel: "Public",
+            PrivacyLevel: PrivacyLevel.Public,
             Posts: [],
             Admins: [
                 {
-                    Id: 152,
+                    ProfileId: 152,
                     FirstName: 'Jim',
                     LastName: 'Browning',
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
@@ -248,76 +254,96 @@ export class GroupFeatureService {
     ];
 
     getGroups(offset: number, limit: number): Observable<Group[]> {
-        return of(this.ExampleGroups);
+        let params = new HttpParams();
+        
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
+        
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: params,
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+        
+        return response;
     }
 
-    getGroupById(id: number): Observable<Group> {
-        return of(this.ExampleGroups.find(group => group.Id === id));
+    getGroupById(groupId: number): Observable<Group> {
+        const response = this.httpClient.get<Group>(`${environment.apiBaseUrl}/group/${groupId}`, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
     getMyGroups(profileId: number): Observable<Group[]> {
-        return of(this.ExampleGroups)
+        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+            params: { profileId: profileId },
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
-    createGroup(newGroupInfo: GroupRequest): Observable<Group> {
-        // TODO: We'll need to actually create a group in the database and get it back to get the auto-generated id,
-        const newGroup: Group = {
-            Id: this.dummyId,
-            CoverImageUrl: newGroupInfo.CoverImageData,
-            Name: newGroupInfo.Name,
-            Description: newGroupInfo.Description,
-            PrivacyLevel: newGroupInfo.PrivacyLevel,
-            Posts: [],
-            Admins: [
-                {
-                    Id: this.currentProfile.ProfileId,
-                    FirstName: this.currentProfile.FirstName,
-                    LastName: this.currentProfile.LastName,
-                    ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
-                }
-            ],
-            Members: []
-        }
-
-        this.ExampleGroups.push(newGroup);
-        this.dummyId++;
-
-        return of(newGroup);
+    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+        const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
+            params: { CreatorProfileId: creatorProfileId },
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
-    updateGroup(updatedGroup: GroupRequest): Observable<Group> {
-        const index = this.ExampleGroups.indexOf(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
-        if (index !== -1) {
-            this.ExampleGroups[index].CoverImageUrl = updatedGroup.CoverImageData;
-            this.ExampleGroups[index].Name = updatedGroup.Name;
-            this.ExampleGroups[index].Description = updatedGroup.Description;
-            this.ExampleGroups[index].PrivacyLevel = updatedGroup.PrivacyLevel;
-        }
-        return of(this.ExampleGroups.find(group => group.Id === updatedGroup.Id));
+    updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
+        const response = this.httpClient.put<Group>(`${environment.apiBaseUrl}/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
+            headers: { Authorization: this.authStore.userIdToken }
+        });
+          
+        return response;
     }
 
-    createGroupPost(newPostRequest: CreatePostRequest):Observable<Boolean> {
-        const newPost: GroupPost = {
-            Id: this.dummyId,
-            Author: {
-                Id: this.currentProfile.ProfileId,
-                FirstName: this.currentProfile.FirstName,
-                LastName: this.currentProfile.LastName,
-                ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
-            },
-            Content: newPostRequest.Content,
-            Date: newPostRequest.Date,
-            ImageUrls: newPostRequest.ImagesData,
-            Comments: [],
-        }
+    getLatestPosts(groupIds: number[], limit: number, offset: number): Observable<LatestGroupPost[]> {
+        let params = new HttpParams();
 
-        this.ExampleGroups.find(group => group.Id == newPostRequest.Group).Posts.push(newPost);
-        this.dummyId++;
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
 
-        return of(true);
+        const response = this.httpClient.get<LatestGroupPost[]>(`${environment.apiBaseUrl}/posts`, {
+        params: params,
+        headers: { Authorization: this.authStore.userIdToken, GroupIds: groupIds.map(x => x.toString()) }
+        }).pipe(
+            tap(latestGroupPosts => latestGroupPosts.forEach(latestGroupPost =>
+                latestGroupPost.GroupPost.Date = parseISO(<any>latestGroupPost.GroupPost.Date)
+            ))
+        );
+
+        return response;
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
+    getPostsByGroupId(groupId: number, limit: number, offset: number): Observable<GroupPost[]> {
+        let params = new HttpParams();
+
+        if (offset !== null) params = params.set('offset', offset);
+        if (limit !== null) params = params.set('limit', limit);
+
+        const response = this.httpClient.get<GroupPost[]>(`${environment.apiBaseUrl}/group/${groupId}/post`, {
+        params: params,
+        headers: { Authorization: this.authStore.userIdToken }
+        }).pipe(tap(posts => posts.forEach(post => post.Date = parseISO(<any>post.Date))));
+
+        return response;
+    }
+    
+    createGroupPost(groupId: number, newPostRequest: CreatePostRequest): Observable<GroupPost> {
+        const response = this.httpClient.post<GroupPost>(
+            `${environment.apiBaseUrl}/group/${groupId}/post`,
+            newPostRequest,
+            { headers: { Authorization: this.authStore.userIdToken } }
+        );
+
+        return response;
+    }
+
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest): Observable<Boolean> {
         const newComment: GroupPostComment = {
             Id: this.dummyId,
             ParentId: newCommentRequest.ParentId,
@@ -326,7 +352,10 @@ export class GroupFeatureService {
             Date: newCommentRequest.Date
         }
 
-        this.ExampleGroups.find(group => group.Id == newCommentRequest.OriginGroup).Posts.find(post => post.Id == newCommentRequest.ParentId).Comments.push(newComment);
+        this.ExampleGroups
+            .find(group => group.GroupId == newCommentRequest.OriginGroup).Posts
+            .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
+            .push(newComment);
         this.dummyId++;
 
         return of(true);

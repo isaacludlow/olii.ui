@@ -51,25 +51,25 @@ export class ProfileService {
     var exampleFriends: PartialProfile[] = 
       [
         {
-          Id: 81,
+          ProfileId: 81,
           FirstName: 'Irvin',
           LastName: 'Mendoza',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
         },
         {
-          Id: 182,
+          ProfileId: 182,
           FirstName: 'Maxwell',
           LastName: 'Pucket',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
         },
         {
-          Id: 92,
+          ProfileId: 92,
           FirstName: 'Marvin',
           LastName: 'Gutierrez',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
         },
         {                    
-          Id: 102,
+          ProfileId: 102,
           FirstName: 'Mark',
           LastName: 'Rober',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',

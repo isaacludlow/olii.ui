@@ -47,13 +47,11 @@ export class RegistrationPage {
   }
 
   async onSubmit(): Promise<void> {
-    const fakeDob = new Date();
-
     const newUser: UserRequest = {
       Username: this.registerForm.get('username').value,
-      DOB: `${fakeDob.getFullYear()}/${fakeDob.getMonth() +1 }/${fakeDob.getDate()}`,
+      DOB: null,
       Email: this.registerForm.get('email').value,
-      PhoneNumber: ''
+      PhoneNumber: null
     }
 
     this.authStore.registerUser(newUser.Email, this.registerForm.get('password').value).pipe(

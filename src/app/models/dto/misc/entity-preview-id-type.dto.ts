@@ -1,1 +1,4 @@
-export type EventCreatorIdType = 'Profile' | 'Group'
+export enum EventCreatorIdType {
+    Profile = 6,
+    Group = 7
+}

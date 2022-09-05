@@ -1,10 +1,10 @@
-import { PrivacyLevel } from "../../dto/misc/privacy-level.do";
+import { PrivacyLevelRequest } from "../misc/privacy-level-request.do";
 
 export interface ProfileRequestSavedAlbum {
     Id: number;
     CoverImageFile: string;
     Title: string;
     Description: string;
-    PrivacyLevel: PrivacyLevel;
+    PrivacyLevel: PrivacyLevelRequest;
     ImageFiles: string[];
 }

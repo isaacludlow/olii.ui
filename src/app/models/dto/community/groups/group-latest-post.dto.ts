@@ -1,9 +1,9 @@
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { GroupPost } from "./group-post.dto";
 
-export interface GroupPostLatest {
+export interface LatestGroupPost {
     GroupId: number,
     GroupName: string,
-    GroupImageUrl: string,
+    GroupCoverImageUrl: string,
     GroupPost: GroupPost
 }

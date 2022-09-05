@@ -8,7 +8,7 @@
     <ion-header collapse="condense" mode="ios">
         <ion-toolbar class="purple-background" mode="ios">
             <div class="header">
-                <div class="back" (click)="navigateBack()">
+                <div class="back" routerLink="/community/events">
                     <olii-colored-square-background backgroundColor="purple-tinted-white">
                         <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
                     </olii-colored-square-background>
@@ -76,19 +76,19 @@
 
 <ng-template #attending>
     <div class="card-wrapper">
-        <olii-event-card *ngFor="let event of attendingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        <olii-event-card *ngFor="let event of attendingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.EventId]">
         </olii-event-card>
     </div>
 </ng-template>
 <ng-template #hosting>
     <div class="card-wrapper">
-        <olii-event-card *ngFor="let event of hostingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        <olii-event-card *ngFor="let event of hostingEvents$ | async" [event]="event" [routerLink]="['/community/events', event.EventId]">
         </olii-event-card>
     </div>
 </ng-template>
 <ng-template #past>
     <div class="card-wrapper">
-        <olii-event-card *ngFor="let event of pastEvents$ | async" [event]="event" [routerLink]="['/community/events', event.Id]">
+        <olii-event-card *ngFor="let event of pastEvents$ | async" [event]="event" [routerLink]="['/community/events', event.EventId]">
         </olii-event-card>
     </div>
 </ng-template>

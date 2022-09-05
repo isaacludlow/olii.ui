@@ -1,5 +1,5 @@
 <ion-content>
-    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
+    <div class="cover-image" [style]="{'--background': 'url(\'' + (group$ | async)?.CoverImageUrl + '\')' }">
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
@@ -7,19 +7,25 @@
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" routerLink= "./edit"></olii-icon-with-off-white-square-background>
         </div>
     </div>
-
-    <div class="group-details">
-        <h2 class="group-name">{{ group.Name }}</h2>
-        <p class="group-description">{{group.Description}}</p>
-    </div>
+    <ng-container *ngIf="group$ | async as group">
+        <div class="group-details">
+            <h2 class="group-name">{{ group.Name }}</h2>
+            <p class="group-description">{{ group.Description}}</p>
+        </div>
+    </ng-container>
 
     <div class="member-icons">
-        <olii-profile-preview-icons routerLink= "./members" [profilePictureUrls]="memberProfilePictures.slice(0, 5)" profileIconSize="large" [additionalDisplayNumber]="memberProfilePictures.length - 5"></olii-profile-preview-icons> 
+        <olii-profile-preview-icons
+            routerLink= "./members"
+            [profilePictureUrls]="memberProfilePictures?.slice(0, 5)"
+            profileIconSize="large"
+            [additionalDisplayNumber]="memberProfilePictures?.length - 5">
+        </olii-profile-preview-icons> 
     </div>
 
     <hr>
 
-    <div *ngIf="canView() else requestToJoinView">
+    <div *ngIf="canViewGroup else requestToJoinView">
         <div class="feed-events-segment-container">
             <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
                 <ion-segment-button value="feed" layout="icon-start">
@@ -44,9 +50,9 @@
     <!--ngIf user is a member of this group-->
     <div id="group-content" class="view-content">
         <div *ngIf="segmentToShow == 'feed'">
-            <div class="post" *ngFor="let post of groupPosts$ | async">
+            <div class="post" *ngFor="let post of (group$ | async)?.Posts">
                 <ion-card>
-                    <olii-comment-card [post]="post" [groupId]="group.Id"></olii-comment-card>
+                    <olii-comment-card [post]="post" [groupId]="(group$ | async).GroupId"></olii-comment-card>
                 </ion-card>
             </div>
         </div>
@@ -66,12 +72,12 @@
             <div class="subsegment-container" >
                 <div *ngIf="subSegmentToShow == 'past'">
                     <div class="card-wrapper" *ngFor="let event of pastEvents$ | async">
-                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
                     </div>
                 </div>
                 <div *ngIf="subSegmentToShow == 'future'">
                     <div class="card-wrapper" *ngFor="let event of futureEvents$ | async">
-                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.Id]"></olii-event-card>
+                        <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
                     </div>
                 </div>
             </div>
