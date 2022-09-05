@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { FormControl, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ProfileRequestSavedAlbum } from 'src/app/models/requests/profile/profile-request-saved-album';
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
+import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 
 @Component({
   selector: 'create-album-pop-up',
@@ -33,7 +33,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
             <ion-label class="visibility-label" color="tertiary" mode="ios">Public</ion-label>
             <ion-label class="visibility-description" color="medium" mode="ios">Anyone can view posts in the group</ion-label>
           </div>
-          <ion-radio slot="end" color="primary" value='Public' mode="md"></ion-radio>
+          <ion-radio slot="end" color="primary" value='9' mode="md"></ion-radio>
         </ion-item>
 
         <ion-item>
@@ -41,7 +41,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
             <ion-label class="visibility-label" color="tertiary" mode="ios">Private</ion-label>
             <ion-label class="visibility-description" color="medium" mode="ios">Only members can view posts in the group</ion-label>
           </div>
-          <ion-radio slot="end" color="primary" value="Private" mode="md"></ion-radio>
+          <ion-radio slot="end" color="primary" value="12" mode="md"></ion-radio>
         </ion-item>
 
       </ion-radio-group>
@@ -54,16 +54,13 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.do';
   `,
   styleUrls: ['./create-album-pop-up.component.scss'],
 })
-export class CreateAlbumPopUpComponent implements OnInit {
+export class CreateAlbumPopUpComponent {
 
   albumNameInput = new FormControl('', Validators.required);
   albumDescriptionInput = new FormControl('', Validators.required);
-  albumVisibility: string = "Public";
+  albumVisibility: number = 9;
 
   constructor(private profileStore: ProfileStore, private modalCtrl: ModalController) { }
-
-  ngOnInit(): void {
-  }
 
   onCreateAlbum() {
 
@@ -72,11 +69,11 @@ export class CreateAlbumPopUpComponent implements OnInit {
       CoverImageFile: null,
       Title: this.albumNameInput.value,
       Description: this.albumDescriptionInput.value,
-      PrivacyLevel: this.albumVisibility as PrivacyLevel,
+      PrivacyLevel: this.albumVisibility as PrivacyLevelRequest,
       ImageFiles: null,
     }
 
-    this.profileStore.createAlbum(this.albumNameInput.value, this.albumDescriptionInput.value, this.albumVisibility);
+    this.profileStore.createAlbum(newAlbum);
     this.dismissModal();
   }
 

@@ -10,6 +10,7 @@ import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
+import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 
 @Injectable({
 	providedIn: 'root'
@@ -74,8 +75,8 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.getFriends(userId);
 	}
 
-	createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
-		return this.profileService.createAlbum(albumName, albumDescription, albumVisibility);
+	createAlbum(newAlbum: ProfileRequestSavedAlbum) {
+		return this.profileService.createAlbum(newAlbum);
 	}
 
 	// getBase64Image(url: string) {

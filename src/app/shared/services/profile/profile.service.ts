@@ -10,6 +10,7 @@ import { mockEventData_eventById } from '../community/events-feature/mock-event-
 import { AuthStore } from '../authentication/auth-store';
 import { mockProfileData_yourProfile } from './mock-profile-data';
 import { SavedAlbum } from 'src/app/models/dto/profile/saved-album.dto';
+import { ProfileRequestSavedAlbum } from 'src/app/models/requests/profile/profile-request-saved-album';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +81,7 @@ export class ProfileService {
     return of(exampleFriends);
   }
 
-  createAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
+  createAlbum(newAlbum: ProfileRequestSavedAlbum) {
     // Add API call code here
     //const response = this.httpClient.post<SavedAlbum>(`${environment.apiBaseUrl}/profile/saved-album`, )
     return true;

@@ -34,12 +34,14 @@ export class GroupsFeaturePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
-
-    this.myGroups$ = this.groupStore.getMyGroups(this.profile.Id).pipe(tap(myGroups => {
-      this.latestGroupPosts$ = this.groupStore.getLatestPosts(myGroups.map(x => x.GroupId));
-    }));
-  }
+    this.subs.sink = this.profileStore.currentProfile.subscribe(currentProfile => {
+      if (currentProfile !== null) {
+        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId).pipe(tap(myGroups => {
+          this.latestGroupPosts$ = this.groupStore.getLatestPosts(myGroups.map(x => x.GroupId));
+        }));
+      }
+    });
+}
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
@@ -49,17 +51,19 @@ export class GroupsFeaturePage implements OnInit {
     this.router.navigate(['community/groups/create'],);
   }
 
-  canView(group: Group): boolean {
-    if (group.PrivacyLevel == PrivacyLevel.Public) {
-      return true;
-    }
-    else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (group.Members.concat(group.Admins).find(member => member.ProfileId === this.profile.Id)) {
-        return true;
-      }
-    }
-    return false;
-  }
+  // I don't think this method is being used here???
+  //
+  // canView(group: Group): boolean {
+  //   if (group.PrivacyLevel == PrivacyLevel.Public) {
+  //     return true;
+  //   }
+  //   else if (group.PrivacyLevel == PrivacyLevel.Private) {
+  //     if (group.Members.concat(group.Admins).find(member => member.ProfileId === this.profile.Id)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   calcDisplayGroups() {
     return Math.round((window.innerWidth - this.convertRemToPixels(5.8)) / this.convertRemToPixels(4.8));

@@ -124,7 +124,7 @@ export class CommentCardComponent implements OnInit {
             OriginGroup: this.groupId,
             ParentId: this.post.GroupPostId,
             Author: {
-                ProfileId: this.profile.Id,
+                ProfileId: this.profile.ProfileId,
                 FirstName: this.profile.FirstName,
                 LastName: this.profile.LastName,
                 ProfilePictureUrl: this.profile.ProfilePictureUrl
