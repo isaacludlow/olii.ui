@@ -67,25 +67,25 @@ export class EventsFeatureStore {
               }
             }
             
-            getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
-              switch (filter) {
-                case GroupEventsFilterOptions.Past:
+  getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
+    switch (filter) {
+      case GroupEventsFilterOptions.Past:
         return this.retrieveGroupEvents(groupId).pipe(
           map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
           );
-          case GroupEventsFilterOptions.Future:
-            return this.retrieveGroupEvents(groupId).pipe(
-              map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
-              );
-            }
-          }
+      case GroupEventsFilterOptions.Future:
+        return this.retrieveGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+          );
+        }
+  }
           
-          createEvent(eventRequest: EventRequest): Observable<Event> {
-            return this.eventsService.createEvent(eventRequest).pipe(
-              tap(event => {
-                this.allEvents.next([...this.allEvents.value, event]);
-                this.myEvents.next([...this.myEvents.value, event]);
-   }));
+  createEvent(eventRequest: EventRequest): Observable<Event> {
+    return this.eventsService.createEvent(eventRequest).pipe(
+      tap(event => {
+        this.allEvents.next([...this.allEvents.value, event]);
+        this.myEvents.next([...this.myEvents.value, event]);
+    }));
   }
   
   isAttendingEvent(eventId: number, profileId: number): Observable<boolean> {

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
@@ -27,7 +27,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   groupId: number;
   group$: Observable<Group>;
   canViewGroup: boolean;
-  groupPosts$: Observable<GroupPost[]>;
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
@@ -40,9 +39,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
-  },
-  { updateOn: 'blur' }
-  )
+  })
 
   constructor(
     private fb: FormBuilder,
@@ -63,6 +60,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       )
     ).pipe(
       tap(group => {
+        this.groupId = group.GroupId;
         this.canViewGroup = this.canView(group, this.profileStore.currentUserProfile.Id)
         this.pastEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Future);
@@ -101,7 +99,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       return true;
     }
     else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (group.Members.concat(group.Admins).find(member => member.Id === profileId)) {
+      if (group.Members.concat(group.Admins).find(member => member.ProfileId === profileId)) {
         return true;
       }
     }
@@ -124,15 +122,14 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     const newPost: CreatePostRequest = {
-      Group: this.groupId,
-      Author: this.profileStore.currentUserProfile.Id,
+      ProfileId: this.profileStore.currentUserProfile.Id,
       Content: this.createPostForm.get('postContent').value,
-      Date: new Date(Date.now()),
+      Date: new Date(),
       ImagesData: images,
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.groupStore.createGroupPost(this.groupId, newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');

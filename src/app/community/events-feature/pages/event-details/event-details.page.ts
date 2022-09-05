@@ -51,7 +51,7 @@ export class EventDetailsPage implements OnInit {
       this.attending = isRsvp;
       
       const partialProfile: PartialProfile = {
-         Id: this.currentProfile.Id,
+         ProfileId: this.currentProfile.Id,
          FirstName: this.currentProfile.FirstName,
          LastName: this.currentProfile.LastName,
          ProfilePictureUrl: this.currentProfile.ProfilePictureUrl

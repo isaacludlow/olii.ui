@@ -3,12 +3,15 @@ import { Group } from '../../models/dto/community/groups/group.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { SubSink } from 'subsink';
 import { DomSanitizer } from '@angular/platform-browser';
-import { GroupPostLatest } from 'src/app/models/dto/community/groups/group-latest-post.dto';
+import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
 import { Router } from '@angular/router';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 
 @Component({
   selector: 'groups-feature',
@@ -19,8 +22,8 @@ export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
   myGroups: Group[];
-  groupsLatest: GroupPostLatest[];
-  partialGroups: PartialGroup[] = [];
+  myGroups$: Observable<Group[]>;
+  latestGroupPosts$: Observable<LatestGroupPost[]>;
   subs = new SubSink();
 
   constructor(
@@ -32,66 +35,18 @@ export class GroupsFeaturePage implements OnInit {
 
   ngOnInit(): void {
     this.profile = this.profileStore.currentUserProfile;
-    this.subs.sink = this.groupStore.getMyGroups(this.profile.Id).subscribe(res =>  {
-      this.myGroups = res;
-      this.calcLatestPosts();
-      this.calcPartialGroups();
-    });
+
+    this.myGroups$ = this.groupStore.getMyGroups(this.profile.Id).pipe(tap(myGroups => {
+      this.latestGroupPosts$ = this.groupStore.getLatestPosts(myGroups.map(x => x.GroupId));
+    }));
   }
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
   }
 
-  calcLatestPosts() {
-    this.groupsLatest = [];
-    
-    for (const group of this.myGroups) {
-      if (this.canView(group)) {
-        var posts = [...(group.Posts)]; // Creating new array so the reverse() method doesn't mutate the original array.
-        posts?.reverse().slice(0, this._postLimiter);
-
-        for (const post of posts) {
-          this.groupsLatest.push(
-            {
-              GroupId: group.GroupId,
-              GroupName: group.Name,
-              GroupImageUrl: group.CoverImageUrl,
-              GroupPost: post,
-            }
-          )
-        }
-      }
-    }
-
-    this.sortGroupPosts();
-  }
-
-  sortGroupPosts() {
-    this.groupsLatest = this.groupsLatest.sort((a, b) => b.GroupPost.Date > a.GroupPost.Date ? 1 : -1);
-  }
-
   createGroup(): void {
-    // Creator type is 'Group' when creating an event from a group details page.
-    this.router.navigate(
-      ['community/groups/create'],
-      { queryParams: { creatorType: 'Profile', creatorId: this.profileStore.currentUserProfile.Id } }
-    );
-  }
-
-  calcPartialGroups() {
-    let partialGroups = [];
-    for (const group of this.myGroups) {
-      partialGroups.push({
-        GroupId: group.GroupId,
-        Name: group.Name,
-        CoverImageUrl: group.CoverImageUrl,
-        Description: '',
-        PrivacyLevel: PrivacyLevel.Public
-      });
-    }
-
-    this.partialGroups = partialGroups;
+    this.router.navigate(['community/groups/create'],);
   }
 
   canView(group: Group): boolean {
@@ -99,7 +54,7 @@ export class GroupsFeaturePage implements OnInit {
       return true;
     }
     else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (group.Members.concat(group.Admins).find(member => member.Id === this.profile.Id)) {
+      if (group.Members.concat(group.Admins).find(member => member.ProfileId === this.profile.Id)) {
         return true;
       }
     }

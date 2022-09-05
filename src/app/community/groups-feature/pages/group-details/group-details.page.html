@@ -7,11 +7,12 @@
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" routerLink= "./edit"></olii-icon-with-off-white-square-background>
         </div>
     </div>
-
-    <div class="group-details">
-        <h2 class="group-name">{{ (group$ | async)?.Name }}</h2>
-        <p class="group-description">{{(group$ | async)?.Description}}</p>
-    </div>
+    <ng-container *ngIf="group$ | async as group">
+        <div class="group-details">
+            <h2 class="group-name">{{ group.Name }}</h2>
+            <p class="group-description">{{ group.Description}}</p>
+        </div>
+    </ng-container>
 
     <div class="member-icons">
         <olii-profile-preview-icons
@@ -49,7 +50,7 @@
     <!--ngIf user is a member of this group-->
     <div id="group-content" class="view-content">
         <div *ngIf="segmentToShow == 'feed'">
-            <div class="post" *ngFor="let post of groupPosts$ | async">
+            <div class="post" *ngFor="let post of (group$ | async)?.Posts">
                 <ion-card>
                     <olii-comment-card [post]="post" [groupId]="(group$ | async).GroupId"></olii-comment-card>
                 </ion-card>

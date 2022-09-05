@@ -52,7 +52,7 @@ export class EventsFeatureService {
   
   getEventsByGroupId(groupId: number): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
-      params: { profileId: groupId },
+      params: { groupId: groupId },
       headers: { Authorization: this.authStore.userIdToken }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     

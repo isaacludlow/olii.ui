@@ -1,5 +1,5 @@
 export interface PartialProfile {
-    Id: number;
+    ProfileId: number;
     FirstName: string;
     LastName: string;
     ProfilePictureUrl: string;

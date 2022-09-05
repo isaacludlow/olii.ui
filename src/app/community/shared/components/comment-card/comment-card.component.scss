@@ -21,6 +21,12 @@ hr {
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0.5rem;
+
+    .post-datetime {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
 }
 
 .poster-info {
