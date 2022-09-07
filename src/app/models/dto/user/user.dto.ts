@@ -1,5 +1,6 @@
 export interface User {
-    Id: number;
+    UserId: number;
+    Uid: string;
     Username: string;
     DOB: Date;
     PhoneNumber: string;

@@ -96,7 +96,7 @@ export class CommentCardComponent implements OnInit {
    ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
+    this.profile = this.profileStore.currentProfile.value;
     this.showAddComment = false;
     this.showComments = false;
   }
@@ -124,7 +124,7 @@ export class CommentCardComponent implements OnInit {
             OriginGroup: this.groupId,
             ParentId: this.post.GroupPostId,
             Author: {
-                ProfileId: this.profile.Id,
+                ProfileId: this.profile.ProfileId,
                 FirstName: this.profile.FirstName,
                 LastName: this.profile.LastName,
                 ProfilePictureUrl: this.profile.ProfilePictureUrl

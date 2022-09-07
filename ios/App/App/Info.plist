@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>Olii.UI</string>
+        <string>Olii</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -48,19 +48,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-		<true/>
-	<key>NSCameraUsageDescription</key>
-		<string>To capture images</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>To add images</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-		<string>To store imaes</string>
-
-	<key>NSLocationAlwaysUsageDescription</key>
-		<string>We want to track you</string>
-	<key>NSLocationWhenInUseDescription</key>
-		<string>We want you current position</string>
+	<true/>
 </dict>
 </plist>

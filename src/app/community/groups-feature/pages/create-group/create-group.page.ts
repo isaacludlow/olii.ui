@@ -53,7 +53,7 @@ export class CreateGroupPage {
       PrivacyLevelParamId: PrivacyLevelRequest.Public
     };
 
-    this.subs.sink = this.groupStore.createGroup(this.profileStore.currentUserProfile.Id, newGroup).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroup(this.profileStore.currentProfile.value.ProfileId, newGroup).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }

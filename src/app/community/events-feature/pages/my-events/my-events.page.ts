@@ -24,7 +24,7 @@ export class MyEventsPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const profileId = this.profileStore.currentUserProfile.Id;
+    const profileId = this.profileStore.currentProfile.value.ProfileId;
 
     this.attendingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Attending);
     this.hostingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Hosting);

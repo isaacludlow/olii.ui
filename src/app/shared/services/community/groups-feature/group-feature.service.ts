@@ -23,7 +23,8 @@ import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-lates
 })
 
 export class GroupFeatureService {
-	currentUserProfile: Profile;
+
+	currentProfile: Profile;
     private subs = new SubSink()
 
     dummyId = 32;
@@ -33,7 +34,7 @@ export class GroupFeatureService {
         private profileStore: ProfileStore,
         private authStore: AuthStore
     ) {
-        this.currentUserProfile = this.profileStore.currentUserProfile;
+        this.profileStore.currentProfile.subscribe(profile => this.currentProfile = profile);
     }
 
     ExampleGroups:Group[] = [

@@ -8,19 +8,13 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss']
 })
-export class SettingsPage implements OnInit {
-  profileId: number;
-
+export class SettingsPage {
   constructor(
     private authStore: AuthStore,
     private profileStore: ProfileStore,
     private router: Router,
     private location: Location
   ) { }
-
-  ngOnInit(): void {
-      this.profileId = this.profileStore.currentUserProfile.Id;
-  }
 
   navigateBack() {
     this.location.back();

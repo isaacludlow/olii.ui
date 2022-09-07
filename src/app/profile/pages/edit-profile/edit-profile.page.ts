@@ -22,7 +22,6 @@ export class EditProfilePage implements OnInit {
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    // phoneNumber: [''],
     // TODO-M14: Country Selection should be from a dropdown to standardize country naming conventions
     homeCountry: [''],
     hostCountry: [''],
@@ -39,17 +38,20 @@ export class EditProfilePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profile = this.profileStore.currentUserProfile;
 
-    if (this.profile != null) {
-      this.profilePicture = <GalleryPhoto>{ webPath: this.profile.ProfilePictureUrl };
-      this.profileForm.controls['firstName'].setValue(this.profile.FirstName);
-      this.profileForm.controls['lastName'].setValue(this.profile.LastName);
-      this.profileForm.controls['homeCountry'].setValue(this.profile.HomeCountry);
-      this.profileForm.controls['hostCountry'].setValue(this.profile.HostCountry);
-      this.profileForm.controls['currentCity'].setValue(this.profile.CurrentCity);
-      this.profileForm.controls['bio'].setValue(this.profile.Bio);
-    }
+    this.profileStore.currentProfile.subscribe(profile => {
+      this.profile = profile;
+      if (this.profile != null) {
+        this.profilePicture = <GalleryPhoto>{ webPath: this.profile.ProfilePictureUrl };
+        this.profileForm.controls['firstName'].setValue(this.profile.FirstName);
+        this.profileForm.controls['lastName'].setValue(this.profile.LastName);
+        this.profileForm.controls['homeCountry'].setValue(this.profile.HomeCountry);
+        this.profileForm.controls['hostCountry'].setValue(this.profile.HostCountry);
+        this.profileForm.controls['currentCity'].setValue(this.profile.CurrentCity);
+        this.profileForm.controls['bio'].setValue(this.profile.Bio);
+      }
+    });
+
   }
 
   navigateBack() {
@@ -61,7 +63,10 @@ export class EditProfilePage implements OnInit {
   }
 
   setProfilePicture() {
-    selectImages(1).subscribe(galleryPhotos => this.profilePicture = galleryPhotos.shift());
+    selectImages(1).subscribe(galleryPhotos => {
+      this.profilePicture = galleryPhotos.shift()
+      }
+    );
   }
 
   async onSubmit(): Promise<void> {
@@ -75,11 +80,10 @@ export class EditProfilePage implements OnInit {
       Bio: this.profileForm.get('bio').value,
       ConnectedSocials: null,
       Friends: null,
-      ImageFiles: null,
+      ImageFiles: [],
       SavedAlbums: null,
     };
 
-    this.profileStore.updateProfile(profileRequest);
+    this.profileStore.updateProfile(this.profile.ProfileId, profileRequest).subscribe(profile => this.profile = profile);
   }
-
 }

@@ -32,7 +32,7 @@ export class EventDetailsPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentProfile = this.profileStore.currentUserProfile;
+    this.currentProfile = this.profileStore.currentProfile.value;
 
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(+paramMap.get('eventId')))
@@ -41,17 +41,17 @@ export class EventDetailsPage implements OnInit {
       this.attendingProfilePictures = this.event.AttendeeProfiles.map(attendee => attendee.ProfilePictureUrl);
     });
 
-    this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.Id)
+    this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
       .subscribe(isAttending => this.attending = isAttending);
   }
 
   rsvpToEvent() {
-    this.eventsStore.rsvpToEvent(this.currentProfile.Id, this.event.EventId)
+    this.eventsStore.rsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
     .subscribe(isRsvp => {
       this.attending = isRsvp;
       
       const partialProfile: PartialProfile = {
-         ProfileId: this.currentProfile.Id,
+         ProfileId: this.currentProfile.ProfileId,
          FirstName: this.currentProfile.FirstName,
          LastName: this.currentProfile.LastName,
          ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
@@ -61,10 +61,10 @@ export class EventDetailsPage implements OnInit {
   }
 
   cancelRsvpToEvent() {
-    this.eventsStore.cancelRsvpToEvent(this.currentProfile.Id, this.event.EventId)
+    this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
     .subscribe(isCanceledRsvp => {
       this.attending = !isCanceledRsvp;
-      removeAttendeeFromCachedEvents(this.currentProfile.Id, this.event.EventId, this.eventsStore);
+      removeAttendeeFromCachedEvents(this.currentProfile.ProfileId, this.event.EventId, this.eventsStore);
     });
   }
 

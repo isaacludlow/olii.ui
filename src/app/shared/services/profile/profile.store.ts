@@ -10,6 +10,7 @@ import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
+import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 
 @Injectable({
 	providedIn: 'root'
@@ -17,21 +18,28 @@ import { UserStore } from "../user/user.store";
 export class ProfileStore implements OnDestroy {
 	private _manualOverrideForProfileSection = new BehaviorSubject<Section>('photos');
 	private subs = new SubSink()
-	currentUserProfile: Profile;
+	currentProfile = new BehaviorSubject<Profile>(null);
 
 	constructor(
 		private profileService: ProfileService,
 		private userStore: UserStore,
 		private httpClient: HttpClient
 	) {
-		this.subs.sink = this.userStore.user.pipe(
-			switchMap(user => this.profileService.getProfileByUserId(user?.Id))
-		).subscribe(profile => this.currentUserProfile = profile);
+		//this.subs.sink = this.userStore.user.pipe(
+		//	switchMap(user => this.profileService.getProfileByUserId(user?.Id))
+		//).subscribe(profile => this.currentProfile.next(profile));
+
+		this.userStore.user.subscribe(async user => {
+			if (user !== null) {
+				let profile = await this.profileService.getProfileByUserId(user.UserId).toPromise();
+				this.currentProfile.next(profile);
+			}
+		});
 	}
 
 	set profileSection(section: Section) {
 		this._manualOverrideForProfileSection.next(section);
-	}	
+	}
 
 	get profileSection() {
 		const currentSection = this._manualOverrideForProfileSection.value;
@@ -42,7 +50,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: number): Observable<Profile> {
-		return this.profileService.getProfileById(profileId);
+		return this.profileService.getProfileById(profileId).pipe();
 
 		// Use this code below for caching images in the future.
 		// .pipe(
@@ -60,16 +68,16 @@ export class ProfileStore implements OnDestroy {
 		return this.profileService.getProfileByUserId(userId);
 	}
 
+	updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
+		return this.profileService.updateProfile(profileId, profileRequest);
+	}
+
 	getFriends(userId: number): Observable<PartialProfile[]> {
 		return this.profileService.getFriends(userId);
 	}
 
-	postNewAlbum(albumName: string, albumDescription: string, albumVisibility: string) {
-		return this.profileService.createNewAlbum(albumName, albumDescription, albumVisibility);
-	}
-
-	updateProfile(profileRequest: ProfileRequest) {
-		return this.profileService.updateProfile(profileRequest);
+	createAlbum(newAlbum: ProfileRequestSavedAlbum) {
+		return this.profileService.createAlbum(newAlbum);
 	}
 
 	// getBase64Image(url: string) {

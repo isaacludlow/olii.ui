@@ -40,6 +40,15 @@ export class EventsFeatureService {
     
     return response;
   }
+
+  getEventsAttending(profileId: number) {
+    const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/eventsAttending`, {
+      params: { profileId: profileId },
+      headers: { Authorization: this.authStore.userIdToken }
+    }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
+    
+    return response;
+  }
   
   getMyEvents(profileId: number): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {

@@ -3,7 +3,7 @@ import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { PrivacyLevelRequest } from "src/app/models/requests/misc/privacy-level-request.do";
 
 export let mockProfileData_yourProfile: Profile = {
-    Id: 98,
+    ProfileId: 98,
     FirstName: 'John',
     LastName: 'Doe',
     Friends: 127,

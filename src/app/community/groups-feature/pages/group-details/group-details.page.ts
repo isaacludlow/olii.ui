@@ -61,7 +61,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     ).pipe(
       tap(group => {
         this.groupId = group.GroupId;
-        this.canViewGroup = this.canView(group, this.profileStore.currentUserProfile.Id)
+        this.canViewGroup = this.canView(group, this.profileStore.currentProfile.value.ProfileId)
         this.pastEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Future);
       })
@@ -122,7 +122,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     const newPost: CreatePostRequest = {
-      ProfileId: this.profileStore.currentUserProfile.Id,
+      ProfileId: this.profileStore.currentProfile.value.ProfileId,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(),
       ImagesData: images,

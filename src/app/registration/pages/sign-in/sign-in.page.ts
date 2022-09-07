@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthStore } from 'src/app/shared/services/authentication/auth-store';
+import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
 
 @Component({
   templateUrl: './sign-in.page.html',
@@ -24,7 +25,8 @@ export class SignInPage {
     private fb: FormBuilder,
     private authStore: AuthStore,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private navBar: NavBarService,
   ) { }
 
   onSubmit(): void {
@@ -33,7 +35,8 @@ export class SignInPage {
 
     this.authStore.login(email, password).subscribe(_ => {
       this.signInForm.reset();
-      this.router.navigate(['registration/registration-flow']);
+      this.navBar.setNavBarVisibility(true);
+      this.router.navigate(['community/events']);
     });
   }
 

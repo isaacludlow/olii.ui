@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isAfter, isBefore } from 'date-fns';
+import { isAfter, isBefore, isFuture } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
@@ -48,8 +48,8 @@ export class EventsFeatureStore {
   getMyEvents(profileId: number, filter: MyEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case MyEventsFilterOptions.Attending:
-        return this.retrieveMyEvents(profileId).pipe(
-          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        return this.retrieveEventsAttending(profileId).pipe(
+          map(events => events.filter(event => isFuture(event.Date)))
           );
           
           case MyEventsFilterOptions.Hosting:
@@ -58,7 +58,7 @@ export class EventsFeatureStore {
           ));
           
           case MyEventsFilterOptions.Past:
-            return this.retrieveMyEvents(profileId).pipe(
+            return this.retrieveEventsAttending(profileId).pipe(
               map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
               );
               
@@ -101,6 +101,17 @@ export class EventsFeatureStore {
   }
 
   //#region getMyEvents() helper methods.
+  private retrieveEventsAttending(profileId: number): Observable<Event[]> {
+    if (this.myEvents.value === null) {
+      return this.eventsService.getEventsAttending(profileId).pipe(switchMap(events => {
+        this.myEvents.next(events);
+        return this.myEvents.asObservable();
+      }));
+    } else {
+      return this.myEvents.asObservable();
+    }
+  }
+
   private retrieveMyEvents(profileId: number): Observable<Event[]> {
     if (this.myEvents.value === null) {
       return this.eventsService.getMyEvents(profileId).pipe(switchMap(events => {
