@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package ionic.verbin.olii;
 
 import com.getcapacitor.BridgeActivity;
 
