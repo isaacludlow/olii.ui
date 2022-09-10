@@ -261,7 +261,7 @@ export class GroupFeatureService {
         
         const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
             params: params,
-            headers: { Authorization: this.authStore.userIdToken }
+            headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         });
         
         return response;
@@ -269,7 +269,7 @@ export class GroupFeatureService {
 
     getGroupById(groupId: number): Observable<Group> {
         const response = this.httpClient.get<Group>(`${environment.apiBaseUrl}/group/${groupId}`, {
-            headers: { Authorization: this.authStore.userIdToken }
+            headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         });
           
         return response;
@@ -278,7 +278,7 @@ export class GroupFeatureService {
     getMyGroups(profileId: number): Observable<Group[]> {
         const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
             params: { profileId: profileId },
-            headers: { Authorization: this.authStore.userIdToken }
+            headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         });
           
         return response;
@@ -287,7 +287,7 @@ export class GroupFeatureService {
     createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
         const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
             params: { CreatorProfileId: creatorProfileId },
-            headers: { Authorization: this.authStore.userIdToken }
+            headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         });
           
         return response;
@@ -295,7 +295,7 @@ export class GroupFeatureService {
 
     updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
         const response = this.httpClient.put<Group>(`${environment.apiBaseUrl}/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
-            headers: { Authorization: this.authStore.userIdToken }
+            headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         });
           
         return response;
@@ -309,7 +309,7 @@ export class GroupFeatureService {
 
         const response = this.httpClient.get<LatestGroupPost[]>(`${environment.apiBaseUrl}/posts`, {
         params: params,
-        headers: { Authorization: this.authStore.userIdToken, GroupIds: groupIds.map(x => x.toString()) }
+        headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey, GroupIds: groupIds.map(x => x.toString()) }
         }).pipe(
             tap(latestGroupPosts => latestGroupPosts.forEach(latestGroupPost =>
                 latestGroupPost.GroupPost.Date = parseISO(<any>latestGroupPost.GroupPost.Date)
@@ -327,7 +327,7 @@ export class GroupFeatureService {
 
         const response = this.httpClient.get<GroupPost[]>(`${environment.apiBaseUrl}/group/${groupId}/post`, {
         params: params,
-        headers: { Authorization: this.authStore.userIdToken }
+        headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
         }).pipe(tap(posts => posts.forEach(post => post.Date = parseISO(<any>post.Date))));
 
         return response;
@@ -337,7 +337,7 @@ export class GroupFeatureService {
         const response = this.httpClient.post<GroupPost>(
             `${environment.apiBaseUrl}/group/${groupId}/post`,
             newPostRequest,
-            { headers: { Authorization: this.authStore.userIdToken } }
+            { headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey } }
         );
 
         return response;
