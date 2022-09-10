@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  apiBaseUrl: 'http://localhost:7071/api',
+  apiBaseUrl: 'https://olii-dev-api.azurewebsites.net',
   mapsKey: 'AIzaSyBLAdsFxNLhjWztJ3dY6uruj856r6We_yo',
   production: false,
   firebase: {
