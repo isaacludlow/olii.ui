@@ -1,12 +1,8 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { switchMap } from "rxjs/operators"
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
-import { convertBlobToBase64 } from "../../utilities";
-import { AuthStore } from "../authentication/auth-store";
 import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
@@ -22,8 +18,7 @@ export class ProfileStore implements OnDestroy {
 
 	constructor(
 		private profileService: ProfileService,
-		private userStore: UserStore,
-		private httpClient: HttpClient
+		private userStore: UserStore
 	) {
 		//this.subs.sink = this.userStore.user.pipe(
 		//	switchMap(user => this.profileService.getProfileByUserId(user?.Id))
