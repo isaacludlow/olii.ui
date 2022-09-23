@@ -19,7 +19,7 @@ export class EventAttendeesPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.eventAttendees$ = this.eventStore.getEventById(+this.route.snapshot.paramMap.get('eventId')).pipe(map(event => event.AttendeeProfiles));
+    this.eventAttendees$ = this.eventStore.getEventById(+this.route.snapshot.paramMap.get('eventId')).pipe(map(event => event.AttendeesPreview));
   }
 
   navigateToProfile(profileId: number): void {

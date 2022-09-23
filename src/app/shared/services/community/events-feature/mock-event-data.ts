@@ -24,8 +24,8 @@ mockEventData_allEvents = [
         Title: 'Olii app beta release party',
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
-            Id: 217,
-            IdType: EventCreatorIdType.Profile,
+            CreatorId: 217,
+            CreatorType: EventCreatorIdType.Profile,
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -37,7 +37,7 @@ mockEventData_allEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfileId: 98,
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -64,8 +64,8 @@ mockEventData_allEvents = [
         Title: 'National chair convention',
         Description: 'The worlds largest event for chairs and the threat they pose to our butts.',
         Creator: {
-            Id: 398,
-            IdType: EventCreatorIdType.Group,
+            CreatorId: 398,
+            CreatorType: EventCreatorIdType.Group,
             DisplayName: 'Berlin Football Crew',
             ImageUrl: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8c29jY2VyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -77,7 +77,7 @@ mockEventData_allEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfileId: 98,
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -122,8 +122,8 @@ mockEventData_allEvents = [
         Title: 'Olii app beta release party',
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
-            Id: 217,
-            IdType: EventCreatorIdType.Profile,
+            CreatorId: 217,
+            CreatorType: EventCreatorIdType.Profile,
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -135,7 +135,7 @@ mockEventData_allEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
             },
@@ -153,8 +153,8 @@ mockEventData_allEvents = [
         Title: 'National chair convention',
         Description: 'The worlds largest event for chairs and the threat they pose to our butts.',
         Creator: {
-            Id: 398,
-            IdType: EventCreatorIdType.Group,
+            CreatorId: 398,
+            CreatorType: EventCreatorIdType.Group,
             DisplayName: 'Berlin Football Crew',
             ImageUrl: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8c29jY2VyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -166,7 +166,7 @@ mockEventData_allEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60'
             },
@@ -193,8 +193,8 @@ mockEventData_allEvents = [
         Title: 'Olii app beta release party',
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
-            Id: 217,
-            IdType: EventCreatorIdType.Profile,
+            CreatorId: 217,
+            CreatorType: EventCreatorIdType.Profile,
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -206,7 +206,7 @@ mockEventData_allEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: []
+        AttendeesPreview: []
     }
 ];
 
@@ -217,8 +217,8 @@ mockEventData_myEvents = [
         Title: 'National chair convention',
         Description: 'The worlds largest event for chairs and the threat they pose to our butts.',
         Creator: {
-            Id: 98,
-            IdType: EventCreatorIdType.Profile,
+            CreatorId: 98,
+            CreatorType: EventCreatorIdType.Profile,
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -230,7 +230,7 @@ mockEventData_myEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfileId: 98,
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -269,8 +269,8 @@ mockEventData_myEvents = [
         Title: 'Olii app beta release party',
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
-            Id: 217,
-            IdType: EventCreatorIdType.Group,
+            CreatorId: 217,
+            CreatorType: EventCreatorIdType.Group,
             DisplayName: 'Olii App',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -282,7 +282,7 @@ mockEventData_myEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfileId: 98,
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -303,8 +303,8 @@ mockEventData_myEvents = [
         Title: 'Olii app beta release party',
         Description: 'Come celebrate the beta release of the Olii app with us!',
         Creator: {
-            Id: 217,
-            IdType: EventCreatorIdType.Profile,
+            CreatorId: 217,
+            CreatorType: EventCreatorIdType.Profile,
             DisplayName: 'John Doe',
             ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
         },
@@ -316,7 +316,7 @@ mockEventData_myEvents = [
             Longitude: -115.17502713288535
         },
         ImageUrls: eventImageUrls,
-        AttendeeProfiles: [
+        AttendeesPreview: [
             <PartialProfile>{
                 ProfileId: 98,
                 ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -345,8 +345,8 @@ mockEventData_eventById = {
     Title: 'Olii app beta release party',
     Description: 'Come celebrate the beta release of the Olii app with us!',
     Creator: {
-        Id: 217,
-        IdType: EventCreatorIdType.Profile,
+        CreatorId: 217,
+        CreatorType: EventCreatorIdType.Profile,
         DisplayName: 'John Doe',
         ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
     },
@@ -358,7 +358,7 @@ mockEventData_eventById = {
         Longitude: -115.17502713288535
     },
     ImageUrls: eventImageUrls,
-    AttendeeProfiles: [
+    AttendeesPreview: [
         <PartialProfile>{
             ProfileId: 98,
             ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',
@@ -380,8 +380,8 @@ mockEventData_newEvent = {
     Title: 'Utah Jazz squad',
     Description: 'Just a bunch of guys who love basketball',
     Creator: {
-        Id: 98,
-        IdType: EventCreatorIdType.Profile,
+        CreatorId: 98,
+        CreatorType: EventCreatorIdType.Profile,
         DisplayName: 'John Doe',
         ImageUrl: 'https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=700&q=60'
     },
@@ -393,7 +393,7 @@ mockEventData_newEvent = {
         Longitude: -111.900429
     },
     ImageUrls: eventImageUrls,
-    AttendeeProfiles: [
+    AttendeesPreview: [
         <PartialProfile>{
             ProfileId: 98,
             ProfilePictureUrl: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8&auto=format&fit=crop&w=700&q=60',

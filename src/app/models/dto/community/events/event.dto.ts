@@ -1,4 +1,4 @@
-import { EntityPreview } from "../../misc/entity-preview.dto";
+import { Creator } from "../../misc/entity-preview.dto";
 import { EventLocation } from "../../misc/event-location.dto";
 import { PartialProfile } from "../../profile/partial-profile.dto";
 import { PrivacyLevel } from "../../misc/privacy-level.dto";
@@ -8,10 +8,10 @@ export interface Event {
     CoverImageUrl: string;
     Title: string;
     Description: string;
-    Creator: EntityPreview;
+    Creator: Creator;
     Date: Date;
     PrivacyLevel: PrivacyLevel;
     Location: EventLocation;
     ImageUrls: string[];
-    AttendeeProfiles: PartialProfile[];
+    AttendeesPreview: PartialProfile[];
 }

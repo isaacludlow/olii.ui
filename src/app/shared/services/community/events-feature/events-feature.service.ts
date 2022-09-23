@@ -19,7 +19,7 @@ export class EventsFeatureService {
     ) { }
     
     // TODO: All of these methods should have error handling once we connect to the api.
-    getEvents(offset: number, limit: number): Observable<Event[]> {
+    getAllEvents(offset: number, limit: number): Observable<Event[]> {
       let params = new HttpParams();
 
       if (offset !== null) params = params.set('offset', offset);

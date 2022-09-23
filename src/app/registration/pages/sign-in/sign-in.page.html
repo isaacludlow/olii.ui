@@ -7,7 +7,7 @@
             <p class="color-medium font-thin">Create awesome plans and meet new exchange students</p>
         </div>
     
-        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div [formGroup]="signInForm">
             <ion-item>
                 <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
             </ion-item>
@@ -16,8 +16,8 @@
             </ion-item>
     
             <div class="submit-button">
-                <ion-button type="submit" [disabled]="!signInForm.valid" mode="ios">Sign In</ion-button>
+                <ion-button type="button" (click)="onSubmit()" [disabled]="!signInForm.valid" mode="ios">Sign In</ion-button>
             </div>
-        </form>
+        </div>
     </div>
 </ion-content>

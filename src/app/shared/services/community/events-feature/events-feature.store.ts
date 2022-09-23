@@ -18,7 +18,7 @@ export class EventsFeatureStore {
   
   getEvents(refresh: boolean = false, offset: number = null, limit: number = null): Observable<Event[]> {
     if (this.allEvents.value === null || refresh) {
-      return this.eventsService.getEvents(offset, limit).pipe(switchMap(events => {
+      return this.eventsService.getAllEvents(offset, limit).pipe(switchMap(events => {
         this.allEvents.next(events);
         return this.allEvents.asObservable();
       }));
@@ -128,10 +128,10 @@ export class EventsFeatureStore {
   }
   
   private isCreator(event: Event, profileId: number): boolean {
-    if (event.Creator.IdType !== EventCreatorIdType.Profile) {
+    if (event.Creator.CreatorType !== EventCreatorIdType.Profile) {
       return false;
     } else {
-      return event.Creator.Id === profileId;
+      return event.Creator.CreatorId === profileId;
     }
   }
   //#endregion
