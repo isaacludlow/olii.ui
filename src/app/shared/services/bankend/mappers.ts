@@ -3,6 +3,7 @@ import { Event } from "src/app/models/dto/community/events/event.dto";
 import { Creator } from "src/app/models/dto/misc/entity-preview.dto";
 import { EventLocation } from "src/app/models/dto/misc/event-location.dto";
 import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.dto";
+import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images-album-preview.dto";
 import { User } from "src/app/models/dto/user/user.dto";
@@ -23,7 +24,8 @@ export function mapEvents(eventDocs: DocumentData): Event[] {
             PrivacyLevel: eventDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
             Location: mapLocation(eventDoc.location),
             ImageUrls: eventDoc.imageUrls,
-            AttendeesPreview: eventDoc.attendeesPreview
+            AttendeesPreview: [...eventDoc.attendeesPreview.map(profilePreview => mapProfilePreview(profilePreview))],
+            TotalAttendees: eventDoc.totalAttendees
         });
     }
 
@@ -51,6 +53,17 @@ function mapLocation(locationDoc: any): EventLocation {
     return location;
 }
 
+function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
+    const profilePreview: ProfilePreview = {
+        ProfileId: profilePreviewDoc.id,
+        FirstName: profilePreviewDoc.firstName,
+        LastName: profilePreviewDoc.lastName,
+        ProfilePictureUrl: profilePreviewDoc.profilePictureUrl
+    };
+
+    return profilePreview;
+}
+
 export function mapProfile(profileDoc: any): Profile {
     const profile: Profile = {
         ProfileId: profileDoc.id,
@@ -64,14 +77,14 @@ export function mapProfile(profileDoc: any): Profile {
         Bio: profileDoc.bio,
         Friends: profileDoc.friends,
         ImageUrls: profileDoc.imageUrls,
-        SavedImageAlbumPreviews: profileDoc.savedImagesAlbumPreviews
+        SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumPreviews)
     };
     console.log(profile)
 
     return profile;
 }
 
-function mapSavedImagesAlbumPreviews(previewDocs: any): SavedImagesAlbumPreview[] {
+function mapSavedImagesAlbumPreviews(previewDocs: any[]): SavedImagesAlbumPreview[] {
     const mappedPreviews: SavedImagesAlbumPreview[] = [];
 
     for (let i = 0; i < previewDocs.length; i++) {

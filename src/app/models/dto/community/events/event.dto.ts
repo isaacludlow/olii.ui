@@ -14,4 +14,5 @@ export interface Event {
     Location: EventLocation;
     ImageUrls: string[];
     AttendeesPreview: PartialProfile[];
+    TotalAttendees: number;
 }

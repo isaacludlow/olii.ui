@@ -18,10 +18,10 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
             <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           </div>
           <olii-profile-preview-icons
-            *ngIf="this.event.AttendeeProfiles.length > 0"
+            *ngIf="event.AttendeesPreview.length > 0"
             [profilePictureUrls]="firstFourProfilePictureUrls"
             profileIconSize="small"
-            [additionalDisplayNumber]="event.AttendeeProfiles.length - numberOfProfilesDisplayed">
+            [additionalDisplayNumber]="event.TotalAttendees - event.AttendeesPreview.length">
           </olii-profile-preview-icons>
         </div>
       </div>
@@ -32,12 +32,13 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
 export class EventCardComponent implements OnInit {
   @Input() event: Event;
   firstFourProfilePictureUrls: Array<string>;
-  numberOfProfilesDisplayed: number = 4;
+  numberOfProfilesDisplayed: number = 5;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.firstFourProfilePictureUrls = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl).slice(0, 4);
+    this.firstFourProfilePictureUrls = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
+    console.log(this.firstFourProfilePictureUrls)
   }
 
 }
