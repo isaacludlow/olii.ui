@@ -8,18 +8,13 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class FirebaseAuthService {
-  public readonly user = new BehaviorSubject<firebase.User>(null);
+  public user = new BehaviorSubject<firebase.User>(null);
 
   constructor(private auth: AngularFireAuth) {
-    if (auth) {
-      this.auth.onAuthStateChanged(user => {
-        if (user) {
-          this.user.next(user);
-        } else {
-          this.user.next(null);
-        }
-      });
-    }
+    this.auth.user.subscribe(user => {
+      this.user.next(user);
+      console.log(this.user.value)
+    });
   }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
@@ -48,7 +43,6 @@ export class FirebaseAuthService {
       catchError(error => {
         // TODO-AfterBeta: Use ionic toast alert instead of the default alert?
         alert(error.message);
-        console.log(error)
 
         throw new Error(error.message);
       })

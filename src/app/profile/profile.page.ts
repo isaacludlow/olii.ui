@@ -35,12 +35,15 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.route.queryParamMap.pipe(
       switchMap(paramMap => {
         if (paramMap.has('profileId')) {
-          return this.profileStore.getProfileById(+paramMap.get('profileId'));
+          return this.profileStore.getProfileById(paramMap.get('profileId'));
         } else {
           return this.profileStore.currentProfile.asObservable();
         }
       })
-    ).subscribe(profile => this.profile = profile);
+    ).subscribe(profile => {
+      console.log(profile)
+      this.profile = profile
+    });
 
     this.segmentToShow = this.profileStore.profileSection;
     this.route.queryParamMap.subscribe(paramMap => this.showBackButton = paramMap.get('showBackButton') === 'true');

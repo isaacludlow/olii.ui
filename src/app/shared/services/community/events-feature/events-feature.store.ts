@@ -5,6 +5,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
+import { DatabaseService } from '../../bankend/database-service/database-service.service';
 import { EventsFeatureService } from './events-feature.service';
 
 @Injectable({
@@ -14,17 +15,19 @@ export class EventsFeatureStore {
   allEvents = new BehaviorSubject<Event[]>(null);
   myEvents = new BehaviorSubject<Event[]>(null);
   
-  constructor(private eventsService: EventsFeatureService) { }
+  constructor(private dbService: DatabaseService, private eventsService: EventsFeatureService) { }
   
-  getEvents(refresh: boolean = false, offset: number = null, limit: number = null): Observable<Event[]> {
-    if (this.allEvents.value === null || refresh) {
-      return this.eventsService.getAllEvents(offset, limit).pipe(switchMap(events => {
-        this.allEvents.next(events);
-        return this.allEvents.asObservable();
-      }));
-    } else {
-      return this.allEvents.asObservable();
-    }
+  getAllEvents(refresh: boolean = false, offset: number = null, limit: number = null): Observable<Event[]> {
+    // if (this.allEvents.value === null || refresh) {
+    //   return this.eventsService.getAllEvents(offset, limit).pipe(switchMap(events => {
+    //     this.allEvents.next(events);
+    //     return this.allEvents.asObservable();
+    //   }));
+    // } else {
+    //   return this.allEvents.asObservable();
+    // }
+
+    return this.dbService.getAllEvents();
   }
   
   getEventById(eventId: number): Observable<Event> {

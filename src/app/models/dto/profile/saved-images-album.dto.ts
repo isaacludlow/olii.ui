@@ -1,6 +1,6 @@
 import { PrivacyLevelRequest } from "../../requests/misc/privacy-level-request.do";
 
-export interface SavedAlbum {
+export interface SavedImagesAlbum {
     Id: number;
     CoverImageUrl: string;
     Title: string;

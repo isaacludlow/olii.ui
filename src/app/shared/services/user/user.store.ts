@@ -5,6 +5,7 @@ import { User } from "src/app/models/dto/user/user.dto";
 import { UserRequest } from "src/app/models/requests/user/user-request";
 import { SubSink } from "subsink";
 import { AuthStore } from "../authentication/auth-store";
+import { DatabaseService } from "../bankend/database-service/database-service.service";
 import { UserService } from "./user.service";
 
 @Injectable({
@@ -14,11 +15,12 @@ export class UserStore implements OnDestroy {
   private _currentUser = new BehaviorSubject<User>(null);
   private subs = new SubSink();
 
-    constructor(private userService: UserService, private authStore: AuthStore) {
-        this.authStore.user.subscribe(async user => {
+    constructor(private dbService: DatabaseService, private userService: UserService, private authStore: AuthStore) {
+        this.subs.sink = this.authStore.currentAuthenticatedUserData.subscribe(user => {
             if (user !== null) {
-                const userIdToken = await user.getIdToken();
-                this.subs.sink = this.userService.getUserByUid(userIdToken).subscribe(user => this._currentUser.next(user));
+                this.subs.sink = this.dbService.getUserByUid(user.uid).subscribe(user => {
+                    this._currentUser.next(user);
+                });
             }
         });
     }
@@ -28,11 +30,11 @@ export class UserStore implements OnDestroy {
     }
 
     getUserByUid(userIdToken?: string): Observable<User> {
-        return this.userService.getUserByUid(userIdToken).pipe(tap(user => this._currentUser.next(user)));
+        return this.dbService.getUserByUid(userIdToken);
     }
 
-    createUser(newUser: UserRequest, userIdToken: string): Observable<User> {
-        return this.userService.createUser(newUser, userIdToken).pipe(tap(user => this._currentUser.next(user)));
+    createUser(newUser: User): Observable<User> {
+        return this.dbService.createUser(newUser);
     }
     
     ngOnDestroy(): void {

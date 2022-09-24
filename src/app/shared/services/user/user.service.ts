@@ -13,17 +13,17 @@ import { tap } from 'rxjs/operators';
 export class UserService {
   constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
-  // The userIdToken needs to be passed in when the user is registering for an account. After that the application will save it and get it from the authStore.
-  getUserByUid(userIdToken?: string): Observable<User> {
-    userIdToken = userIdToken ?? this.authStore.userIdToken;
-    const response = this.httpClient.get<User>(`${environment.apiBaseUrl}/user`, { headers: { Authorization: userIdToken, 'x-functions-key': environment.functionsKey } });
+  // // The userIdToken needs to be passed in when the user is registering for an account. After that the application will save it and get it from the authStore.
+  // getUserByUid(userIdToken?: string): Observable<User> {
+  //   userIdToken = userIdToken ?? this.authStore.userIdToken;
+  //   const response = this.httpClient.get<User>(`${environment.apiBaseUrl}/user`, { headers: { Authorization: userIdToken, 'x-functions-key': environment.functionsKey } });
 
-    return response;
-  }
+  //   return response;
+  // }
 
-  createUser(user: UserRequest, userIdToken: string): Observable<User> {
-    const response = this.httpClient.post<User>(`${environment.apiBaseUrl}/user`, user, { headers: { Authorization: userIdToken, 'x-functions-key': environment.functionsKey } })
+  // createUser(user: UserRequest, userIdToken: string): Observable<User> {
+  //   const response = this.httpClient.post<User>(`${environment.apiBaseUrl}/user`, user, { headers: { Authorization: userIdToken, 'x-functions-key': environment.functionsKey } })
 
-    return response;
-  }
+  //   return response;
+  // }
 }

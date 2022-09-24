@@ -30,13 +30,11 @@ export class EventsFeaturePage implements OnInit {
     // Waits for profile to load after initial login
     this.profileStore.currentProfile.subscribe(profile => {
       if (profile !== null) {
-        this.allEvents$ = this.eventsStore.getEvents();
+        this.allEvents$ = this.eventsStore.getAllEvents();
         this.myEvents$ = this.eventsStore.getMyEvents(profile?.ProfileId, MyEventsFilterOptions.Attending).pipe(map(events => events.slice(0, 1)));
         this.profile = profile;
       }
     });
-
-    this.dbService.getAllEvents().subscribe(data => console.log(data));
   }
 
   createEvent(): void {

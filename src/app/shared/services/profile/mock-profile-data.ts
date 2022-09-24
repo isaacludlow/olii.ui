@@ -24,7 +24,7 @@ export let mockProfileData_yourProfile: Profile = {
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
       'https://images.unsplash.com/photo-1559912147-f62c767ec0e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2xpZmZ8ZW58MHx8MHx8&w=1000&q=80',
     ],
-    SavedAlbums: [
+    SavedImageAlbumPreviews: [
       {
         Id: 1,
         // TODO: Setting of album cover image should be done in the Olii API.

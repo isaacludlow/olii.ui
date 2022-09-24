@@ -7,6 +7,7 @@ import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
+import { DatabaseService } from "../bankend/database-service/database-service.service";
 
 @Injectable({
 	providedIn: 'root'
@@ -18,16 +19,12 @@ export class ProfileStore implements OnDestroy {
 
 	constructor(
 		private profileService: ProfileService,
+		private dbService: DatabaseService,
 		private userStore: UserStore
 	) {
-		//this.subs.sink = this.userStore.user.pipe(
-		//	switchMap(user => this.profileService.getProfileByUserId(user?.Id))
-		//).subscribe(profile => this.currentProfile.next(profile));
-
-		this.userStore.user.subscribe(async user => {
+		this.subs.sink = this.userStore.user.subscribe(user => {
 			if (user !== null) {
-				let profile = await this.profileService.getProfileByUserId(user.UserId).toPromise();
-				this.currentProfile.next(profile);
+				this.dbService.getProfileById(user.Uid).subscribe(profile => this.currentProfile.next(profile));
 			}
 		});
 	}
@@ -44,8 +41,8 @@ export class ProfileStore implements OnDestroy {
 		return currentSection;
 	}
 
-	getProfileById(profileId: number): Observable<Profile> {
-		return this.profileService.getProfileById(profileId).pipe();
+	getProfileById(profileId: string): Observable<Profile> {
+		return this.dbService.getProfileById(profileId).pipe();
 
 		// Use this code below for caching images in the future.
 		// .pipe(
@@ -57,10 +54,6 @@ export class ProfileStore implements OnDestroy {
 		// 		return profile;
 		// 	})
 		// );
-	}
-
-	getProfileByUserId(userId: number): Observable<Profile> {
-		return this.profileService.getProfileByUserId(userId);
 	}
 
 	updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {

@@ -17,24 +17,24 @@ export class ProfileService {
   constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
   createNewProfile(profile: ProfileRequest) {
-    return this.httpClient.post(`${environment.apiBaseUrl}/profile`, profile, { headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey } });
+    return this.httpClient.post(`${environment.apiBaseUrl}/profile`, profile, { headers: { 'x-functions-key': environment.functionsKey } });
   }
 
   getProfileById(profileId: number): Observable<Profile> {
     let params = new HttpParams().set('profileid', profileId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }, params: params });    
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { 'x-functions-key': environment.functionsKey }, params: params });    
     return response;
   }
 
-  getProfileByUserId(userId: number): Observable<Profile> {
+  getProfileByUserId(userId: string): Observable<Profile> {
     let params = new HttpParams().set('userid', userId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }, params: params });
+    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { 'x-functions-key': environment.functionsKey }, params: params });
     return response;
   }
 
   updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
     let params = new HttpParams().set('profileid', profileId);
-    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, profileRequest, { headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }, params: params });
+    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, profileRequest, { headers: { 'x-functions-key': environment.functionsKey }, params: params });
     return response;
   }
 
