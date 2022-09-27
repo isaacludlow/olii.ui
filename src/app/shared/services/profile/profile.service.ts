@@ -2,12 +2,12 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConnectedSocial } from 'src/app/models/dto/profile/connected-social.dto';
-import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { environment } from 'src/environments/environment';
 import { AuthStore } from '../authentication/auth-store';
 import { ProfileRequestSavedAlbum } from 'src/app/models/requests/profile/profile-request-saved-album';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -32,24 +32,24 @@ export class ProfileService {
     return response;
   }
 
-  updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
+  updateProfile(profileId: string, profileRequest: ProfileRequest): Observable<Profile> {
     let params = new HttpParams().set('profileid', profileId);
     const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, profileRequest, { headers: { 'x-functions-key': environment.functionsKey }, params: params });
     return response;
   }
 
   // TODO: I don't think we actually use this... at least not yet because private groups are strictly invite only
-  getFriends(id: number): Observable<PartialProfile[]> {
-    var exampleFriends: PartialProfile[] = 
+  getFriends(id: number): Observable<ProfilePreview[]> {
+    var exampleFriends: ProfilePreview[] = 
       [
         {
-          ProfileId: 81,
+          ProfileId: '81',
           FirstName: 'Irvin',
           LastName: 'Mendoza',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
         },
         {
-          ProfileId: 182,
+          ProfileId: '182',
           FirstName: 'Maxwell',
           LastName: 'Pucket',
           ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',

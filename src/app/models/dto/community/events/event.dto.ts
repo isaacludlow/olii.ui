@@ -1,7 +1,7 @@
 import { Creator } from "../../misc/entity-preview.dto";
 import { EventLocation } from "../../misc/event-location.dto";
-import { PartialProfile } from "../../profile/partial-profile.dto";
 import { PrivacyLevel } from "../../misc/privacy-level.dto";
+import { ProfilePreview } from "../../profile/profile-preview.dto";
 
 export interface Event {
     EventId: number;
@@ -13,6 +13,6 @@ export interface Event {
     PrivacyLevel: PrivacyLevel;
     Location: EventLocation;
     ImageUrls: string[];
-    AttendeesPreview: PartialProfile[];
+    AttendeesPreview: ProfilePreview[];
     TotalAttendees: number;
 }

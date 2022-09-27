@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
@@ -50,7 +50,7 @@ export class EventDetailsPage implements OnInit {
     .subscribe(isRsvp => {
       this.attending = isRsvp;
       
-      const partialProfile: PartialProfile = {
+      const partialProfile: ProfilePreview = {
          ProfileId: this.currentProfile.ProfileId,
          FirstName: this.currentProfile.FirstName,
          LastName: this.currentProfile.LastName,

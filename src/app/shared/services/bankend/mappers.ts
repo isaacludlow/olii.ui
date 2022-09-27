@@ -14,22 +14,28 @@ export function mapEvents(eventDocs: DocumentData): Event[] {
     for (let i = 0; i < eventDocs.length; i++) {
         const eventDoc = eventDocs[i];
 
-        mappedEvents.push({
-            EventId: eventDoc.id,
-            CoverImageUrl: eventDoc.coverImageUrl,
-            Title: eventDoc.title,
-            Description: eventDoc.description,
-            Creator: mapCreator(eventDoc.creator),
-            Date: eventDoc.date.toDate(),
-            PrivacyLevel: eventDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
-            Location: mapLocation(eventDoc.location),
-            ImageUrls: eventDoc.imageUrls,
-            AttendeesPreview: [...eventDoc.attendeesPreview.map(profilePreview => mapProfilePreview(profilePreview))],
-            TotalAttendees: eventDoc.totalAttendees
-        });
+        mappedEvents.push(mapEvent(eventDoc));
     }
 
     return mappedEvents;
+}
+
+export function mapEvent(eventDoc: DocumentData): Event {
+    const mappedEvent: Event = {
+        EventId: eventDoc.id,
+        CoverImageUrl: eventDoc.coverImageUrl,
+        Title: eventDoc.title,
+        Description: eventDoc.description,
+        Creator: mapCreator(eventDoc.creator),
+        Date: eventDoc.date.toDate(),
+        PrivacyLevel: eventDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
+        Location: mapLocation(eventDoc.location),
+        ImageUrls: eventDoc.imageUrls,
+        AttendeesPreview: [...eventDoc.attendeesPreview.map(profilePreview => mapProfilePreview(profilePreview))],
+        TotalAttendees: eventDoc.totalAttendees
+    };
+
+    return mappedEvent;
 }
 
 function mapCreator(creatorDoc: any): Creator {

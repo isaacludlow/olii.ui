@@ -40,12 +40,6 @@ export class RegistrationPage {
     private location: Location
   ) { }
 
-  ngOnInit(): void {
-    // this.authStore.isAuthenticated.subscribe(isAuthenticated => {
-    //   if (isAuthenticated) this.router.navigate(['community/events']);
-    // });
-  }
-
   toggleModel(): void {
     this.showTermsAndConditions = !this.showTermsAndConditions;
   }

@@ -94,7 +94,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     this.postPictures.splice(index, 1);
   }
 
-  canView(group: Group, profileId: number): boolean {
+  canView(group: Group, profileId: string): boolean {
     if (group.PrivacyLevel == PrivacyLevel.Public) {
       return true;
     }

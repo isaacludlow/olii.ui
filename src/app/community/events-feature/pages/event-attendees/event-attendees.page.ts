@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PartialProfile } from 'src/app/models/dto/profile/partial-profile.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 
 @Component({
@@ -10,7 +10,7 @@ import { EventsFeatureStore } from 'src/app/shared/services/community/events-fea
   styleUrls: ['./event-attendees.page.scss']
 })
 export class EventAttendeesPage implements OnInit {
-  eventAttendees$: Observable<PartialProfile[]>;
+  eventAttendees$: Observable<ProfilePreview[]>;
 
   constructor(
     private router: Router,

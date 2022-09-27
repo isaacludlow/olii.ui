@@ -3,7 +3,7 @@ import { SavedImagesAlbumPreview } from "./saved-images-album-preview.dto";
 
 export interface Profile {
     /** Id of the profile. */
-    ProfileId: number;
+    ProfileId: string;
     /** The user's first name. */
     FirstName: string;
     /** The user's last name. */

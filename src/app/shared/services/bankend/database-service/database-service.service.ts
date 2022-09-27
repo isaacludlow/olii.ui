@@ -1,27 +1,43 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, zip } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
-import { mapEvents, mapProfile, mapUser } from '../mappers';
+import { mapEvent, mapEvents, mapProfile, mapUser } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  
   constructor(private afs: AngularFirestore) { }
   
   getAllEvents(): Observable<Event[]> {
     const today = new Date();
-    const allEventsCollectionRef = this.afs.collection('events', ref => ref.where('date', '>=', today));
-    const allEvents = allEventsCollectionRef.valueChanges({ idField: 'id' }).pipe(
+    const allEvents = this.afs.collection('events', ref => ref.where('date', '>=', today)).valueChanges({ idField: 'id' }).pipe(
       map(allEvents => mapEvents(allEvents))
-      );
+    );
       
     return allEvents;
+  }
+
+  getMyEvents(profileId: string): Observable<Event[]> {
+    const myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`).valueChanges().pipe(
+      switchMap(events => {
+        return zip(...events.map(event => this.getEventById(event.eventId)));
+      })
+    );
+
+    return myEvents;
+  }
+
+  getEventById(eventId: string): Observable<Event> {
+    const event = this.afs.doc(`events/${eventId}`).valueChanges({ idField: 'id' }).pipe(
+      map(allEvents => mapEvent(allEvents))
+    );
+
+    return event;
   }
     
   getUserByUid(uid: string): Observable<User> {

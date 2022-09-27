@@ -2,12 +2,12 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
-import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
 import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 import { DatabaseService } from "../bankend/database-service/database-service.service";
+import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 
 @Injectable({
 	providedIn: 'root'
@@ -56,11 +56,11 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
-	updateProfile(profileId: number, profileRequest: ProfileRequest): Observable<Profile> {
+	updateProfile(profileId: string, profileRequest: ProfileRequest): Observable<Profile> {
 		return this.profileService.updateProfile(profileId, profileRequest);
 	}
 
-	getFriends(userId: number): Observable<PartialProfile[]> {
+	getFriends(userId: number): Observable<ProfilePreview[]> {
 		return this.profileService.getFriends(userId);
 	}
 

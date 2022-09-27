@@ -21,7 +21,6 @@ export class EventsFeaturePage implements OnInit {
 
   constructor(
     private eventsStore: EventsFeatureStore,
-    private dbService: DatabaseService,
     private profileStore: ProfileStore,
     private router: Router
   ) { }
@@ -31,7 +30,7 @@ export class EventsFeaturePage implements OnInit {
     this.profileStore.currentProfile.subscribe(profile => {
       if (profile !== null) {
         this.allEvents$ = this.eventsStore.getAllEvents();
-        this.myEvents$ = this.eventsStore.getMyEvents(profile?.ProfileId, MyEventsFilterOptions.Attending).pipe(map(events => events.slice(0, 1)));
+        this.myEvents$ = this.eventsStore.getMyEvents(profile.ProfileId, MyEventsFilterOptions.Attending).pipe(map(events => events));
         this.profile = profile;
       }
     });

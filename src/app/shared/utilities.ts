@@ -4,7 +4,7 @@ import { Filesystem } from '@capacitor/filesystem';
 import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { PartialProfile } from '../models/dto/profile/partial-profile.dto';
+import { ProfilePreview } from '../models/dto/profile/profile-preview.dto';
 import { EventsFeatureStore } from './services/community/events-feature/events-feature.store';
 
 export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
@@ -45,7 +45,7 @@ export function convertBlobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-export function removeAttendeeFromCachedEvents(profileId: number, eventId: number, eventStore: EventsFeatureStore): void {
+export function removeAttendeeFromCachedEvents(profileId: string, eventId: number, eventStore: EventsFeatureStore): void {
   const allEvents = eventStore.allEvents.value;
 
   let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
@@ -61,7 +61,7 @@ export function removeAttendeeFromCachedEvents(profileId: number, eventId: numbe
   eventStore.myEvents.next(myEvents);
 }
 
-export function addAttendeeToCachedEvents(partialProfile: PartialProfile, eventId: number, eventStore: EventsFeatureStore): void {
+export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventId: number, eventStore: EventsFeatureStore): void {
   const allEvents = eventStore.allEvents.value;
   
   let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;

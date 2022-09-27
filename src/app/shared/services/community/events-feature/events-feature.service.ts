@@ -76,7 +76,7 @@ export class EventsFeatureService {
     return response;
   }
   
-  isAttendingEvent(eventId: number, profileId): Observable<boolean> {
+  isAttendingEvent(eventId: number, profileId: string): Observable<boolean> {
     const response = this.httpClient.get<boolean>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
       headers: { 'x-functions-key': environment.functionsKey }
     });
@@ -84,7 +84,7 @@ export class EventsFeatureService {
     return response;
   }
   
-  rsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  rsvpToEvent(profileId: string, eventId: number): Observable<boolean> {
     const response = this.httpClient.post<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {}, {
       headers: { 'x-functions-key': environment.functionsKey },
       observe: 'response'
@@ -93,7 +93,7 @@ export class EventsFeatureService {
     return response;
   }
 
-  cancelRsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  cancelRsvpToEvent(profileId: string, eventId: number): Observable<boolean> {
     const response = this.httpClient.delete<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
       headers: { 'x-functions-key': environment.functionsKey },
       observe: 'response'

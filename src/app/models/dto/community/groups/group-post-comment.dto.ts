@@ -1,9 +1,9 @@
-import { PartialProfile } from "../../profile/partial-profile.dto";
+import { ProfilePreview } from "../../profile/profile-preview.dto";
 
 export interface GroupPostComment {
     Id: number;
     ParentId: number;
-    Author: PartialProfile;
+    Author: ProfilePreview;
     Content: string;
     Date: Date;
 }

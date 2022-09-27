@@ -60,7 +60,7 @@ export class GroupFeatureStore {
         }
     }
 
-    getMyGroups(profileId: number): Observable<Group[]> {
+    getMyGroups(profileId: string): Observable<Group[]> {
         if (this._myGroups.value === null) {
             return this.groupService.getMyGroups(profileId).pipe(switchMap(groups => {
                 this._myGroups.next(groups);
@@ -71,7 +71,7 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(creatorProfileId: number, groupRequest: GroupRequest): Observable<Group> {
+    createGroup(creatorProfileId: string, groupRequest: GroupRequest): Observable<Group> {
         return this.groupService.createGroup(creatorProfileId, groupRequest).pipe(
             tap(group => {
                 if (this._allGroups.value === null)
