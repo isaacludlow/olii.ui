@@ -6,8 +6,10 @@ import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.dto";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images-album-preview.dto";
+import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { User } from "src/app/models/dto/user/user.dto";
 
+// #region Event mappers
 export function mapEvents(eventDocs: DocumentData): Event[] {
     const mappedEvents: Event[] = [];
 
@@ -59,6 +61,19 @@ function mapLocation(locationDoc: any): EventLocation {
     return location;
 }
 
+export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
+    const mappedAttendees: ProfilePreview[] = [];
+
+    for (let i = 0; i < attendeeDocs.length; i++) {
+        const attendeeDoc = attendeeDocs[i];
+
+        mappedAttendees.push(mapProfilePreview(attendeeDoc));
+    }
+
+    return mappedAttendees;
+}
+// #endregion
+
 function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
     const profilePreview: ProfilePreview = {
         ProfileId: profilePreviewDoc.id,
@@ -105,6 +120,19 @@ function mapSavedImagesAlbumPreviews(previewDocs: any[]): SavedImagesAlbumPrevie
     }
 
     return mappedPreviews;
+}
+
+export function mapSavedImagesAlbum(albumDoc: any): SavedImagesAlbum {
+    const mappedAlbum: SavedImagesAlbum = {
+            Id: albumDoc.id,
+            CoverImageUrl: albumDoc.coverImageUrl,
+            Title: albumDoc.title,
+            Description: albumDoc.description,
+            PrivacyLevel: albumDoc.privacyLevel,
+            ImageUrls: albumDoc.imageUrls
+        };
+
+    return mappedAlbum;
 }
 
 export function mapUser(userDoc: any): User {

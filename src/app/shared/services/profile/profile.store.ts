@@ -8,6 +8,7 @@ import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 import { DatabaseService } from "../bankend/database-service/database-service.service";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
+import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 
 @Injectable({
 	providedIn: 'root'
@@ -44,7 +45,7 @@ export class ProfileStore implements OnDestroy {
 	getProfileById(profileId: string): Observable<Profile> {
 		return this.dbService.getProfileById(profileId).pipe();
 
-		// Use this code below for caching images in the future.
+		// Use this code below for caching profile images on device in the future since they don't change very often.
 		// .pipe(
 		// 	map(profile => {
 		// 		profile.ProfileImages.forEach(img => {
@@ -66,6 +67,10 @@ export class ProfileStore implements OnDestroy {
 
 	createAlbum(newAlbum: ProfileRequestSavedAlbum) {
 		return this.profileService.createAlbum(newAlbum);
+	}
+
+	getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{
+		return this.dbService.getSavedImagesAlbum(profileId, savedImagesAlbumId);
 	}
 
 	// getBase64Image(url: string) {

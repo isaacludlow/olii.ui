@@ -9,7 +9,8 @@
         <div class="event-details">
             <div class="event-details-header">
                 <h3>{{ event.Title }}</h3>
-                <div class="creator">
+                <!-- TODO: Make a method to determine what type of creator this is and then navigate to the profile or group page. -->
+                <div class="creator" [routerLink]="['/profile', { queryParams: { profileId: event.Creator.CreatorId } }]">
                     <ion-avatar>
                         <img [src]="event.Creator.ImageUrl">
                     </ion-avatar>

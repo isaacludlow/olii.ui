@@ -20,12 +20,15 @@ export class SavedImagesAlbumPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.subs.sink = this.route.paramMap.pipe(
-    //   switchMap((paramMap: ParamMap) => 
-    //     this.profileStore.getProfileById(+paramMap.get('profileId'))
-    //     .pipe(map(profile => profile.SavedImageAlbumPreviews.find(x => x.Id === +paramMap.get('albumId'))))
-    //   )
-    // ).subscribe(album => this.album = album);
+    this.subs.sink = this.route.paramMap.pipe(
+      switchMap((paramMap: ParamMap) => {
+          const profileId = paramMap.get('profileId');
+          const albumId = paramMap.get('albumId');
+
+          return this.profileStore.getSavedImagesAlbum(profileId, albumId);
+        }
+      )
+    ).subscribe(album => this.album = album);
   }
 
   navigateBackToSavedSection(): void {

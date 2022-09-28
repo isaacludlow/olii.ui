@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 
@@ -19,10 +18,10 @@ export class EventAttendeesPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.eventAttendees$ = this.eventStore.getEventById(+this.route.snapshot.paramMap.get('eventId')).pipe(map(event => event.AttendeesPreview));
+    this.eventAttendees$ = this.eventStore.getEventAttendees(this.route.snapshot.paramMap.get('eventId'));
   }
 
-  navigateToProfile(profileId: number): void {
+  navigateToProfile(profileId: string): void {
     this.router.navigate(['profile'], { queryParams: { profileId: profileId, showBackButton: true } });
   }
 

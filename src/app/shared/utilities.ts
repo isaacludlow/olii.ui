@@ -45,32 +45,32 @@ export function convertBlobToBase64(blob: Blob): Promise<string> {
   });
 }
 
-export function removeAttendeeFromCachedEvents(profileId: string, eventId: number, eventStore: EventsFeatureStore): void {
-  const allEvents = eventStore.allEvents.value;
+export function removeAttendeeFromCachedEvents(profileId: string, eventId: string, eventStore: EventsFeatureStore): void {
+  // const allEvents = eventStore.allEvents.value;
 
-  let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  let attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
-  attendees.splice(attendeeIndex, 1);
-  eventStore.allEvents.next(allEvents);
+  // let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
+  // let attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
+  // attendees.splice(attendeeIndex, 1);
+  // eventStore.allEvents.next(allEvents);
 
-  let myEvents = eventStore.myEvents.value;
+  // let myEvents = eventStore.myEvents.value;
 
-  attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
-  attendees.splice(attendeeIndex, 1);
-  eventStore.myEvents.next(myEvents);
+  // attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
+  // attendeeIndex = attendees.findIndex(x => x.ProfileId === profileId);
+  // attendees.splice(attendeeIndex, 1);
+  // eventStore.myEvents.next(myEvents);
 }
 
-export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventId: number, eventStore: EventsFeatureStore): void {
-  const allEvents = eventStore.allEvents.value;
+export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventId: string, eventStore: EventsFeatureStore): void {
+  // const allEvents = eventStore.allEvents.value;
   
-  let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  attendees.push(partialProfile);
-  eventStore.allEvents.next(allEvents);
+  // let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
+  // attendees.push(partialProfile);
+  // eventStore.allEvents.next(allEvents);
 
-  let myEvents = eventStore.myEvents.value;
+  // let myEvents = eventStore.myEvents.value;
 
-  attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  eventStore.myEvents.next(myEvents);
-  attendees.push(partialProfile);
+  // attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
+  // eventStore.myEvents.next(myEvents);
+  // attendees.push(partialProfile);
 }

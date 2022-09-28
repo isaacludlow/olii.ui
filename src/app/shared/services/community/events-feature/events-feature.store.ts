@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { DatabaseService } from '../../bankend/database-service/database-service.service';
 import { EventsFeatureService } from './events-feature.service';
@@ -19,30 +20,32 @@ export class EventsFeatureStore {
   
   getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
     if (this.allEvents.value === null) {
-      this.dbService.getAllEvents().subscribe(events => this.allEvents.next(events));
-    }
-
-    return this.allEvents.asObservable();
-  }
-  
-  getEventById(eventId: number): Observable<Event> {
-    if (this.allEvents.value === null) {
-      return this.eventsService.getEventById(eventId).pipe(switchMap(event => {
-        this.allEvents.next([event]);
-        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
-      }));
+      return this.dbService.getAllEvents().pipe(
+        switchMap(events => {
+          this.allEvents.next(events);
+          return this.allEvents.asObservable();
+        })
+      );
     } else {
-      const event = this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
-      
-      return event === undefined
-      ? this.eventsService.getEventById(eventId).pipe(switchMap(event => {
-        this.allEvents.next([...this.allEvents.value, event]);
-        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
-      }))
-      : event;
+      return this.allEvents.asObservable();
     }
   }
   
+  getEventById(eventId: string): Observable<Event> {
+    const event = this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
+
+    if (event === undefined) {
+      return this.dbService.getEventById(eventId).pipe(
+        switchMap(event => {
+          this.allEvents.next([...this.allEvents.value, event]);
+          return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
+        })
+      );
+    } else {
+      return event;
+    }
+  }
+
   getMyEvents(profileId: string, filter: MyEventsFilterOptions): Observable<Event[]> {
     if (this.myEvents.value === null) {
       return this.dbService.getMyEvents(profileId).pipe(
@@ -76,16 +79,20 @@ export class EventsFeatureStore {
         this.myEvents.next([...this.myEvents.value, event]);
     }));
   }
+
+  getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
+    return this.dbService.getEventAttendees(eventId);
+  }
   
-  isAttendingEvent(eventId: number, profileId: string): Observable<boolean> {
+  isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
     return this.eventsService.isAttendingEvent(eventId, profileId);
   }
   
-  rsvpToEvent(profileId: string, eventId: number): Observable<boolean> {
+  rsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     return this.eventsService.rsvpToEvent(profileId, eventId);
   }
 
-  cancelRsvpToEvent(profileId: string, eventId: number): Observable<boolean> {
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     return this.eventsService.cancelRsvpToEvent(profileId, eventId);
   }
 

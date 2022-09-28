@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, zip } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
+import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
-import { mapEvent, mapEvents, mapProfile, mapUser } from '../mappers';
+import { mapAttendees, mapEvent, mapEvents, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +36,18 @@ export class DatabaseService {
 
   getEventById(eventId: string): Observable<Event> {
     const event = this.afs.doc(`events/${eventId}`).valueChanges({ idField: 'id' }).pipe(
-      map(allEvents => mapEvent(allEvents))
+      map(event => mapEvent(event))
     );
 
     return event;
+  }
+
+  getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
+    const attendees = this.afs.collection(`events/${eventId}/attendees`).valueChanges().pipe(
+      map(attendees => mapAttendees(attendees))
+    );
+
+    return attendees;
   }
     
   getUserByUid(uid: string): Observable<User> {
@@ -58,6 +68,14 @@ export class DatabaseService {
     );
 
     return profile;
+  }
+
+  getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{
+	  const savedImagesAlbum = this.afs.doc(`profiles/${profileId}/savedImagesAlbums/${savedImagesAlbumId}`).valueChanges({ idField: 'id' }).pipe(
+      map(savedImagesAlbum => mapSavedImagesAlbum(savedImagesAlbum))
+    );
+
+    return savedImagesAlbum;
   }
 }
     

@@ -4,7 +4,7 @@ import { PrivacyLevel } from "../../misc/privacy-level.dto";
 import { ProfilePreview } from "../../profile/profile-preview.dto";
 
 export interface Event {
-    EventId: number;
+    EventId: string;
     CoverImageUrl: string;
     Title: string;
     Description: string;
