@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, zip } from 'rxjs';
+import { from, Observable, zip } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
+import { EventRequest } from 'src/app/models/requests/community/events/event-request';
 import { mapAttendees, mapEvent, mapEvents, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
@@ -42,6 +43,11 @@ export class DatabaseService {
     return event;
   }
 
+  createEvent(event: EventRequest): Observable<Event> {
+    const eventsCollectionRef = this.afs.collection(`events`);
+    return from(eventsCollectionRef.add(event)).pipe(map(event => mapEvent(event)));
+  }
+
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
     const attendees = this.afs.collection(`events/${eventId}/attendees`).valueChanges().pipe(
       map(attendees => mapAttendees(attendees))
@@ -49,6 +55,8 @@ export class DatabaseService {
 
     return attendees;
   }
+
+  
     
   getUserByUid(uid: string): Observable<User> {
     const user = this.afs.doc(`users/${uid}`).valueChanges({ idField: 'uid' }).pipe(

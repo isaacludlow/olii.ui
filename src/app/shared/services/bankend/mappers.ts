@@ -100,7 +100,6 @@ export function mapProfile(profileDoc: any): Profile {
         ImageUrls: profileDoc.imageUrls,
         SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumPreviews)
     };
-    console.log(profile)
 
     return profile;
 }

@@ -73,11 +73,7 @@ export class EventsFeatureStore {
   }
           
   createEvent(eventRequest: EventRequest): Observable<Event> {
-    return this.eventsService.createEvent(eventRequest).pipe(
-      tap(event => {
-        this.allEvents.next([...this.allEvents.value, event]);
-        this.myEvents.next([...this.myEvents.value, event]);
-    }));
+    return this.dbService.createEvent(eventRequest);
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
@@ -98,7 +94,6 @@ export class EventsFeatureStore {
 
   //#region getMyEvents() helper methods.
   private filterMyEvents(profileId: string, filter: MyEventsFilterOptions) {
-    console.log(this.myEvents.value)
     switch (filter) {
       case MyEventsFilterOptions.Attending:
         return this.myEvents.asObservable().pipe(

@@ -26,8 +26,8 @@ export class EventsFeaturePage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Waits for profile to load after initial login
     this.profileStore.currentProfile.subscribe(profile => {
+      // Waits for profile to load after initial login
       if (profile !== null) {
         this.allEvents$ = this.eventsStore.getAllEvents();
         this.myEvents$ = this.eventsStore.getMyEvents(profile.ProfileId, MyEventsFilterOptions.Attending).pipe(map(events => events));
@@ -40,7 +40,14 @@ export class EventsFeaturePage implements OnInit {
     // Creator type is 'Group' when creating an event from a group details page.
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: EventCreatorIdType.Profile, creatorId: this.profile.ProfileId } }
+      {
+        queryParams: {
+          creatorType: EventCreatorIdType.Profile,
+          creatorId: this.profile.ProfileId,
+          creatorDisplayName: this.profile.FirstName + this.profile.LastName,
+          imageUrl: this.profile.ProfilePictureUrl
+        } 
+      }
     );
   }
 }

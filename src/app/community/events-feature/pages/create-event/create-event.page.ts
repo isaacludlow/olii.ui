@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
@@ -33,11 +33,19 @@ export class CreateEventPage implements OnInit, OnDestroy {
     coverImage: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
     description: [null, [Validators.required, Validators.minLength(8)]],
-    creatorType: [null, Validators.required],
-    creatorId: [null, Validators.required],
+    creator: this.fb.group({
+      type: [null, Validators.required],
+      id: [null, Validators.required],
+      displayName: [null, Validators.required],
+      imageUrl: [null, Validators.required]
+    }),
     dateTime: [null, Validators.required],
-    location: [null, Validators.required],
-    // privacyLevel: [null, Validators.required],
+    location: this.fb.group({
+      displayName: [null, Validators.required],
+      latitude: [null, Validators.required],
+      longitude: [null, Validators.required]
+    }),
+    // privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
     images: [null]
   },
   { updateOn: 'blur' }
@@ -55,9 +63,11 @@ export class CreateEventPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(paramMap => {
-      this.createEventForm.get('creatorType').setValue(paramMap.get('creatorType'));
-      this.createEventForm.get('creatorId').setValue(paramMap.get('creatorId'));
+    this.subs.sink = this.route.queryParamMap.subscribe(paramMap => {
+      this.createEventForm.get('creator.type').setValue(paramMap.get('creatorType'));
+      this.createEventForm.get('creator.id').setValue(paramMap.get('creatorId'));
+      this.createEventForm.get('creator.displayName').setValue(paramMap.get('creatorDisplayName'));
+      this.createEventForm.get('creator.imageUrl').setValue(paramMap.get('imageUrl'));
     });
   }
 
@@ -66,7 +76,9 @@ export class CreateEventPage implements OnInit, OnDestroy {
     this.createMap();
   }
 
-  onDateTimeChanged(dateTimeValue: string) {
+  onDateTimeChanged(dateTimeValue: string | string[]) {
+    if (Array.isArray(dateTimeValue)) dateTimeValue = dateTimeValue[0];
+
     this.eventDateTimeInput = new Date(dateTimeValue);
     this.createEventForm.get('dateTime').setValue(dateTimeValue);
   }
@@ -84,13 +96,9 @@ export class CreateEventPage implements OnInit, OnDestroy {
     const location = placeResult.geometry.location;
     
     this.addMapMarkerAndCenterMap(location.lat(), location.lng());
-    this.createEventForm.get('location').setValue(
-      <EventLocation>{
-        DisplayName: placeResult.name,
-        Latitude: location.lat(),
-        Longitude: location.lng()
-      }
-    );
+    this.createEventForm.get('location.displayName').setValue(placeResult.name);
+    this.createEventForm.get('location.latitude').setValue(location.lat());
+    this.createEventForm.get('location.longitude').setValue(location.lng());
   }
   
   addMapMarkerAndCenterMap(latitude: number, longitude: number) {
@@ -142,21 +150,25 @@ export class CreateEventPage implements OnInit, OnDestroy {
       eventBase64Images.push(await readPhotoAsBase64(image, this.platform))
     });
 
-    const location = this.createEventForm.get('location').value as EventLocation
-
     const eventRequest: EventRequest = {
       CoverImageData: await readPhotoAsBase64(this.eventCoverImage, this.platform),
       Title: this.createEventForm.get('title').value,
       Description: this.createEventForm.get('description').value,
-      CreatorTypeParamId: this.createEventForm.get('creatorType').value as EventCreatorIdType,
-      CreatorId: this.createEventForm.get('creatorId').value as number,
+      Creator: {
+        CreatorId: this.createEventForm.get('creator.id').value,
+        CreatorType: this.createEventForm.get('creator.type').value as EventCreatorIdType,
+        DisplayName: this.createEventForm.get('creator.displayName').value,
+        ImageUrl: this.createEventForm.get('creator.imageUrl').value
+      },
       Date: new Date(this.createEventForm.get('dateTime').value),
-      PrivacyLevelParamId: PrivacyLevelRequest.Public,
-      LocationDisplayName: location.DisplayName,
-      Latitude: location.Latitude,
-      Longitude: location.Longitude,
+      PrivacyLevel: PrivacyLevelRequest.Public,
+      Location: {
+        Latitude: this.createEventForm.get('location.latitude').value,
+        Longitude: this.createEventForm.get('location.longitude').value,
+        DisplayName: this.createEventForm.get('location.displayName').value
+      },
       Images: eventBase64Images,
-      AttendeeProfileIds: []
+      AttendeeProfile: []
     };
 
     await this.eventStore.createEvent(eventRequest).toPromise();

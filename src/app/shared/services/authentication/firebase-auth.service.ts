@@ -11,10 +11,7 @@ export class FirebaseAuthService {
   public user = new BehaviorSubject<firebase.User>(null);
 
   constructor(private auth: AngularFireAuth) {
-    this.auth.user.subscribe(user => {
-      this.user.next(user);
-      console.log(this.user.value)
-    });
+    this.auth.user.subscribe(user => this.user.next(user));
   }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {

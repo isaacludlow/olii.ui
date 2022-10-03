@@ -1,4 +1,4 @@
 export enum PrivacyLevelRequest {
-    Public = 9,
-    Private = 12
+    Public = 'public',
+    Private = 'private'
 }

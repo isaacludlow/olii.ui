@@ -40,10 +40,7 @@ export class ProfilePage implements OnInit, OnDestroy {
           return this.profileStore.currentProfile.asObservable();
         }
       })
-    ).subscribe(profile => {
-      console.log(profile)
-      this.profile = profile
-    });
+    ).subscribe(profile => this.profile = profile);
 
     this.segmentToShow = this.profileStore.profileSection;
     this.route.queryParamMap.subscribe(paramMap => this.showBackButton = paramMap.get('showBackButton') === 'true');

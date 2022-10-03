@@ -38,7 +38,6 @@ export class EventCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.firstFourProfilePictureUrls = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
-    console.log(this.firstFourProfilePictureUrls)
   }
 
 }
