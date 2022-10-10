@@ -24,15 +24,14 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit, OnDestroy {
-  groupId: number;
+  groupId: string;
   group$: Observable<Group>;
   canViewGroup: boolean;
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
-  subs = new SubSink();
   segmentToShow: string;
-  subSegmentToShow: string = 'past';
+  subSegmentToShow: string = 'future';
   memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
@@ -40,6 +39,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
   })
+  subs = new SubSink();
 
   constructor(
     private fb: FormBuilder,
@@ -55,15 +55,24 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.segmentToShow = this.groupStore.groupSection;
     this.group$ = this.route.paramMap.pipe(
+      tap((paramMap: ParamMap) => {
+        const groupId = paramMap.get('groupId');
+        console.log(groupId)
+        
+        this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
+        this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);
+      }),
       switchMap((paramMap: ParamMap) => 
-        this.groupStore.getGroupById(+paramMap.get('groupId'))
+      this.groupStore.getGroupById(paramMap.get('groupId'))
       )
     ).pipe(
       tap(group => {
         this.groupId = group.GroupId;
-        this.canViewGroup = this.canView(group, this.profileStore.currentProfile.value.ProfileId)
-        this.pastEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Past);
-        this.futureEvents$ = this.eventStore.getGroupEvents(group.GroupId, GroupEventsFilterOptions.Future);
+        this.subs.sink = this.profileStore.currentProfile.subscribe(profile => this.canViewGroup = this.canView(group, profile.ProfileId));
+      }),
+      map(group => {
+        this.subs.sink = this.groupStore.getPostsByGroupId(group.GroupId, new Date(2020)).subscribe(posts => group.Posts = posts);
+        return group;
       })
     );
   }

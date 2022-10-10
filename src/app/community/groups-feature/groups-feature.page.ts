@@ -6,12 +6,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { PartialGroup } from '../../models/dto/community/groups/partial-group.dto';
+import { GroupPreview } from '../../models/dto/community/groups/group-preview.dto';
 import { Router } from '@angular/router';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
+import sub from 'date-fns/sub';
 
 @Component({
   selector: 'groups-feature',
@@ -21,9 +22,9 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
-  myGroups: Group[];
   myGroups$: Observable<Group[]>;
-  latestGroupPosts$: Observable<LatestGroupPost[]>;
+  myGroupsPreview$: Observable<GroupPreview[]>
+  latestGroupPosts$: Observable<GroupPost[]>;
   subs = new SubSink();
 
   constructor(
@@ -36,12 +37,16 @@ export class GroupsFeaturePage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.profileStore.currentProfile.subscribe(currentProfile => {
       if (currentProfile !== null) {
-        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId).pipe(tap(myGroups => {
-          this.latestGroupPosts$ = this.groupStore.getLatestPosts(myGroups.map(x => x.GroupId));
-        }));
+        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId);
+        this.myGroupsPreview$ = this.myGroups$.pipe(
+          map(group => group.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
+        );
+
+        const earliestPostDate = sub(new Date(), { days: 7 });
+        this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
       }
     });
-}
+  }
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;

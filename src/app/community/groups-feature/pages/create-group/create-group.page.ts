@@ -46,7 +46,7 @@ export class CreateGroupPage {
 
   async createGroup() {
     const newGroup: GroupRequest = {
-      GroupId: 0,
+      GroupId: '0',
       CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,

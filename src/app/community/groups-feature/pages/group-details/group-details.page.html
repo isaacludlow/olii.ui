@@ -1,5 +1,6 @@
 <ion-content>
-    <div class="cover-image" [style]="{'--background': 'url(\'' + (group$ | async)?.CoverImageUrl + '\')' }">
+    <div *ngIf="group$ | async as group">
+    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
@@ -7,12 +8,10 @@
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" routerLink= "./edit"></olii-icon-with-off-white-square-background>
         </div>
     </div>
-    <ng-container *ngIf="group$ | async as group">
-        <div class="group-details">
-            <h2 class="group-name">{{ group.Name }}</h2>
-            <p class="group-description">{{ group.Description}}</p>
-        </div>
-    </ng-container>
+    <div class="group-details">
+        <h2 class="group-name">{{ group.Name }}</h2>
+        <p class="group-description">{{ group.Description}}</p>
+    </div>
 
     <div class="member-icons">
         <olii-profile-preview-icons
@@ -50,9 +49,9 @@
     <!--ngIf user is a member of this group-->
     <div id="group-content" class="view-content">
         <div *ngIf="segmentToShow == 'feed'">
-            <div class="post" *ngFor="let post of (group$ | async)?.Posts">
+            <div class="post" *ngFor="let post of group.Posts">
                 <ion-card>
-                    <olii-comment-card [post]="post" [groupId]="(group$ | async).GroupId"></olii-comment-card>
+                    <olii-comment-card [post]="post" [groupId]="group.GroupId"></olii-comment-card>
                 </ion-card>
             </div>
         </div>
@@ -65,7 +64,7 @@
                     </ion-segment-button>
                     <ion-segment-button value="future" layout="icon-start">
                         <ion-icon name="checkmark-circle-outline"></ion-icon>
-                        <ion-label>Happening</ion-label>
+                        <ion-label>Upcoming</ion-label>
                     </ion-segment-button>
                 </ion-segment>
             </div>
@@ -137,5 +136,5 @@
             </ng-template>
         </ion-modal>
     </div>
-
+</div>
 </ion-content>

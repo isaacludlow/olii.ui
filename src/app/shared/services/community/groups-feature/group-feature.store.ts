@@ -8,17 +8,18 @@ import { CreatePostRequest } from "src/app/models/requests/community/groups/crea
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { LatestGroupPost } from "src/app/models/dto/community/groups/group-latest-post.dto";
+import { DatabaseService } from "../../bankend/database-service/database-service.service";
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class GroupFeatureStore {
-    private _allGroups = new BehaviorSubject<Group[]>(null);
-    private _myGroups = new BehaviorSubject<Group[]>(null);
+    private _allGroups = new BehaviorSubject<Group[]>([]);
+    private _myGroups = new BehaviorSubject<Group[]>([]);
     private _manualOverrideForGroupSection = new BehaviorSubject<Section>('feed');
 
-    constructor(private groupService: GroupFeatureService) {}
+    constructor(private groupService: GroupFeatureService, private dbService: DatabaseService) {}
 
 	set groupSection(section: Section) {
 		this._manualOverrideForGroupSection.next(section);
@@ -32,6 +33,7 @@ export class GroupFeatureStore {
 	}
 
     getGroups(refresh: boolean = false, limit: number = null, offset: number = null): Observable<Group[]> {
+        // Legacy
         if (this._allGroups.value === null || refresh) {
             return this.groupService.getGroups(limit, offset).pipe(switchMap(groups => {
                 this._allGroups.next(groups);
@@ -42,32 +44,29 @@ export class GroupFeatureStore {
         }
     }
 
-    getGroupById(groupId: number): Observable<Group> {
-        if (this._allGroups.value === null) {
-            return this.groupService.getGroupById(groupId).pipe(switchMap(group => {
-                this._allGroups.next([group]);
-                return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
-            }));
-        } else {
-            const group = this._allGroups.value.find(group => group.GroupId === groupId);
+    getGroupById(groupId: string): Observable<Group> {
+        const groupQuery = this._allGroups.value.find(group => group.GroupId === groupId);
 
-            return group === undefined
-            ? this.groupService.getGroupById(groupId).pipe(switchMap(group => {
-                this._allGroups.next([...this._allGroups.value, group]);
-                return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
-            }))
-            : this._allGroups.asObservable().pipe(map(groups => groups.find(group => group.GroupId === groupId)));
+        if (groupQuery === undefined) {
+            return this.dbService.getGroupById(groupId).pipe(
+                switchMap(group => {
+                    this._allGroups.next([...this._allGroups.value, group]);
+                    return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
+                })
+            );
+        } else {
+            return this._allGroups.asObservable().pipe(map(groups => groups.find(group => group.GroupId === groupId)));
         }
     }
 
     getMyGroups(profileId: string): Observable<Group[]> {
-        if (this._myGroups.value === null) {
-            return this.groupService.getMyGroups(profileId).pipe(switchMap(groups => {
+        if (this._myGroups.value.length > 0) {
+            return this._myGroups.asObservable();
+        } else {
+            return this.dbService.getMyGroups(profileId).pipe(switchMap(groups => {
                 this._myGroups.next(groups);
                 return this._myGroups.asObservable();
             }));
-        } else {
-            return this._myGroups.asObservable();
         }
     }
 
@@ -103,12 +102,12 @@ export class GroupFeatureStore {
         );
     }
 
-    getLatestPosts(groupIds: number[], refresh: boolean = false, limit: number = null, offset: number = null): Observable<LatestGroupPost[]> {
-        return this.groupService.getLatestPosts(groupIds, limit, offset);
+    getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
+        return this.dbService.getLatestPosts(profileId, earliestPostDate);
     }
 
-    getPostsByGroupId(groupId: number, refresh: boolean = false, limit: number = null, offset: number = null): Observable<GroupPost[]> {
-        return this.groupService.getPostsByGroupId(groupId, limit, offset).pipe(
+    getPostsByGroupId(groupId: string, earliestPostDate: Date): Observable<GroupPost[]> {
+        return this.dbService.getPostsByGroupId(groupId, earliestPostDate).pipe(
             tap(posts => {
                 let allGroups = this._allGroups.value;
                 let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
@@ -126,7 +125,7 @@ export class GroupFeatureStore {
         );
     }
 
-    createGroupPost(groupId: number, groupPost: CreatePostRequest): Observable<Boolean> {
+    createGroupPost(groupId: string, groupPost: CreatePostRequest): Observable<Boolean> {
         return this.groupService.createGroupPost(groupId, groupPost).pipe(
             map(groupPost => {
                 let allGroups = this._allGroups.value;

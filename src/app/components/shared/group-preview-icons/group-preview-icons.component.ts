@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.dto';
+import { GroupPreview } from 'src/app/models/dto/community/groups/group-preview.dto';
 
 @Component({
   selector: 'olii-group-preview-icons',
@@ -9,7 +9,7 @@ import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.
       <div class="group-image">
         <olii-container-cover-image [imageUrl]="group.CoverImageUrl" boarderRadius="50%" [routerLink]="['./group', group.GroupId]"></olii-container-cover-image>
         </div>
-          <div class="group-nav-group-name">{{ group.GroupName }}</div>
+          <div class="group-nav-group-name">{{ group.Name }}</div>
         </div>
       <div *ngIf="additionalDisplayNumber && additionalDisplayNumber > 0" class="additional-display-number">{{additionalDisplayNumber}}+</div>
     </div>
@@ -17,12 +17,7 @@ import { PartialGroup } from 'src/app/models/dto/community/groups/partial-group.
   styleUrls: ['./group-preview-icons.component.scss']
 })
 export class GroupPreviewIconsComponent {
-  @Input() groups: Array<PartialGroup>;
+  @Input() groups: Array<GroupPreview>;
   @Input() groupIconSize: string;
   @Input() additionalDisplayNumber: number = null;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 }

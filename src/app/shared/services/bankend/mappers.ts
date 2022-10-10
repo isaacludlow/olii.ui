@@ -1,5 +1,8 @@
 import { DocumentData } from "@angular/fire/firestore";
 import { Event } from "src/app/models/dto/community/events/event.dto";
+import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
+import { Group } from "src/app/models/dto/community/groups/group.dto";
+import { GroupPreview } from "src/app/models/dto/community/groups/group-preview.dto";
 import { Creator } from "src/app/models/dto/misc/entity-preview.dto";
 import { EventLocation } from "src/app/models/dto/misc/event-location.dto";
 import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.dto";
@@ -74,9 +77,69 @@ export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
 }
 // #endregion
 
+
+
+// #region Group mappers
+export function mapGroup(groupDoc: any): Group {
+    console.log(groupDoc)
+    const group: Group = {
+        GroupId: groupDoc.id, 
+        CoverImageUrl: groupDoc.coverImageUrl,
+        Name: groupDoc.name,
+        Description: groupDoc.description,
+        PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
+        Posts: [],
+        Admins: [...groupDoc.admins.map(admin => mapProfilePreview(admin))],
+        MemberPreviews: [...groupDoc.memberPreviews.map(member => mapProfilePreview(member))],
+        Members: [],
+        Events: []
+    };
+
+    return group
+}
+
+function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
+    const groupPreview: GroupPreview = {
+        GroupId: groupPreviewDoc.id,
+        Name: groupPreviewDoc.name,
+        CoverImageUrl: groupPreviewDoc.imageUrl
+    };
+
+    return groupPreview;
+}
+// endregion
+
+// #region Group Post mappers
+export function mapGroupPosts(groupPostDocs: any): GroupPost[] {
+    const mappedGroupPosts: GroupPost[] = [];
+
+    for (let i = 0; i < groupPostDocs.length; i++) {
+        const eventDoc = groupPostDocs[i];
+
+        mappedGroupPosts.push(mapGroupPost(eventDoc));
+    }
+
+    return mappedGroupPosts;
+}
+
+function mapGroupPost(groupPost: any): GroupPost {
+    const mappedGroupPost: GroupPost = {
+        GroupPostId: groupPost.id,
+        Author: mapProfilePreview(groupPost.author),
+        GroupPreview: mapGroupPreview(groupPost.group),
+        Content: groupPost.content,
+        Date: groupPost.date.toDate(),
+        ImageUrls: groupPost.imageUrls,
+        Comments: []
+    };
+
+    return mappedGroupPost;
+}
+// endregion
+
 function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
     const profilePreview: ProfilePreview = {
-        ProfileId: profilePreviewDoc.id,
+        ProfileId: profilePreviewDoc.profileId,
         FirstName: profilePreviewDoc.firstName,
         LastName: profilePreviewDoc.lastName,
         ProfilePictureUrl: profilePreviewDoc.profilePictureUrl
@@ -84,6 +147,7 @@ function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
 
     return profilePreview;
 }
+
 
 export function mapProfile(profileDoc: any): Profile {
     const profile: Profile = {

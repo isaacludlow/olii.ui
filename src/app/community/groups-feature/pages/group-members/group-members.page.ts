@@ -22,7 +22,7 @@ export class GroupMembersPage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
-        this.groupStore.getGroupById(+paramMap.get('groupId'))
+        this.groupStore.getGroupById(paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
   }

@@ -59,15 +59,15 @@ export class EventsFeatureStore {
     }
   }
             
-  getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
+  getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.retrieveGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        return this.dbService.getPastGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date())))
           );
       case GroupEventsFilterOptions.Future:
-        return this.retrieveGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        return this.dbService.getPastGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date())))
           );
         }
   }
@@ -115,7 +115,7 @@ export class EventsFeatureStore {
     }
   }
 
-  private retrieveGroupEvents(groupId: number): Observable<Event[]> {
+  private retrieveGroupEvents(groupId: string): Observable<Event[]> {
     return this.eventsService.getEventsByGroupId(groupId);
   }
   

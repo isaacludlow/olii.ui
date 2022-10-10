@@ -59,7 +59,7 @@ export class EventsFeatureService {
     return response;
   }
   
-  getEventsByGroupId(groupId: number): Observable<Event[]> {
+  getEventsByGroupId(groupId: string): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { groupId: groupId },
       headers: { 'x-functions-key': environment.functionsKey }
