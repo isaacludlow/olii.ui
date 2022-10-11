@@ -1,20 +1,21 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import firebase from 'firebase/compat';
-import { from, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SubSink } from 'subsink';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseAuthService {
-  user = this.firebaseAuthService.user;
+  public user = new BehaviorSubject<firebase.User>(null);
 
-  constructor(private firebaseAuthService: AngularFireAuth) { }
+  constructor(private auth: AngularFireAuth) {
+    this.auth.user.subscribe(user => this.user.next(user));
+  }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
-    return from(this.firebaseAuthService.createUserWithEmailAndPassword(email, password)).pipe(
+    return from(this.auth.createUserWithEmailAndPassword(email, password)).pipe(
       catchError(error => {
         // TODO-AfterBeta: Use ionic toast alert instead of the default alert?
         if (error.code === 'auth/email-already-in-use') {
@@ -35,7 +36,7 @@ export class FirebaseAuthService {
   }
 
   login(email: string, password: string): Observable<firebase.auth.UserCredential> {
-    return from(this.firebaseAuthService.signInWithEmailAndPassword(email, password)).pipe(
+    return from(this.auth.signInWithEmailAndPassword(email, password)).pipe(
       catchError(error => {
         // TODO-AfterBeta: Use ionic toast alert instead of the default alert?
         alert(error.message);
@@ -46,6 +47,6 @@ export class FirebaseAuthService {
   }
 
   signOut(): Promise<void> {
-    return this.firebaseAuthService.signOut();
+    return this.auth.signOut();
   }
 }

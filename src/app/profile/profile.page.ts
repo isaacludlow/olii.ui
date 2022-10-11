@@ -35,7 +35,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.route.queryParamMap.pipe(
       switchMap(paramMap => {
         if (paramMap.has('profileId')) {
-          return this.profileStore.getProfileById(+paramMap.get('profileId'));
+          return this.profileStore.getProfileById(paramMap.get('profileId'));
         } else {
           return this.profileStore.currentProfile.asObservable();
         }

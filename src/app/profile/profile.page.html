@@ -14,7 +14,7 @@
         <div class="profile-info">
             <div class="personal-info">
                 <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName }} {{ profile.LastName }}</h3></ion-text>
-                <ion-text color="medium"><div class="username">@thegreatestsnow*</div></ion-text>
+                <ion-text color="medium"><div class="username">{{ profile.Username }}</div></ion-text>
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
                 <div class="bio color-medium">{{ profile.Bio }}</div>
             </div>
@@ -66,8 +66,8 @@
             </olii-responsive-aspect-ratio-container>
         </div>
         <div *ngIf="segmentToShow === 'saved'" class="saved">
-            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedAlbums" aspectRatio="1/1" class="album-card-container">
-                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.Id, album.Id]">
+            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedImageAlbumPreviews" aspectRatio="1/1" class="album-card-container">
+                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
                     <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
                         <olii-container-cover-image [imageUrl]="album.CoverImageUrl"></olii-container-cover-image>
                     </olii-responsive-aspect-ratio-container>

@@ -1,5 +1,5 @@
 export interface CreatePostRequest {
-    ProfileId: number;
+    ProfileId: string;
     Content: string;
     Date: Date;
     ImagesData: string[];

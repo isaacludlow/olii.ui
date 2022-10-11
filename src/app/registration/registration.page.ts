@@ -7,6 +7,8 @@ import { AuthStore } from '../shared/services/authentication/auth-store';
 import { UserStore } from '../shared/services/user/user.store';
 import { switchMap } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { User } from '../models/dto/user/user.dto';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'registration',
@@ -47,16 +49,21 @@ export class RegistrationPage {
   }
 
   async onSubmit(): Promise<void> {
-    const newUser: UserRequest = {
+    const newUser: User = {
+      Uid: null,
       Username: this.registerForm.get('username').value,
-      DOB: null,
+      Dob: null,
       Email: this.registerForm.get('email').value,
       PhoneNumber: null
     }
 
     this.authStore.registerUser(newUser.Email, this.registerForm.get('password').value).pipe(
-      switchMap(userCredential => from(userCredential.user.getIdToken())),
-      switchMap(userIdToken => this.userStore.createUser(newUser, userIdToken))
+      switchMap(userCredential => from(userCredential.user.uid)),
+      switchMap(uid => {
+        newUser.Uid = uid;
+        
+        return this.userStore.createUser(newUser)
+      })
     ).subscribe(_ => {
       this.registerForm.reset();
       this.router.navigate(['registration/registration-flow']);

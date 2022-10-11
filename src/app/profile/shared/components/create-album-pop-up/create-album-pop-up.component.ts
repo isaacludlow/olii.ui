@@ -58,7 +58,7 @@ export class CreateAlbumPopUpComponent {
 
   albumNameInput = new FormControl('', Validators.required);
   albumDescriptionInput = new FormControl('', Validators.required);
-  albumVisibility: number = 9;
+  albumVisibility: string = 'public';
 
   constructor(private profileStore: ProfileStore, private modalCtrl: ModalController) { }
 

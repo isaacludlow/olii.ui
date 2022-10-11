@@ -43,7 +43,7 @@ export class EditGroupPage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => 
-        this.groupStore.getGroupById(+paramMap.get('groupId'))
+        this.groupStore.getGroupById(paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
     // this.editGroupForm.get('groupVisibility').setValue(this.group.PrivacyLevel);

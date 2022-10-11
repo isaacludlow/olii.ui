@@ -19,7 +19,7 @@ export class EventsFeatureService {
     ) { }
     
     // TODO: All of these methods should have error handling once we connect to the api.
-    getEvents(offset: number, limit: number): Observable<Event[]> {
+    getAllEvents(offset: number, limit: number): Observable<Event[]> {
       let params = new HttpParams();
 
       if (offset !== null) params = params.set('offset', offset);
@@ -27,7 +27,7 @@ export class EventsFeatureService {
     
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/all-events`, {
       params: params,
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey  }
+      headers: { 'x-functions-key': environment.functionsKey  }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     
     return response;
@@ -35,7 +35,7 @@ export class EventsFeatureService {
   
   getEventById(eventId: number): Observable<Event> {
     const response = this.httpClient.get<Event>(`${environment.apiBaseUrl}/event/${eventId}`, {
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     }).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
     
     return response;
@@ -44,7 +44,7 @@ export class EventsFeatureService {
   getEventsAttending(profileId: number) {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/eventsAttending`, {
       params: { profileId: profileId },
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     
     return response;
@@ -53,16 +53,16 @@ export class EventsFeatureService {
   getMyEvents(profileId: number): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { profileId: profileId },
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     
     return response;
   }
   
-  getEventsByGroupId(groupId: number): Observable<Event[]> {
+  getEventsByGroupId(groupId: string): Observable<Event[]> {
     const response = this.httpClient.get<Event[]>(`${environment.apiBaseUrl}/event`, {
       params: { groupId: groupId },
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     }).pipe(tap(events => events.forEach(event => event.Date = parseISO(<any>event.Date))));
     
     return response;
@@ -70,32 +70,32 @@ export class EventsFeatureService {
   
   createEvent(eventRequest: EventRequest): Observable<Event> {
     const response = this.httpClient.post<Event>(`${environment.apiBaseUrl}/event`, eventRequest, {
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     }).pipe(tap(event => event.Date = parseISO(<any>event.Date)));
     
     return response;
   }
   
-  isAttendingEvent(eventId: number, profileId): Observable<boolean> {
+  isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
     const response = this.httpClient.get<boolean>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey }
+      headers: { 'x-functions-key': environment.functionsKey }
     });
     
     return response;
   }
   
-  rsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  rsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     const response = this.httpClient.post<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {}, {
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey },
+      headers: { 'x-functions-key': environment.functionsKey },
       observe: 'response'
     }).pipe(map(res => res.ok));
 
     return response;
   }
 
-  cancelRsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     const response = this.httpClient.delete<string>(`${environment.apiBaseUrl}/event/${eventId}/attendee/${profileId}`, {
-      headers: { Authorization: this.authStore.userIdToken, 'x-functions-key': environment.functionsKey },
+      headers: { 'x-functions-key': environment.functionsKey },
       observe: 'response'
     }).pipe(map(res => res.ok));
 

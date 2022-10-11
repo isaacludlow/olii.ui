@@ -82,7 +82,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 })
 export class CommentCardComponent implements OnInit {
   @Input() post: GroupPost;
-  @Input() groupId: number;
+  @Input() groupId: string;
   
   profile: Profile;
   showAddComment: boolean;
@@ -101,7 +101,7 @@ export class CommentCardComponent implements OnInit {
     this.showComments = false;
   }
 
-  navigateToUserProfile(profileId: number) {
+  navigateToUserProfile(profileId: string) {
     this.router.navigate(['/profile'], { queryParams: { profileId: profileId, showBackButton: true } })
   }
 
@@ -139,5 +139,4 @@ export class CommentCardComponent implements OnInit {
         });
     }
   }
-
 }

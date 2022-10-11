@@ -4,7 +4,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
+import { DatabaseService } from '../../bankend/database-service/database-service.service';
 import { EventsFeatureService } from './events-feature.service';
 
 @Injectable({
@@ -14,124 +16,114 @@ export class EventsFeatureStore {
   allEvents = new BehaviorSubject<Event[]>(null);
   myEvents = new BehaviorSubject<Event[]>(null);
   
-  constructor(private eventsService: EventsFeatureService) { }
+  constructor(private dbService: DatabaseService, private eventsService: EventsFeatureService) { }
   
-  getEvents(refresh: boolean = false, offset: number = null, limit: number = null): Observable<Event[]> {
-    if (this.allEvents.value === null || refresh) {
-      return this.eventsService.getEvents(offset, limit).pipe(switchMap(events => {
-        this.allEvents.next(events);
-        return this.allEvents.asObservable();
-      }));
+  getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
+    if (this.allEvents.value === null) {
+      return this.dbService.getAllEvents().pipe(
+        switchMap(events => {
+          this.allEvents.next(events);
+          return this.allEvents.asObservable();
+        })
+      );
     } else {
       return this.allEvents.asObservable();
     }
   }
   
-  getEventById(eventId: number): Observable<Event> {
-    if (this.allEvents.value === null) {
-      return this.eventsService.getEventById(eventId).pipe(switchMap(event => {
-        this.allEvents.next([event]);
-        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
-      }));
+  getEventById(eventId: string): Observable<Event> {
+    const event = this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
+
+    if (event === undefined) {
+      return this.dbService.getEventById(eventId).pipe(
+        switchMap(event => {
+          this.allEvents.next([...this.allEvents.value, event]);
+          return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
+        })
+      );
     } else {
-      const event = this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
-      
-      return event === undefined
-      ? this.eventsService.getEventById(eventId).pipe(switchMap(event => {
-        this.allEvents.next([...this.allEvents.value, event]);
-        return this.allEvents.asObservable().pipe(map(events => events.find(x => x.EventId === eventId)));
-      }))
-      : event;
+      return event;
     }
   }
-  
-  getMyEvents(profileId: number, filter: MyEventsFilterOptions): Observable<Event[]> {
-    switch (filter) {
-      case MyEventsFilterOptions.Attending:
-        return this.retrieveEventsAttending(profileId).pipe(
-          map(events => events.filter(event => isFuture(event.Date)))
-          );
-          
-          case MyEventsFilterOptions.Hosting:
-            return this.retrieveMyEvents(profileId).pipe(
-              map(events => events.filter(event => this.isCreator(event, profileId))
-          ));
-          
-          case MyEventsFilterOptions.Past:
-            return this.retrieveEventsAttending(profileId).pipe(
-              map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
-              );
-              
-              case MyEventsFilterOptions.All:
-                return this.retrieveMyEvents(profileId);
-              }
-            }
+
+  getMyEvents(profileId: string, filter: MyEventsFilterOptions): Observable<Event[]> {
+    if (this.myEvents.value === null) {
+      return this.dbService.getMyEvents(profileId).pipe(
+        switchMap(events => {
+          this.myEvents.next(events);
+          return this.filterMyEvents(profileId, filter);
+        })
+      )
+    } else {
+      return this.filterMyEvents(profileId, filter);
+    }
+  }
             
-  getGroupEvents(groupId: number, filter: GroupEventsFilterOptions): Observable<Event[]> {
+  getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.retrieveGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        return this.dbService.getPastGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date())))
           );
       case GroupEventsFilterOptions.Future:
-        return this.retrieveGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isAfter(event.Date, new Date(Date.now()))))
+        return this.dbService.getPastGroupEvents(groupId).pipe(
+          map(events => events.filter(event => isAfter(event.Date, new Date())))
           );
         }
   }
           
   createEvent(eventRequest: EventRequest): Observable<Event> {
-    return this.eventsService.createEvent(eventRequest).pipe(
-      tap(event => {
-        this.allEvents.next([...this.allEvents.value, event]);
-        this.myEvents.next([...this.myEvents.value, event]);
-    }));
+    return this.dbService.createEvent(eventRequest);
+  }
+
+  getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
+    return this.dbService.getEventAttendees(eventId);
   }
   
-  isAttendingEvent(eventId: number, profileId: number): Observable<boolean> {
+  isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
     return this.eventsService.isAttendingEvent(eventId, profileId);
   }
   
-  rsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  rsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     return this.eventsService.rsvpToEvent(profileId, eventId);
   }
 
-  cancelRsvpToEvent(profileId: number, eventId: number): Observable<boolean> {
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
     return this.eventsService.cancelRsvpToEvent(profileId, eventId);
   }
 
   //#region getMyEvents() helper methods.
-  private retrieveEventsAttending(profileId: number): Observable<Event[]> {
-    if (this.myEvents.value === null) {
-      return this.eventsService.getEventsAttending(profileId).pipe(switchMap(events => {
-        this.myEvents.next(events);
+  private filterMyEvents(profileId: string, filter: MyEventsFilterOptions) {
+    switch (filter) {
+      case MyEventsFilterOptions.Attending:
+        return this.myEvents.asObservable().pipe(
+          map(events => events.filter(event => isFuture(event.Date)))
+        );
+
+      case MyEventsFilterOptions.Hosting:
+        return this.myEvents.asObservable().pipe(
+          map(events => events.filter(event => this.isCreator(event, profileId))
+        ));
+
+      case MyEventsFilterOptions.Past:
+        return this.myEvents.asObservable().pipe(
+          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
+        );
+
+      case MyEventsFilterOptions.All:
         return this.myEvents.asObservable();
-      }));
-    } else {
-      return this.myEvents.asObservable();
     }
   }
 
-  private retrieveMyEvents(profileId: number): Observable<Event[]> {
-    if (this.myEvents.value === null) {
-      return this.eventsService.getMyEvents(profileId).pipe(switchMap(events => {
-        this.myEvents.next(events);
-        return this.myEvents.asObservable();
-      }));
-    } else {
-      return this.myEvents.asObservable();
-    }
-  }
-  
-  private retrieveGroupEvents(groupId: number): Observable<Event[]> {
+  private retrieveGroupEvents(groupId: string): Observable<Event[]> {
     return this.eventsService.getEventsByGroupId(groupId);
   }
   
-  private isCreator(event: Event, profileId: number): boolean {
-    if (event.Creator.IdType !== EventCreatorIdType.Profile) {
+  private isCreator(event: Event, profileId: string): boolean {
+    if (event.Creator.CreatorType !== EventCreatorIdType.Profile) {
       return false;
     } else {
-      return event.Creator.Id === profileId;
+      return event.Creator.CreatorId === profileId;
     }
   }
   //#endregion

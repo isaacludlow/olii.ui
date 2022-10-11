@@ -9,19 +9,17 @@ import { SubSink } from 'subsink';
   providedIn: 'root'
 })
 export class AuthStore implements OnDestroy {
-  private _currentUser = new BehaviorSubject<firebase.User>(null);
+  private _currentAuthenticatedUserData = new BehaviorSubject<firebase.User>(null);
   private subs = new SubSink();
-  userIdToken: string = null;
 
   constructor(private authService: FirebaseAuthService) {
     this.subs.sink = this.authService.user.subscribe(user => {
-      this._currentUser.next(user);
-      user?.getIdToken().then(idToken => this.userIdToken = idToken);
+      this._currentAuthenticatedUserData.next(user);
     });
   }
 
-  get user(): Observable<firebase.User> {
-    return this._currentUser.asObservable();
+  get currentAuthenticatedUserData(): Observable<firebase.User> {
+    return this._currentAuthenticatedUserData.asObservable();
   }
 
   get isAuthenticated(): Observable<boolean> {

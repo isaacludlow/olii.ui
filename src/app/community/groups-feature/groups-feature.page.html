@@ -29,14 +29,13 @@
         </div>
         <div class="my-groups-selector-container">
             <div class="group-links-container">
-                <ng-container *ngIf="myGroups$ | async as myGroups">
-
+                <ng-container *ngIf="myGroupsPreview$ | async as myGroupsPreview">
+                    <olii-group-preview-icons
+                    [groups]="myGroupsPreview?.slice(0, calcDisplayGroups())"
+                    groupIconSize="large"
+                    [additionalDisplayNumber]="myGroupsPreview?.length - calcDisplayGroups()">
+                    </olii-group-preview-icons>
                 </ng-container>
-                <olii-group-preview-icons
-                [groups]="myGroups?.slice(0,calcDisplayGroups())"
-                groupIconSize="large"
-                [additionalDisplayNumber]="myGroups?.length - calcDisplayGroups()">
-            </olii-group-preview-icons>
             </div>
         </div>
     </div>
@@ -45,19 +44,19 @@
 
     <div>
         <h3 class="section-header">Latest</h3>
-        <div class="post" *ngFor="let postWrapper of latestGroupPosts$ | async">
+        <div class="post" *ngFor="let groupPost of latestGroupPosts$ | async">
             <ion-card>
                 <div class="card-content">
-                    <div class="post-group-header" [routerLink]="['./group', postWrapper.GroupId]">
+                    <div class="post-group-header" [routerLink]="['./group', groupPost.GroupPreview.GroupId]">
                         <div class="group-info">
                             <div class="group-image">
-                                <olii-container-cover-image [imageUrl]="postWrapper.GroupCoverImageUrl" boarderRadius="50%"></olii-container-cover-image>
+                                <olii-container-cover-image [imageUrl]="groupPost.GroupPreview.CoverImageUrl" boarderRadius="50%"></olii-container-cover-image>
                             </div>
-                            <div class="group-name">{{postWrapper.GroupName}}</div>
+                            <div class="group-name">{{groupPost.GroupPreview.Name}}</div>
                         </div>
                     </div>
 
-                    <olii-comment-card [post]="postWrapper.GroupPost" [currentUser]="profile" [groupId]="postWrapper.GroupId"></olii-comment-card>
+                    <olii-comment-card [post]="groupPost" [currentUser]="profile" [groupId]="groupPost.GroupPreview.GroupId"></olii-comment-card>
                     
                 </div>
             </ion-card>

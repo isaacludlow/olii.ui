@@ -1,9 +1,11 @@
-import { PartialProfile } from "../../profile/partial-profile.dto";
+import { ProfilePreview } from "../../profile/profile-preview.dto";
 import { GroupPostComment } from "./group-post-comment.dto";
+import { GroupPreview } from "./group-preview.dto";
 
 export interface GroupPost {
     GroupPostId: number;
-    Author: PartialProfile;
+    Author: ProfilePreview;
+    GroupPreview: GroupPreview;
     Content: string;
     Date: Date;
     ImageUrls: string[];

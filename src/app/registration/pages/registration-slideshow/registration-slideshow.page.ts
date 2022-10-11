@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthStore } from 'src/app/shared/services/authentication/auth-store';
 import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
 
 @Component({
@@ -11,7 +13,11 @@ export class RegistrationSlideshowPage implements OnInit {
     speed: 400
   };
 
-  constructor(private navBar: NavBarService) { }
+  constructor(
+    private navBar: NavBarService,
+    private authStore: AuthStore,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.navBar.setNavBarVisibility(false);

@@ -1,4 +1,4 @@
 export enum EventCreatorIdType {
-    Profile = 6,
-    Group = 7
+    Profile = 'profile',
+    Group = 'group'
 }

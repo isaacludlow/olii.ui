@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { CanLoad, Router } from '@angular/router';
 import { map, tap } from 'rxjs/operators';
 import { AuthStore } from '../services/authentication/auth-store';
@@ -7,10 +8,11 @@ import { AuthStore } from '../services/authentication/auth-store';
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-  constructor(private authStore: AuthStore, private router: Router) { }
+  constructor(private auth: AngularFireAuth, private router: Router) { }
 
   canLoad() {
-    return this.authStore.isAuthenticated.pipe(
+    return this.auth.user.pipe(
+      map(user => !!user),
       tap(isAuthenticated => {
         if (!isAuthenticated)
           this.router.navigate(['registration/slideshow']);  

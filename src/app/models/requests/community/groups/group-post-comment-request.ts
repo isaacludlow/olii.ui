@@ -1,9 +1,9 @@
-import { PartialProfile } from "src/app/models/dto/profile/partial-profile.dto";
+import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 
 export interface GroupPostCommentRequest {
-    OriginGroup: number;
+    OriginGroup: string;
     ParentId: number;
-    Author: PartialProfile;
+    Author: ProfilePreview;
     Content: string;
     Date: Date;
 }

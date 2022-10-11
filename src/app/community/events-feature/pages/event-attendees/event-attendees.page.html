@@ -23,7 +23,7 @@
     </ion-header>
 
     <div class="container">
-        <ion-item *ngFor="let attendee of eventAttendees$ | async" class="attendee" (click)="navigateToProfile(attendee.Id)">
+        <ion-item *ngFor="let attendee of eventAttendees$ | async" class="attendee" (click)="navigateToProfile(attendee.ProfileId)">
             <ion-avatar slot="start">
                 <img [src]="attendee.ProfilePictureUrl">
             </ion-avatar>

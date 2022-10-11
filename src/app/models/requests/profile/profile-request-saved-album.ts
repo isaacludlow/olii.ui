@@ -1,7 +1,7 @@
 import { PrivacyLevelRequest } from "../misc/privacy-level-request.do";
 
 export interface ProfileRequestSavedAlbum {
-    Id: number;
+    Id: string;
     CoverImageFile: string;
     Title: string;
     Description: string;

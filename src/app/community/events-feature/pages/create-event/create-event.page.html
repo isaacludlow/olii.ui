@@ -100,9 +100,10 @@
     </form>
     <ion-modal trigger="open-modal" class="date-picker">
         <ng-template>
-          <ion-content class="ion-padding">
-            <ion-datetime #dateTime (ionChange)="onDateTimeChanged(dateTime.value)" showDefaultButtons="true" [min]="currentDateTime"></ion-datetime>
-          </ion-content>
+            <!-- Modal is too narrow. Longer month names push the buttons off modal. -->
+            <ion-content class="ion-padding">
+                <ion-datetime #dateTime (ionChange)="onDateTimeChanged(dateTime.value)" showDefaultButtons="true" [min]="currentDateTime"></ion-datetime>
+            </ion-content>
         </ng-template>
       </ion-modal>
 </ion-content>
