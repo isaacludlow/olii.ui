@@ -7,7 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule, USE_EMULATOR as USE_DATABASE_EMULATOR } from '@angular/fire/compat/database';
 import { AngularFirestoreModule, USE_EMULATOR as USE_FIRESTORE_EMULATOR, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/compat/firestore';
-import { AngularFireStorageModule, USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
+import { AngularFireStorageModule, BUCKET, USE_EMULATOR as USE_STORAGE_EMULATOR } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule, USE_DEVICE_LANGUAGE, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import { AngularFireMessagingModule, SERVICE_WORKER, VAPID_KEY } from '@angular/fire/compat/messaging';
 import { AngularFireFunctionsModule, USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/functions';
@@ -84,6 +84,7 @@ import { environment } from 'src/environments/environment';
     UserTrackingService,
     ScreenTrackingService,
     PerformanceMonitoringService,
+    { provide: BUCKET, useValue: environment.firebase.storageBucket },
     { provide: FIRESTORE_SETTINGS, useValue: { ignoreUndefinedProperties: true } },
     { provide: ANALYTICS_DEBUG_MODE, useValue: true },
     { provide: COLLECTION_ENABLED, useValue: true },

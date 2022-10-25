@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { mapAttendees, mapEvent, mapEvents, mapGroup, mapGroupPosts, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
+import { mapAttendees, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +45,14 @@ export class DatabaseService {
   }
 
   createEvent(event: EventRequest): Observable<Event> {
+    // const mappedEvent = mapEventRequest(event);
+
     const eventsCollectionRef = this.afs.collection(`events`);
     return from(eventsCollectionRef.add(event)).pipe(map(event => mapEvent(event)));
+  }
+
+  editEvent(eventData: Event): Observable<Event> {
+    throw new Error('Method not implemented.');
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {

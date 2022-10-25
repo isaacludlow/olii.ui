@@ -209,3 +209,31 @@ export function mapUser(userDoc: any): User {
 
     return user;
 }
+
+// ============================================ Request Mappers ====================================================
+export function mapEventRequest(eventRequest: Event) {
+    const newEventRequest = {
+        attendeesPreview: eventRequest.AttendeesPreview,
+        coverImageUrl: eventRequest.CoverImageUrl,
+        creator: {
+            creatorId: eventRequest.Creator.CreatorId,
+            creatorType: eventRequest.Creator.CreatorType,
+            displayName: eventRequest.Creator.DisplayName,
+            imageUrl: eventRequest.Creator.ImageUrl
+        },
+        date: eventRequest.Date,
+        description: eventRequest.Description,
+        imageUrls: eventRequest.ImageUrls,
+        location: {
+            coordinates: {
+                Latitude: eventRequest.Location.Latitude,
+                Longitude: eventRequest.Location.Longitude
+            },
+            displayName: eventRequest.Location.DisplayName
+        },
+        privacyLevel: eventRequest.PrivacyLevel,
+        title: eventRequest.Title
+    };
+
+    return newEventRequest;
+}

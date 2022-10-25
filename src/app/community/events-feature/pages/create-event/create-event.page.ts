@@ -14,6 +14,7 @@ import { EventsFeatureStore } from 'src/app/shared/services/community/events-fea
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
+import { CloudStorageService } from 'src/app/shared/services/bankend/cloud-storage-service/cloud-storage.service';
 
 @Component({
   templateUrl: './create-event.page.html',
@@ -59,7 +60,8 @@ export class CreateEventPage implements OnInit, OnDestroy {
     private platform: Platform,
     private router: Router,
     private route: ActivatedRoute,
-    private eventStore: EventsFeatureStore
+    private eventStore: EventsFeatureStore,
+    private cloudStorage: CloudStorageService
   ) { }
 
   ngOnInit(): void {
@@ -168,7 +170,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
         DisplayName: this.createEventForm.get('location.displayName').value
       },
       Images: eventBase64Images,
-      AttendeeProfile: []
+      AttendeesPreview: []
     };
 
     await this.eventStore.createEvent(eventRequest).toPromise();
