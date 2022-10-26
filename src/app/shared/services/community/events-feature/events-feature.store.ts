@@ -86,12 +86,12 @@ export class EventsFeatureStore {
     return this.dbService.createEvent(eventRequest).pipe(
       switchMap(async (createdEventData: Event) => {
         const coverImageDownloadUrl =
-          await this.cloudStorageService.uploadFile(eventCoverImageData, `events/${createdEventData.EventId}/cover-image.png`).DownloadUrl$.toPromise();
+          await this.cloudStorageService.uploadFile(eventCoverImageData, `events/${createdEventData.EventId}/cover-image`).DownloadUrl$.toPromise();
 
         createdEventData.CoverImageUrl = coverImageDownloadUrl;
         eventImages.forEach(async image => {
           createdEventData.ImageUrls.push(
-            await this.cloudStorageService.uploadFile(image, `events/${createdEventData.EventId}/images/${uuidv4()}.png`).DownloadUrl$.toPromise()
+            await this.cloudStorageService.uploadFile(image, `events/${createdEventData.EventId}/images/${uuidv4()}`).DownloadUrl$.toPromise()
           );
         });
 
