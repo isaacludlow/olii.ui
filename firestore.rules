@@ -59,6 +59,18 @@ service cloud.firestore {
         && requestData.get('imageUrls', []) is list
         && requestData.get('profilePictureUrl', '') is string;
       }
+
+      match /profiles/{profileId}/savedImagesAlbums/{albumId} {
+        allow read: if isAuthenticated(request)
+          && isPublic(resource);
+
+          allow write: if isAuthenticated(request)
+            && isOwner(request, profileId)
+
+        function isPublic(resource) {
+          return resource.data.privacyLevel == 'public';
+        }
+      }
     }
 
     match /events/{eventId} {
@@ -116,13 +128,13 @@ service cloud.firestore {
       function isGroupDataValid(requestData) {
         return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel'])
           && requestData.keys().hasOnly(
-            ['admins', 'coverImageUrl', 'description', 'memberPreviews', 'name', 'privacyLevel']
+            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel']
           )
           && requestData.admins is list
           && isProfilePreviewDataValid(requestData.admins[0])
           && requestData.coverImageUrl is string
           && requestData.description is string
-          && requestData.get('memberPreviews', []) is list
+          && requestData.get('membersPreview', []) is list
           && requestData.name is string
           && requestData.privacyLevel is string;
       }
