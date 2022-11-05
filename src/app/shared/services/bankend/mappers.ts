@@ -12,6 +12,8 @@ import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { User } from "src/app/models/dto/user/user.dto";
 
+// TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
+
 // #region Event mappers
 export function mapEvents(eventDocs: DocumentData): Event[] {
     const mappedEvents: Event[] = [];
@@ -90,7 +92,7 @@ export function mapGroup(groupDoc: any): Group {
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
         Admins: [...groupDoc.admins.map(admin => mapProfilePreview(admin))],
-        MemberPreviews: [...groupDoc.memberPreviews.map(member => mapProfilePreview(member))],
+        MembersPreview: [...groupDoc.membersPreview.map(member => mapProfilePreview(member))],
         Members: [],
         Events: []
     };

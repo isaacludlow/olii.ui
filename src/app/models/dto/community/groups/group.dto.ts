@@ -11,7 +11,7 @@ export interface Group {
     PrivacyLevel: PrivacyLevel;
     Posts: GroupPost[]; // Get the members only when the user navigates to the members page for a group.
     Admins: ProfilePreview[]; // Get the admins with the initial call to get a group.
-    MemberPreviews: ProfilePreview[]; // Shows the first 5 profiles on the group details page in the members section.
+    MembersPreview: ProfilePreview[]; // Shows the first 5 profiles on the group details page in the members section.
     Members: ProfilePreview[]; // Get the members only when the user navigates to the members page for a group.
     Events: Event[]; // Events under a given group.
 }
