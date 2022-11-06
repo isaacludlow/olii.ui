@@ -215,7 +215,7 @@ export class GroupFeatureService {
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyayUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80',
                 },
             ],
-            MemberPreviews: [],
+            MembersPreview: [],
             Members: [
               {
                 ProfileId: '99',
@@ -294,7 +294,7 @@ export class GroupFeatureService {
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
                 },
             ],
-            MemberPreviews: [],
+            MembersPreview: [],
             Members: [],
             Events: []
         },
@@ -327,7 +327,7 @@ export class GroupFeatureService {
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
                   },
             ],
-            MemberPreviews: [],
+            MembersPreview: [],
             Members: [],
             Events: []
         },
@@ -346,7 +346,7 @@ export class GroupFeatureService {
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1525160354320-d8e92641c563?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YXV0b21vYmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80',
                 },
             ],
-            MemberPreviews: [],
+            MembersPreview: [],
             Members: [],
             Events: []
         },
@@ -365,7 +365,7 @@ export class GroupFeatureService {
                     ProfilePictureUrl: 'https://images.unsplash.com/photo-1542144612-1b3641ec3459?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
                 },
             ],
-            MemberPreviews: [],
+            MembersPreview: [],
             Members: [],
             Events: []
         }
