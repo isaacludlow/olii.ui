@@ -45,7 +45,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
       latitude: [null, Validators.required],
       longitude: [null, Validators.required]
     }),
-    // privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
+    privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
     images: [null]
   },
   { updateOn: 'blur' }

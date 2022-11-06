@@ -17,14 +17,12 @@ export const addFirstFiveMembersToPreview = functions.firestore
 
       const numberOfMembersInPreview = group
           .get("membersPreview").length;
-      const numberOfMembers = (await admin.firestore()
-          .collection(`groups/${context.params.groupId}/members`)
-          .get()).size;
+      const numberOfMembersToGet = 5 - numberOfMembersInPreview;
 
-      if (numberOfMembersInPreview < 5 && numberOfMembers >=5) {
-        const numberOfMembersToGet = 5 - numberOfMembersInPreview;
+      if (numberOfMembersInPreview < 5) {
         const members = await admin.firestore()
             .collection("groups/{groupId}/members")
+            .offset(numberOfMembersInPreview)
             .limit(numberOfMembersToGet).get();
 
         members.forEach((doc) => {
