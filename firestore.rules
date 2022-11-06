@@ -2,8 +2,218 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 10, 11);
+      allow read, write: if false;
+    }
+    
+    match /users/{userId} {
+    	allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && isOwner(request, userId)
+        && isUserDataValid(request.resource.data, resource.data);
+
+      allow update: if isAuthenticated(request)
+        && isOwner(request, userId)
+        && isUserDataValid(request.resource.data, resource.data);
+
+      allow delete: if isAuthenticated(request)
+        && isOwner(request, userId);
+
+      function isUserDataValid(requestData, resourceData) {
+      return requestData.keys().hasAll(['email', 'phoneNumber', 'dob', 'username'])
+        && requestData.keys().hasOnly(['email', 'phoneNumber', 'dob', 'username'])
+        && !requestData.diff(resourceData).affectedKeys().hasAny(['email', 'username'])
+        && requestData.email is string
+        && requestData.dob is timestamp
+        && requestData.phoneNumber is int
+        && requestData.username is string;
+      }
+    }
+
+    match /profiles/{profileId} {
+      allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && isOwner(request, profileId)
+        && isProfileDataValid(request.resource.data);
+      
+      allow update: if isAuthenticated(request)
+        && isOwner(request, profileId)
+        && isProfileDataValid(request.resource.data);
+
+      allow delete: if isAuthenticated(request)
+        && isOwner(request, profileId);
+
+      function isProfileDataValid(requestData) {
+      // Require first and last name. All other fields are optional.
+      return (requestData.keys().hasAll(['firstName', 'lastName']))
+        && (requestData.keys().hasOnly(
+          ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl']
+        ))
+        && requestData.firstName is string
+        && requestData.lastName is string
+        && requestData.get('bio', '') is string
+        && requestData.get('homeCountry', '') is string
+        && requestData.get('hostCountry', '') is string
+        && requestData.get('currentCity', '') is string
+        && requestData.get('imageUrls', []) is list
+        && requestData.get('profilePictureUrl', '') is string;
+      }
+
+      match /profiles/{profileId}/savedImagesAlbums/{albumId} {
+        allow read: if isAuthenticated(request)
+          && isPublic(resource);
+
+          allow write: if isAuthenticated(request)
+            && isOwner(request, profileId)
+
+        function isPublic(resource) {
+          return resource.data.privacyLevel == 'public';
+        }
+      }
+    }
+
+    match /events/{eventId} {
+      allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && (isEventCreator(request, resource) || isAdminForGroup(request))
+        && isEventDataValid(request.resource.data);
+
+      allow update: if isAuthenticated(request)
+        && (isEventCreator(request, resource) || isAdminForGroup(request))
+        && isEventDataValid(request.resource.data);
+
+      allow delete: if isAuthenticated(request)
+        && (isEventCreator(request, resource) || isAdminForGroup(request));
+
+      function isEventDataValid(requestData) {
+        return requestData.keys().hasAll(
+            ['coverImageUrl', 'creator', 'date', 'description', 'privacyLevel', 'title']
+          )
+          && requestData.keys().hasOnly(
+            ['attendeesPreview', 'coverImageUrl', 'creator', 'date', 'description', 'imageUrls', 'location', 'privacyLevel', 'title']
+          )
+          && requestData.attendeesPreview is list
+          && requestData.coverImageUrl is string
+          && requestData.creator is map
+          && requestData.creator.creatorId is int
+          && requestData.creator.creatorType is string
+          && requestData.creator.displayName is string
+          && requestData.creator.imageUrl is string
+          && requestData.date is timestamp
+          && requestData.description is string
+          && requestData.imageUrls is list
+          && requestData.location is map
+          && requestData.location.coordinates is latlng
+          && requestData.location.displayName is string
+          && requestData.privacyLevel is string
+          && requestData.title is string;
+      }
+    }
+
+    match /groups/{groupdId} {
+      allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && isGroupDataValid(request.resource.data);
+
+      allow update: if isAuthenticated(request)
+        && isGroupDataValid(request.resource.data)
+        && isAdminForGroup(request);
+
+      allow delete: if isAuthenticated(request)
+        && isAdminForGroup(request);
+
+      function isGroupDataValid(requestData) {
+        return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel'])
+          && requestData.keys().hasOnly(
+            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel']
+          )
+          && requestData.admins is list
+          && isProfilePreviewDataValid(requestData.admins[0])
+          && requestData.coverImageUrl is string
+          && requestData.description is string
+          && requestData.get('membersPreview', []) is list
+          && requestData.name is string
+          && requestData.privacyLevel is string;
+      }
+    }
+
+    match /group_posts/{group_postId} {
+      allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && isGroupPostDataValid(request.resource.data);
+
+      allow update: if isAuthenticated(request)
+        && isGroupPostDataValid(request.resource.data)
+        && isOwner(request, request.resource.data.author.profileId);
+
+      allow delete: if isAuthenticated(request)
+        && isOwner(request, request.resource.data.author.profileId);
+
+      function isGroupPostDataValid(requestData) {
+        return requestData.keys().hasAll(['author', 'content', 'date', 'group'])
+          && requestData.keys().hasOnly(
+            ['author', 'content', 'date', 'group', 'imageUrls']
+          )
+          && isProfilePreviewDataValid(requestData.author)
+          && requestData.content is string
+          && requestData.date is timestamp
+          && requestData.group is map
+          && requestData.group.id is string
+          && requestData.group.imageUrl is string
+          && requestData.group.name is string
+          && requestData.get('imageUrls', []) is list
+      }
+    }
+
+    match /group_posts/{group_postId}/comments/{commentId} {
+      allow read: if isAuthenticated(request);
+
+      allow create: if isAuthenticated(request)
+        && isGroupPostCommentDataValid(request.resource.data);
+
+      allow update: if isAuthenticated(request)
+        && isGroupPostCommentDataValid(request.resource.data)
+        && isOwner(request, request.resource.data.author.profileId);
+
+      allow delete: if isAuthenticated(request)
+        && isOwner(request, request.resource.data.author.profileId);
+
+      function isGroupPostCommentDataValid(requestData) {
+        return requestData.keys().hasAll(['author', 'content', 'date'])
+          && isProfilePreviewDataValid(requestData.author)
+          && requestData.content is string
+          && requestData.date is timestamp
+      }
+    }
+    
+    function isAuthenticated(request) {
+    	return request.auth != null;
+    }
+    
+    function isOwner(request, userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isEventCreator(request, resource) {
+      return request.auth.uid == resource.data.creator.creatorId;
+    }
+
+    function isAdminForGroup(request) {
+      let groupId = request.resource.data.creator.creatorId;
+      let groupAdminsUids = get(/databases/$(database)/groups/$(groupId)).admins;
+
+      return groupAdminsUids.hasAll(request.auth.uid);
+    }
+
+    function isProfilePreviewDataValid(profilePreviewData) {
+      return profilePreviewData is map
+        && profilePreviewData.firstName is string
+        && profilePreviewData.lastName is string
+        && profilePreviewData.profileId is string;
     }
   }
 }
