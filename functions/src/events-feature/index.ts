@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 export const addAttendingEventToMyEvents = functions.firestore
-    .document("events/{eventId}/attendees/{attendeeDocId}")
+    .document("events/{eventId}/attendees/{attendeeId}")
     .onCreate(async (snapshot, context) => {
       const event = await admin.firestore()
           .doc(`events/${context.params.eventId}`)
@@ -19,7 +19,7 @@ export const addAttendingEventToMyEvents = functions.firestore
     });
 
 export const removeAttendingEventToMyEvents = functions.firestore
-    .document("events/{eventId}/attendees/{attendeeDocId}")
+    .document("events/{eventId}/attendees/{attendeeId}")
     .onDelete(async (snapshot, context) => {
       return admin.firestore()
           .doc(
@@ -32,6 +32,10 @@ export const removeAttendingEventToMyEvents = functions.firestore
 export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
+      if (change.before.get("date") === change.after.get("date")) {
+          return;
+      }
+
       const updatedEventData = change.after.data();
       const attendeesDocs = await admin.firestore()
           .collection(`events/${context.params.eventId}/attendees`)
@@ -70,15 +74,14 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
       }
 
       const numberOfAttendeesInPreview = event
-          .get("attendeesPreview").length;
-      const numberOfAttendees = (await admin.firestore()
-          .collection(`events/${context.params.eventId}/attendees`)
-          .get()).size;
+          .get("attendeesPreview").length;   
+      const numberOfAttendeesToGet = 5 - numberOfAttendeesInPreview;
 
-      if (numberOfAttendeesInPreview < 5 && numberOfAttendees >= 5) {
-        const numberOfAttendeesToGet = 5 - numberOfAttendeesInPreview;
+      if (numberOfAttendeesInPreview < 5) {
+        
         const attendees = await admin.firestore()
             .collection("events/{eventId}/attendees")
+            .offset(numberOfAttendeesInPreview)
             .limit(numberOfAttendeesToGet).get();
 
         attendees.forEach((doc) => {

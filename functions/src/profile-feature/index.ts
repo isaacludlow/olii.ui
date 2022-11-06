@@ -19,17 +19,13 @@ export const addFirstFiveSavedImagesAlbumsToPreview = functions.firestore
 
       const numberOfSavedImagesAlbumsInPreview = profile
           .get("savedImagesAlbumsPreview").length;
-      const numberOfSavedImagesAlbums = (await admin.firestore()
-          .collection(`profiles/${context.params.profileId}/savedImagesAlbums`)
-          .get()).size;
+      const numberOfSavedImagesAlbumsToGet =
+          5 - numberOfSavedImagesAlbumsInPreview;
 
-      if (numberOfSavedImagesAlbumsInPreview < 5 &&
-        numberOfSavedImagesAlbums >=5
-      ) {
-        const numberOfSavedImagesAlbumsToGet =
-            5 - numberOfSavedImagesAlbumsInPreview;
+      if (numberOfSavedImagesAlbumsInPreview < 5) {
         const savedImagesAlbums = await admin.firestore()
             .collection("profiles/{profileId}/savedImagesAlbums")
+            .offset(numberOfSavedImagesAlbumsInPreview)
             .limit(numberOfSavedImagesAlbumsToGet).get();
 
         savedImagesAlbums.forEach((doc) => {
@@ -46,20 +42,17 @@ export const addFirstFiveSavedImagesAlbumsToPreview = functions.firestore
 export const updateProfilePreviewAcrossDatabase = functions.firestore
     .document("profiles/{profileId}")
     .onUpdate(async (change, context) => {
-      const dataBefore = change.before.data();
-      const dataAfter = change.after.data();
+        const oldProfile = change.before.data();
+        const newProfile = change.after.data();
 
       const hasNameFieldsOrProfilePictureChanged =
-        dataBefore.firstName === dataAfter.firstName ||
-        dataBefore.lastName === dataAfter.lastName ||
-        dataBefore.profilePictureUrl === dataAfter.profilePictureUrl;
+        oldProfile.firstName !== newProfile.firstName ||
+        oldProfile.lastName !== newProfile.lastName ||
+        oldProfile.profilePictureUrl !== newProfile.profilePictureUrl;
 
-      if (!hasNameFieldsOrProfilePictureChanged) {
+      if (hasNameFieldsOrProfilePictureChanged) {
         return;
       }
-
-      const oldProfile = change.before.data();
-      const newProfile = change.after.data();
 
       const oldProfilePreview = {
         firstName: oldProfile.firstName,
@@ -80,12 +73,12 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("admins", "array-contains", oldProfilePreview)
           .get();
 
-      groupAdmins.docs[0].ref
+      groupAdmins.docs[0]?.ref
           .update(
               "admins",
               firestore.FieldValue.arrayRemove(oldProfilePreview)
           );
-      groupAdmins.docs[0].ref
+      groupAdmins.docs[0]?.ref
           .update(
               "admins",
               firestore.FieldValue.arrayUnion(newProfilePreview)
@@ -97,12 +90,12 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("membersPreview", "array-contains", oldProfilePreview)
           .get();
 
-      groupMembersPreview.docs[0].ref
+      groupMembersPreview.docs[0]?.ref
           .update(
               "membersPreview",
               firestore.FieldValue.arrayRemove(oldProfilePreview)
           );
-      groupMembersPreview.docs[0].ref
+      groupMembersPreview.docs[0]?.ref
           .update(
               "membersPreview",
               firestore.FieldValue.arrayUnion(newProfilePreview)
@@ -114,7 +107,7 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("profileId", "==", context.params.profileId)
           .get();
 
-      groupMembers.docs[0].ref.update(newProfilePreview);
+      groupMembers.docs[0]?.ref.update(newProfilePreview);
 
       // Update group_posts author, if needed
       const groupPostsAuthor = await admin.firestore()
@@ -122,7 +115,7 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("author.profileId", "==", context.params.profileId)
           .get();
 
-      groupPostsAuthor.docs[0].ref.update("author", newProfilePreview);
+      groupPostsAuthor.docs[0]?.ref.update("author", newProfilePreview);
 
       // Update group_posts comments author, if needed
       const groupPostsCommentAuthor = await admin.firestore()
@@ -130,7 +123,7 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("author.profileId", "==", context.params.profileId)
           .get();
 
-      groupPostsCommentAuthor.docs[0].ref
+      groupPostsCommentAuthor.docs[0]?.ref
           .update("author", newProfilePreview);
 
 
@@ -140,7 +133,7 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("creator.profileId", "==", context.params.profileId)
           .get();
 
-      eventCreator.docs[0].ref.update("creator", newProfilePreview);
+      eventCreator.docs[0]?.ref.update("creator", newProfilePreview);
 
       // Update attendeesPreview, if needed
       const eventAttendeesPreview = await admin.firestore()
@@ -148,12 +141,12 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("attendeesPreview", "array-contains", oldProfilePreview)
           .get();
 
-      eventAttendeesPreview.docs[0].ref
+      eventAttendeesPreview.docs[0]?.ref
           .update(
               "membersPreview",
               firestore.FieldValue.arrayRemove(oldProfilePreview)
           );
-      eventAttendeesPreview.docs[0].ref
+      eventAttendeesPreview.docs[0]?.ref
           .update(
               "membersPreview",
               firestore.FieldValue.arrayUnion(newProfilePreview)
@@ -165,5 +158,5 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("profileId", "==", context.params.profileId)
           .get();
 
-      eventAttendees.docs[0].ref.update(newProfilePreview);
+      eventAttendees.docs[0]?.ref.update(newProfilePreview);
     });

@@ -164,7 +164,7 @@ export function mapProfile(profileDoc: any): Profile {
         Bio: profileDoc.bio,
         Friends: profileDoc.friends,
         ImageUrls: profileDoc.imageUrls,
-        SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumPreviews)
+        SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumsPreview)
     };
 
     return profile;
