@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore, isFuture } from 'date-fns';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, zip } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request';
+import { EventData as EventData } from 'src/app/models/requests/community/events/event-data.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
-import { DatabaseService } from '../../bankend/database-service/database-service.service';
+import { DatabaseService } from '../../bankend/database-service/database.service';
 import { EventsFeatureService } from './events-feature.service';
 import { v4 as uuidv4 } from 'uuid';
 import { async } from '@firebase/util';
+import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -74,31 +75,37 @@ export class EventsFeatureStore {
         );
     }
   }
-          
-  createEvent(eventRequest: EventRequest): Observable<Event> {
-    const eventCoverImageData = eventRequest.CoverImageData;
-    eventRequest.CoverImageData = '';
 
-    const eventImages = eventRequest.Images;
-    eventRequest.Images = [];
-    
+  createEvent(eventData: EventData): Observable<Event> {
+    let coverImageUrl: string;
+    let eventImagesUrls: string[];
 
-    return this.dbService.createEvent(eventRequest).pipe(
-      switchMap(async (createdEventData: Event) => {
-        const coverImageDownloadUrl =
-          await this.cloudStorageService.uploadFile(eventCoverImageData, `events/${createdEventData.EventId}/cover-image`).DownloadUrl$.toPromise();
+    return this.cloudStorageService.uploadFile(eventData.CoverImageData, `events/cover-images`).pipe(
+      switchMap(coverImageUrlRes => coverImageUrlRes.DownloadUrl$),
+      tap(downloadUrl => coverImageUrl = downloadUrl),
 
-        createdEventData.CoverImageUrl = coverImageDownloadUrl;
-        eventImages.forEach(async image => {
-          createdEventData.ImageUrls.push(
-            await this.cloudStorageService.uploadFile(image, `events/${createdEventData.EventId}/images/${uuidv4()}`).DownloadUrl$.toPromise()
-          );
-        });
+      switchMap(() => zip(...eventData.ImagesData.map(imageData => this.cloudStorageService.uploadFile(imageData, 'events/images')))),
+      switchMap(uploadFileObservableList => zip(...uploadFileObservableList.map(obs => obs.DownloadUrl$))),
+      tap(downloadUrlList => eventImagesUrls = downloadUrlList),
 
-        return createdEventData;
-      }),
-      switchMap(eventData => this.dbService.editEvent(eventData))
+      switchMap(() => this.dbService.createEvent(this.createEventRequest(eventData, coverImageUrl, eventImagesUrls)))
     );
+  }
+
+  private createEventRequest(eventData: EventData, coverImageUrl: string, eventImagesUrls: string[]): EventRequest {
+    const event: EventRequest = {
+      CoverImageUrl: coverImageUrl,
+      Title: eventData.Title,
+      Description: eventData.Description,
+      Creator: eventData.Creator,
+      Date: eventData.Date,
+      PrivacyLevel: eventData.PrivacyLevel,
+      Location: eventData.Location,
+      ImagesUrls: eventImagesUrls,
+      AttendeesPreview: eventData.AttendeesPreview
+    };
+
+    return event;
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {

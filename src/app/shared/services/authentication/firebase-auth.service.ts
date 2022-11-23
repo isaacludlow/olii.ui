@@ -1,17 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import firebase from 'firebase/compat';
 import { catchError } from 'rxjs/operators';
+import { SubSink } from 'subsink';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseAuthService {
+export class FirebaseAuthService implements OnDestroy {
   public user = new BehaviorSubject<firebase.User>(null);
+  private subs = new SubSink();
 
   constructor(private auth: AngularFireAuth) {
-    this.auth.user.subscribe(user => this.user.next(user));
+    this.subs.sink = this.auth.user.subscribe(user => {
+      console.log(user)
+      this.user.next(user)
+    });
   }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {
@@ -49,4 +54,8 @@ export class FirebaseAuthService {
   signOut(): Promise<void> {
     return this.auth.signOut();
   }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+}
 }

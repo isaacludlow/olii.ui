@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, Observable, ObservedValueOf, zip } from 'rxjs';
-import { catchError, map, mergeAll, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeAll, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
@@ -10,8 +10,9 @@ import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { mapAttendees, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
+import { EventData } from 'src/app/models/requests/community/events/event-data.dto';
+import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
+import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +46,21 @@ export class DatabaseService {
   }
 
   createEvent(event: EventRequest): Observable<Event> {
-    // const mappedEvent = mapEventRequest(event);
+    const mappedEvent = mapEventRequest(event);
+    console.log(mappedEvent)
 
-    const eventsCollectionRef = this.afs.collection(`events`);
-    return from(eventsCollectionRef.add(event)).pipe(map(event => mapEvent(event)));
+    const eventsCollectionRef = this.afs.collection('events');
+
+    return from(eventsCollectionRef.add(mappedEvent)).pipe(
+      switchMap(eventRef => from(eventRef.get())),
+      map(event => mapEvent(event.data(), event.id))
+    );
   }
 
-  editEvent(eventData: Event): Observable<Event> {
-    throw new Error('Method not implemented.');
+  editEvent(eventData: Event): Observable<void> {
+    const mappedEvent = mapEditEvent(eventData);
+
+    return from(this.afs.doc(`events/${eventData.EventId}`).update(mappedEvent));
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
@@ -121,6 +129,7 @@ export class DatabaseService {
     const user = this.afs.doc(`users/${uid}`).valueChanges({ idField: 'uid' }).pipe(
       map(user => mapUser(user))
     );
+
       
     return user;
   }

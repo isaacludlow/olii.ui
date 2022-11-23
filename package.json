@@ -5,7 +5,8 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "firebase emulators:exec --project=demo-emulated-project --ui 'ng serve'",
+    "start-dev": "firebase emulators:exec --project=demo-emulated-project --ui 'ionic s --lab'",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -51,6 +52,7 @@
     "@angular/compiler-cli": "~13.0.0",
     "@angular/language-service": "~13.0.0",
     "@capacitor/cli": "^3.7.0",
+    "@firebase/rules-unit-testing": "^2.0.5",
     "@ionic/angular-toolkit": "^5.0.0",
     "@ionic/cli": "6.20.1",
     "@ionic/lab": "3.2.12",

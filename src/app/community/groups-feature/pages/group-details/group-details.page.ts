@@ -57,7 +57,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     this.group$ = this.route.paramMap.pipe(
       tap((paramMap: ParamMap) => {
         const groupId = paramMap.get('groupId');
-        console.log(groupId)
         
         this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);

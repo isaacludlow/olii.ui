@@ -6,7 +6,7 @@ import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
-import { DatabaseService } from "../bankend/database-service/database-service.service";
+import { DatabaseService } from "../bankend/database-service/database.service";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 
@@ -24,8 +24,13 @@ export class ProfileStore implements OnDestroy {
 		private userStore: UserStore
 	) {
 		this.subs.sink = this.userStore.user.subscribe(user => {
+			console.log(user)
 			if (user !== null) {
-				this.dbService.getProfileById(user.Uid).subscribe(profile => this.currentProfile.next(profile));
+				console.log('here')
+				this.dbService.getProfileById(user.Uid).subscribe(profile => {
+					console.log(profile)
+					this.currentProfile.next(profile)
+				});
 			}
 		});
 	}
@@ -43,7 +48,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: string): Observable<Profile> {
-		return this.dbService.getProfileById(profileId).pipe();
+		return this.dbService.getProfileById(profileId);
 
 		// Use this code below for caching profile images on device in the future since they don't change very often.
 		// .pipe(

@@ -14,6 +14,7 @@ export class AuthStore implements OnDestroy {
 
   constructor(private authService: FirebaseAuthService) {
     this.subs.sink = this.authService.user.subscribe(user => {
+      console.log(user)
       this._currentAuthenticatedUserData.next(user);
     });
   }

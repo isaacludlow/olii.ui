@@ -8,7 +8,7 @@ import { CreatePostRequest } from "src/app/models/requests/community/groups/crea
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { LatestGroupPost } from "src/app/models/dto/community/groups/group-latest-post.dto";
-import { DatabaseService } from "../../bankend/database-service/database-service.service";
+import { DatabaseService } from "../../bankend/database-service/database.service";
 
 @Injectable({
     providedIn: 'root'

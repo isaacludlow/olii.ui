@@ -3,15 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  useEmulators: false, // Set to false to connect to firebase develop environment. Set to true to connect local emulators.
+  useEmulators: true, // Set to false to connect to the production firebase environment. Set to true to connect local emulators.
   production: false,
-  apiBaseUrl: 'https://olii-dev-api.azurewebsites.net/api',
-  functionsKey: 'cPdDMgbLamiv-BrSzZm8J576G6CO6zMMSB4jIaPE2T4vAzFudvYmdA==',
   mapsKey: 'AIzaSyBLAdsFxNLhjWztJ3dY6uruj856r6We_yo',
   firebase: {
     apiKey: "AIzaSyCpPv2UX3NOQFB8Y8NwfM7dvVi4Nn-nzQc",
     authDomain: "oliiapp.firebaseapp.com",
-    projectId: "oliiapp",
+    projectId: "demo-oliiapp", // Add the "demo-" prefix when running local emulators. Remove it when connecting to prod.
     storageBucket: "oliiapp.appspot.com",
     messagingSenderId: "1010655614462",
     appId: "1:1010655614462:web:b57f8845a4a707cac69caf",

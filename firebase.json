@@ -42,7 +42,8 @@
       "port": 9299
     },
     "ui": {
-      "enabled": true
+      "enabled": true,
+      "port": 4000
     }
   }
 }

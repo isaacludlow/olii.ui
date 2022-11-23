@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,10 @@ import { Observable } from 'rxjs';
 export class CloudStorageService {
   constructor(private storageService: AngularFireStorage) { }
 
-  uploadFile(base64EncodedString: string, cloudFilePath: string): { UploadProgressPercentage$: Observable<number>, DownloadUrl$: Observable<string> } {
+  uploadFile(base64EncodedString: string, cloudFilePath: string): Observable<{
+    UploadProgressPercentage$: Observable<number>;
+    DownloadUrl$: Observable<string>;
+  }> {
     const filePathRef = this.storageService.ref(cloudFilePath);
     const task = filePathRef.putString(base64EncodedString, 'data_url');
     task.catch(error => {
@@ -26,9 +30,14 @@ export class CloudStorageService {
     });
 
     const uploadPercentage = task.percentageChanges();
-    const downloadUrl = filePathRef.getDownloadURL();
+    let downloadUrl: Observable<string>;
 
-    return { UploadProgressPercentage$: uploadPercentage, DownloadUrl$: downloadUrl };
+    return from(task.snapshotChanges().pipe(
+      finalize(() => downloadUrl = filePathRef.getDownloadURL())
+    ).toPromise())
+    .pipe(map(() => {
+      return { UploadProgressPercentage$: uploadPercentage, DownloadUrl$: downloadUrl }
+    }));
   }
 
   // Might need this in the future to block certain file types.
