@@ -32,7 +32,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParamMap.pipe(
+    this.subs.sink = this.route.queryParamMap.pipe(
       switchMap(paramMap => {
         if (paramMap.has('profileId')) {
           return this.profileStore.getProfileById(paramMap.get('profileId'));

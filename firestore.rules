@@ -1,10 +1,6 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
-    }
-    
+  match /databases/{database}/documents {    
     match /users/{userId} {
     	allow read: if isAuthenticated(request);
 
@@ -44,6 +40,12 @@ service cloud.firestore {
       allow delete: if isAuthenticated(request)
         && isOwner(request, profileId);
 
+      match /myEvents/{myEventId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+      }
+
       function isProfileDataValid(requestData) {
       // Require first and last name. All other fields are optional.
       return (requestData.keys().hasAll(['firstName', 'lastName']))
@@ -77,15 +79,15 @@ service cloud.firestore {
       allow read: if isAuthenticated(request);
 
       allow create: if isAuthenticated(request)
-        && (isEventCreator(request, resource) || isAdminForGroup(request))
+        && (isEventCreator(request, request.resource) || isAdminForGroup(request))
         && isEventDataValid(request.resource.data);
 
       allow update: if isAuthenticated(request)
-        && (isEventCreator(request, resource) || isAdminForGroup(request))
+        && (isEventCreator(request, request.resource) || isAdminForGroup(request))
         && isEventDataValid(request.resource.data);
 
       allow delete: if isAuthenticated(request)
-        && (isEventCreator(request, resource) || isAdminForGroup(request));
+        && (isEventCreator(request, request.resource) || isAdminForGroup(request));
 
       function isEventDataValid(requestData) {
         return requestData.keys().hasAll(
@@ -97,7 +99,7 @@ service cloud.firestore {
           && requestData.attendeesPreview is list
           && requestData.coverImageUrl is string
           && requestData.creator is map
-          && requestData.creator.creatorId is int
+          && requestData.creator.creatorId is string
           && requestData.creator.creatorType is string
           && requestData.creator.displayName is string
           && requestData.creator.imageUrl is string
@@ -191,7 +193,7 @@ service cloud.firestore {
     }
     
     function isAuthenticated(request) {
-    	return request.auth != null;
+    	return request.auth != null && request.auth.token.email_verified;
     }
     
     function isOwner(request, userId) {
@@ -204,7 +206,7 @@ service cloud.firestore {
 
     function isAdminForGroup(request) {
       let groupId = request.resource.data.creator.creatorId;
-      let groupAdminsUids = get(/databases/$(database)/groups/$(groupId)).admins;
+      let groupAdminsUids = get(/databases/$(database)/documents/groups/$(groupId)).data.admins;
 
       return groupAdminsUids.hasAll(request.auth.uid);
     }

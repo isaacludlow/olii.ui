@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore, isFuture } from 'date-fns';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, zip } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request';
-import { DatabaseService } from '../../bankend/database-service/database-service.service';
+import { EventData as EventData } from 'src/app/models/requests/community/events/event-data.dto';
+import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
+import { DatabaseService } from '../../bankend/database-service/database.service';
 import { EventsFeatureService } from './events-feature.service';
+import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class EventsFeatureStore {
   allEvents = new BehaviorSubject<Event[]>(null);
   myEvents = new BehaviorSubject<Event[]>(null);
   
-  constructor(private dbService: DatabaseService, private eventsService: EventsFeatureService) { }
+  constructor(private dbService: DatabaseService, private eventsService: EventsFeatureService, private cloudStorageService: CloudStorageService) { }
   
   getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
     if (this.allEvents.value === null) {
@@ -64,16 +66,28 @@ export class EventsFeatureStore {
       case GroupEventsFilterOptions.Past:
         return this.dbService.getPastGroupEvents(groupId).pipe(
           map(events => events.filter(event => isBefore(event.Date, new Date())))
-          );
+        );
       case GroupEventsFilterOptions.Future:
         return this.dbService.getPastGroupEvents(groupId).pipe(
           map(events => events.filter(event => isAfter(event.Date, new Date())))
-          );
-        }
+        );
+    }
   }
-          
-  createEvent(eventRequest: EventRequest): Observable<Event> {
-    return this.dbService.createEvent(eventRequest);
+
+  createEvent(eventData: EventData): Observable<Event> {
+    let coverImageUrl: string;
+    let eventImagesUrls: string[];
+
+    return this.cloudStorageService.uploadFile(eventData.CoverImageData, `events/cover-images`).pipe(
+      switchMap(coverImageUrlRes => coverImageUrlRes.DownloadUrl$),
+      tap(downloadUrl => coverImageUrl = downloadUrl),
+
+      switchMap(() => zip(...eventData.ImagesData.map(imageData => this.cloudStorageService.uploadFile(imageData, 'events/images')))),
+      switchMap(uploadFileObservableList => zip(...uploadFileObservableList.map(obs => obs.DownloadUrl$))),
+      tap(downloadUrlList => eventImagesUrls = downloadUrlList),
+
+      switchMap(() => this.dbService.createEvent(this.createEventRequest(eventData, coverImageUrl, eventImagesUrls)))
+    );
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
@@ -113,6 +127,22 @@ export class EventsFeatureStore {
       case MyEventsFilterOptions.All:
         return this.myEvents.asObservable();
     }
+  }
+
+  private createEventRequest(eventData: EventData, coverImageUrl: string, eventImagesUrls: string[]): EventRequest {
+    const event: EventRequest = {
+      CoverImageUrl: coverImageUrl,
+      Title: eventData.Title,
+      Description: eventData.Description,
+      Creator: eventData.Creator,
+      Date: eventData.Date,
+      PrivacyLevel: eventData.PrivacyLevel,
+      Location: eventData.Location,
+      ImagesUrls: eventImagesUrls,
+      AttendeesPreview: eventData.AttendeesPreview
+    };
+
+    return event;
   }
 
   private retrieveGroupEvents(groupId: string): Observable<Event[]> {

@@ -43,43 +43,38 @@ export class GroupFeatureService {
         if (offset !== null) params = params.set('offset', offset);
         if (limit !== null) params = params.set('limit', limit);
         
-        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+        const response = this.httpClient.get<Group[]>(`/group`, {
             params: params,
-            headers: { 'x-functions-key': environment.functionsKey }
         });
         
         return response;
     }
 
     getGroupById(groupId: number): Observable<Group> {
-        const response = this.httpClient.get<Group>(`${environment.apiBaseUrl}/group/${groupId}`, {
-            headers: { 'x-functions-key': environment.functionsKey }
+        const response = this.httpClient.get<Group>(`/group/${groupId}`, {
         });
           
         return response;
     }
 
     getMyGroups(profileId: string): Observable<Group[]> {
-        const response = this.httpClient.get<Group[]>(`${environment.apiBaseUrl}/group`, {
+        const response = this.httpClient.get<Group[]>(`/group`, {
             params: { profileId: profileId },
-            headers: { 'x-functions-key': environment.functionsKey }
         });
           
         return response;
     }
 
     createGroup(creatorProfileId: string, groupRequest: GroupRequest): Observable<Group> {
-        const response = this.httpClient.post<Group>(`${environment.apiBaseUrl}/group`, groupRequest, {
+        const response = this.httpClient.post<Group>(`/group`, groupRequest, {
             params: { CreatorProfileId: creatorProfileId },
-            headers: { 'x-functions-key': environment.functionsKey }
         });
           
         return response;
     }
 
     updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
-        const response = this.httpClient.put<Group>(`${environment.apiBaseUrl}/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
-            headers: { 'x-functions-key': environment.functionsKey }
+        const response = this.httpClient.put<Group>(`/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
         });
           
         return response;
@@ -91,9 +86,9 @@ export class GroupFeatureService {
         if (offset !== null) params = params.set('offset', offset);
         if (limit !== null) params = params.set('limit', limit);
 
-        const response = this.httpClient.get<LatestGroupPost[]>(`${environment.apiBaseUrl}/posts`, {
+        const response = this.httpClient.get<LatestGroupPost[]>(`/posts`, {
         params: params,
-        headers: { 'x-functions-key': environment.functionsKey, GroupIds: groupIds.map(x => x.toString()) }
+        headers: { GroupIds: groupIds.map(x => x.toString()) }
         }).pipe(
             tap(latestGroupPosts => latestGroupPosts.forEach(latestGroupPost =>
                 latestGroupPost.GroupPost.Date = parseISO(<any>latestGroupPost.GroupPost.Date)
@@ -109,9 +104,8 @@ export class GroupFeatureService {
         if (offset !== null) params = params.set('offset', offset);
         if (limit !== null) params = params.set('limit', limit);
 
-        const response = this.httpClient.get<GroupPost[]>(`${environment.apiBaseUrl}/group/${groupId}/post`, {
+        const response = this.httpClient.get<GroupPost[]>(`/group/${groupId}/post`, {
         params: params,
-        headers: { 'x-functions-key': environment.functionsKey }
         }).pipe(tap(posts => posts.forEach(post => post.Date = parseISO(<any>post.Date))));
 
         return response;
@@ -119,9 +113,8 @@ export class GroupFeatureService {
     
     createGroupPost(groupId: string, newPostRequest: CreatePostRequest): Observable<GroupPost> {
         const response = this.httpClient.post<GroupPost>(
-            `${environment.apiBaseUrl}/group/${groupId}/post`,
+            `/group/${groupId}/post`,
             newPostRequest,
-            { headers: { 'x-functions-key': environment.functionsKey } }
         );
 
         return response;

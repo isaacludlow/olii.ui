@@ -1,4 +1,4 @@
-import { DocumentData } from "@angular/fire/firestore";
+import { DocumentData, GeoPoint } from "@angular/fire/firestore";
 import { Event } from "src/app/models/dto/community/events/event.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
@@ -11,7 +11,8 @@ import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images-album-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { User } from "src/app/models/dto/user/user.dto";
-
+import { EventData } from "src/app/models/requests/community/events/event-data.dto";
+import { EventRequest } from "src/app/models/requests/community/events/event-request.dto";
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -27,9 +28,9 @@ export function mapEvents(eventDocs: DocumentData): Event[] {
     return mappedEvents;
 }
 
-export function mapEvent(eventDoc: DocumentData): Event {
+export function mapEvent(eventDoc: DocumentData, eventId?: string): Event {
     const mappedEvent: Event = {
-        EventId: eventDoc.id,
+        EventId: eventId ?? eventDoc.id,
         CoverImageUrl: eventDoc.coverImageUrl,
         Title: eventDoc.title,
         Description: eventDoc.description,
@@ -79,11 +80,8 @@ export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
 }
 // #endregion
 
-
-
 // #region Group mappers
 export function mapGroup(groupDoc: any): Group {
-    console.log(groupDoc)
     const group: Group = {
         GroupId: groupDoc.id, 
         CoverImageUrl: groupDoc.coverImageUrl,
@@ -173,7 +171,7 @@ export function mapProfile(profileDoc: any): Profile {
 function mapSavedImagesAlbumPreviews(previewDocs: any[]): SavedImagesAlbumPreview[] {
     const mappedPreviews: SavedImagesAlbumPreview[] = [];
 
-    for (let i = 0; i < previewDocs.length; i++) {
+    for (let i = 0; i < previewDocs?.length; i++) {
         const previewDoc = previewDocs[i];
 
         mappedPreviews.push({
@@ -210,4 +208,53 @@ export function mapUser(userDoc: any): User {
     };
 
     return user;
+}
+
+// ============================================ Request Mappers ====================================================
+export function mapEventRequest(eventRequest: EventRequest) {
+    const newEventRequest = {
+        attendeesPreview: eventRequest.AttendeesPreview,
+        coverImageUrl: eventRequest.CoverImageUrl,
+        creator: {
+            creatorId: eventRequest.Creator.CreatorId,
+            creatorType: eventRequest.Creator.CreatorType,
+            displayName: eventRequest.Creator.DisplayName,
+            imageUrl: eventRequest.Creator.ImageUrl
+        },
+        date: eventRequest.Date,
+        description: eventRequest.Description,
+        imageUrls: eventRequest.ImagesUrls,
+        location: {
+            coordinates: new GeoPoint(eventRequest.Location.Latitude, eventRequest.Location.Longitude),
+            displayName: eventRequest.Location.DisplayName
+        },
+        privacyLevel: eventRequest.PrivacyLevel,
+        title: eventRequest.Title
+    };
+
+    return newEventRequest;
+}
+
+export function mapEditEvent(event: Event) {
+    const newEventRequest = {
+        attendeesPreview: event.AttendeesPreview,
+        coverImageUrl: event.CoverImageUrl,
+        creator: {
+            creatorId: event.Creator.CreatorId,
+            creatorType: event.Creator.CreatorType,
+            displayName: event.Creator.DisplayName,
+            imageUrl: event.Creator.ImageUrl
+        },
+        date: event.Date,
+        description: event.Description,
+        imageUrls: event.ImageUrls,
+        location: {
+            coordinates: new GeoPoint(event.Location.Latitude, event.Location.Longitude),
+            displayName: event.Location.DisplayName
+        },
+        privacyLevel: event.PrivacyLevel,
+        title: event.Title
+    };
+
+    return newEventRequest;
 }

@@ -5,7 +5,7 @@ import { User } from "src/app/models/dto/user/user.dto";
 import { UserRequest } from "src/app/models/requests/user/user-request";
 import { SubSink } from "subsink";
 import { AuthStore } from "../authentication/auth-store";
-import { DatabaseService } from "../bankend/database-service/database-service.service";
+import { DatabaseService } from "../bankend/database-service/database.service";
 import { UserService } from "./user.service";
 
 @Injectable({
@@ -18,7 +18,7 @@ export class UserStore implements OnDestroy {
     constructor(private dbService: DatabaseService, private userService: UserService, private authStore: AuthStore) {
         this.subs.sink = this.authStore.currentAuthenticatedUserData.subscribe(user => {
             if (user !== null) {
-                this.subs.sink = this.dbService.getUserByUid(user.uid).subscribe(user => {
+                this.subs.sink = this.subs.sink = this.dbService.getUserByUid(user.uid).subscribe(user => {
                     this._currentUser.next(user);
                 });
             }

@@ -6,7 +6,7 @@ import { ProfileService } from "./profile.service";
 import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
-import { DatabaseService } from "../bankend/database-service/database-service.service";
+import { DatabaseService } from "../bankend/database-service/database.service";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 
@@ -43,7 +43,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: string): Observable<Profile> {
-		return this.dbService.getProfileById(profileId).pipe();
+		return this.dbService.getProfileById(profileId);
 
 		// Use this code below for caching profile images on device in the future since they don't change very often.
 		// .pipe(
@@ -72,10 +72,6 @@ export class ProfileStore implements OnDestroy {
 	getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{
 		return this.dbService.getSavedImagesAlbum(profileId, savedImagesAlbumId);
 	}
-
-	// getBase64Image(url: string) {
-	// 	return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
-	// }
 
 	ngOnDestroy(): void {
 		this.subs.unsubscribe();

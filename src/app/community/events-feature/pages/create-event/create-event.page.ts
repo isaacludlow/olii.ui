@@ -9,11 +9,12 @@ import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { EventLocation } from 'src/app/models/dto/misc/event-location.dto';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request';
+import { EventData } from 'src/app/models/requests/community/events/event-data.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
+import { CloudStorageService } from 'src/app/shared/services/bankend/cloud-storage-service/cloud-storage.service';
 
 @Component({
   templateUrl: './create-event.page.html',
@@ -59,7 +60,8 @@ export class CreateEventPage implements OnInit, OnDestroy {
     private platform: Platform,
     private router: Router,
     private route: ActivatedRoute,
-    private eventStore: EventsFeatureStore
+    private eventStore: EventsFeatureStore,
+    private cloudStorage: CloudStorageService
   ) { }
 
   ngOnInit(): void {
@@ -150,7 +152,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
       eventBase64Images.push(await readPhotoAsBase64(image, this.platform))
     });
 
-    const eventRequest: EventRequest = {
+    const eventData: EventData = {
       CoverImageData: await readPhotoAsBase64(this.eventCoverImage, this.platform),
       Title: this.createEventForm.get('title').value,
       Description: this.createEventForm.get('description').value,
@@ -167,13 +169,14 @@ export class CreateEventPage implements OnInit, OnDestroy {
         Longitude: this.createEventForm.get('location.longitude').value,
         DisplayName: this.createEventForm.get('location.displayName').value
       },
-      Images: eventBase64Images,
-      AttendeeProfile: []
+      ImagesData: eventBase64Images,
+      AttendeesPreview: []
     };
 
-    await this.eventStore.createEvent(eventRequest).toPromise();
-    this.createEventForm.reset();
-    this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
+    this.subs.sink = this.eventStore.createEvent(eventData).subscribe(() => {
+      this.createEventForm.reset();
+      this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
+    });
   }
   
   navigateBack(): void {

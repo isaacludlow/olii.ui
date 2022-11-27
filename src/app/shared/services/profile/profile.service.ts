@@ -17,24 +17,24 @@ export class ProfileService {
   constructor(private httpClient: HttpClient, private authStore: AuthStore) { }
 
   createNewProfile(profile: ProfileRequest) {
-    return this.httpClient.post(`${environment.apiBaseUrl}/profile`, profile, { headers: { 'x-functions-key': environment.functionsKey } });
+    return this.httpClient.post(`/profile`, profile, {  });
   }
 
   getProfileById(profileId: number): Observable<Profile> {
     let params = new HttpParams().set('profileid', profileId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { 'x-functions-key': environment.functionsKey }, params: params });    
+    const response = this.httpClient.get<Profile>(`/profile`, { params: params });    
     return response;
   }
 
   getProfileByUserId(userId: string): Observable<Profile> {
     let params = new HttpParams().set('userid', userId);
-    const response = this.httpClient.get<Profile>(`${environment.apiBaseUrl}/profile`, { headers: { 'x-functions-key': environment.functionsKey }, params: params });
+    const response = this.httpClient.get<Profile>(`/profile`, { params: params });
     return response;
   }
 
   updateProfile(profileId: string, profileRequest: ProfileRequest): Observable<Profile> {
     let params = new HttpParams().set('profileid', profileId);
-    const response = this.httpClient.put<Profile>(`${environment.apiBaseUrl}/profile`, profileRequest, { headers: { 'x-functions-key': environment.functionsKey }, params: params });
+    const response = this.httpClient.put<Profile>(`/profile`, profileRequest, { params: params });
     return response;
   }
 
@@ -61,7 +61,7 @@ export class ProfileService {
 
   createAlbum(newAlbum: ProfileRequestSavedAlbum) {
     // Add API call code here
-    //const response = this.httpClient.post<SavedAlbum>(`${environment.apiBaseUrl}/profile/saved-album`, )
+    //const response = this.httpClient.post<SavedAlbum>(`${}/profile/saved-album`, )
     return true;
   }
 }
