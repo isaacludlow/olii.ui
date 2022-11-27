@@ -47,7 +47,6 @@ export class DatabaseService {
 
   createEvent(event: EventRequest): Observable<Event> {
     const mappedEvent = mapEventRequest(event);
-    console.log(mappedEvent)
 
     const eventsCollectionRef = this.afs.collection('events');
 
@@ -129,7 +128,6 @@ export class DatabaseService {
     const user = this.afs.doc(`users/${uid}`).valueChanges({ idField: 'uid' }).pipe(
       map(user => mapUser(user))
     );
-
       
     return user;
   }

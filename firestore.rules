@@ -206,7 +206,7 @@ service cloud.firestore {
 
     function isAdminForGroup(request) {
       let groupId = request.resource.data.creator.creatorId;
-      let groupAdminsUids = get(/databases/$(database)/documents/groups/$(groupId)).data.admins; // Maybe this is causing the create event to null out?
+      let groupAdminsUids = get(/databases/$(database)/documents/groups/$(groupId)).data.admins;
 
       return groupAdminsUids.hasAll(request.auth.uid);
     }

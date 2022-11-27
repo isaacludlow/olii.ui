@@ -13,10 +13,7 @@ export class FirebaseAuthService implements OnDestroy {
   private subs = new SubSink();
 
   constructor(private auth: AngularFireAuth) {
-    this.subs.sink = this.auth.user.subscribe(user => {
-      console.log(user)
-      this.user.next(user)
-    });
+    this.subs.sink = this.auth.user.subscribe(user => this.user.next(user));
   }
 
   registerUser(email: string, password: string): Observable<firebase.auth.UserCredential> {

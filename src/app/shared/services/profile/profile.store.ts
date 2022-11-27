@@ -24,13 +24,8 @@ export class ProfileStore implements OnDestroy {
 		private userStore: UserStore
 	) {
 		this.subs.sink = this.userStore.user.subscribe(user => {
-			console.log(user)
 			if (user !== null) {
-				console.log('here')
-				this.dbService.getProfileById(user.Uid).subscribe(profile => {
-					console.log(profile)
-					this.currentProfile.next(profile)
-				});
+				this.dbService.getProfileById(user.Uid).subscribe(profile => this.currentProfile.next(profile));
 			}
 		});
 	}
@@ -77,10 +72,6 @@ export class ProfileStore implements OnDestroy {
 	getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{
 		return this.dbService.getSavedImagesAlbum(profileId, savedImagesAlbumId);
 	}
-
-	// getBase64Image(url: string) {
-	// 	return this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).pipe(switchMap(res => from(convertBlobToBase64(res.body))));
-	// }
 
 	ngOnDestroy(): void {
 		this.subs.unsubscribe();

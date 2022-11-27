@@ -148,7 +148,6 @@ export class CreateEventPage implements OnInit, OnDestroy {
 
   async onSubmit(): Promise<void> {
     const eventBase64Images = [];
-    console.log(this.eventImages)
     this.eventImages.forEach(async image => {
       eventBase64Images.push(await readPhotoAsBase64(image, this.platform))
     });

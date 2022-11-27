@@ -37,7 +37,6 @@ export class EventDetailsPage implements OnInit {
     this.subs.sink = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(paramMap.get('eventId')))
     ).subscribe(event => {
-      console.log(event)
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
     });

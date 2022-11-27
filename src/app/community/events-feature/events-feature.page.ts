@@ -27,7 +27,6 @@ export class EventsFeaturePage implements OnInit {
 
   ngOnInit(): void {
     this.profileStore.currentProfile.subscribe(profile => {
-      console.log(profile)
       // Waits for profile to load after initial login
       if (profile !== null) {
         this.allEvents$ = this.eventsStore.getAllEvents();

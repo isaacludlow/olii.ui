@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore, isFuture } from 'date-fns';
-import { BehaviorSubject, from, Observable, zip } from 'rxjs';
+import { BehaviorSubject, Observable, zip } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
@@ -9,8 +9,6 @@ import { EventData as EventData } from 'src/app/models/requests/community/events
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
 import { DatabaseService } from '../../bankend/database-service/database.service';
 import { EventsFeatureService } from './events-feature.service';
-import { v4 as uuidv4 } from 'uuid';
-import { async } from '@firebase/util';
 import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
 
 @Injectable({
@@ -92,22 +90,6 @@ export class EventsFeatureStore {
     );
   }
 
-  private createEventRequest(eventData: EventData, coverImageUrl: string, eventImagesUrls: string[]): EventRequest {
-    const event: EventRequest = {
-      CoverImageUrl: coverImageUrl,
-      Title: eventData.Title,
-      Description: eventData.Description,
-      Creator: eventData.Creator,
-      Date: eventData.Date,
-      PrivacyLevel: eventData.PrivacyLevel,
-      Location: eventData.Location,
-      ImagesUrls: eventImagesUrls,
-      AttendeesPreview: eventData.AttendeesPreview
-    };
-
-    return event;
-  }
-
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
     return this.dbService.getEventAttendees(eventId);
   }
@@ -145,6 +127,22 @@ export class EventsFeatureStore {
       case MyEventsFilterOptions.All:
         return this.myEvents.asObservable();
     }
+  }
+
+  private createEventRequest(eventData: EventData, coverImageUrl: string, eventImagesUrls: string[]): EventRequest {
+    const event: EventRequest = {
+      CoverImageUrl: coverImageUrl,
+      Title: eventData.Title,
+      Description: eventData.Description,
+      Creator: eventData.Creator,
+      Date: eventData.Date,
+      PrivacyLevel: eventData.PrivacyLevel,
+      Location: eventData.Location,
+      ImagesUrls: eventImagesUrls,
+      AttendeesPreview: eventData.AttendeesPreview
+    };
+
+    return event;
   }
 
   private retrieveGroupEvents(groupId: string): Observable<Event[]> {

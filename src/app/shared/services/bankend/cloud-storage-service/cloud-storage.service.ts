@@ -32,9 +32,11 @@ export class CloudStorageService {
     const uploadPercentage = task.percentageChanges();
     let downloadUrl: Observable<string>;
 
+    // The toPromise() forces this to wait for the finalize method to be called before returning the download url.
+    // Previously, the download url was getting retrieved before the image finished uploading causing an error.
     return from(task.snapshotChanges().pipe(
       finalize(() => downloadUrl = filePathRef.getDownloadURL())
-    ).toPromise())
+    ).toPromise()) // TODO: See if removing the from and the toPromise results in an error.
     .pipe(map(() => {
       return { UploadProgressPercentage$: uploadPercentage, DownloadUrl$: downloadUrl }
     }));

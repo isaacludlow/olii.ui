@@ -29,7 +29,6 @@ export function mapEvents(eventDocs: DocumentData): Event[] {
 }
 
 export function mapEvent(eventDoc: DocumentData, eventId?: string): Event {
-    console.log(eventDoc)
     const mappedEvent: Event = {
         EventId: eventId ?? eventDoc.id,
         CoverImageUrl: eventDoc.coverImageUrl,
