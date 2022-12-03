@@ -11,6 +11,6 @@ export interface EventRequest {
     Date: Date;
     PrivacyLevel: PrivacyLevelRequest;
     Location: EventLocation;
-    ImagesUrls: string[];
+    ImageUrls: string[];
     AttendeesPreview: ProfilePreview[];
 }

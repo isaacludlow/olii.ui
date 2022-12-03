@@ -33,7 +33,7 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
       if (change.before.get("date") === change.after.get("date")) {
-          return;
+        return;
       }
 
       const updatedEventData = change.after.data();
@@ -74,11 +74,10 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
       }
 
       const numberOfAttendeesInPreview = event
-          .get("attendeesPreview").length;   
+          .get("attendeesPreview").length;
       const numberOfAttendeesToGet = 5 - numberOfAttendeesInPreview;
 
       if (numberOfAttendeesInPreview < 5) {
-        
         const attendees = await admin.firestore()
             .collection("events/{eventId}/attendees")
             .offset(numberOfAttendeesInPreview)

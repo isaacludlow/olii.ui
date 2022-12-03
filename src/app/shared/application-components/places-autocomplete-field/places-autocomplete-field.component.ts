@@ -5,12 +5,13 @@ import gm = google.maps;
 @Component({
   selector: 'olii-places-autocomplete-field',
   template: `
-    <ion-input #searchField clearInput="true" type="text" [placeholder]="placeholder"></ion-input>
+    <ion-input #searchField clearInput="true" type="text" [placeholder]="placeholder" [value]="textInput"></ion-input>
   `,
   styleUrls: ['./places-autocomplete-field.component.scss']
 })
 export class PlacesAutocompleteFieldComponent implements OnInit {
   @Input() placeholder: string;
+  @Input() textInput: string = null; // This is a quick and dirty way to set the text value when needing to prefill text, such as on the edit event page.
   @Input() responseType: Array<AutocompleteResponseTypes>;
   @Input() responseFieldType: Array<AutocompleteResponseFields>;
   @Output() autocompletedResult = new EventEmitter<gm.places.PlaceResult>();

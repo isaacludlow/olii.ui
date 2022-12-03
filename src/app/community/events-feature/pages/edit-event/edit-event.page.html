@@ -1,6 +1,7 @@
+<!-- TODO: The collapse style here is "fade", but in the header inside the ion-content it's "condense". Should those be the same? -->
 <ion-header collapse="fade" mode="ios">
     <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Create Event</ion-title>
+      <ion-title color="light">Update Event</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -13,23 +14,23 @@
                         <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
                     </olii-colored-square-background>
                 </div>
-                <h2 class="color-light">Create Event</h2>
+                <h2 class="color-light">Update Event</h2>
             </div>
         </ion-toolbar>
     </ion-header>
 
-    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()" #form="ngForm">
+    <form [formGroup]="editEventForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <div class="event-details">
             <h4>Event details</h4>
             <ion-item>
                 <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
             </ion-item>
-            <ion-note color="danger" *ngIf="(createEventForm.controls.title.dirty || form.submitted) && !createEventForm.controls.title.valid">Event title must be at least 5 characters long</ion-note>
+            <ion-note color="danger" *ngIf="(editEventForm.controls.title.dirty || form.submitted) && !editEventForm.controls.title.valid">Event title must be at least 5 characters long</ion-note>
 
             <ion-item>
                 <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
-            <ion-note color="danger" *ngIf="(createEventForm.controls.description.dirty || form.submitted) && !createEventForm.controls.description.valid">Event description must be at lease 8 characters long</ion-note>
+            <ion-note color="danger" *ngIf="(editEventForm.controls.description.dirty || form.submitted) && !editEventForm.controls.description.valid">Event description must be at lease 8 characters long</ion-note>
 
             <ion-item id="open-modal" class="icon-spacer">
                 <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
@@ -39,7 +40,14 @@
             <ion-item class="icon-spacer">
                 <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
                 <!-- TODO: Include a location and radius to limit search results to more local around the user instead of the whole world. -->
-                <olii-places-autocomplete-field (autocompletedResult)="setEventLocation($event)" [responseType]="[]" [responseFieldType]="['name', 'geometry']" placeholder="Search for a location"></olii-places-autocomplete-field>
+                <olii-places-autocomplete-field
+                    *ngIf="originalEvent"
+                    (autocompletedResult)="setEventLocation($event)"
+                    [responseType]="[]"
+                    [responseFieldType]="['name', 'geometry']"
+                    placeholder="Search for a location"
+                    [textInput]="originalEvent.Location.DisplayName">
+                </olii-places-autocomplete-field>
             </ion-item>
         </div>
         <div class="location">
@@ -96,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <ion-button type="submit" [disabled]="!createEventForm.valid" mode="ios">Create Event</ion-button>
+        <ion-button type="submit" [disabled]="!editEventForm.valid" mode="ios">Update Event</ion-button>
     </form>
     <ion-modal trigger="open-modal" class="date-picker">
         <ng-template>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { from, Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { from, Observable, zip } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,14 @@ export class CloudStorageService {
     .pipe(map(() => {
       return { UploadProgressPercentage$: uploadPercentage, DownloadUrl$: downloadUrl }
     }));
+  }
+
+  uploadFiles(base64EncodedStrings: string[], cloudFilePath: string): Observable<string[]> {
+    const downloadUrls = zip(...base64EncodedStrings.map(imageData => this.uploadFile(imageData, cloudFilePath))).pipe(
+      switchMap(uploadFileObservableList => zip(uploadFileObservableList.map(obs => obs.DownloadUrl$)))
+    );
+
+    return downloadUrls;
   }
 
   // Might need this in the future to block certain file types.
