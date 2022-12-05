@@ -29,8 +29,6 @@ export function mapEvents(eventDocs: DocumentData): Event[] {
 }
 
 export function mapEvent(eventDoc: DocumentData, eventId?: string): Event {
-    console.log(eventDoc);
-
     const mappedEvent: Event = {
         EventId: eventId ?? eventDoc.id,
         CoverImageUrl: eventDoc.coverImageUrl,
@@ -231,8 +229,7 @@ export function mapEventRequest(eventRequest: Event) {
             displayName: eventRequest.Location.DisplayName
         },
         privacyLevel: eventRequest.PrivacyLevel,
-        title: eventRequest.Title,
-        totalAttendees: eventRequest.TotalAttendees
+        title: eventRequest.Title
     };
 
     return newEventRequest;

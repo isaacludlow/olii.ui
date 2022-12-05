@@ -178,13 +178,14 @@ export class EditEventPage implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    const eventId = this.originalEvent.EventId;
     if (this.coverImageHasBeenUpdated(this.originalEvent.CoverImageUrl, this.eventCoverImage.webPath)) {
-      const coverImageUrl = await this.eventStore.uploadCoverImage(this.eventCoverImage, this.platform).toPromise();
+      const coverImageUrl = await this.eventStore.uploadCoverImage(this.eventCoverImage, eventId, this.platform).toPromise();
       this.editEventForm.get('coverImageUrl').setValue(coverImageUrl);
     }
 
     if (this.imagesHaveBeenUpdated(this.originalEvent.ImageUrls, this.eventImages.map(image => image.webPath))) {
-      const imageUrls = await this.eventStore.uploadImages(this.eventImages, this.platform).toPromise();
+      const imageUrls = await this.eventStore.uploadImages(this.eventImages, eventId, this.platform).toPromise();
       this.editEventForm.get('imageUrls').setValue(imageUrls);
     }
 

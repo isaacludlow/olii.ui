@@ -42,14 +42,6 @@ export class CloudStorageService {
     }));
   }
 
-  uploadFiles(base64EncodedStrings: string[], cloudFilePath: string): Observable<string[]> {
-    const downloadUrls = zip(...base64EncodedStrings.map(imageData => this.uploadFile(imageData, cloudFilePath))).pipe(
-      switchMap(uploadFileObservableList => zip(uploadFileObservableList.map(obs => obs.DownloadUrl$)))
-    );
-
-    return downloadUrls;
-  }
-
   // Might need this in the future to block certain file types.
   private findFileType(base64EncodedString: string): string {
     const imageString = base64EncodedString.split(',').pop()

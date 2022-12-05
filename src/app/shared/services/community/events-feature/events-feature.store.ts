@@ -13,6 +13,7 @@ import { EventRequest } from 'src/app/models/requests/community/events/event-req
 import { GalleryPhoto } from '@capacitor/camera';
 import { Platform } from '@ionic/angular';
 import { readPhotoAsBase64 } from 'src/app/shared/utilities';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -109,20 +110,21 @@ export class EventsFeatureStore {
     return this.eventsService.cancelRsvpToEvent(profileId, eventId);
   }
 
-  // TODO: Add the uuid4 method so each file has a unique name.
-  uploadCoverImage(coverImage: GalleryPhoto, platform: Platform) {
+  uploadCoverImage(coverImage: GalleryPhoto, eventId: string, platform: Platform): Observable<string> {
     return from(readPhotoAsBase64(coverImage, platform)).pipe(
-      switchMap(imageData => this.cloudStorageService.uploadFile(imageData, 'events/cover-images'))
+      switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `events/${eventId}/cover-image`)),
+      switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
     );
   }
 
-  // TODO: Add the uuid4 method so each file has a unique name.
-  uploadImages(images: GalleryPhoto[], platform: Platform) {
+  uploadImages(images: GalleryPhoto[], eventId: string, platform: Platform): Observable<string[]> {
     const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
 
     const downloadUrls$ = zip(...base64ImageObservables).pipe(
-      switchMap(base64Images => zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, 'events/images')))),
-      switchMap(uploadFileObservableList => zip(uploadFileObservableList.map(obs => obs.DownloadUrl$)))
+      switchMap(base64Images =>
+        zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `events/${eventId}/images/${uuidv4()}`)))
+      ),
+      switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
     );
 
     return downloadUrls$;
@@ -149,22 +151,6 @@ export class EventsFeatureStore {
       case MyEventsFilterOptions.All:
         return this.myEvents.asObservable();
     }
-  }
-
-  private createEventRequest(eventData: EventData, coverImageUrl: string, eventImagesUrls: string[]): EventRequest {
-    const event: EventRequest = {
-      CoverImageUrl: coverImageUrl,
-      Title: eventData.Title,
-      Description: eventData.Description,
-      Creator: eventData.Creator,
-      Date: eventData.Date,
-      PrivacyLevel: eventData.PrivacyLevel,
-      Location: eventData.Location,
-      ImageUrls: eventImagesUrls,
-      AttendeesPreview: eventData.AttendeesPreview
-    };
-
-    return event;
   }
 
   private retrieveGroupEvents(groupId: string): Observable<Event[]> {

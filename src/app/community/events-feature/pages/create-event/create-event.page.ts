@@ -48,7 +48,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
       longitude: [null, Validators.required]
     }),
     privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
-    images: [null]
+    imageUrls: [[]]
   },
     { updateOn: 'blur' }
   );
@@ -135,13 +135,13 @@ export class CreateEventPage implements OnInit, OnDestroy {
     let numberOfImagesAllowedToUpload = 9 - this.eventImages.length;
     this.subs.sink = selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => {
       this.eventImages.push(...galleryPhotos);
-      this.createEventForm.get('images').setValue(this.eventImages);
+      this.createEventForm.get('imageUrls').setValue(this.eventImages);
     });
   }
 
   removeEventImage(imageIndex: number): void {
     this.eventImages.splice(imageIndex, 1);
-    this.createEventForm.get('images').setValue(this.eventImages);
+    this.createEventForm.get('imageUrls').setValue(this.eventImages);
   }
 
   sanitizeUrl(url: string): string {
@@ -149,13 +149,16 @@ export class CreateEventPage implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
-    const coverImageUrl = await this.eventStore.uploadCoverImage(this.eventCoverImage, this.platform).toPromise();
+    const newEventId = this.dbService.generateDocumentId();
+    const coverImageUrl = await this.eventStore.uploadCoverImage(this.eventCoverImage, newEventId, this.platform).toPromise();
     this.createEventForm.get('coverImageUrl').setValue(coverImageUrl);
 
-    const imageUrls = await this.eventStore.uploadImages(this.eventImages, this.platform).toPromise();
-    this.createEventForm.get('imageUrls').setValue(imageUrls);
+    if (this.eventImages.length > 0) {
+      const imageUrls = await this.eventStore.uploadImages(this.eventImages, newEventId, this.platform).toPromise();
+      this.createEventForm.get('imageUrls').setValue(imageUrls);
+    }
 
-    const event = this.createEventRequest(this.createEventForm);
+    const event = this.createEventRequest(this.createEventForm, newEventId);
 
     this.subs.sink = this.eventStore.createEvent(event).subscribe(() => {
       this.createEventForm.reset();
@@ -171,9 +174,9 @@ export class CreateEventPage implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  private createEventRequest(form: FormGroup): Event {
+  private createEventRequest(form: FormGroup, newEventId: string): Event {
     const eventRequest: Event = {
-      EventId: this.dbService.generateDocumentId(),
+      EventId: newEventId,
       CoverImageUrl: form.get('coverImageUrl').value,
       Title: form.get('title').value,
       Description: form.get('description').value,
@@ -194,6 +197,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
       AttendeesPreview: [],
       TotalAttendees: 0
     };
+    console.log(form.get('imageUrls').value)
 
     return eventRequest;
   }
