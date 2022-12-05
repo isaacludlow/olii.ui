@@ -8,14 +8,13 @@ import { IonModal, Platform } from '@ionic/angular';
 import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { EventData } from 'src/app/models/requests/community/events/event-data.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
-import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { selectImages } from 'src/app/shared/utilities';
 
 @Component({
   templateUrl: './create-event.page.html',
@@ -187,7 +186,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
         ImageUrl: form.get('creator.imageUrl').value
       },
       Date: new Date(form.get('dateTime').value),
-      PrivacyLevel: PrivacyLevel.Public,
+      PrivacyLevel: form.get('privacyLevel').value as PrivacyLevel,
       Location: {
         Latitude: form.get('location.latitude').value,
         Longitude: form.get('location.longitude').value,
@@ -197,7 +196,6 @@ export class CreateEventPage implements OnInit, OnDestroy {
       AttendeesPreview: [],
       TotalAttendees: 0
     };
-    console.log(form.get('imageUrls').value)
 
     return eventRequest;
   }

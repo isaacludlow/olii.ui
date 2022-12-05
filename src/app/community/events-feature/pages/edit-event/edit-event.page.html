@@ -25,12 +25,20 @@
             <ion-item>
                 <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
             </ion-item>
-            <ion-note color="danger" *ngIf="(editEventForm.controls.title.dirty || form.submitted) && !editEventForm.controls.title.valid">Event title must be at least 5 characters long</ion-note>
+            <ion-note
+                color="danger"
+                *ngIf="(editEventForm.controls.title.touched || form.submitted) && !editEventForm.controls.title.valid">
+                Event title must be at least 5 characters long
+            </ion-note>
 
             <ion-item>
                 <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
-            <ion-note color="danger" *ngIf="(editEventForm.controls.description.dirty || form.submitted) && !editEventForm.controls.description.valid">Event description must be at lease 8 characters long</ion-note>
+            <ion-note
+                color="danger"
+                *ngIf="(editEventForm.controls.description.touched || form.submitted) && !editEventForm.controls.description.valid">
+                Event description must be at lease 8 characters long
+            </ion-note>
 
             <ion-item id="open-modal" class="icon-spacer">
                 <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
