@@ -24,12 +24,20 @@
             <ion-item>
                 <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
             </ion-item>
-            <ion-note color="danger" *ngIf="(createEventForm.controls.title.dirty || form.submitted) && !createEventForm.controls.title.valid">Event title must be at least 5 characters long</ion-note>
+            <ion-note
+                color="danger"
+                *ngIf="(createEventForm.controls.title.touched || form.submitted) && !createEventForm.controls.title.valid">
+                Event title must be at least 5 characters long
+            </ion-note>
 
             <ion-item>
                 <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
-            <ion-note color="danger" *ngIf="(createEventForm.controls.description.dirty || form.submitted) && !createEventForm.controls.description.valid">Event description must be at lease 8 characters long</ion-note>
+            <ion-note
+                color="danger"
+                *ngIf="(createEventForm.controls.description.touched || form.submitted) && !createEventForm.controls.description.valid">
+                Event description must be at lease 8 characters long
+            </ion-note>
 
             <ion-item id="open-modal" class="icon-spacer">
                 <olii-icon-with-purple-square-background name="today-outline"></olii-icon-with-purple-square-background>
@@ -39,7 +47,12 @@
             <ion-item class="icon-spacer">
                 <olii-icon-with-purple-square-background name="location-outline"></olii-icon-with-purple-square-background>
                 <!-- TODO: Include a location and radius to limit search results to more local around the user instead of the whole world. -->
-                <olii-places-autocomplete-field (autocompletedResult)="setEventLocation($event)" [responseType]="[]" [responseFieldType]="['name', 'geometry']" placeholder="Search for a location"></olii-places-autocomplete-field>
+                <olii-places-autocomplete-field
+                    (autocompletedResult)="setEventLocation($event)"
+                    [responseType]="[]"
+                    [responseFieldType]="['name', 'geometry']"
+                    placeholder="Search for a location">
+                </olii-places-autocomplete-field>
             </ion-item>
         </div>
         <div class="location">
