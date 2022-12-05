@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { SubSink } from 'subsink';
   templateUrl: './event-details.page.html',
   styleUrls: ['./event-details.page.scss']
 })
-export class EventDetailsPage implements OnInit {
+export class EventDetailsPage implements OnInit, OnDestroy {
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
   map: google.maps.Map;
   mapMarker: google.maps.Marker;
@@ -32,6 +32,7 @@ export class EventDetailsPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // TODO: Need to change this to wait for the currentProfile to come back from the db on reload.
     this.currentProfile = this.profileStore.currentProfile.value;
 
     this.subs.sink = this.route.paramMap.pipe(
@@ -46,7 +47,7 @@ export class EventDetailsPage implements OnInit {
   }
 
   rsvpToEvent() {
-    this.eventsStore.rsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
+    this.subs.sink = this.eventsStore.rsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
     .subscribe(isRsvp => {
       this.attending = isRsvp;
       
@@ -61,7 +62,7 @@ export class EventDetailsPage implements OnInit {
   }
 
   cancelRsvpToEvent() {
-    this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
+    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
     .subscribe(isCanceledRsvp => {
       this.attending = !isCanceledRsvp;
       removeAttendeeFromCachedEvents(this.currentProfile.ProfileId, this.event.EventId, this.eventsStore);
@@ -88,5 +89,9 @@ export class EventDetailsPage implements OnInit {
 
   navigateBack(): void {
     this.router.navigate(['community/events']);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

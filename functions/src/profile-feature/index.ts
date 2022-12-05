@@ -42,8 +42,8 @@ export const addFirstFiveSavedImagesAlbumsToPreview = functions.firestore
 export const updateProfilePreviewAcrossDatabase = functions.firestore
     .document("profiles/{profileId}")
     .onUpdate(async (change, context) => {
-        const oldProfile = change.before.data();
-        const newProfile = change.after.data();
+      const oldProfile = change.before.data();
+      const newProfile = change.after.data();
 
       const hasNameFieldsOrProfilePictureChanged =
         oldProfile.firstName !== newProfile.firstName ||

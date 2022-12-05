@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { from, Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { from, Observable, zip } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

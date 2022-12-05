@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, Observable, ObservedValueOf, zip } from 'rxjs';
-import { catchError, map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { from, Observable, zip } from 'rxjs';
+import { map, mergeAll, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { LatestGroupPost } from 'src/app/models/dto/community/groups/group-latest-post.dto';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
-import { EventData } from 'src/app/models/requests/community/events/event-data.dto';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
 import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
@@ -19,6 +16,10 @@ import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGr
 })
 export class DatabaseService {
   constructor(private afs: AngularFirestore) { }
+
+  generateDocumentId(): string {
+    return this.afs.createId();
+  }
   
   getAllEvents(): Observable<Event[]> {
     const today = new Date();
@@ -45,21 +46,21 @@ export class DatabaseService {
     return event;
   }
 
-  createEvent(event: EventRequest): Observable<Event> {
+  createEvent(event: Event): Observable<void> {
     const mappedEvent = mapEventRequest(event);
 
     const eventsCollectionRef = this.afs.collection('events');
+    // Creates a reference to the new event doc that does not exists.
+    // Source: https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
+    const newEventDocRef = eventsCollectionRef.doc(event.EventId);
 
-    return from(eventsCollectionRef.add(mappedEvent)).pipe(
-      switchMap(eventRef => from(eventRef.get())),
-      map(event => mapEvent(event.data(), event.id))
-    );
+    return from(newEventDocRef.set(mappedEvent)); // set() creates a new doc is it doesn't exist.
   }
 
-  editEvent(eventData: Event): Observable<void> {
-    const mappedEvent = mapEditEvent(eventData);
+  editEvent(eventRequest: Event): Observable<void> {
+    const mappedEvent = mapEditEvent(eventRequest);
 
-    return from(this.afs.doc(`events/${eventData.EventId}`).update(mappedEvent));
+    return from(this.afs.doc(`events/${eventRequest.EventId}`).update(mappedEvent));
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {

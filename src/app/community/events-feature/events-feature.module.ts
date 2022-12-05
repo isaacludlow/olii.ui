@@ -13,6 +13,7 @@ import { MyEventsPage } from './pages/my-events/my-events.page';
 import { CreateEventPage } from './pages/create-event/create-event.page';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EventAttendeesPage } from './pages/event-attendees/event-attendees.page';
+import { EditEventPage } from './pages/edit-event/edit-event.page';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EventAttendeesPage } from './pages/event-attendees/event-attendees.page
     EventDetailsPage,
     MyEventsPage,
     CreateEventPage,
-    EventAttendeesPage
+    EventAttendeesPage,
+    EditEventPage
   ],
   imports: [
     CommonModule,

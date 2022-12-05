@@ -49,7 +49,7 @@ import { environment } from 'src/environments/environment';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule.enablePersistence({ synchronizeTabs: true }),
+    AngularFirestoreModule/*.enablePersistence({ synchronizeTabs: true })*/,
     AngularFireAuthModule,
     AngularFireAuthGuardModule,
     AngularFireRemoteConfigModule,

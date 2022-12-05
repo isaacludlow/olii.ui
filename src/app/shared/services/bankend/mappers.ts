@@ -211,7 +211,7 @@ export function mapUser(userDoc: any): User {
 }
 
 // ============================================ Request Mappers ====================================================
-export function mapEventRequest(eventRequest: EventRequest) {
+export function mapEventRequest(eventRequest: Event) {
     const newEventRequest = {
         attendeesPreview: eventRequest.AttendeesPreview,
         coverImageUrl: eventRequest.CoverImageUrl,
@@ -223,7 +223,7 @@ export function mapEventRequest(eventRequest: EventRequest) {
         },
         date: eventRequest.Date,
         description: eventRequest.Description,
-        imageUrls: eventRequest.ImagesUrls,
+        imageUrls: eventRequest.ImageUrls,
         location: {
             coordinates: new GeoPoint(eventRequest.Location.Latitude, eventRequest.Location.Longitude),
             displayName: eventRequest.Location.DisplayName

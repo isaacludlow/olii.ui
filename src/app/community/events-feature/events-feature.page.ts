@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
-import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'events-feature',
   templateUrl: './events-feature.page.html',
   styleUrls: ['./events-feature.page.scss']
 })
-export class EventsFeaturePage implements OnInit {
+export class EventsFeaturePage implements OnInit, OnDestroy {
   myEvents$: Observable<Event[]>;
   allEvents$: Observable<Event[]>;
   profile: Profile;
+  private subs = new SubSink();
 
   constructor(
     private eventsStore: EventsFeatureStore,
@@ -49,5 +50,9 @@ export class EventsFeaturePage implements OnInit {
         } 
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
