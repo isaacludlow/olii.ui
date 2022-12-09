@@ -35,3 +35,7 @@ export const addFirstFiveMembersToPreview = functions.firestore
         });
       }
     });
+
+// TODO: Need to add a function to sum up all the members in the group
+// and put that number in the totalMembers field on the group document.
+// If the field does not already exist the function should create it.

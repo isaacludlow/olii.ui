@@ -42,7 +42,7 @@ export class GroupsFeaturePage implements OnInit {
           map(group => group.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
         );
 
-        const earliestPostDate = sub(new Date(), { days: 7 });
+        const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
       }
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
@@ -6,11 +6,12 @@ import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feat
 import { SubSink } from 'subsink';
 import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
-import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
-import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
+import { selectImages } from 'src/app/shared/utilities';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
+import { Group } from 'src/app/models/dto/community/groups/group.dto';
 
 @Component({
   templateUrl: './create-group.page.html',
@@ -19,12 +20,12 @@ import { Platform } from '@ionic/angular';
 export class CreateGroupPage {
   friends: Profile[];
   subs = new SubSink();
-  groupPicture: GalleryPhoto;
+  groupCoverImage: GalleryPhoto;
 
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    // groupVisibility: [null, Validators.required]
+    privacyLevel: [PrivacyLevel.Public, Validators.required]
   });
 
   constructor(
@@ -34,10 +35,11 @@ export class CreateGroupPage {
     private profileStore: ProfileStore, 
     private router: Router,
     private groupStore: GroupFeatureStore,
-    ) { }
+    private dbService: DatabaseService
+  ) { }
 
   setGroupPicture() {
-    this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.groupPicture = galleryPhotos.shift());
+    this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.groupCoverImage = galleryPhotos.shift());
   }
 
   sanitizeUrl(url: string): string {
@@ -45,17 +47,32 @@ export class CreateGroupPage {
   }
 
   async createGroup() {
-    const newGroup: GroupRequest = {
-      GroupId: '0',
-      CoverImageData: await readPhotoAsBase64(this.groupPicture, this.platform),
+    const profile = this.profileStore.currentProfile.value;
+    const newGroupId = this.dbService.generateDocumentId();
+
+    const newGroup: Group = {
+      GroupId: newGroupId,
+      CoverImageUrl: await this.groupStore.uploadGroupCoverImage(this.groupCoverImage, newGroupId, this.platform).toPromise(),
       Name: this.createGroupForm.get('name').value,
       Description: this.createGroupForm.get('description').value,
-      PrivacyLevelParamId: PrivacyLevelRequest.Public
+      PrivacyLevel: this.createGroupForm.get('privacyLevel').value,
+      Admins: [
+        {
+          ProfileId: profile.ProfileId,
+          FirstName: profile.FirstName,
+          LastName: profile.LastName,
+          ProfilePictureUrl: profile.ProfilePictureUrl
+        }
+      ],
+      Posts: [],
+      Members: [],
+      MembersPreview: [],
+      Events: []
     };
 
-    this.subs.sink = this.groupStore.createGroup(this.profileStore.currentProfile.value.ProfileId, newGroup).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.GroupId]);
-    })
+    this.subs.sink = this.groupStore.createGroup(newGroup).subscribe(() => {
+      this.router.navigate(['community/groups/group/' + newGroupId]);
+    });
   }
 
   ngOnDestroy(): void {

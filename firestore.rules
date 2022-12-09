@@ -46,6 +46,12 @@ service cloud.firestore {
         allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
       }
 
+      match /myGroups/{myGroupId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+      }
+
       function isProfileDataValid(requestData) {
       // Require first and last name. All other fields are optional.
       return (requestData.keys().hasAll(['firstName', 'lastName']))
@@ -128,9 +134,9 @@ service cloud.firestore {
         && isAdminForGroup(request);
 
       function isGroupDataValid(requestData) {
-        return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel'])
+        return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel', 'totalMembers'])
           && requestData.keys().hasOnly(
-            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel']
+            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel', 'totalMembers']
           )
           && requestData.admins is list
           && isProfilePreviewDataValid(requestData.admins[0])
@@ -138,7 +144,9 @@ service cloud.firestore {
           && requestData.description is string
           && requestData.get('membersPreview', []) is list
           && requestData.name is string
-          && requestData.privacyLevel is string;
+          && requestData.privacyLevel is string
+          && requestData.totalMembers is int
+          && requestData.totalMembers == 0;
       }
     }
 
@@ -213,9 +221,10 @@ service cloud.firestore {
 
     function isProfilePreviewDataValid(profilePreviewData) {
       return profilePreviewData is map
+        && profilePreviewData.profileId is string
         && profilePreviewData.firstName is string
         && profilePreviewData.lastName is string
-        && profilePreviewData.profileId is string;
+        && profilePreviewData.profilePictureUrl is string;
     }
   }
 }

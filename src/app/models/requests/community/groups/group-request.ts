@@ -1,9 +1,11 @@
-import { PrivacyLevelRequest } from "src/app/models/requests/misc/privacy-level-request.do";
+import { PrivacyLevel } from "src/app/models/dto/misc/privacy-level.dto";
+import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 
 export interface GroupRequest {
     GroupId: string;
-    CoverImageData: string;
+    CoverImageUrl: string;
     Name: string;
     Description: string;
-    PrivacyLevelParamId: PrivacyLevelRequest;
+    PrivacyLevel: PrivacyLevel;
+    Admins: ProfilePreview[];
 }

@@ -13,6 +13,7 @@ import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.
 import { User } from "src/app/models/dto/user/user.dto";
 import { EventData } from "src/app/models/requests/community/events/event-data.dto";
 import { EventRequest } from "src/app/models/requests/community/events/event-request.dto";
+import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -81,16 +82,16 @@ export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
 // #endregion
 
 // #region Group mappers
-export function mapGroup(groupDoc: any): Group {
+export function mapGroup(groupDoc: any, groupId?: string): Group {
     const group: Group = {
-        GroupId: groupDoc.id, 
+        GroupId: groupId ?? groupDoc.id, 
         CoverImageUrl: groupDoc.coverImageUrl,
         Name: groupDoc.name,
         Description: groupDoc.description,
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
-        Admins: [...groupDoc.admins.map(admin => mapProfilePreview(admin))],
-        MembersPreview: [...groupDoc.membersPreview.map(member => mapProfilePreview(member))],
+        Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
+        MembersPreview: groupDoc.membersPreview.map(member => mapProfilePreview(member)),
         Members: [],
         Events: []
     };
@@ -102,7 +103,7 @@ function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
     const groupPreview: GroupPreview = {
         GroupId: groupPreviewDoc.id,
         Name: groupPreviewDoc.name,
-        CoverImageUrl: groupPreviewDoc.imageUrl
+        CoverImageUrl: groupPreviewDoc.coverImageUrl
     };
 
     return groupPreview;
@@ -114,9 +115,9 @@ export function mapGroupPosts(groupPostDocs: any): GroupPost[] {
     const mappedGroupPosts: GroupPost[] = [];
 
     for (let i = 0; i < groupPostDocs.length; i++) {
-        const eventDoc = groupPostDocs[i];
+        const groupPost = groupPostDocs[i];
 
-        mappedGroupPosts.push(mapGroupPost(eventDoc));
+        mappedGroupPosts.push(mapGroupPost(groupPost));
     }
 
     return mappedGroupPosts;
@@ -126,7 +127,7 @@ function mapGroupPost(groupPost: any): GroupPost {
     const mappedGroupPost: GroupPost = {
         GroupPostId: groupPost.id,
         Author: mapProfilePreview(groupPost.author),
-        GroupPreview: mapGroupPreview(groupPost.group),
+        GroupPreview: mapGroupPreview(groupPost.groupPreview),
         Content: groupPost.content,
         Date: groupPost.date.toDate(),
         ImageUrls: groupPost.imageUrls,
@@ -236,7 +237,7 @@ export function mapEventRequest(eventRequest: Event) {
 }
 
 export function mapEditEvent(event: Event) {
-    const newEventRequest = {
+    const mappedEvent = {
         attendeesPreview: event.AttendeesPreview,
         coverImageUrl: event.CoverImageUrl,
         creator: {
@@ -256,5 +257,30 @@ export function mapEditEvent(event: Event) {
         title: event.Title
     };
 
-    return newEventRequest;
+    return mappedEvent;
+}
+
+export function mapGroupRequest(group: Group) {
+    const mappedGroup = {
+        admins: group.Admins.map(admin => mapProfilePreviewRequest(admin)),
+        coverImageUrl: group.CoverImageUrl,
+        description: group.Description,
+        membersPreview: [],
+        name: group.Name,
+        privacyLevel: group.PrivacyLevel,
+        totalMembers: 0
+    };
+
+    return mappedGroup;
+}
+
+function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {
+    const profilePreview = {
+        profileId: profilePreviewDoc.ProfileId,
+        firstName: profilePreviewDoc.FirstName,
+        lastName: profilePreviewDoc.LastName,
+        profilePictureUrl: profilePreviewDoc.ProfilePictureUrl
+    };
+
+    return profilePreview;
 }

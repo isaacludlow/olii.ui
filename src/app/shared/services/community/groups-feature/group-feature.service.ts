@@ -74,7 +74,7 @@ export class GroupFeatureService {
     }
 
     updateGroup(updatedGroupRequest: GroupRequest): Observable<Group> {
-        const response = this.httpClient.put<Group>(`/group/${updatedGroupRequest.GroupId}`, updatedGroupRequest, {
+        const response = this.httpClient.put<Group>(`/group/${updatedGroupRequest}`, updatedGroupRequest, {
         });
           
         return response;

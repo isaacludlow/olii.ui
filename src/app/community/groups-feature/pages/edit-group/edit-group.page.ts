@@ -13,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -63,13 +64,14 @@ export class EditGroupPage implements OnInit {
   async updateGroup() {
     const updatedGroup: GroupRequest = {
       GroupId: this.group.GroupId,
-      CoverImageData: this.editGroupForm.get('coverImage').value ? await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform) : null,
+      CoverImageUrl: this.editGroupForm.get('coverImage').value ? await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform) : null,
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevelParamId: PrivacyLevelRequest.Public
+      PrivacyLevel: PrivacyLevel.Public,
+      Admins: this.group.Admins
     }
   
-    this.subs.sink = this.groupStore.updateGroup(updatedGroup).subscribe(res => {
+    this.subs.sink = this.groupStore.updateGroup(updatedGroup, this.group.GroupId).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }

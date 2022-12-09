@@ -110,14 +110,14 @@ export class EventsFeatureStore {
     return this.eventsService.cancelRsvpToEvent(profileId, eventId);
   }
 
-  uploadCoverImage(coverImage: GalleryPhoto, eventId: string, platform: Platform): Observable<string> {
+  uploadEventCoverImage(coverImage: GalleryPhoto, eventId: string, platform: Platform): Observable<string> {
     return from(readPhotoAsBase64(coverImage, platform)).pipe(
       switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `events/${eventId}/cover-image`)),
       switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
     );
   }
 
-  uploadImages(images: GalleryPhoto[], eventId: string, platform: Platform): Observable<string[]> {
+  uploadEventImages(images: GalleryPhoto[], eventId: string, platform: Platform): Observable<string[]> {
     const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
 
     const downloadUrls$ = zip(...base64ImageObservables).pipe(
