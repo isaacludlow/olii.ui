@@ -46,7 +46,7 @@ export const addToMyGroupsWhenAddedAsGroupMember = functions.firestore
 
       admin.firestore()
           .collection(`profiles/${context.auth?.uid}/myGroups`)
-          .doc(context.params.memberId) // Creates a new document since it won't exist.
+          .doc(context.params.groupId) // Creates a new document since it won't exist.
           .set(myGroupData);
     });
 
@@ -55,7 +55,7 @@ export const removeFromMyGroupsWhenRemovedAsGroupMember = functions.firestore
     .onDelete(async (snapshot, context) => {
       admin.firestore()
           .doc(
-              `profiles/${context.auth?.uid}/myGroups/${context.params.memberId}`
+              `profiles/${context.auth?.uid}/myGroups/${context.params.groupId}`
           )
           .delete();
     });
