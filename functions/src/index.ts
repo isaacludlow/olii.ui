@@ -24,6 +24,10 @@ export const addToMyGroupsWhenAddedAsGroupMember =
     groupFunctions.addToMyGroupsWhenAddedAsGroupMember;
 export const removeFromMyGroupsWhenRemovedAsGroupMember =
     groupFunctions.removeFromMyGroupsWhenRemovedAsGroupMember;
+export const addToMyGroupsWhenNewGroupIsCreated =
+    groupFunctions.addToMyGroupsWhenNewGroupIsCreated;
+export const removeFromMyGroupsWhenRemovedAsGroupAdmin =
+    groupFunctions.removeFromMyGroupsWhenRemovedAsGroupAdmin;
 export const sumAllMembersWhenUpdated =
     groupFunctions.sumAllMembersWhenUpdated;
 
