@@ -20,6 +20,12 @@ export const addFirstFiveAttendeesToPreview =
 // Group functions
 export const addFirstFiveMembersToPreview =
     groupFunctions.addFirstFiveMembersToPreview;
+export const addToMyGroupsWhenAddedAsGroupMember =
+    groupFunctions.addToMyGroupsWhenAddedAsGroupMember;
+export const removeFromMyGroupsWhenRemovedAsGroupMember =
+    groupFunctions.removeFromMyGroupsWhenRemovedAsGroupMember;
+export const sumAllMembersWhenUpdated =
+    groupFunctions.sumAllMembersWhenUpdated;
 
 // Profile functions
 export const addFirstFiveSavedImagesAlbumsToPreview =
