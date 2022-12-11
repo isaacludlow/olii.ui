@@ -7,8 +7,11 @@ import { GroupRequest } from "src/app/models/requests/community/groups/group-req
 import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
 import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
-import { LatestGroupPost } from "src/app/models/dto/community/groups/group-latest-post.dto";
 import { DatabaseService } from "../../bankend/database-service/database.service";
+import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-storage.service";
+import { readPhotoAsBase64 } from "src/app/shared/utilities";
+import { GalleryPhoto } from "@capacitor/camera";
+import { Platform } from "@ionic/angular";
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +22,11 @@ export class GroupFeatureStore {
     private _myGroups = new BehaviorSubject<Group[]>([]);
     private _manualOverrideForGroupSection = new BehaviorSubject<Section>('feed');
 
-    constructor(private groupService: GroupFeatureService, private dbService: DatabaseService) {}
+    constructor(
+        private groupService: GroupFeatureService,
+        private dbService: DatabaseService,
+        private cloudStorageService: CloudStorageService
+    ) {}
 
 	set groupSection(section: Section) {
 		this._manualOverrideForGroupSection.next(section);
@@ -70,37 +77,33 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(creatorProfileId: string, groupRequest: GroupRequest): Observable<Group> {
-        return this.groupService.createGroup(creatorProfileId, groupRequest).pipe(
-            tap(group => {
-                if (this._allGroups.value === null)
-                    this._allGroups.next([group]);
-                else
-                    this._allGroups.next([...this._allGroups.value, group]);
-
-                if (this._myGroups.value === null)
-                    this._myGroups.next([group]);
-                else
-                    this._myGroups.next([...this._myGroups.value, group]);
-            })
-        );
+    createGroup(group: Group): Observable<void> {
+        return this.dbService.createGroup(group);
     }
 
-    updateGroup(groupRequest: GroupRequest): Observable<Group> {
-        return this.groupService.updateGroup(groupRequest).pipe(
-            tap(group => {
-                let allGroups = this._allGroups.value;
-                let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-                allGroups.splice(allGroupsIndex, 1, group);
-                this._allGroups.next([...allGroups]);
+    updateGroup(groupRequest: GroupRequest, groupId: string): Observable<Group> {
+        throw new Error("Method not implemented.");
+        // return this.groupService.updateGroup(groupRequest).pipe(
+        //     tap(group => {
+        //         let allGroups = this._allGroups.value;
+        //         let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+        //         allGroups.splice(allGroupsIndex, 1, group);
+        //         this._allGroups.next([...allGroups]);
 
-                let myGroups = this._myGroups.value;
-                let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-                myGroups.splice(myGroupsIndex, 1, group);
-                this._myGroups.next([...myGroups]);
-            })
-        );
+        //         let myGroups = this._myGroups.value;
+        //         let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
+        //         myGroups.splice(myGroupsIndex, 1, group);
+        //         this._myGroups.next([...myGroups]);
+        //     })
+        // );
     }
+
+    uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {
+        return from(readPhotoAsBase64(coverImage, platform)).pipe(
+          switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `groups/${groupId}/cover-image`)),
+          switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
+        );
+      }
 
     getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
         return this.dbService.getLatestPosts(profileId, earliestPostDate);

@@ -13,5 +13,5 @@ export interface Group {
     Admins: ProfilePreview[]; // Get the admins with the initial call to get a group.
     MembersPreview: ProfilePreview[]; // Shows the first 5 profiles on the group details page in the members section.
     Members: ProfilePreview[]; // Get the members only when the user navigates to the members page for a group.
-    Events: Event[]; // Events under a given group.
+    Events: Event[]; // Get the events only when user navigates to the events under a given group.
 }

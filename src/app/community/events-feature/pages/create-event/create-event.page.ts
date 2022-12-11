@@ -121,6 +121,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
     this.subs.sink = selectImages(1).subscribe(galleryPhotos => {
       this.eventCoverImage = galleryPhotos[0];
       // TODO: Refactor this and removeEventCoverImage() so we're not setting the url as the webPath to the uploaded image.
+      // You should also remove the images from the form since they're not actual fields in the form.
       this.createEventForm.get('coverImageUrl').setValue(this.eventCoverImage);
     });
   }
@@ -149,11 +150,11 @@ export class CreateEventPage implements OnInit, OnDestroy {
 
   async onSubmit(): Promise<void> {
     const newEventId = this.dbService.generateDocumentId();
-    const coverImageUrl = await this.eventStore.uploadCoverImage(this.eventCoverImage, newEventId, this.platform).toPromise();
+    const coverImageUrl = await this.eventStore.uploadEventCoverImage(this.eventCoverImage, newEventId, this.platform).toPromise();
     this.createEventForm.get('coverImageUrl').setValue(coverImageUrl);
 
     if (this.eventImages.length > 0) {
-      const imageUrls = await this.eventStore.uploadImages(this.eventImages, newEventId, this.platform).toPromise();
+      const imageUrls = await this.eventStore.uploadEventImages(this.eventImages, newEventId, this.platform).toPromise();
       this.createEventForm.get('imageUrls').setValue(imageUrls);
     }
 

@@ -33,7 +33,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
             </div>
 
             <!-- Removing comments for the initial release of the beta. -->
-            <!-- <div class="comments-container" *ngIf="post.Comments.length > 0">
+            <div class="comments-container" *ngIf="post.Comments.length > 0">
                 <hr>
                 <div *ngIf="showComments">
                     <div class="post-comment" *ngFor="let comment of post.Comments">
@@ -73,7 +73,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
                 <div class="icon">
                     <olii-icon-with-off-white-square-background size="medium" name="send" (click)="sendComment()"></olii-icon-with-off-white-square-background>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
   `,

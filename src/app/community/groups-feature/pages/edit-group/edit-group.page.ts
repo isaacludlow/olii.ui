@@ -13,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
+import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -21,14 +22,14 @@ import { GroupFeatureService } from 'src/app/shared/services/community/groups-fe
 export class EditGroupPage implements OnInit {
 
   group: Group;
-  groupPicture: GalleryPhoto = null;
+  groupCoverImage: GalleryPhoto = null;
   subs = new SubSink();
 
   editGroupForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    coverImage: [null]
-    // groupVisibility: [null, Validators.required],
+    coverImageUrl: [null],
+    privacyLevel: [PrivacyLevel.Public, Validators.required],
   })
 
   constructor(
@@ -46,8 +47,7 @@ export class EditGroupPage implements OnInit {
         this.groupStore.getGroupById(paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
-    // this.editGroupForm.get('groupVisibility').setValue(this.group.PrivacyLevel);
-    this.groupPicture = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
+    this.groupCoverImage = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
     this.editGroupForm.controls['name'].setValue(this.group.Name);
     this.editGroupForm.controls['description'].setValue(this.group.Description);
   }
@@ -63,13 +63,14 @@ export class EditGroupPage implements OnInit {
   async updateGroup() {
     const updatedGroup: GroupRequest = {
       GroupId: this.group.GroupId,
-      CoverImageData: this.editGroupForm.get('coverImage').value ? await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform) : null,
+      CoverImageUrl: this.editGroupForm.get('coverImage').value == null ? this.group.CoverImageUrl : await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
-      PrivacyLevelParamId: PrivacyLevelRequest.Public
+      PrivacyLevel: this.editGroupForm.get('privacyLevel').value,
+      Admins: this.group.Admins
     }
   
-    this.subs.sink = this.groupStore.updateGroup(updatedGroup).subscribe(res => {
+    this.subs.sink = this.groupStore.updateGroup(updatedGroup, this.group.GroupId).subscribe(res => {
       this.router.navigate(['community/groups/group/' + res.GroupId]);
     })
   }

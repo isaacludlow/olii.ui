@@ -14,14 +14,14 @@ export const addAttendingEventToMyEvents = functions.firestore
 
       admin.firestore()
           .collection(`profiles/${context.auth?.uid}/myEvents`)
-          .doc(context.eventId) // Creates a new document since it won't exist.
+          .doc(context.params.eventId) // Creates a new document since it won't exist.
           .set(eventPreview);
     });
 
 export const removeAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onDelete(async (snapshot, context) => {
-      return admin.firestore()
+      admin.firestore()
           .doc(
               `profiles/${context.auth?.uid}/myEvents/${context.params.eventId}`
           )
