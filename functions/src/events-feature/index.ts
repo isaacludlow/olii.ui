@@ -4,6 +4,7 @@ import * as admin from "firebase-admin";
 export const addAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onCreate(async (snapshot, context) => {
+      const profileId = snapshot.data().profileId;
       const event = await admin.firestore()
           .doc(`events/${context.params.eventId}`)
           .get();
@@ -12,8 +13,8 @@ export const addAttendingEventToMyEvents = functions.firestore
         date: event.get("date"),
       };
 
-      admin.firestore()
-          .collection(`profiles/${context.auth?.uid}/myEvents`)
+      return admin.firestore()
+          .collection(`profiles/${profileId}/myEvents`)
           // Creates a new document since no doc with will exist.
           .doc(context.params.eventId)
           .set(eventPreview);
@@ -22,9 +23,11 @@ export const addAttendingEventToMyEvents = functions.firestore
 export const removeAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onDelete(async (snapshot, context) => {
-      admin.firestore()
+      const profileId = snapshot.data().profileId;
+
+      return admin.firestore()
           .doc(
-              `profiles/${context.auth?.uid}/myEvents/${context.params.eventId}`
+              `profiles/${profileId}/myEvents/${context.params.eventId}`
           )
           .delete();
     });
@@ -42,17 +45,17 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
           .collection(`events/${context.params.eventId}/attendees`)
           .get();
 
-      attendeesDocs.forEach((doc) => {
-        const attendeeProfileId = doc.data().profileId;
-        admin.firestore()
+      for (const attendeesDoc of attendeesDocs.docs) {
+        const attendeeProfileId = attendeesDoc.data().profileId;
+        await admin.firestore()
             .doc(
                 `profiles/${attendeeProfileId}
                 /myEvents/${context.params.eventId}`
             )
             .update("date", updatedEventData.date);
-      });
+      }
 
-      admin.firestore()
+      return admin.firestore()
           .collection(
               "groups/{groupId}/events/{eventId}"
           )
@@ -84,13 +87,15 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
             .offset(numberOfAttendeesInPreview)
             .limit(numberOfAttendeesToGet).get();
 
-        attendees.forEach((doc) => {
-          const docData = doc.data();
-          event.ref
+        for (const attendeeDoc of attendees.docs) {
+          const docData = attendeeDoc.data();
+          await event.ref
               .update(
                   "attendeesPreview",
                   admin.firestore.FieldValue.arrayUnion(docData)
               );
-        });
-      }
+        }
+
+        return "Updated";
+      } else return null;
     });

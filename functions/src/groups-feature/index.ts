@@ -25,27 +25,30 @@ export const addFirstFiveMembersToPreview = functions.firestore
             .offset(numberOfMembersInPreview)
             .limit(numberOfMembersToGet).get();
 
-        members.forEach((doc) => {
-          const docData = doc.data();
-          group.ref
+        for (const memberDoc of members.docs) {
+          const docData = memberDoc.data();
+          await group.ref
               .update(
                   "membersPreview",
                   admin.firestore.FieldValue.arrayUnion(docData)
               );
-        });
-      }
+        }
+
+        return "Updated";
+      } else return null;
     });
 
 export const addToMyGroupsWhenAddedAsGroupMember = functions.firestore
     .document("groups/{groupId}/members/{memberId}")
     .onCreate(async (snapshot, context) => {
+      const profileId = snapshot.data().profileId;
       const myGroupData = {
         groupId: context.params.groupId,
         isAdmin: false,
       };
 
-      admin.firestore()
-          .collection(`profiles/${context.auth?.uid}/myGroups`)
+      return admin.firestore()
+          .collection(`profiles/${profileId}/myGroups`)
           // Creates a new document since no doc with will exist.
           .doc(context.params.groupId)
           .set(myGroupData);
@@ -54,9 +57,11 @@ export const addToMyGroupsWhenAddedAsGroupMember = functions.firestore
 export const removeFromMyGroupsWhenRemovedAsGroupMember = functions.firestore
     .document("groups/{groupId}/members/{memberId}")
     .onDelete(async (snapshot, context) => {
-      admin.firestore()
+      const profileId = snapshot.data().profileId;
+
+      return admin.firestore()
           .doc(
-              `profiles/${context.auth?.uid}/myGroups/${context.params.groupId}`
+              `profiles/${profileId}/myGroups/${context.params.groupId}`
           )
           .delete();
     });
@@ -64,13 +69,14 @@ export const removeFromMyGroupsWhenRemovedAsGroupMember = functions.firestore
 export const addToMyGroupsWhenNewGroupIsCreated = functions.firestore
     .document("groups/{groupId}")
     .onCreate(async (snapshot, context) => {
+      const profileId = snapshot.data().admins[0].profileId;
       const myGroupData = {
         groupId: context.params.groupId,
         isAdmin: true,
       };
 
-      admin.firestore()
-          .collection(`profiles/${context.auth?.uid}/myGroups`)
+      return admin.firestore()
+          .collection(`profiles/${profileId}/myGroups`)
           // Creates a new document since no doc with will exist.
           .doc(context.params.groupId)
           .set(myGroupData);
@@ -79,17 +85,25 @@ export const addToMyGroupsWhenNewGroupIsCreated = functions.firestore
 export const removeFromMyGroupsWhenRemovedAsGroupAdmin = functions.firestore
     .document("groups/{groupId}")
     .onUpdate((change, context) => {
-      const adminsBeforeUpdate = change.before.data().admins.length;
-      const adminsAfterUpdate = change.after.data().admins.length;
+      const adminsBeforeUpdate = change.before.data().admins as Array<any>;
+      const adminsAfterUpdate = change.after.data().admins as Array<any>;
 
-      if (adminsBeforeUpdate > adminsAfterUpdate) {
-        admin.firestore()
+      if (adminsBeforeUpdate.length > adminsAfterUpdate.length) {
+        let profileId;
+
+        for (let i = 0; i < adminsBeforeUpdate.length; i++) {
+          if (!adminsAfterUpdate.includes(adminsBeforeUpdate[i])) {
+            profileId = adminsBeforeUpdate[i].profileId;
+          }
+        }
+
+        return admin.firestore()
             .doc(
-                `profiles/${context.auth?.uid}
+                `profiles/${profileId}
                 /myGroups/${context.params.groupId}`
             )
             .delete();
-      }
+      } else return null;
     });
 
 export const sumAllMembersWhenUpdated = functions.firestore
@@ -100,6 +114,6 @@ export const sumAllMembersWhenUpdated = functions.firestore
           .listDocuments();
 
       const numberOfMembers = memberDocRefs.length;
-      admin.firestore().doc(`groups/${change.params.groupId}`)
+      return admin.firestore().doc(`groups/${change.params.groupId}`)
           .update("totalMembers", numberOfMembers);
     });
