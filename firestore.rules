@@ -128,21 +128,20 @@ service cloud.firestore {
 
       allow update: if isAuthenticated(request)
         && isGroupDataValid(request.resource.data)
-        && isAdminForGroup(request);
+        && isOwner(request, request.resource.data.admins[0].profileId);
 
       allow delete: if isAuthenticated(request)
-        && isAdminForGroup(request);
+        && isOwner(request, request.resource.data.admins[0].profileId);
 
       function isGroupDataValid(requestData) {
         return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel', 'totalMembers'])
           && requestData.keys().hasOnly(
-            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel', 'totalMembers']
+            ['admins', 'coverImageUrl', 'description', '', 'name', 'privacyLevel', 'totalMembers']
           )
           && requestData.admins is list
           && isProfilePreviewDataValid(requestData.admins[0])
           && requestData.coverImageUrl is string
           && requestData.description is string
-          && requestData.get('membersPreview', []) is list
           && requestData.name is string
           && requestData.privacyLevel is string
           && requestData.totalMembers is int

@@ -14,7 +14,8 @@ export const addAttendingEventToMyEvents = functions.firestore
 
       admin.firestore()
           .collection(`profiles/${context.auth?.uid}/myEvents`)
-          .doc(context.params.eventId) // Creates a new document since it won't exist.
+          // Creates a new document since no doc with will exist.
+          .doc(context.params.eventId)
           .set(eventPreview);
     });
 

@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +48,7 @@ export class DatabaseService {
   }
 
   createEvent(event: Event): Observable<void> {
-    const mappedEvent = mapEventRequest(event);
+    const mappedEvent = mapToEventRequest(event);
 
     const eventsCollectionRef = this.afs.collection('events');
     // Creates a reference to the new event doc that does not exists.
@@ -59,10 +59,10 @@ export class DatabaseService {
     return from(newEventDocRef.set(mappedEvent)); // set() creates a new doc since it doesn't exist.
   }
 
-  editEvent(eventRequest: Event): Observable<void> {
-    const mappedEvent = mapEditEvent(eventRequest);
+  editEvent(event: Event): Observable<void> {
+    const mappedEvent = mapToEventRequest(event);
 
-    return from(this.afs.doc(`events/${eventRequest.EventId}`).update(mappedEvent));
+    return from(this.afs.doc(`events/${event.EventId}`).update(mappedEvent));
   }
 
   getEventAttendees(eventId: string): Observable<ProfilePreview[]> {
@@ -89,7 +89,7 @@ export class DatabaseService {
     return group;
   }
 
-  createGroup(group: Group): Observable<void> {
+  createGroup(group: GroupRequest): Observable<void> {
     const mappedGroup = mapGroupRequest(group);
 
     const groupsCollectionRef = this.afs.collection('groups');
@@ -98,6 +98,13 @@ export class DatabaseService {
     const newGroupDocRef = groupsCollectionRef.doc(group.GroupId);
 
     return from(newGroupDocRef.set(mappedGroup)); // set() creates a new doc since it doesn't exist.
+  }
+
+  editGroup(group: GroupRequest): Observable<void> {
+    const mappedGroup = mapGroupRequest(group);
+    console.log(mappedGroup)
+
+    return from(this.afs.doc(`groups/${group.GroupId}`).update(mappedGroup));
   }
 
   getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
