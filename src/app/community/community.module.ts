@@ -10,13 +10,15 @@ import { SharedComponentsModule } from 'src/app/components/shared/shared-compone
 import { SharedModule } from '../shared/shared.module';
 import { CommentCardComponent } from './shared/components/comment-card/comment-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommentsComponent } from './shared/components/comments/comments.component'
 
 
 @NgModule({
   declarations: [
     CommunityComponent,
     EventCardComponent,
-    CommentCardComponent
+    CommentCardComponent,
+    CommentsComponent
   ],
   imports: [
     CommonModule,
