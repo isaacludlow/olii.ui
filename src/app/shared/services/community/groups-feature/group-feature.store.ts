@@ -77,25 +77,16 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(group: Group): Observable<void> {
+    createGroup(group: GroupRequest): Observable<void> {
         return this.dbService.createGroup(group);
     }
 
-    updateGroup(groupRequest: GroupRequest, groupId: string): Observable<Group> {
-        throw new Error("Method not implemented.");
-        // return this.groupService.updateGroup(groupRequest).pipe(
-        //     tap(group => {
-        //         let allGroups = this._allGroups.value;
-        //         let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-        //         allGroups.splice(allGroupsIndex, 1, group);
-        //         this._allGroups.next([...allGroups]);
+    updateGroup(group: GroupRequest): Observable<void> {
+        const editedGroupIndex = this._allGroups.value.findIndex(x => x.GroupId === group.GroupId);
+        this._allGroups.value.splice(editedGroupIndex , 1)
+        this._allGroups.next(this._allGroups.value);
 
-        //         let myGroups = this._myGroups.value;
-        //         let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-        //         myGroups.splice(myGroupsIndex, 1, group);
-        //         this._myGroups.next([...myGroups]);
-        //     })
-        // );
+        return this.dbService.editGroup(group);
     }
 
     uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {

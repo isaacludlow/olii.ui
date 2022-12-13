@@ -91,7 +91,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
         Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
-        MembersPreview: groupDoc.membersPreview.map(member => mapProfilePreview(member)),
+        MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)),
         Members: [],
         Events: []
     };
@@ -212,7 +212,7 @@ export function mapUser(userDoc: any): User {
 }
 
 // ============================================ Request Mappers ====================================================
-export function mapEventRequest(eventRequest: Event) {
+export function mapToEventRequest(eventRequest: Event) {
     const newEventRequest = {
         attendeesPreview: eventRequest.AttendeesPreview,
         coverImageUrl: eventRequest.CoverImageUrl,
@@ -260,12 +260,11 @@ export function mapEditEvent(event: Event) {
     return mappedEvent;
 }
 
-export function mapGroupRequest(group: Group) {
+export function mapGroupRequest(group: GroupRequest) {
     const mappedGroup = {
         admins: group.Admins.map(admin => mapProfilePreviewRequest(admin)),
         coverImageUrl: group.CoverImageUrl,
         description: group.Description,
-        membersPreview: [],
         name: group.Name,
         privacyLevel: group.PrivacyLevel,
         totalMembers: 0

@@ -1,29 +1,59 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
+export const addCreatedEventToCreatorEventSubcollection = functions.firestore
+    .document("events/{eventId}")
+    .onCreate((snapshot, context) => {
+      const event = snapshot.data();
+      const eventPreview = {
+        eventId: context.params.eventId,
+        date: event.get("date"),
+        isCreator: false,
+      };
+
+      if (event.creator.creatorType == "group") {
+        return admin.firestore()
+            .collection(`groups/${event.creator.creatorId}/events`)
+            // Creates a new document since no doc with this id will exist.
+            .doc(context.params.eventId)
+            .set(eventPreview);
+      } else if (event.creator.creatorType == "profile") {
+        return admin.firestore()
+            .collection(`profiles/${event.creator.creatorId}/myEvents`)
+            // Creates a new document since no doc with this id will exist.
+            .doc(context.params.eventId)
+            .set(eventPreview);
+      } else return null;
+    });
+
 export const addAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onCreate(async (snapshot, context) => {
+      const profileId = snapshot.data().profileId;
       const event = await admin.firestore()
           .doc(`events/${context.params.eventId}`)
           .get();
       const eventPreview = {
         eventId: context.params.eventId,
         date: event.get("date"),
+        isCreator: false,
       };
 
-      admin.firestore()
-          .collection(`profiles/${context.auth?.uid}/myEvents`)
-          .doc(context.params.eventId) // Creates a new document since it won't exist.
+      return admin.firestore()
+          .collection(`profiles/${profileId}/myEvents`)
+          // Creates a new document since no doc with this id will exist.
+          .doc(context.params.eventId)
           .set(eventPreview);
     });
 
 export const removeAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onDelete(async (snapshot, context) => {
-      admin.firestore()
+      const profileId = snapshot.data().profileId;
+
+      return admin.firestore()
           .doc(
-              `profiles/${context.auth?.uid}/myEvents/${context.params.eventId}`
+              `profiles/${profileId}/myEvents/${context.params.eventId}`
           )
           .delete();
     });
@@ -33,7 +63,7 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
       if (change.before.get("date") === change.after.get("date")) {
-        return;
+        return null;
       }
 
       const updatedEventData = change.after.data();
@@ -41,22 +71,35 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
           .collection(`events/${context.params.eventId}/attendees`)
           .get();
 
-      attendeesDocs.forEach((doc) => {
-        const attendeeProfileId = doc.data().profileId;
-        admin.firestore()
+      for (const attendeesDoc of attendeesDocs.docs) {
+        const attendeeProfileId = attendeesDoc.data().profileId;
+        await admin.firestore()
             .doc(
                 `profiles/${attendeeProfileId}
                 /myEvents/${context.params.eventId}`
             )
             .update("date", updatedEventData.date);
-      });
+      }
 
-      admin.firestore()
-          .collection(
-              "groups/{groupId}/events/{eventId}"
-          )
-          .doc()
-          .update("date", updatedEventData.date);
+      const eventCreator = change.before.get("creator");
+
+      if (eventCreator.creatorType == "group") {
+        return admin.firestore()
+            .collection(
+                `groups/${eventCreator.creatorId}
+                /events/${context.params.eventId}`
+            )
+            .doc()
+            .update("date", updatedEventData.date);
+      } else if (eventCreator.creatorType == "profile") {
+        return admin.firestore()
+            .collection(
+                `profiles/${eventCreator.creatorId}
+                /myEvents/${context.params.eventId}`
+            )
+            .doc()
+            .update("date", updatedEventData.date);
+      } else return null;
     });
 
 export const addFirstFiveAttendeesToPreview = functions.firestore
@@ -83,13 +126,15 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
             .offset(numberOfAttendeesInPreview)
             .limit(numberOfAttendeesToGet).get();
 
-        attendees.forEach((doc) => {
-          const docData = doc.data();
-          event.ref
+        for (const attendeeDoc of attendees.docs) {
+          const docData = attendeeDoc.data();
+          await event.ref
               .update(
                   "attendeesPreview",
                   admin.firestore.FieldValue.arrayUnion(docData)
               );
-        });
-      }
+        }
+
+        return "Updated";
+      } else return null;
     });

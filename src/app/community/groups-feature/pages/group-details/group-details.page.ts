@@ -10,7 +10,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
@@ -50,6 +50,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     private profileStore: ProfileStore,
     private router: Router, 
     private route: ActivatedRoute,
+    private nav: NavController
   ) { }
 
   ngOnInit(): void {
@@ -61,10 +62,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);
       }),
-      switchMap((paramMap: ParamMap) => 
-      this.groupStore.getGroupById(paramMap.get('groupId'))
-      )
-    ).pipe(
+      switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
         this.groupId = group.GroupId;
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => this.canViewGroup = this.canView(group, profile.ProfileId));
@@ -74,6 +72,11 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         return group;
       })
     );
+  }
+
+  async editGroup() {
+    await this.nav.pop();
+    this.router.navigate(['community/groups/group/', this.groupId, 'edit']);
   }
 
   segmentChanged(event) {
@@ -137,7 +140,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.groupStore.createGroupPost(this.groupId, newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(this.groupId, newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
