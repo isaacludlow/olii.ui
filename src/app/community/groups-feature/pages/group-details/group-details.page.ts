@@ -54,7 +54,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log('GroupDetailsPage: ngOnInit')
     this.segmentToShow = this.groupStore.groupSection;
     this.group$ = this.route.paramMap.pipe(
       tap((paramMap: ParamMap) => {
@@ -65,7 +64,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       }),
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
-        console.log(group)
         this.groupId = group.GroupId;
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => this.canViewGroup = this.canView(group, profile.ProfileId));
       }),
@@ -77,7 +75,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   async editGroup() {
-    // this.nav.pop().then(() => this.router.navigate(['community/groups/group/', this.groupId, 'edit']));
     await this.nav.pop();
     this.router.navigate(['community/groups/group/', this.groupId, 'edit']);
   }

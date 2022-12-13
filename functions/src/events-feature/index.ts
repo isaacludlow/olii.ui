@@ -14,13 +14,13 @@ export const addCreatedEventToCreatorEventSubcollection = functions.firestore
       if (event.creator.creatorType == "group") {
         return admin.firestore()
             .collection(`groups/${event.creator.creatorId}/events`)
-            // Creates a new document since no doc with will exist.
+            // Creates a new document since no doc with this id will exist.
             .doc(context.params.eventId)
             .set(eventPreview);
       } else if (event.creator.creatorType == "profile") {
         return admin.firestore()
             .collection(`profiles/${event.creator.creatorId}/myEvents`)
-            // Creates a new document since no doc with will exist.
+            // Creates a new document since no doc with this id will exist.
             .doc(context.params.eventId)
             .set(eventPreview);
       } else return null;
@@ -41,7 +41,7 @@ export const addAttendingEventToMyEvents = functions.firestore
 
       return admin.firestore()
           .collection(`profiles/${profileId}/myEvents`)
-          // Creates a new document since no doc with will exist.
+          // Creates a new document since no doc with this id will exist.
           .doc(context.params.eventId)
           .set(eventPreview);
     });
@@ -63,7 +63,7 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
       if (change.before.get("date") === change.after.get("date")) {
-        return;
+        return null;
       }
 
       const updatedEventData = change.after.data();

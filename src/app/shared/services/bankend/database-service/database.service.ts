@@ -102,7 +102,6 @@ export class DatabaseService {
 
   editGroup(group: GroupRequest): Observable<void> {
     const mappedGroup = mapGroupRequest(group);
-    console.log(mappedGroup)
 
     return from(this.afs.doc(`groups/${group.GroupId}`).update(mappedGroup));
   }

@@ -49,7 +49,7 @@ export const addToMyGroupsWhenAddedAsGroupMember = functions.firestore
 
       return admin.firestore()
           .collection(`profiles/${profileId}/myGroups`)
-          // Creates a new document since no doc with will exist.
+          // Creates a new document since no doc with this id will exist.
           .doc(context.params.groupId)
           .set(myGroupData);
     });
@@ -77,7 +77,7 @@ export const addToMyGroupsWhenNewGroupIsCreated = functions.firestore
 
       return admin.firestore()
           .collection(`profiles/${profileId}/myGroups`)
-          // Creates a new document since no doc with will exist.
+          // Creates a new document since no doc with this id will exist.
           .doc(context.params.groupId)
           .set(myGroupData);
     });
