@@ -1,6 +1,31 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
+export const addCreatedEventToCreatorEventSubcollection = functions.firestore
+    .document("events/{eventId}")
+    .onCreate((snapshot, context) => {
+      const event = snapshot.data();
+      const eventPreview = {
+        eventId: context.params.eventId,
+        date: event.get("date"),
+        isCreator: false,
+      };
+
+      if (event.creator.creatorType == "group") {
+        return admin.firestore()
+            .collection(`groups/${event.creator.creatorId}/events`)
+            // Creates a new document since no doc with will exist.
+            .doc(context.params.eventId)
+            .set(eventPreview);
+      } else if (event.creator.creatorType == "profile") {
+        return admin.firestore()
+            .collection(`profiles/${event.creator.creatorId}/myEvents`)
+            // Creates a new document since no doc with will exist.
+            .doc(context.params.eventId)
+            .set(eventPreview);
+      } else return null;
+    });
+
 export const addAttendingEventToMyEvents = functions.firestore
     .document("events/{eventId}/attendees/{attendeeId}")
     .onCreate(async (snapshot, context) => {
@@ -11,6 +36,7 @@ export const addAttendingEventToMyEvents = functions.firestore
       const eventPreview = {
         eventId: context.params.eventId,
         date: event.get("date"),
+        isCreator: false,
       };
 
       return admin.firestore()
@@ -55,12 +81,25 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
             .update("date", updatedEventData.date);
       }
 
-      return admin.firestore()
-          .collection(
-              "groups/{groupId}/events/{eventId}"
-          )
-          .doc()
-          .update("date", updatedEventData.date);
+      const eventCreator = change.before.get("creator");
+
+      if (eventCreator.creatorType == "group") {
+        return admin.firestore()
+            .collection(
+                `groups/${eventCreator.creatorId}
+                /events/${context.params.eventId}`
+            )
+            .doc()
+            .update("date", updatedEventData.date);
+      } else if (eventCreator.creatorType == "profile") {
+        return admin.firestore()
+            .collection(
+                `profiles/${eventCreator.creatorId}
+                /myEvents/${context.params.eventId}`
+            )
+            .doc()
+            .update("date", updatedEventData.date);
+      } else return null;
     });
 
 export const addFirstFiveAttendeesToPreview = functions.firestore

@@ -8,6 +8,8 @@ admin.initializeApp();
 
 
 // Event functions
+export const addCreatedEventToCreatorEventSubcollection =
+    eventFunctions.addCreatedEventToCreatorEventSubcollection;
 export const addAttendingEventToMyEvents =
     eventFunctions.addAttendingEventToMyEvents;
 export const removeAttendingEventToMyEvents =
