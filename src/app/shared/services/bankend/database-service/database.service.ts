@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +51,7 @@ export class DatabaseService {
     const mappedEvent = mapToEventRequest(event);
 
     const eventsCollectionRef = this.afs.collection('events');
-    // Creates a reference to the new event doc that does not exists.
+    // Creates a reference to the new event doc that does not exist.
     // Source: https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
     const newEventDocRef = eventsCollectionRef.doc(event.EventId);
 
@@ -93,7 +93,7 @@ export class DatabaseService {
     const mappedGroup = mapGroupRequest(group);
 
     const groupsCollectionRef = this.afs.collection('groups');
-    // Creates a reference to the new event doc that does not exists.
+    // Creates a reference to the new event doc that does not exist.
     // Source: https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
     const newGroupDocRef = groupsCollectionRef.doc(group.GroupId);
 
@@ -116,7 +116,7 @@ export class DatabaseService {
   }
 
   getPostsByGroupId(groupId: string, earliestDate: Date): Observable<GroupPost[]> {
-    const groupPosts = this.afs.collection<any>(`group_posts`, ref => ref.where('groupPreview.id', '==', groupId)
+    const groupPosts = this.afs.collection<any>(`group_posts`, ref => ref.where('groupPreview.groupId', '==', groupId)
       .where('date', '>=', earliestDate)
       .orderBy('date', 'desc'))
       .valueChanges({ idField: 'id' }).pipe(
@@ -124,6 +124,18 @@ export class DatabaseService {
       );
 
     return groupPosts;
+  }
+
+  createGroupPost(groupPost: GroupPost): Observable<void> {
+    const mappedGroupPost = mapGroupPostRequest(groupPost);
+    console.log(mappedGroupPost)
+
+    const groupsCollectionRef = this.afs.collection('group_posts');
+    // Creates a reference to the new event doc that does not exist.
+    // Source: https://firebase.google.com/docs/reference/js/v8/firebase.firestore.DocumentReference
+    const newGroupDocRef = groupsCollectionRef.doc(groupPost.GroupPostId);
+
+    return from(newGroupDocRef.set(mappedGroupPost)); // set() creates a new doc since it doesn't exist.
   }
 
   getPastGroupEvents(groupId: string): Observable<Event[]> {
