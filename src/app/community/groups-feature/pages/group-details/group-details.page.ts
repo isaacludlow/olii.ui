@@ -18,13 +18,14 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 
 @Component({
   templateUrl: './group-details.page.html',
   styleUrls: ['./group-details.page.scss']
 })
 export class GroupDetailsPage implements OnInit, OnDestroy {
-  groupId: string;
+  group: Group;
   group$: Observable<Group>;
   canViewGroup: boolean;
   pastEvents$: Observable<Event[]>;
@@ -50,7 +51,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     private profileStore: ProfileStore,
     private router: Router, 
     private route: ActivatedRoute,
-    private nav: NavController
+    private nav: NavController,
+    private dbService: DatabaseService
   ) { }
 
   ngOnInit(): void {
@@ -64,10 +66,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       }),
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
-        this.groupId = group.GroupId;
+        this.group = group;
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => this.canViewGroup = this.canView(group, profile.ProfileId));
       }),
-      map(group => {
+      tap(group => {
         this.subs.sink = this.groupStore.getPostsByGroupId(group.GroupId, new Date(2020)).subscribe(posts => group.Posts = posts);
         return group;
       })
@@ -76,7 +78,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
 
   async editGroup() {
     await this.nav.pop();
-    this.router.navigate(['community/groups/group/', this.groupId, 'edit']);
+    this.router.navigate(['community/groups/group/', this.group.GroupId, 'edit']);
   }
 
   segmentChanged(event) {
@@ -93,16 +95,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
-  }
-
-  addPostPicture() {
-    if (this.postPictures.length < 5) {
-      this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.postPictures.push(galleryPhotos.shift()));
-    }
-  }
-
-  removePostPicture(index: number) {
-    this.postPictures.splice(index, 1);
   }
 
   canView(group: Group, profileId: string): boolean {
@@ -126,32 +118,58 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     // TODO-L23: Create logic on the group-details page to let the user request to join a group.
   }
 
+  addPostPicture() {
+    if (this.postPictures.length < 5) {
+      this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.postPictures = [galleryPhotos.shift()]);
+    }
+  }
+
+  removePostPicture(index: number) {
+    this.postPictures.splice(index, 1);
+  }
+
   async writePost() {
-    var images = [];
-    for (const image of this.postPictures) {
-      images.push(await readPhotoAsBase64(image, this.platform));
+    const newPostId = this.dbService.generateDocumentId();
+    let imageUrls: string[] = [];
+
+    if (this.postPictures.length > 0) {
+      imageUrls = await this.eventStore.uploadEventImages(this.postPictures, newPostId, this.platform).toPromise();
+      
     }
 
-    const newPost: CreatePostRequest = {
-      ProfileId: this.profileStore.currentProfile.value.ProfileId,
+    const profile = this.profileStore.currentProfile.value;
+    const newPost: GroupPost = {
+      GroupPostId: newPostId,
+      Author: {
+        FirstName: profile.FirstName,
+        LastName: profile.LastName,
+        ProfileId: profile.ProfileId,
+        ProfilePictureUrl: profile.ProfilePictureUrl
+      },
+      GroupPreview: {
+        GroupId: this.group.GroupId,
+        Name: this.group.Name,
+        CoverImageUrl: this.group.CoverImageUrl
+      },
+
+      ImageUrls: imageUrls,
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(),
-      ImagesData: images,
+      Comments: [],
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.subs.sink = this.groupStore.createGroupPost(this.groupId, newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
-      // this.group.Posts = this.group.Posts.sort((a, b) => b.Date > a.Date ? 1 : -1);
     });
   }
 
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.groupId } }
+      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.GroupId } }
     );
   }
   

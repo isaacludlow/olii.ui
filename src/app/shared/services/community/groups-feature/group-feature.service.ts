@@ -131,7 +131,7 @@ export class GroupFeatureService {
 
         this.ExampleGroups
             .find(group => group.GroupId == newCommentRequest.OriginGroup).Posts
-            .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
+            .find(post => post.GroupPostId == newCommentRequest.ParentId.toString()).Comments
             .push(newComment);
         this.dummyId++;
 

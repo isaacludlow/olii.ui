@@ -91,7 +91,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
         Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
-        MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)),
+        MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
         Events: []
     };
@@ -273,13 +273,35 @@ export function mapGroupRequest(group: GroupRequest) {
     return mappedGroup;
 }
 
+export function mapGroupPostRequest(groupPost: GroupPost) {
+    const mappedGroupPost = {
+        author: mapProfilePreviewRequest(groupPost.Author),
+        groupPreview: mapGroupPreviewRequest(groupPost.GroupPreview),
+        content: groupPost.Content,
+        date: groupPost.Date,
+        imageUrls: groupPost.ImageUrls
+    };
+
+    return mappedGroupPost;
+}
+
+function mapGroupPreviewRequest(groupPreview: GroupPreview) {
+    const mappedGroupPreview = {
+        groupId: groupPreview.GroupId,
+        name: groupPreview.Name,
+        coverImageUrl: groupPreview.CoverImageUrl
+    };
+
+    return mappedGroupPreview;
+}
+
 function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {
-    const profilePreview = {
+    const mappedProfilePreview = {
         profileId: profilePreviewDoc.ProfileId,
         firstName: profilePreviewDoc.FirstName,
         lastName: profilePreviewDoc.LastName,
         profilePictureUrl: profilePreviewDoc.ProfilePictureUrl
     };
 
-    return profilePreview;
+    return mappedProfilePreview;
 }

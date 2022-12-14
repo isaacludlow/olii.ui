@@ -163,18 +163,18 @@ service cloud.firestore {
         && isOwner(request, request.resource.data.author.profileId);
 
       function isGroupPostDataValid(requestData) {
-        return requestData.keys().hasAll(['author', 'content', 'date', 'group'])
+        return requestData.keys().hasAll(['author', 'content', 'date', 'groupPreview'])
           && requestData.keys().hasOnly(
-            ['author', 'content', 'date', 'group', 'imageUrls']
+            ['author', 'content', 'date', 'groupPreview', 'imageUrls']
           )
           && isProfilePreviewDataValid(requestData.author)
           && requestData.content is string
           && requestData.date is timestamp
-          && requestData.group is map
-          && requestData.group.id is string
-          && requestData.group.imageUrl is string
-          && requestData.group.name is string
-          && requestData.get('imageUrls', []) is list
+          && requestData.groupPreview is map
+          && requestData.groupPreview.groupId is string
+          && requestData.groupPreview.coverImageUrl is string
+          && requestData.groupPreview.name is string
+          && requestData.get('imageUrls', []) is list;
       }
     }
 
