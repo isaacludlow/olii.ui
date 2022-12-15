@@ -152,7 +152,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         CoverImageUrl: this.group.CoverImageUrl
       },
 
-      ImageUrls: imageUrls,
+      ImageUrls: [...imageUrls],
       Content: this.createPostForm.get('postContent').value,
       Date: new Date(),
       Comments: [],
