@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, of } from "rxjs";
+import { BehaviorSubject, from, Observable, of, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -12,6 +12,7 @@ import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-s
 import { readPhotoAsBase64 } from "src/app/shared/utilities";
 import { GalleryPhoto } from "@capacitor/camera";
 import { Platform } from "@ionic/angular";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -89,6 +90,19 @@ export class GroupFeatureStore {
         return this.dbService.editGroup(group);
     }
 
+    uploadEventImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
+        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+    
+        const downloadUrls$ = zip(...base64ImageObservables).pipe(
+          switchMap(base64Images =>
+            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
+          ),
+          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+        );
+    
+        return downloadUrls$;
+      }
+
     uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {
         return from(readPhotoAsBase64(coverImage, platform)).pipe(
           switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `groups/${groupId}/cover-image`)),
@@ -119,25 +133,8 @@ export class GroupFeatureStore {
         );
     }
 
-    createGroupPost(groupId: string, groupPost: CreatePostRequest): Observable<Boolean> {
-        return this.groupService.createGroupPost(groupId, groupPost).pipe(
-            map(groupPost => {
-                let allGroups = this._allGroups.value;
-                let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
-                let myGroups = this._myGroups.value;
-                let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
-
-                if (foundFromAllGroups != undefined) {
-                    foundFromAllGroups.Posts.push(groupPost);
-                }
-
-                if (foundFromMyGroups != undefined) {
-                    foundFromMyGroups.Posts.push(groupPost);
-                }
-
-                return true;
-            })
-        );
+    createGroupPost(groupPost: GroupPost): Observable<void> {
+        return this.dbService.createGroupPost(groupPost);
     }
 
     addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {

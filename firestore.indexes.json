@@ -5,7 +5,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "groupPreview.id",
+          "fieldPath": "groupPreview.groupId",
           "order": "ASCENDING"
         },
         {

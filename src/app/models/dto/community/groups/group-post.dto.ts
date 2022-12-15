@@ -3,7 +3,7 @@ import { GroupPostComment } from "./group-post-comment.dto";
 import { GroupPreview } from "./group-preview.dto";
 
 export interface GroupPost {
-    GroupPostId: number;
+    GroupPostId: string;
     Author: ProfilePreview;
     GroupPreview: GroupPreview;
     Content: string;
