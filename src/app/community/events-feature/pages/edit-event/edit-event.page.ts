@@ -161,6 +161,11 @@ export class EditEventPage implements OnDestroy {
     });
   }
 
+  eventImagesChange(galleryPhotos: GalleryPhoto[]) {
+    this.eventImages = galleryPhotos;
+    this.editEventForm.get('imageUrls').setValue(galleryPhotos.map(image => image.webPath));
+  }
+
   removeEventImage(imageIndex: number): void {
     this.eventImages.splice(imageIndex, 1);
     this.editEventForm.get('imageUrls').setValue(this.eventImages.map(image => image.webPath));
