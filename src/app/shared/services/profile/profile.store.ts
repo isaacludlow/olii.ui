@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, from, Observable } from "rxjs";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { ProfileService } from "./profile.service";
@@ -9,6 +9,11 @@ import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profil
 import { DatabaseService } from "../bankend/database-service/database.service";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
+import { GalleryPhoto } from "@capacitor/camera";
+import { Platform } from "@ionic/angular";
+import { switchMap } from "rxjs/operators";
+import { readPhotoAsBase64 } from "../../utilities";
+import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
 
 @Injectable({
 	providedIn: 'root'
@@ -21,7 +26,8 @@ export class ProfileStore implements OnDestroy {
 	constructor(
 		private profileService: ProfileService,
 		private dbService: DatabaseService,
-		private userStore: UserStore
+		private userStore: UserStore,
+        private cloudStorageService: CloudStorageService
 	) {
 		this.subs.sink = this.userStore.user.subscribe(user => {
 			if (user !== null) {
@@ -57,8 +63,15 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
-	updateProfile(profileId: string, profileRequest: ProfileRequest): Observable<Profile> {
-		return this.profileService.updateProfile(profileId, profileRequest);
+	uploadProfilePicture(coverImage: GalleryPhoto, profileId: string, platform: Platform): Observable<string> {
+        return from(readPhotoAsBase64(coverImage, platform)).pipe(
+          switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/profile-picture`)),
+          switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
+        );
+    }
+
+	updateProfile(profile: Profile): Observable<void> {
+		return this.dbService.updateProfile(profile);
 	}
 
 	getFriends(userId: number): Observable<ProfilePreview[]> {

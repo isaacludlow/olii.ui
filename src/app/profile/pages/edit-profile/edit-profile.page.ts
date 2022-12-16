@@ -20,6 +20,7 @@ export class EditProfilePage implements OnInit {
   subs = new SubSink();
 
   profileForm = this.fb.group({
+    profilePictureUrl: [null],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     // TODO-M14: Country Selection should be from a dropdown to standardize country naming conventions
@@ -64,26 +65,28 @@ export class EditProfilePage implements OnInit {
 
   setProfilePicture() {
     selectImages(1).subscribe(galleryPhotos => {
-      this.profilePicture = galleryPhotos.shift()
-      }
-    );
+      const profilePicture = galleryPhotos.shift();
+      this.profileForm.get('profilePictureUrl').setValue(profilePicture);
+      this.profilePicture = profilePicture;
+    });
   }
 
   async onSubmit(): Promise<void> {
-    const profileRequest: ProfileRequest = {
+    const profile: Profile = {
+      ProfileId: this.profile.ProfileId,
       FirstName: this.profileForm.get('firstName').value,
       LastName: this.profileForm.get('lastName').value,
-      ProfilePictureFile: await readPhotoAsBase64(this.profilePicture, this.platform),
+      ProfilePictureUrl: this.profileForm.get('profilePictureUrl').value == null
+        ? this.profile.ProfilePictureUrl
+        : await this.profileStore.uploadProfilePicture(this.profilePicture, this.profile.ProfileId, this.platform).toPromise(),
       HomeCountry: this.profileForm.get('homeCountry').value,
       HostCountry: this.profileForm.get('hostCountry').value,
       CurrentCity: this.profileForm.get('currentCity').value,
       Bio: this.profileForm.get('bio').value,
-      ConnectedSocials: null,
-      Friends: null,
-      ImageFiles: [],
-      SavedAlbums: null,
+      ImageUrls: [...this.profile.ImageUrls],
+      SavedImageAlbumPreviews: this.profile.SavedImageAlbumPreviews,
     };
 
-    this.profileStore.updateProfile(this.profile.ProfileId, profileRequest).subscribe(profile => this.profile = profile);
+    this.profileStore.updateProfile(profile).subscribe(() => this.location.back());
   }
 }

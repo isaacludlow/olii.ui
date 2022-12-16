@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -176,6 +176,14 @@ export class DatabaseService {
     );
 
     return profile;
+  }
+
+  updateProfile(profile: Profile): Observable<void> {
+    const mappedProfile = mapProfileRequest(profile);
+    console.log(profile)
+    console.log(mappedProfile)
+
+    return from(this.afs.doc(`profiles/${profile.ProfileId}`).update(mappedProfile));
   }
 
   getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{

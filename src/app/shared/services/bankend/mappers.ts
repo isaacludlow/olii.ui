@@ -155,13 +155,11 @@ export function mapProfile(profileDoc: any): Profile {
         ProfileId: profileDoc.id,
         FirstName: profileDoc.firstName,
         LastName: profileDoc.lastName,
-        Username: profileDoc.username,
         ProfilePictureUrl: profileDoc.profilePictureUrl,
         HomeCountry: profileDoc.homeCountry,
         HostCountry: profileDoc.hostCountry,
         CurrentCity: profileDoc.currentCity,
         Bio: profileDoc.bio,
-        Friends: profileDoc.friends,
         ImageUrls: profileDoc.imageUrls,
         SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumsPreview)
     };
@@ -283,6 +281,21 @@ export function mapGroupPostRequest(groupPost: GroupPost) {
     };
 
     return mappedGroupPost;
+}
+
+export function mapProfileRequest(profile: Profile) {
+    const mappedProfile = {
+        firstName: profile.FirstName,
+        lastName: profile.LastName,
+        bio: profile.Bio,
+        homeCountry: profile.HomeCountry,
+        hostCountry: profile.HostCountry,
+        currentCity: profile.CurrentCity,
+        imageUrls: profile.ImageUrls,
+        profilePictureUrl: profile.ProfilePictureUrl,
+    };
+
+    return mappedProfile;
 }
 
 function mapGroupPreviewRequest(groupPreview: GroupPreview) {

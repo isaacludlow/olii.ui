@@ -133,7 +133,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     let imageUrls: string[] = [];
 
     if (this.postPictures.length > 0) {
-      imageUrls = await this.eventStore.uploadEventImages(this.postPictures, newPostId, this.platform).toPromise();
+      imageUrls = await this.groupStore.uploadGroupPostImages(this.postPictures, newPostId, this.platform).toPromise();
       
     }
 
