@@ -1,18 +1,17 @@
 import { Component, Input, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
-import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
-  selector: 'olii-comments', // TODO-AfterBeta: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into its own component.
+  selector: 'olii-comments', 
   template: `
-    <div class="comments-container" *ngIf="post.Comments.length > 0">
+    <div class="comments-container" *ngIf="postComments.length > 0">
         <hr>
         <div *ngIf="showComments">
-            <div class="post-comment" *ngFor="let comment of post.Comments">
+            <div class="post-comment" *ngFor="let comment of postComments">
                 <div class="post-comment-content">
                     <div class="poster-image">
                         <olii-container-cover-image [imageUrl]="comment.Author.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
@@ -55,13 +54,15 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 })
 export class CommentsComponent implements OnInit {
-  @Input() post: GroupPost;
-  @Input() groupId: string;
+  @Input() postComments: GroupPostComment[];
+  @Input() groupPostId: string;
   
   profile: Profile;
   showAddComment: boolean;
   showComments: boolean;
   addCommentInput = new FormControl('', Validators.required);
+  
+  dummyId = 32;
 
   constructor( 
     private groupStore: GroupFeatureStore,
@@ -89,10 +90,9 @@ export class CommentsComponent implements OnInit {
 
   sendComment() {
     if (!this.addCommentInput.invalid) {
-        const newComment: GroupPostCommentRequest = {
-            OriginGroup: this.groupId,
-            ParentId: this.post.GroupPostId,
-            Author: {
+        const newComment: GroupPostComment = {
+          CommentId: this.dummyId, 
+          Author: {
                 ProfileId: this.profile.ProfileId,
                 FirstName: this.profile.FirstName,
                 LastName: this.profile.LastName,
@@ -102,7 +102,7 @@ export class CommentsComponent implements OnInit {
             Date: new Date(Date.now()),
         }
     
-        this.groupStore.addCommentToGroupPost(newComment).subscribe(res => {
+        this.groupStore.addCommentToGroupPost(newComment, this.groupPostId).subscribe(res => {
             this.addCommentInput = new FormControl('', Validators.required);
             this.toggleAddComment(false);
         });

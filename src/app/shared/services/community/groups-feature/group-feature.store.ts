@@ -149,8 +149,8 @@ export class GroupFeatureStore {
         );
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
-        return this.groupService.addCommentToGroupPost(newCommentRequest);
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest, groupPostId: string):Observable<Boolean> {
+        return this.dbService.addCommentToGroupPost(newCommentRequest, groupPostId);
     }
 
     // TODO-AfterBeta: Allow an admin to delete a group.

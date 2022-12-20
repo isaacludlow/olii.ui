@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, Observable, ObservedValueOf, zip } from 'rxjs';
-import { map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { from, Observable, zip } from 'rxjs';
+import { map, mergeAll, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
-import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostCommentRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -127,6 +127,14 @@ export class DatabaseService {
     );
 
     return pastGroupEvents;
+  }
+
+  addCommentToGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<Boolean> {
+    const mappedGroup = mapGroupPostCommentRequest(newComment);
+
+    const postCommentRef = this.afs.collection(`group_posts/${groupPostId}/comments`);
+
+    return from(postCommentRef.add(mappedGroup)).pipe(map(()=> true)); //TODO: figure our how to return observable<void>
   }
 
   getFutureGroupEvents(groupId: string): Observable<Event[]> {

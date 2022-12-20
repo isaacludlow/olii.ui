@@ -4,7 +4,7 @@ import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { CommentsComponent } from '../comments/comments.component'
 
 @Component({
-  selector: 'olii-comment-card', // TODO-AfterBeta: We should rename this to group-post-card, or something like that, and then break out the comment area at the bottom into its own component.
+  selector: 'olii-group-post-card',
   template: `
     <div>
         <div class="card-content">
@@ -26,17 +26,17 @@ import { CommentsComponent } from '../comments/comments.component'
                     <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
                 </olii-responsive-aspect-ratio-container>
             </div>
-            <olii-comments [post]="post" groupId={{groupId}}></olii-comments>
+            <olii-comments [postComments]="post.Comments" groupPostId={{groupPostId}}></olii-comments>
         </div>
     </div>
   `,
-  styleUrls: ['./comment-card.component.scss'],
+  styleUrls: ['./group-post-card.component.scss'],
 
 })
-export class CommentCardComponent implements OnInit {
+export class GroupPostCardComponent implements OnInit {
   @ViewChild (CommentsComponent) comments: CommentsComponent;
   @Input() post: GroupPost;
-  @Input() groupId: string; // pass this through to comments...comments is now dependant on comment-card so this isn't great
+  @Input() groupPostId: string;
   
   constructor( 
     private router: Router

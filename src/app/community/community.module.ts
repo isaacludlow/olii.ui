@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { EventCardComponent } from './shared/components/event-card/event-card.component';
 import { SharedComponentsModule } from 'src/app/components/shared/shared-components.module';
 import { SharedModule } from '../shared/shared.module';
-import { CommentCardComponent } from './shared/components/comment-card/comment-card.component';
+import { GroupPostCardComponent } from './shared/components/group-post-card.component/group-post-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommentsComponent } from './shared/components/comments/comments.component'
 
@@ -17,7 +17,7 @@ import { CommentsComponent } from './shared/components/comments/comments.compone
   declarations: [
     CommunityComponent,
     EventCardComponent,
-    CommentCardComponent,
+    GroupPostCardComponent,
     CommentsComponent
   ],
   imports: [
@@ -32,7 +32,7 @@ import { CommentsComponent } from './shared/components/comments/comments.compone
   ],
   exports: [
     EventCardComponent,
-    CommentCardComponent
+    GroupPostCardComponent
   ]
 })
 export class CommunityModule { }

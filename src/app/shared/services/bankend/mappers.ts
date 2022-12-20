@@ -14,6 +14,7 @@ import { User } from "src/app/models/dto/user/user.dto";
 import { EventData } from "src/app/models/requests/community/events/event-data.dto";
 import { EventRequest } from "src/app/models/requests/community/events/event-request.dto";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -272,6 +273,16 @@ export function mapGroupRequest(group: Group) {
     };
 
     return mappedGroup;
+}
+
+export function mapGroupPostCommentRequest(newComment: GroupPostComment) {
+    const groupPostCommentRequest = {
+        commentId: newComment.CommentId,
+        Author: newComment.Author,
+        Content:newComment.Author,
+        Date: newComment.Date
+
+    }
 }
 
 function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {

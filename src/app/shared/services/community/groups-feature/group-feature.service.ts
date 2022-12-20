@@ -5,14 +5,11 @@ import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
-import { GroupPostCommentRequest } from 'src/app/models/requests/community/groups/group-post-comment-request';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';
 import { ProfileStore } from '../../profile/profile.store';
-import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import parseISO from 'date-fns/parseISO';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
@@ -120,23 +117,22 @@ export class GroupFeatureService {
         return response;
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest): Observable<Boolean> {
-        const newComment: GroupPostComment = {
-            Id: this.dummyId,
-            ParentId: newCommentRequest.ParentId,
-            Author: newCommentRequest.Author,
-            Content: newCommentRequest.Content,
-            Date: newCommentRequest.Date
-        }
+    // addCommentToGroupPost(newCommentRequest: GroupPostComment): Observable<Boolean> {
+    //     const newComment: GroupPostComment = {
+    //         CommentId: this.dummyId,
+    //         Author: newCommentRequest.Author,
+    //         Content: newCommentRequest.Content,
+    //         Date: newCommentRequest.Date
+    //     }
 
-        this.ExampleGroups
-            .find(group => group.GroupId == newCommentRequest.OriginGroup).Posts
-            .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
-            .push(newComment);
-        this.dummyId++;
+    //     this.ExampleGroups
+    //         .find(group => group.GroupId == newCommentRequest.OriginGroup).Posts
+    //         .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
+    //         .push(newComment);
+    //     this.dummyId++;
 
-        return of(true);
-    }
+    //     return of(true);
+    // }
 
     ExampleGroups: Group[] = [
         {
