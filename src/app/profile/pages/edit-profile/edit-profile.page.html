@@ -20,7 +20,7 @@
     
     <div class="profile-image-container">
         <div class="profile-image">
-            <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>
+            <olii-container-cover-image *ngIf="profilePicture != null" [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>
         </div>
         <div class="change-profile-pic-label" (click)="setProfilePicture()">Change Profile Pic</div>
     </div>
@@ -52,6 +52,11 @@
             <ion-label color="tertiary" position="stacked">Bio</ion-label>
             <ion-input color="tertiary" mode="ios" type="text" formControlName="bio" clearInput="true"></ion-input>
         </ion-item>
+        <div class="images">
+            <h4>Add Images</h4>
+            <hr>
+            <olii-edit-images [images]="profileImages" (imagesEvent)="onProfileImagesChange($event)"></olii-edit-images>
+        </div>
 
         <div class="save-button">
             <ion-button type="submit" mode="ios" [disabled]="!profileForm.valid">Save</ion-button>

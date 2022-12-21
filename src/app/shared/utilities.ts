@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, GalleryPhoto, Photo } from '@capacitor/camera';
 import { Filesystem } from '@capacitor/filesystem';
@@ -73,4 +74,17 @@ export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventI
   // attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
   // eventStore.myEvents.next(myEvents);
   // attendees.push(partialProfile);
+}
+
+export function getAllElementsThatAreTheSameBetweenTwoArrays<Type>(array1: Type[], array2: Type[]): Type[] {
+  return array1.filter(x => array2.includes(x));
+}
+
+export function getAllElementsFromFirstArrayNotInSecondArray<Type>(array1: Type[], array2: Type[]): Type[] {
+  return array1.filter(x => !array2.includes(x));
+}
+
+export function getAllElementsThatAreInBothArrays<Type>(array1: Type[], array2: Type[]): Type[] {
+  return array1.filter(x => !array2.includes(x))
+    .concat(array2.filter(x => !array1.includes(x)));
 }

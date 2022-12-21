@@ -100,7 +100,7 @@
         <div class="images">
             <h4>Add Images</h4>
             <hr>
-            <olii-edit-images [images]="eventImages" (imagesEvent)="eventImagesChange($event)"></olii-edit-images>
+            <olii-edit-images [images]="eventImages" (imagesEvent)="onEventImagesChange($event)"></olii-edit-images>
         </div>
         <ion-button type="submit" [disabled]="!editEventForm.valid" mode="ios">Update Event</ion-button>
     </form>

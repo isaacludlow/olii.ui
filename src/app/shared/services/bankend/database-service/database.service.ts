@@ -130,7 +130,6 @@ export class DatabaseService {
 
   createGroupPost(groupPost: GroupPost): Observable<void> {
     const mappedGroupPost = mapGroupPostRequest(groupPost);
-    console.log(mappedGroupPost)
 
     const groupsCollectionRef = this.afs.collection('group_posts');
     // Creates a reference to the new event doc that does not exist.
@@ -180,8 +179,6 @@ export class DatabaseService {
 
   updateProfile(profile: Profile): Observable<void> {
     const mappedProfile = mapProfileRequest(profile);
-    console.log(profile)
-    console.log(mappedProfile)
 
     return from(this.afs.doc(`profiles/${profile.ProfileId}`).update(mappedProfile));
   }

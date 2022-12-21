@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, from, Observable } from "rxjs";
+import { BehaviorSubject, from, Observable, zip } from "rxjs";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { ProfileService } from "./profile.service";
@@ -14,6 +14,7 @@ import { Platform } from "@ionic/angular";
 import { switchMap } from "rxjs/operators";
 import { readPhotoAsBase64 } from "../../utilities";
 import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
 	providedIn: 'root'
@@ -69,6 +70,19 @@ export class ProfileStore implements OnDestroy {
           switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
         );
     }
+
+	uploadProfileImages(images: GalleryPhoto[], profileId: string, platform: Platform): Observable<string[]> {
+		const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+	
+		const downloadUrls$ = zip(...base64ImageObservables).pipe(
+		  switchMap(base64Images =>
+			zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/images/${uuidv4()}`)))
+		  ),
+		  switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+		);
+	
+		return downloadUrls$;
+	}
 
 	updateProfile(profile: Profile): Observable<void> {
 		return this.dbService.updateProfile(profile);
