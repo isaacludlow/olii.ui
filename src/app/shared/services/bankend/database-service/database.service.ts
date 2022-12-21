@@ -111,7 +111,7 @@ export class DatabaseService {
       switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
         tap(res => console.log(res)),
         map(listOfGroupPosts => {
-          const mergedArrayOfGroupPosts = [].concat.apply([], listOfGroupPosts);
+          const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts);
           return mergedArrayOfGroupPosts;
         }),
         tap(res => console.log(res)),
