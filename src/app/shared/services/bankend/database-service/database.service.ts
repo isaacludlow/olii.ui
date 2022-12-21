@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { from, Observable, ObservedValueOf, zip } from 'rxjs';
-import { map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, from, Observable, ObservedValueOf, zip } from 'rxjs';
+import { combineAll, map, mergeAll, switchMap, tap, zipAll } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
@@ -110,7 +110,10 @@ export class DatabaseService {
     const groupPosts = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
       switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
         tap(res => console.log(res)),
-        mergeAll(), // TODO: Merge all seems to be removing the groupPosts.
+        map(listOfGroupPosts => {
+          const mergedArrayOfGroupPosts = [].concat.apply([], listOfGroupPosts);
+          return mergedArrayOfGroupPosts;
+        }),
         tap(res => console.log(res)),
     );
 
