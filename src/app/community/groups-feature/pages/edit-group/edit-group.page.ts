@@ -9,7 +9,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
 import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
@@ -47,13 +47,18 @@ export class EditGroupPage implements OnInit {
         this.groupStore.getGroupById(paramMap.get('groupId'))
       )
     ).subscribe(group => this.group = group);
+
     this.groupCoverImage = <GalleryPhoto>{ webPath: this.group.CoverImageUrl };
     this.editGroupForm.controls['name'].setValue(this.group.Name);
     this.editGroupForm.controls['description'].setValue(this.group.Description);
   }
 
   setGroupPicture() {
-    selectImages(1).subscribe(galleryPhotos => this.editGroupForm.get('coverImage').setValue(galleryPhotos.shift()));
+    selectImages(1).subscribe(galleryPhotos => {
+      const coverImage = galleryPhotos.shift();
+      this.editGroupForm.get('coverImageUrl').setValue(coverImage);
+      this.groupCoverImage = coverImage;
+    });
   }
 
   sanitizeUrl(url: string): string {
@@ -61,17 +66,20 @@ export class EditGroupPage implements OnInit {
   }
 
   async updateGroup() {
+    const groupId = this.group.GroupId;
     const updatedGroup: GroupRequest = {
-      GroupId: this.group.GroupId,
-      CoverImageUrl: this.editGroupForm.get('coverImage').value == null ? this.group.CoverImageUrl : await readPhotoAsBase64(this.editGroupForm.get('coverImage').value, this.platform),
+      GroupId: groupId,
+      CoverImageUrl: this.editGroupForm.get('coverImageUrl').value == null
+        ? this.group.CoverImageUrl
+        : await this.groupStore.uploadGroupCoverImage(this.editGroupForm.get('coverImageUrl').value, this.group.GroupId, this.platform).toPromise(),
       Name: this.editGroupForm.get('name').value,
       Description: this.editGroupForm.get('description').value,
       PrivacyLevel: this.editGroupForm.get('privacyLevel').value,
       Admins: this.group.Admins
     }
   
-    this.subs.sink = this.groupStore.updateGroup(updatedGroup, this.group.GroupId).subscribe(res => {
-      this.router.navigate(['community/groups/group/' + res.GroupId]);
+    this.subs.sink = this.groupStore.updateGroup(updatedGroup).subscribe(() => {
+      this.router.navigate(['community/groups/group/' + groupId])
     })
   }
 }

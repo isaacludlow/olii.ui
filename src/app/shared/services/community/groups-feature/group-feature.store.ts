@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, of } from "rxjs";
+import { BehaviorSubject, from, Observable, of, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -12,6 +12,7 @@ import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-s
 import { readPhotoAsBase64 } from "src/app/shared/utilities";
 import { GalleryPhoto } from "@capacitor/camera";
 import { Platform } from "@ionic/angular";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -77,26 +78,30 @@ export class GroupFeatureStore {
         }
     }
 
-    createGroup(group: Group): Observable<void> {
+    createGroup(group: GroupRequest): Observable<void> {
         return this.dbService.createGroup(group);
     }
 
-    updateGroup(groupRequest: GroupRequest, groupId: string): Observable<Group> {
-        throw new Error("Method not implemented.");
-        // return this.groupService.updateGroup(groupRequest).pipe(
-        //     tap(group => {
-        //         let allGroups = this._allGroups.value;
-        //         let allGroupsIndex = allGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-        //         allGroups.splice(allGroupsIndex, 1, group);
-        //         this._allGroups.next([...allGroups]);
+    updateGroup(group: GroupRequest): Observable<void> {
+        const editedGroupIndex = this._allGroups.value.findIndex(x => x.GroupId === group.GroupId);
+        this._allGroups.value.splice(editedGroupIndex , 1)
+        this._allGroups.next(this._allGroups.value);
 
-        //         let myGroups = this._myGroups.value;
-        //         let myGroupsIndex = myGroups.findIndex(x => x.GroupId === groupRequest.GroupId);
-        //         myGroups.splice(myGroupsIndex, 1, group);
-        //         this._myGroups.next([...myGroups]);
-        //     })
-        // );
+        return this.dbService.editGroup(group);
     }
+
+    uploadEventImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
+        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+    
+        const downloadUrls$ = zip(...base64ImageObservables).pipe(
+          switchMap(base64Images =>
+            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
+          ),
+          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+        );
+    
+        return downloadUrls$;
+      }
 
     uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {
         return from(readPhotoAsBase64(coverImage, platform)).pipe(
@@ -128,25 +133,8 @@ export class GroupFeatureStore {
         );
     }
 
-    createGroupPost(groupId: string, groupPost: CreatePostRequest): Observable<Boolean> {
-        return this.groupService.createGroupPost(groupId, groupPost).pipe(
-            map(groupPost => {
-                let allGroups = this._allGroups.value;
-                let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
-                let myGroups = this._myGroups.value;
-                let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
-
-                if (foundFromAllGroups != undefined) {
-                    foundFromAllGroups.Posts.push(groupPost);
-                }
-
-                if (foundFromMyGroups != undefined) {
-                    foundFromMyGroups.Posts.push(groupPost);
-                }
-
-                return true;
-            })
-        );
+    createGroupPost(groupPost: GroupPost): Observable<void> {
+        return this.dbService.createGroupPost(groupPost);
     }
 
     addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest, groupPostId: string):Observable<Boolean> {

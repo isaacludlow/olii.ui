@@ -128,21 +128,20 @@ service cloud.firestore {
 
       allow update: if isAuthenticated(request)
         && isGroupDataValid(request.resource.data)
-        && isAdminForGroup(request);
+        && isOwner(request, request.resource.data.admins[0].profileId);
 
       allow delete: if isAuthenticated(request)
-        && isAdminForGroup(request);
+        && isOwner(request, request.resource.data.admins[0].profileId);
 
       function isGroupDataValid(requestData) {
         return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel', 'totalMembers'])
           && requestData.keys().hasOnly(
-            ['admins', 'coverImageUrl', 'description', 'membersPreview', 'name', 'privacyLevel', 'totalMembers']
+            ['admins', 'coverImageUrl', 'description', '', 'name', 'privacyLevel', 'totalMembers']
           )
           && requestData.admins is list
           && isProfilePreviewDataValid(requestData.admins[0])
           && requestData.coverImageUrl is string
           && requestData.description is string
-          && requestData.get('membersPreview', []) is list
           && requestData.name is string
           && requestData.privacyLevel is string
           && requestData.totalMembers is int
@@ -164,18 +163,18 @@ service cloud.firestore {
         && isOwner(request, request.resource.data.author.profileId);
 
       function isGroupPostDataValid(requestData) {
-        return requestData.keys().hasAll(['author', 'content', 'date', 'group'])
+        return requestData.keys().hasAll(['author', 'content', 'date', 'groupPreview'])
           && requestData.keys().hasOnly(
-            ['author', 'content', 'date', 'group', 'imageUrls']
+            ['author', 'content', 'date', 'groupPreview', 'imageUrls']
           )
           && isProfilePreviewDataValid(requestData.author)
           && requestData.content is string
           && requestData.date is timestamp
-          && requestData.group is map
-          && requestData.group.id is string
-          && requestData.group.imageUrl is string
-          && requestData.group.name is string
-          && requestData.get('imageUrls', []) is list
+          && requestData.groupPreview is map
+          && requestData.groupPreview.groupId is string
+          && requestData.groupPreview.coverImageUrl is string
+          && requestData.groupPreview.name is string
+          && requestData.get('imageUrls', []) is list;
       }
     }
 

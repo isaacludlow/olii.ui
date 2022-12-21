@@ -11,8 +11,6 @@ import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images-album-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { User } from "src/app/models/dto/user/user.dto";
-import { EventData } from "src/app/models/requests/community/events/event-data.dto";
-import { EventRequest } from "src/app/models/requests/community/events/event-request.dto";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
@@ -92,7 +90,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
         Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
-        MembersPreview: groupDoc.membersPreview.map(member => mapProfilePreview(member)),
+        MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
         Events: []
     };
@@ -213,7 +211,7 @@ export function mapUser(userDoc: any): User {
 }
 
 // ============================================ Request Mappers ====================================================
-export function mapEventRequest(eventRequest: Event) {
+export function mapToEventRequest(eventRequest: Event) {
     const newEventRequest = {
         attendeesPreview: eventRequest.AttendeesPreview,
         coverImageUrl: eventRequest.CoverImageUrl,
@@ -261,12 +259,11 @@ export function mapEditEvent(event: Event) {
     return mappedEvent;
 }
 
-export function mapGroupRequest(group: Group) {
+export function mapGroupRequest(group: GroupRequest) {
     const mappedGroup = {
         admins: group.Admins.map(admin => mapProfilePreviewRequest(admin)),
         coverImageUrl: group.CoverImageUrl,
         description: group.Description,
-        membersPreview: [],
         name: group.Name,
         privacyLevel: group.PrivacyLevel,
         totalMembers: 0
@@ -279,19 +276,41 @@ export function mapGroupPostCommentRequest(newComment: GroupPostComment) {
     const groupPostCommentRequest = {
         commentId: newComment.CommentId,
         Author: newComment.Author,
-        Content:newComment.Author,
+        Content:newComment.Content,
         Date: newComment.Date
 
     }
 }
 
+export function mapGroupPostRequest(groupPost: GroupPost) {
+    const mappedGroupPost = {
+        author: mapProfilePreviewRequest(groupPost.Author),
+        groupPreview: mapGroupPreviewRequest(groupPost.GroupPreview),
+        content: groupPost.Content,
+        date: groupPost.Date,
+        imageUrls: groupPost.ImageUrls
+    };
+
+    return mappedGroupPost;
+}
+
+function mapGroupPreviewRequest(groupPreview: GroupPreview) {
+    const mappedGroupPreview = {
+        groupId: groupPreview.GroupId,
+        name: groupPreview.Name,
+        coverImageUrl: groupPreview.CoverImageUrl
+    };
+
+    return mappedGroupPreview;
+}
+
 function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {
-    const profilePreview = {
+    const mappedProfilePreview = {
         profileId: profilePreviewDoc.ProfileId,
         firstName: profilePreviewDoc.FirstName,
         lastName: profilePreviewDoc.LastName,
         profilePictureUrl: profilePreviewDoc.ProfilePictureUrl
     };
 
-    return profilePreview;
+    return mappedProfilePreview;
 }

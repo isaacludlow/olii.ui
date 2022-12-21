@@ -12,6 +12,7 @@ import { Platform } from '@ionic/angular';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
+import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 
 @Component({
   templateUrl: './create-group.page.html',
@@ -50,7 +51,7 @@ export class CreateGroupPage {
     const profile = this.profileStore.currentProfile.value;
     const newGroupId = this.dbService.generateDocumentId();
 
-    const newGroup: Group = {
+    const newGroup: GroupRequest = {
       GroupId: newGroupId,
       CoverImageUrl: await this.groupStore.uploadGroupCoverImage(this.groupCoverImage, newGroupId, this.platform).toPromise(),
       Name: this.createGroupForm.get('name').value,
@@ -63,11 +64,7 @@ export class CreateGroupPage {
           LastName: profile.LastName,
           ProfilePictureUrl: profile.ProfilePictureUrl
         }
-      ],
-      Posts: [],
-      Members: [],
-      MembersPreview: [],
-      Events: []
+      ]
     };
 
     this.subs.sink = this.groupStore.createGroup(newGroup).subscribe(() => {

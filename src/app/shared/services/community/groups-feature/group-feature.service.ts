@@ -130,7 +130,6 @@ export class GroupFeatureService {
     //         .find(post => post.GroupPostId == newCommentRequest.ParentId).Comments
     //         .push(newComment);
     //     this.dummyId++;
-
     //     return of(true);
     // }
 
