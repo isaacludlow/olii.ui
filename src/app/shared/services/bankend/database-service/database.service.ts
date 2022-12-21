@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, Observable, zip } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { map, mergeAll, switchMap } from 'rxjs/operators';
+import { map, mergeAll, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
