@@ -89,7 +89,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         Description: groupDoc.description,
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
-        Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
+        Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)), // TODO fix the "admins?"
         MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
         Events: []

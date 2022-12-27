@@ -109,9 +109,10 @@ export class DatabaseService {
   getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
     const groupPosts = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
       switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
-        tap(res => console.log(res)),
-        mergeAll(), // TODO: Merge all seems to be removing the groupPosts.
-        tap(res => console.log(res)),
+      map(listOfGroupPosts => {
+        const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts);
+        return mergedArrayOfGroupPosts;
+      }),
     );
 
     return groupPosts;
