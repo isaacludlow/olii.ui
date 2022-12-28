@@ -8,8 +8,6 @@ export interface Profile {
     FirstName: string;
     /** The user's last name. */
     LastName: string;
-    /** The username for the user. */
-    Username: string;
     /** Profile picture url of the user. Shown in thumbnails on events, groups, etc.  */
     ProfilePictureUrl: string;
     /** Country user is from. */
@@ -21,9 +19,9 @@ export interface Profile {
     /** Bio for the profile. */
     Bio: string;
     /** Links to social apps. */
-    // ConnectedSocials: ConnectedSocial[]; // Commented out for now. Will add feature later.
+    // ConnectedSocials: ConnectedSocial[]; // TODO: Commented out for now. Will add feature later.
     /** Number of friends the user has. */
-    Friends: number;
+    // Friends: number; // TODO: Commented out for now. Will add feature later.
     /** Profile images on the user's profile to show who they are. */
     ImageUrls: string[];
     /** Images from throughout the app that are saved to albums in the user profile. */

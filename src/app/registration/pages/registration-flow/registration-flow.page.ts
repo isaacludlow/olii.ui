@@ -101,7 +101,6 @@ export class RegistrationFlowPage implements OnDestroy {
       ProfilePictureFile: await readPhotoAsBase64(this.profilePicture, this.platform),
       ImageFiles: profileBase64Images,
       Friends: 0,
-      ConnectedSocials: [],
       SavedAlbums: []
     };
 

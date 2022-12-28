@@ -56,7 +56,7 @@ service cloud.firestore {
       // Require first and last name. All other fields are optional.
       return (requestData.keys().hasAll(['firstName', 'lastName']))
         && (requestData.keys().hasOnly(
-          ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl']
+          ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl', 'savedImagesAlbumsPreview', 'friends']
         ))
         && requestData.firstName is string
         && requestData.lastName is string
@@ -65,7 +65,7 @@ service cloud.firestore {
         && requestData.get('hostCountry', '') is string
         && requestData.get('currentCity', '') is string
         && requestData.get('imageUrls', []) is list
-        && requestData.get('profilePictureUrl', '') is string;
+        && requestData.get('profilePictureUrl', '') is string
       }
 
       match /profiles/{profileId}/savedImagesAlbums/{albumId} {

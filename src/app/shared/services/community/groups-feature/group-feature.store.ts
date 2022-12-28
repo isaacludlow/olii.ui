@@ -90,25 +90,12 @@ export class GroupFeatureStore {
         return this.dbService.editGroup(group);
     }
 
-    uploadEventImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
-        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
-    
-        const downloadUrls$ = zip(...base64ImageObservables).pipe(
-          switchMap(base64Images =>
-            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
-          ),
-          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
-        );
-    
-        return downloadUrls$;
-      }
-
     uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {
         return from(readPhotoAsBase64(coverImage, platform)).pipe(
           switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `groups/${groupId}/cover-image`)),
           switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
         );
-      }
+    }
 
     getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
         return this.dbService.getLatestPosts(profileId, earliestPostDate);
@@ -135,6 +122,19 @@ export class GroupFeatureStore {
 
     createGroupPost(groupPost: GroupPost): Observable<void> {
         return this.dbService.createGroupPost(groupPost);
+    }
+
+    uploadGroupPostImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
+        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+    
+        const downloadUrls$ = zip(...base64ImageObservables).pipe(
+          switchMap(base64Images =>
+            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
+          ),
+          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+        );
+    
+        return downloadUrls$;
     }
 
     addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
