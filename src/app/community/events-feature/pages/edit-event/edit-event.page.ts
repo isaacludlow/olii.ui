@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
-import { getAllElementsFromFirstArrayNotInSecondArray, selectImages } from 'src/app/shared/utilities';
+import { getItemsFromFirstArrayThatAreNotInSecondArray, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
 import { CloudStorageService } from 'src/app/shared/services/bankend/cloud-storage-service/cloud-storage.service';
@@ -141,7 +141,6 @@ export class EditEventPage implements OnDestroy {
     this.map.setZoom(10);
   }
 
-  // === Remove this and rewrite the logic once the olii-edit-images component has been refactored.
   setEventCoverImage() {
     this.subs.sink = selectImages(1).subscribe(galleryPhotos => {
       this.eventCoverImage = galleryPhotos[0];
@@ -155,7 +154,7 @@ export class EditEventPage implements OnDestroy {
   }
 
   onEventImagesChange(galleryPhotos: GalleryPhoto[]) {
-    const deletedImages = getAllElementsFromFirstArrayNotInSecondArray(this.originalEvent.ImageUrls, galleryPhotos.map(x => x.webPath));
+    const deletedImages = getItemsFromFirstArrayThatAreNotInSecondArray(this.originalEvent.ImageUrls, galleryPhotos.map(x => x.webPath));
     if (deletedImages.length > 0) {
       for (const deletedImage of deletedImages) {
         if (this.imagesToDelete.includes(deletedImage))
@@ -165,7 +164,7 @@ export class EditEventPage implements OnDestroy {
       }
     }
 
-    const newImages = getAllElementsFromFirstArrayNotInSecondArray(galleryPhotos.map(x => x.webPath), this.eventImages.map(x => x.webPath));
+    const newImages = getItemsFromFirstArrayThatAreNotInSecondArray(galleryPhotos.map(x => x.webPath), this.eventImages.map(x => x.webPath));
     if (newImages.length > 0) {
       for (const newImage of newImages) {
         if (this.imagesToUpload.includes(<GalleryPhoto>{ webPath: newImage}))

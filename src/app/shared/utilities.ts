@@ -76,11 +76,11 @@ export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventI
   // attendees.push(partialProfile);
 }
 
-export function getAllElementsThatAreTheSameBetweenTwoArrays<Type>(array1: Type[], array2: Type[]): Type[] {
+export function getItemsThatAreInBothArrays<Type>(array1: Type[], array2: Type[]): Type[] {
   return array1.filter(x => array2.includes(x));
 }
 
-export function getAllElementsFromFirstArrayNotInSecondArray<Type>(array1: Type[], array2: Type[]): Type[] {
+export function getItemsFromFirstArrayThatAreNotInSecondArray<Type>(array1: Type[], array2: Type[]): Type[] {
   return array1.filter(x => !array2.includes(x));
 }
 

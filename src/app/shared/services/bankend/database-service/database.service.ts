@@ -109,12 +109,10 @@ export class DatabaseService {
   getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
     const groupPosts = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
       switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
-        tap(res => console.log(res)),
         map(listOfGroupPosts => {
-          const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts);
+          const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts); // Flattens out the array of arrays into one array.
           return mergedArrayOfGroupPosts;
-        }),
-        tap(res => console.log(res)),
+        })
     );
 
     return groupPosts;

@@ -4,7 +4,7 @@ import { SubSink } from 'subsink';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { Location } from '@angular/common';
-import { getAllElementsFromFirstArrayNotInSecondArray, readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
+import { getItemsFromFirstArrayThatAreNotInSecondArray, readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
 import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
@@ -78,7 +78,7 @@ export class EditProfilePage implements OnInit {
   }
 
   onProfileImagesChange(galleryPhotos: GalleryPhoto[]) {
-    const deletedImages = getAllElementsFromFirstArrayNotInSecondArray(this.originalProfile.ImageUrls, galleryPhotos.map(x => x.webPath));
+    const deletedImages = getItemsFromFirstArrayThatAreNotInSecondArray(this.originalProfile.ImageUrls, galleryPhotos.map(x => x.webPath));
     if (deletedImages.length > 0) {
       for (const deletedImage of deletedImages) {
         if (this.imagesToDelete.includes(deletedImage))
@@ -88,7 +88,7 @@ export class EditProfilePage implements OnInit {
       }
     }
 
-    const newImages = getAllElementsFromFirstArrayNotInSecondArray(galleryPhotos.map(x => x.webPath), this.profileImages.map(x => x.webPath));
+    const newImages = getItemsFromFirstArrayThatAreNotInSecondArray(galleryPhotos.map(x => x.webPath), this.profileImages.map(x => x.webPath));
     if (newImages.length > 0) {
       for (const newImage of newImages) {
         if (this.imagesToUpload.includes(<GalleryPhoto>{ webPath: newImage}))
