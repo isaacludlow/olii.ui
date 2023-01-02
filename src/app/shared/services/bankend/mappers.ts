@@ -280,6 +280,8 @@ export function mapGroupPostCommentRequest(newComment: GroupPostComment) {
         Date: newComment.Date
 
     }
+
+    return groupPostCommentRequest;
 }
 
 export function mapGroupPostRequest(groupPost: GroupPost) {
