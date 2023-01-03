@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, of, zip } from "rxjs";
+import { BehaviorSubject, from, Observable, ObservedValueOf, of, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -124,6 +124,10 @@ export class GroupFeatureStore {
         return this.dbService.createGroupPost(groupPost);
     }
 
+    deleteGroupPost(postId: string): Observable<void> {
+        return this.dbService.deleteGroupPost(postId);
+    }
+
     uploadGroupPostImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
         const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
     
@@ -137,7 +141,7 @@ export class GroupFeatureStore {
         return downloadUrls$;
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<Boolean> {
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<boolean> {
         return this.groupService.addCommentToGroupPost(newCommentRequest);
     }
 
