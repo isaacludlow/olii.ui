@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -166,8 +166,10 @@ export class DatabaseService {
     return user;
   }
     
-  createUser(newUser: User): Observable<User> {
-    throw new Error("Method not implemented.");
+  createUser(newUser: User): Observable<void> {
+    const mappedUser = mapUserRequest(newUser);
+    
+    return from(this.afs.doc(`users/${newUser.Uid}`).set(mappedUser));
   }
   
   getProfileById(id: string): Observable<Profile> {

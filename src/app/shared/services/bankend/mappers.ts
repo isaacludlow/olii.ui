@@ -292,10 +292,21 @@ export function mapProfileRequest(profile: Profile) {
         hostCountry: profile.HostCountry,
         currentCity: profile.CurrentCity,
         imageUrls: profile.ImageUrls,
-        profilePictureUrl: profile.ProfilePictureUrl,
+        profilePictureUrl: profile.ProfilePictureUrl
     };
 
     return mappedProfile;
+}
+
+export function mapUserRequest(user: User) {
+    const mappedUser = {
+        dob: user.Dob,
+        email: user.Email,
+        phoneNumber: user.PhoneNumber,
+        username: user.Username
+    };
+
+    return mappedUser;
 }
 
 function mapGroupPreviewRequest(groupPreview: GroupPreview) {
