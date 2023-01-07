@@ -29,6 +29,10 @@ export class SignInPage {
     private navBar: NavBarService,
   ) { }
 
+  get email() {
+    return this.signInForm.get('email');
+  }
+
   onSubmit(): void {
     const email = this.signInForm.get('email').value;
     const password = this.signInForm.get('password').value;
