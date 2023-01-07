@@ -28,9 +28,7 @@ export class RegistrationPage {
       Validators.minLength(8)
     ]],
     hasReadTermsAndConditions: [false, Validators.requiredTrue]
-  },
-  { updateOn: 'blur' }
-  );
+  });
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +37,14 @@ export class RegistrationPage {
     private router: Router,
     private location: Location
   ) { }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
+  }
 
   toggleModel(): void {
     this.showTermsAndConditions = !this.showTermsAndConditions;
@@ -49,6 +55,12 @@ export class RegistrationPage {
   }
 
   async onSubmit(): Promise<void> {
+    // const usernameIsAvailable = await this.userStore.checkUsernameAvailability(this.registerForm.get('username').value).toPromise()
+    // if (!usernameIsAvailable) {
+    //   alert('Username is already taken. Please choose a different username.');
+    //   throw new Error('username unavailable');
+    // }
+    
     const newUser: User = {
       Uid: null,
       Username: this.registerForm.get('username').value,
