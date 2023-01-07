@@ -25,8 +25,8 @@ export class UserStore implements OnDestroy {
         });
     }
 
-    get user(): Observable<User> {
-        return this._currentUser.asObservable();
+    get user(): BehaviorSubject<User> {
+        return this._currentUser;
     }
 
     getUserByUid(userIdToken?: string): Observable<User> {

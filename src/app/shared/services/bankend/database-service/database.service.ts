@@ -167,7 +167,9 @@ export class DatabaseService {
   }
     
   createUser(newUser: User): Observable<void> {
+    console.log(newUser)
     const mappedUser = mapUserRequest(newUser);
+    console.log(mappedUser)
     
     return from(this.afs.doc(`users/${newUser.Uid}`).set(mappedUser));
   }
@@ -178,6 +180,12 @@ export class DatabaseService {
     );
 
     return profile;
+  }
+
+  createProfile(newProfile: Profile): Observable<void> {
+	  const mappedProfile = mapProfileRequest(newProfile);
+
+    return from(this.afs.doc(`profiles/${newProfile.ProfileId}`).set(mappedProfile));
   }
 
   updateProfile(profile: Profile): Observable<void> {

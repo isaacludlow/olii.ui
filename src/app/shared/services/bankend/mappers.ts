@@ -201,9 +201,9 @@ export function mapUser(userDoc: any): User {
     const user: User = {
         Uid: userDoc.uid,
         Username: userDoc.username,
-        Dob: userDoc.dob.toDate(),
+        Dob: userDoc.dob?.toDate(),
         Email: userDoc.email,
-        PhoneNumber: Number.parseInt(userDoc.phoneNumber)
+        PhoneNumber: +userDoc.phoneNumber
     };
 
     return user;
@@ -300,9 +300,9 @@ export function mapProfileRequest(profile: Profile) {
 
 export function mapUserRequest(user: User) {
     const mappedUser = {
-        dob: user.Dob,
+        dob: user?.Dob,
         email: user.Email,
-        phoneNumber: user.PhoneNumber,
+        phoneNumber: user?.PhoneNumber,
         username: user.Username
     };
 

@@ -58,9 +58,8 @@ export class RegistrationPage {
     }
 
     this.authStore.registerUser(newUser.Email, this.registerForm.get('password').value).pipe(
-      switchMap(userCredential => from(userCredential.user.uid)),
-      switchMap(uid => {
-        newUser.Uid = uid;
+      switchMap(userCredential => {
+        newUser.Uid = userCredential.user.uid;
         
         return this.userStore.createUser(newUser)
       })

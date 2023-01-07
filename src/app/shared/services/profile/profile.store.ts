@@ -3,7 +3,6 @@ import { BehaviorSubject, from, Observable, zip } from "rxjs";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { ProfileService } from "./profile.service";
-import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 import { DatabaseService } from "../bankend/database-service/database.service";
@@ -15,6 +14,7 @@ import { switchMap } from "rxjs/operators";
 import { readPhotoAsBase64 } from "../../utilities";
 import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
 import { v4 as uuidv4 } from 'uuid';
+import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 
 @Injectable({
 	providedIn: 'root'
@@ -64,6 +64,14 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
+	createNewProfile(profile: Profile): Observable<void> {
+		return this.dbService.createProfile(profile);
+	}
+
+	updateProfile(profile: Profile): Observable<void> {
+		return this.dbService.updateProfile(profile);
+	}
+
 	uploadProfilePicture(coverImage: GalleryPhoto, profileId: string, platform: Platform): Observable<string> {
         return from(readPhotoAsBase64(coverImage, platform)).pipe(
           switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/profile-picture`)),
@@ -82,10 +90,6 @@ export class ProfileStore implements OnDestroy {
 		);
 	
 		return downloadUrls$;
-	}
-
-	updateProfile(profile: Profile): Observable<void> {
-		return this.dbService.updateProfile(profile);
 	}
 
 	getFriends(userId: number): Observable<ProfilePreview[]> {

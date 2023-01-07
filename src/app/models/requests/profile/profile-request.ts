@@ -19,7 +19,7 @@ export interface ProfileRequest {
     /** Links to social apps. */
     // ConnectedSocials: ConnectedSocial[]; // TODO: Commented out for now. Will add feature later.
     /** Number of friends the user has. */
-    Friends: number;
+    // Friends: number; // TODO: Commented out for now. Will add feature later.
     /** Profile images on the user's profile to show who they are. */
     ImageFiles: string[];
     /** Images from throughout the app that are saved to albums in the user profile. */

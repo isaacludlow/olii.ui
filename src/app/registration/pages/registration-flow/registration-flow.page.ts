@@ -1,15 +1,16 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { IonSlides, Platform } from '@ionic/angular';
-import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { GalleryPhoto } from '@capacitor/camera';
-import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
+import { selectImages } from 'src/app/shared/utilities';
 import { DomSanitizer } from '@angular/platform-browser';
 import gm = google.maps;
-import { ProfileService } from 'src/app/shared/services/profile/profile.service';
 import { Router } from '@angular/router';
 import { NavBarService } from 'src/app/shared/services/nav-bar/nav-bar.service';
 import { SubSink } from 'subsink';
+import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
+import { UserStore } from 'src/app/shared/services/user/user.store';
+import { Profile } from 'src/app/models/dto/profile/profile.dto';
 
 @Component({
   templateUrl: './registration-flow.page.html',
@@ -34,10 +35,11 @@ export class RegistrationFlowPage implements OnDestroy {
     private fb: FormBuilder,
     private domSanitizer: DomSanitizer,
     private platform: Platform,
-    private profileService: ProfileService,
+    private profileStore: ProfileStore,
+    private userStore: UserStore,
     private router: Router,
     private navBar: NavBarService,
-  ) { }
+  ) {}
 
   nextSlide(): void {
     this.slides.slideNext();
@@ -69,7 +71,6 @@ export class RegistrationFlowPage implements OnDestroy {
   }
   
   setHostCountry(placeResult: gm.places.PlaceResult): void {
-    
     this.registerFlowForm.get('hostCountry').setValue(placeResult.formatted_address);
   }
   
@@ -78,36 +79,33 @@ export class RegistrationFlowPage implements OnDestroy {
   }
 
   async submit() {
-    const profileData = await this.createProfileRequest();
-    this.subs.sink = this.profileService.createNewProfile(profileData).subscribe(_ => {
+    const profileRequest = await this.createProfileRequest();
+    this.subs.sink = this.profileStore.createNewProfile(profileRequest).subscribe(_ => {
       this.navBar.setNavBarVisibility(true);
       this.router.navigate(['community/events'])
     });
   }
 
   async createProfileRequest() {
-    const profileBase64Images = [];
-    this.profileImages.forEach(async profileImage => {
-      profileBase64Images.push(await readPhotoAsBase64(profileImage, this.platform))
-    });
+    const profileId = this.userStore.user.value.Uid;
 
-    const profileRequest: ProfileRequest = {
+    const profile: Profile = {
+      ProfileId: profileId,
       FirstName: this.registerFlowForm.get('firstName').value,
       LastName: this.registerFlowForm.get('lastName').value,
       HomeCountry: this.registerFlowForm.get('homeCountry').value,
       HostCountry: this.registerFlowForm.get('hostCountry').value,
       CurrentCity: this.registerFlowForm.get('currentCity').value,
       Bio: this.registerFlowForm.get('bio').value,
-      ProfilePictureFile: await readPhotoAsBase64(this.profilePicture, this.platform),
-      ImageFiles: profileBase64Images,
-      Friends: 0,
-      SavedAlbums: []
+      ProfilePictureUrl: await this.profileStore.uploadProfilePicture(this.profilePicture, profileId, this.platform).toPromise(),
+      ImageUrls: await this.profileStore.uploadProfileImages(this.profileImages, profileId, this.platform).toPromise(),
+      SavedImageAlbumPreviews: []
     };
 
-    return profileRequest
+    return profile
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    this.subs.unsubscribe();
   }
 }
