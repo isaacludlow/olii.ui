@@ -1,7 +1,7 @@
 import { ProfilePreview } from "../../profile/profile-preview.dto";
 
 export interface GroupPostComment {
-    CommentId: number;
+    CommentId: string;
     Author: ProfilePreview;
     Content: string;
     Date: Date;

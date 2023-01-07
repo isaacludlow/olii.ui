@@ -13,6 +13,7 @@ import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.
 import { User } from "src/app/models/dto/user/user.dto";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
+import { CommentsComponent } from 'src/app/community/shared/components/comments/comments.component'
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -107,6 +108,30 @@ function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
 
     return groupPreview;
 }
+
+export function mapGroupPostComments(groupPostCommentsDocs: any[]): GroupPostComment[] {
+    const mappedGroupPostComments: GroupPostComment[] = [];
+
+    for (let i = 0; i < groupPostCommentsDocs.length; i++) {
+        const groupPostComment = groupPostCommentsDocs[i];
+
+        mappedGroupPostComments.push(mapGroupPostComment(groupPostComment));
+    }
+
+    return mappedGroupPostComments;
+}
+
+function mapGroupPostComment(groupPostComment: any): GroupPostComment {
+    const mappedGroupPostComment: GroupPostComment = {
+        CommentId: groupPostComment.id,
+        Author: groupPostComment.author,
+        Content: groupPostComment.content,
+        Date: groupPostComment.date.toDate()
+    };
+
+    return mappedGroupPostComment;
+}
+
 // endregion
 
 // #region Group Post mappers
@@ -270,18 +295,6 @@ export function mapGroupRequest(group: GroupRequest) {
     };
 
     return mappedGroup;
-}
-
-export function mapGroupPostCommentRequest(newComment: GroupPostComment) {
-    const groupPostCommentRequest = {
-        commentId: newComment.CommentId,
-        Author: newComment.Author,
-        Content:newComment.Content,
-        Date: newComment.Date
-
-    }
-
-    return groupPostCommentRequest;
 }
 
 export function mapGroupPostRequest(groupPost: GroupPost) {

@@ -62,7 +62,7 @@ export class CommentsComponent implements OnInit {
   showComments: boolean;
   addCommentInput = new FormControl('', Validators.required);
   
-  dummyId = 32;
+  dummyId = '32';
 
   constructor( 
     private groupStore: GroupFeatureStore,
@@ -102,7 +102,7 @@ export class CommentsComponent implements OnInit {
             Date: new Date(Date.now()),
         }
     
-        this.groupStore.addCommentToGroupPost(newComment, this.groupPostId).subscribe(res => {
+        this.groupStore.createCommentToGroupPost(newComment, this.groupPostId).subscribe(res => {
             this.addCommentInput = new FormControl('', Validators.required);
             this.toggleAddComment(false);
         });

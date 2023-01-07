@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store'
 import { CommentsComponent } from '../comments/comments.component'
 
 @Component({
@@ -26,7 +27,7 @@ import { CommentsComponent } from '../comments/comments.component'
                     <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
                 </olii-responsive-aspect-ratio-container>
             </div>
-            <olii-comments [postComments]="post.Comments" groupPostId={{groupPostId}}></olii-comments>
+            <olii-comments [postComments]="post.Comments" [groupPostId]="groupPostId"></olii-comments>
         </div>
     </div>
   `,
@@ -39,10 +40,12 @@ export class GroupPostCardComponent implements OnInit {
   @Input() groupPostId: string;
   
   constructor( 
-    private router: Router
+    private router: Router,
+    private groupStore: GroupFeatureStore
    ) { }
    
    ngOnInit(): void {
+    this.groupStore.getCommentsByGroupPostId(this.groupPostId).subscribe(comments => this.post.Comments = comments);
    }
 
   navigateToUserProfile(profileId: string) {

@@ -5,7 +5,7 @@ import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
-import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
+import { GroupPostComment } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { DatabaseService } from "../../bankend/database-service/database.service";
 import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-storage.service";
@@ -137,8 +137,12 @@ export class GroupFeatureStore {
         return this.dbService.createGroupPost(groupPost);
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest, groupPostId: string):Observable<Boolean> {
-        return this.dbService.addCommentToGroupPost(newCommentRequest, groupPostId);
+    createCommentToGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<Boolean> {
+        return this.dbService.createCommentToGroupPost(newComment, groupPostId);
+    }
+
+    getCommentsByGroupPostId(groupPostId: string): Observable< GroupPostComment[]> {
+        return this.dbService.getCommentsByGroupPostId(groupPostId)
     }
 
     // TODO-AfterBeta: Allow an admin to delete a group.

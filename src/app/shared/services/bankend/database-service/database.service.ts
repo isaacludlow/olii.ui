@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapGroupPostCommentRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapGroupPostComments } from '../mappers';
 @Injectable({
   providedIn: 'root'
 })
@@ -150,12 +150,19 @@ export class DatabaseService {
     return pastGroupEvents;
   }
 
-  addCommentToGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<Boolean> {
-    const mappedGroup = mapGroupPostCommentRequest(newComment);
+  createCommentToGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<Boolean> {
 
     const postCommentRef = this.afs.collection(`group_posts/${groupPostId}/comments`);
 
-    return from(postCommentRef.add(mappedGroup)).pipe(map(()=> true)); //TODO: figure our how to return observable<void>
+    return from(postCommentRef.add(newComment)).pipe(map(()=> true)); //TODO: figure our how to return observable<void>
+  }
+
+  getCommentsByGroupPostId(groupPostId: string): Observable< GroupPostComment[]> {
+    const comments = this.afs.collection(`groupPost/${groupPostId}/comments`).valueChanges().pipe(
+      map(comments => mapGroupPostComments(comments))
+    );
+
+    return comments;
   }
 
   getFutureGroupEvents(groupId: string): Observable<Event[]> {
