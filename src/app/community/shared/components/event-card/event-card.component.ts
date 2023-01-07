@@ -12,11 +12,9 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
           </olii-responsive-aspect-ratio-container>
         </div>  
         <div class="event-details">
-          <h4>{{ event.Title | truncate:21:'...' }}</h4>
-          <div class="location-time">
-            <olii-location-preview [locationText]="event.Location.DisplayName"></olii-location-preview>
-            <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
-          </div>
+          <h4>{{ event.Title }}</h4>
+          <olii-location-preview [locationText]="event.Location.DisplayName"></olii-location-preview>
+          <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           <olii-profile-preview-icons
             *ngIf="event.AttendeesPreview.length > 0"
             [profilePictureUrls]="firstFourProfilePictureUrls"

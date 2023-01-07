@@ -7,19 +7,13 @@ ion-card {
     gap: 4px;
 
     .cover-image {
-        width: 30vw;
+        width: 15vh;
     }
 
     .event-details {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        gap: 5px;
         padding: 3px 3px 3px 0px;
-
-        .location-time {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
     }
 }
