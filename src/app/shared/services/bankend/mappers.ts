@@ -203,7 +203,7 @@ export function mapUser(userDoc: any): User {
         Username: userDoc.username,
         Dob: userDoc.dob?.toDate(),
         Email: userDoc.email,
-        PhoneNumber: +userDoc.phoneNumber
+        PhoneNumber: +userDoc?.phoneNumber
     };
 
     return user;
