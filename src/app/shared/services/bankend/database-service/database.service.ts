@@ -140,6 +140,10 @@ export class DatabaseService {
     return from(newGroupDocRef.set(mappedGroupPost)); // set() creates a new doc since it doesn't exist.
   }
 
+  deleteGroupPost(postId: string): Observable<void> {
+    return from(this.afs.doc(`group_posts/${postId}`).delete());
+  }
+
   getPastGroupEvents(groupId: string): Observable<Event[]> {
     const currentDateTime = new Date();
     const pastGroupEvents = this.afs.collection<any>(`groups/${groupId}/events`, ref => ref.where('date', '>=', currentDateTime)).valueChanges().pipe(

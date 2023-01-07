@@ -90,7 +90,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         Description: groupDoc.description,
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
-        Admins: groupDoc.admins.map(admin => mapProfilePreview(admin)),
+        Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)),
         MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
         Events: []
@@ -101,7 +101,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
 
 function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
     const groupPreview: GroupPreview = {
-        GroupId: groupPreviewDoc.id,
+        GroupId: groupPreviewDoc.groupId,
         Name: groupPreviewDoc.name,
         CoverImageUrl: groupPreviewDoc.coverImageUrl
     };

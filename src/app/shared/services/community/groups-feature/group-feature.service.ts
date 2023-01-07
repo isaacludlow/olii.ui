@@ -120,7 +120,7 @@ export class GroupFeatureService {
         return response;
     }
 
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest): Observable<Boolean> {
+    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest): Observable<boolean> {
         const newComment: GroupPostComment = {
             Id: this.dummyId,
             ParentId: newCommentRequest.ParentId,
