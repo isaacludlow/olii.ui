@@ -137,11 +137,11 @@ export class GroupFeatureStore {
         return this.dbService.createGroupPost(groupPost);
     }
 
-    createCommentToGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<Boolean> {
-        return this.dbService.createCommentToGroupPost(newComment, groupPostId);
+    createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<Boolean> {
+        return this.dbService.createCommentOnGroupPost(newComment, groupPostId);
     }
 
-    getCommentsByGroupPostId(groupPostId: string): Observable< GroupPostComment[]> {
+    getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
         return this.dbService.getCommentsByGroupPostId(groupPostId)
     }
 

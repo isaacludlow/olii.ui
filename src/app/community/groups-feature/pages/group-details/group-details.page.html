@@ -51,7 +51,7 @@
         <div *ngIf="segmentToShow == 'feed'">
             <div class="post" *ngFor="let post of group.Posts">
                 <ion-card>
-                    <olii-comment-card [post]="post" [groupId]="group.GroupId"></olii-comment-card>
+                    <olii-group-post-card [post]="post"></olii-group-post-card>
                 </ion-card>
             </div>
         </div>

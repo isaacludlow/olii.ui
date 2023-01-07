@@ -102,7 +102,7 @@ export class CommentsComponent implements OnInit {
             Date: new Date(Date.now()),
         }
     
-        this.groupStore.createCommentToGroupPost(newComment, this.groupPostId).subscribe(res => {
+        this.groupStore.createCommentOnGroupPost(newComment, this.groupPostId).subscribe(res => {
             this.addCommentInput = new FormControl('', Validators.required);
             this.toggleAddComment(false);
         });

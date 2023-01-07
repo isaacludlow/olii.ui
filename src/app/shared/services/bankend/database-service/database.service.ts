@@ -150,15 +150,14 @@ export class DatabaseService {
     return pastGroupEvents;
   }
 
-  createCommentToGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<Boolean> {
-
-    const postCommentRef = this.afs.collection(`group_posts/${groupPostId}/comments`);
+  createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<Boolean> {
+    const postCommentRef = this.afs.collection<any>(`group_posts/${groupPostId}/comments`);
 
     return from(postCommentRef.add(newComment)).pipe(map(()=> true)); //TODO: figure our how to return observable<void>
   }
 
-  getCommentsByGroupPostId(groupPostId: string): Observable< GroupPostComment[]> {
-    const comments = this.afs.collection(`groupPost/${groupPostId}/comments`).valueChanges().pipe(
+  getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
+    const comments = this.afs.collection<any>(`group_posts/${groupPostId}/comments`).valueChanges().pipe(
       map(comments => mapGroupPostComments(comments))
     );
 

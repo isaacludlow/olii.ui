@@ -27,7 +27,7 @@ import { CommentsComponent } from '../comments/comments.component'
                     <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
                 </olii-responsive-aspect-ratio-container>
             </div>
-            <olii-comments [postComments]="post.Comments" [groupPostId]="groupPostId"></olii-comments>
+            <olii-comments [postComments]="post.Comments" [groupPostId]="post.GroupPostId"></olii-comments>
         </div>
     </div>
   `,
@@ -37,7 +37,6 @@ import { CommentsComponent } from '../comments/comments.component'
 export class GroupPostCardComponent implements OnInit {
   @ViewChild (CommentsComponent) comments: CommentsComponent;
   @Input() post: GroupPost;
-  @Input() groupPostId: string;
   
   constructor( 
     private router: Router,
@@ -45,7 +44,7 @@ export class GroupPostCardComponent implements OnInit {
    ) { }
    
    ngOnInit(): void {
-    this.groupStore.getCommentsByGroupPostId(this.groupPostId).subscribe(comments => this.post.Comments = comments);
+    this.groupStore.getCommentsByGroupPostId(this.post.GroupPostId).subscribe(comments => this.post.Comments = comments);
    }
 
   navigateToUserProfile(profileId: string) {

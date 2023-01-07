@@ -117,7 +117,7 @@ export class GroupFeatureService {
         return response;
     }
 
-    // createCommentToGroupPost(newCommentRequest: GroupPostComment): Observable<Boolean> {
+    // createCommentOnGroupPost(newCommentRequest: GroupPostComment): Observable<Boolean> {
     //     const newComment: GroupPostComment = {
     //         CommentId: this.dummyId,
     //         Author: newCommentRequest.Author,
