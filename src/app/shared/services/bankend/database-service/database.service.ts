@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest } from '../mappers';
+import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapProfilePreviewRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +71,11 @@ export class DatabaseService {
     );
 
     return attendees;
+  }
+
+  rsvpToEvent(profilePreview: ProfilePreview, eventId: string): Observable<void> {
+    const mappedProfilePreview = mapProfilePreviewRequest(profilePreview);
+    return from(this.afs.collection(`events/${eventId}/attendees`).doc(profilePreview.ProfileId).set(mappedProfilePreview));
   }
 
   getMyGroups(profileId: string): Observable<Group[]> {

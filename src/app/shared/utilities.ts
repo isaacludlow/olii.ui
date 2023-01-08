@@ -62,20 +62,6 @@ export function removeAttendeeFromCachedEvents(profileId: string, eventId: strin
   // eventStore.myEvents.next(myEvents);
 }
 
-export function addAttendeeToCachedEvents(partialProfile: ProfilePreview, eventId: string, eventStore: EventsFeatureStore): void {
-  // const allEvents = eventStore.allEvents.value;
-  
-  // let attendees = allEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  // attendees.push(partialProfile);
-  // eventStore.allEvents.next(allEvents);
-
-  // let myEvents = eventStore.myEvents.value;
-
-  // attendees = myEvents.find(e => e.EventId === eventId).AttendeesPreview;
-  // eventStore.myEvents.next(myEvents);
-  // attendees.push(partialProfile);
-}
-
 export function getItemsThatAreInBothArrays<Type>(array1: Type[], array2: Type[]): Type[] {
   return array1.filter(x => array2.includes(x));
 }

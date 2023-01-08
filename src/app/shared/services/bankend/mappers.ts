@@ -40,7 +40,7 @@ export function mapEvent(eventDoc: DocumentData, eventId?: string): Event {
         PrivacyLevel: eventDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Location: mapLocation(eventDoc.location),
         ImageUrls: eventDoc.imageUrls,
-        AttendeesPreview: [...eventDoc.attendeesPreview.map(profilePreview => mapProfilePreview(profilePreview))],
+        AttendeesPreview: eventDoc?.attendeesPreview?.map(profilePreview => mapProfilePreview(profilePreview)),
         TotalAttendees: eventDoc.totalAttendees
     };
 
@@ -319,7 +319,7 @@ function mapGroupPreviewRequest(groupPreview: GroupPreview) {
     return mappedGroupPreview;
 }
 
-function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {
+export function mapProfilePreviewRequest(profilePreviewDoc: ProfilePreview) {
     const mappedProfilePreview = {
         profileId: profilePreviewDoc.ProfileId,
         firstName: profilePreviewDoc.FirstName,

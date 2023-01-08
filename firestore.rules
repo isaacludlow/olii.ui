@@ -119,6 +119,13 @@ service cloud.firestore {
           && requestData.privacyLevel is string
           && requestData.title is string;
       }
+
+      match /attendees/{attendeeId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if isAuthenticated(request)
+          && isOwner(request, request.resource.data.profileId);
+      }
     }
 
     match /groups/{groupdId} {
