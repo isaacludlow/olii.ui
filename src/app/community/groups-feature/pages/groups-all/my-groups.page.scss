@@ -48,25 +48,23 @@ ion-header {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 0.5rem 0;
+        padding: 0.5rem 0.25rem;
     }
 
 }
 
 .group-description {
     text-align: center;
-    width: 8rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: block;
+    width: 100%;
 }
 
 .group-title {
     text-align: center;
-    width: 9rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: block;
+    width: 100%;
 }

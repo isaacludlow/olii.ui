@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
       <olii-colored-square-background backgroundColor="translucent-purple">
         <olii-base-icon size="extra-small" name="location-outline" color="primary"></olii-base-icon>
       </olii-colored-square-background>
-      <div class="font-body-s">{{ locationText }}</div>
+      <div class="font-body-s line-clamp">{{ locationText }}</div>
     </div>
   `,
   styleUrls: ['./location-preview.component.scss']
