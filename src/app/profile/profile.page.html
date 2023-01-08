@@ -14,7 +14,8 @@
         <div class="profile-info">
             <div class="personal-info">
                 <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName }} {{ profile.LastName }}</h3></ion-text>
-                <ion-text color="medium"><div class="username">{{ profile.Username }}</div></ion-text>
+                <!-- TODO: Get the username from the userStore. -->
+                <!-- <ion-text color="medium"><div class="username">{{ profile.Username }}</div></ion-text> -->
                 <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
                 <div class="bio color-medium">{{ profile.Bio }}</div>
             </div>
@@ -74,7 +75,7 @@
 
                     <div class="saved-album-details">
                         <h4>{{ album.Title }}</h4>
-                        <div class="color-medium font-body-s">{{ album.PrivacyLevel }}</div>
+                        <div class="color-medium font-body-s">{{ album.PrivacyLevel | titlecase }}</div>
                     </div>
                 </ion-card>
             </olii-responsive-aspect-ratio-container>
