@@ -101,15 +101,15 @@ export class EventsFeatureStore {
   }
   
   isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
-    return this.eventsService.isAttendingEvent(eventId, profileId);
+    return this.dbService.isAttendingEvent(eventId, profileId);
   }
   
   rsvpToEvent(profilePreview: ProfilePreview, eventId: string): Observable<void> {
     return this.dbService.rsvpToEvent(profilePreview, eventId);
   }
 
-  cancelRsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
-    return this.eventsService.cancelRsvpToEvent(profileId, eventId);
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<void> {
+    return this.dbService.cancelRsvpToEvent(profileId, eventId);
   }
 
   uploadEventCoverImage(coverImage: GalleryPhoto, eventId: string, platform: Platform): Observable<string> {

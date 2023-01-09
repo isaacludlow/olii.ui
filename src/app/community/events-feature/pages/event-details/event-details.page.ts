@@ -6,7 +6,6 @@ import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { removeAttendeeFromCachedEvents } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -75,10 +74,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   }
 
   cancelRsvpToEvent() {
-    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(isCanceledRsvp => {
-      this.attending = !isCanceledRsvp;
-      removeAttendeeFromCachedEvents(this.currentProfile.ProfileId, this.event.EventId, this.eventsStore);
-    });
+    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(() => this.attending = false);
   }
 
   navigateBack(): void {

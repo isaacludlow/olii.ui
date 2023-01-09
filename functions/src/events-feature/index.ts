@@ -62,7 +62,9 @@ export const removeAttendingEventToMyEvents = functions.firestore
 export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
-      if (change.before.get("date")._seconds === change.after.get("date")._seconds) {
+      if (
+        change.before.get("date")._seconds === change.after.get("date")._seconds
+      ) {
         return null;
       }
 

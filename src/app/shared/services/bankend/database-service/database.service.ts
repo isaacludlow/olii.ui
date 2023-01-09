@@ -73,9 +73,19 @@ export class DatabaseService {
     return attendees;
   }
 
+  isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
+    return this.afs.collection(`events/${eventId}/attendees`, ref => ref.where('profileId', '==', profileId)).valueChanges().pipe(
+      map(res => res.length > 0)
+    );
+  }
+
   rsvpToEvent(profilePreview: ProfilePreview, eventId: string): Observable<void> {
     const mappedProfilePreview = mapProfilePreviewRequest(profilePreview);
     return from(this.afs.collection(`events/${eventId}/attendees`).doc(profilePreview.ProfileId).set(mappedProfilePreview));
+  }
+
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<void> {
+    return from(this.afs.doc(`events/${eventId}/attendees/${profileId}`).delete());
   }
 
   getMyGroups(profileId: string): Observable<Group[]> {
@@ -168,7 +178,7 @@ export class DatabaseService {
   }
 
   checkUsernameAvailability(username: string): Observable<boolean> {
-    return this.afs.collection(`users`, ref => ref.where('username', '==', username)).get().pipe(
+    return this.afs.collection(`usernames`, ref => ref.where('username', '==', username)).get().pipe(
       map(res => res.size === 0)
     );
   }

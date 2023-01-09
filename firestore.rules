@@ -124,7 +124,7 @@ service cloud.firestore {
         allow read: if isAuthenticated(request);
 
         allow write: if isAuthenticated(request)
-          && isOwner(request, request.resource.data.profileId);
+          && isOwner(request, attendeeId);
       }
     }
 
