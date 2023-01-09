@@ -309,6 +309,16 @@ export function mapGroupPostRequest(groupPost: GroupPost) {
     return mappedGroupPost;
 }
 
+export function mapGroupPostCommentRequest(comment: GroupPostComment) {
+    const mappedGroupPostComment = {
+        author: mapProfilePreviewRequest(comment.Author),
+        content: comment.Content,
+        date: comment.Date
+    };
+
+    return mappedGroupPostComment;
+}
+
 function mapGroupPreviewRequest(groupPreview: GroupPreview) {
     const mappedGroupPreview = {
         groupId: groupPreview.GroupId,
