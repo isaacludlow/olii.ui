@@ -51,9 +51,12 @@
                 </ion-accordion>
               </ion-accordion-group>
         </div>
-        <div *ngIf="attendingProfilePictures.length > 0" class="attendees">
-            <h4>Attending</h4>
-            <div [routerLink]="['/community/events', event.EventId, 'attendees']">
+        <div *ngIf="attendingProfilePictures.length > 0">
+            <div class="attendees-header">
+                <h4>Attending</h4>
+                <div class="font-body-s color-tertiary" [routerLink]="['/community/events', event.EventId, 'attendees']">See all</div>
+            </div>
+            <div>
                 <olii-profile-preview-icons
                 [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
                 profileIconSize="large"
