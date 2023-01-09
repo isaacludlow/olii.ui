@@ -124,7 +124,7 @@ export function mapGroupPostComments(groupPostCommentsDocs: any[]): GroupPostCom
 function mapGroupPostComment(groupPostComment: any): GroupPostComment {
     const mappedGroupPostComment: GroupPostComment = {
         CommentId: groupPostComment.id,
-        Author: groupPostComment.author,
+        Author: mapProfilePreview(groupPostComment.author),
         Content: groupPostComment.content,
         Date: groupPostComment.date.toDate()
     };
