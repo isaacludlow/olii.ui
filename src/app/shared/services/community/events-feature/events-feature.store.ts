@@ -137,7 +137,7 @@ export class EventsFeatureStore {
     switch (filter) {
       case MyEventsFilterOptions.Attending:
         return this.myEvents.asObservable().pipe(
-          map(events => events.filter(event => isFuture(event.Date)))
+          map(events => events.filter(event => isFuture(event.Date) && !this.isCreator(event, profileId)))
         );
 
       case MyEventsFilterOptions.Hosting:

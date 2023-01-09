@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { combineLatest, from, Observable, ObservedValueOf, zip } from 'rxjs';
-import { combineAll, map, mergeAll, switchMap, tap, zipAll } from 'rxjs/operators';
+import { from, Observable, zip } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
@@ -10,7 +10,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEditEvent, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapProfilePreviewRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapProfilePreviewRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
