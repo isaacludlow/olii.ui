@@ -7,7 +7,7 @@
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
         </div>
     </div>
-    <div class="profile-info-container">
+    <div *ngIf="profile" class="profile-info-container">
         <div class="profile-image">
             <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
         </div>
@@ -62,12 +62,12 @@
             </ng-template>
         </div>
         <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls" aspectRatio="1/1" class="image-container">
+            <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile?.ImageUrls" aspectRatio="1/1" class="image-container">
                 <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
             </olii-responsive-aspect-ratio-container>
         </div>
         <div *ngIf="segmentToShow === 'saved'" class="saved">
-            <olii-responsive-aspect-ratio-container *ngFor="let album of profile.SavedImageAlbumPreviews" aspectRatio="1/1" class="album-card-container">
+            <olii-responsive-aspect-ratio-container *ngFor="let album of profile?.SavedImageAlbumPreviews" aspectRatio="1/1" class="album-card-container">
                 <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
                     <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
                         <olii-container-cover-image [imageUrl]="album.CoverImageUrl"></olii-container-cover-image>

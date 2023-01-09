@@ -55,7 +55,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   isActiveUser() {
-    if (this.profile.ProfileId == this.profile?.ProfileId) {
+    if (this.profile?.ProfileId == this.profile?.ProfileId) {
       return true;
     }
     return false;
