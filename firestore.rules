@@ -6,24 +6,25 @@ service cloud.firestore {
 
       allow create: if isAuthenticated(request)
         && isOwner(request, userId)
-        && isUserDataValid(request.resource.data, resource.data);
+        && request.resource.data.keys().hasAll(['email', 'phoneNumber', 'dob', 'username'])
+        && request.resource.data.keys().hasOnly(['email', 'phoneNumber', 'dob', 'username'])
+        && request.resource.data.email is string
+        // && request.resource.data.dob is timestamp
+        // && request.resource.data.phoneNumber is int
+        && request.resource.data.username is string;
 
       allow update: if isAuthenticated(request)
         && isOwner(request, userId)
-        && isUserDataValid(request.resource.data, resource.data);
+        && request.resource.data.keys().hasAll(['email', 'phoneNumber', 'dob', 'username'])
+        && request.resource.data.keys().hasOnly(['email', 'phoneNumber', 'dob', 'username'])
+        && !requestData.diff(resource.data).affectedKeys().hasAny(['email', 'username'])
+        && request.resource.data.email is string
+        // && request.resource.data.dob is timestamp
+        // && request.resource.data.phoneNumber is int
+        && request.resource.data.username is string;
 
       allow delete: if isAuthenticated(request)
         && isOwner(request, userId);
-
-      function isUserDataValid(requestData, resourceData) {
-      return requestData.keys().hasAll(['email', 'phoneNumber', 'dob', 'username'])
-        && requestData.keys().hasOnly(['email', 'phoneNumber', 'dob', 'username'])
-        && !requestData.diff(resourceData).affectedKeys().hasAny(['email', 'username'])
-        && requestData.email is string
-        && requestData.dob is timestamp
-        && requestData.phoneNumber is int
-        && requestData.username is string;
-      }
     }
 
     match /profiles/{profileId} {
@@ -56,7 +57,7 @@ service cloud.firestore {
       // Require first and last name. All other fields are optional.
       return (requestData.keys().hasAll(['firstName', 'lastName']))
         && (requestData.keys().hasOnly(
-          ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl']
+          ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl', 'savedImagesAlbumsPreview', 'friends']
         ))
         && requestData.firstName is string
         && requestData.lastName is string
@@ -65,7 +66,7 @@ service cloud.firestore {
         && requestData.get('hostCountry', '') is string
         && requestData.get('currentCity', '') is string
         && requestData.get('imageUrls', []) is list
-        && requestData.get('profilePictureUrl', '') is string;
+        && requestData.get('profilePictureUrl', '') is string
       }
 
       match /profiles/{profileId}/savedImagesAlbums/{albumId} {

@@ -1,14 +1,20 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, from, Observable, zip } from "rxjs";
 import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SubSink } from "subsink";
 import { ProfileService } from "./profile.service";
-import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 import { UserStore } from "../user/user.store";
 import { ProfileRequestSavedAlbum } from "src/app/models/requests/profile/profile-request-saved-album";
 import { DatabaseService } from "../bankend/database-service/database.service";
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
+import { GalleryPhoto } from "@capacitor/camera";
+import { Platform } from "@ionic/angular";
+import { switchMap } from "rxjs/operators";
+import { readPhotoAsBase64 } from "../../utilities";
+import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
+import { v4 as uuidv4 } from 'uuid';
+import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 
 @Injectable({
 	providedIn: 'root'
@@ -21,7 +27,8 @@ export class ProfileStore implements OnDestroy {
 	constructor(
 		private profileService: ProfileService,
 		private dbService: DatabaseService,
-		private userStore: UserStore
+		private userStore: UserStore,
+        private cloudStorageService: CloudStorageService
 	) {
 		this.subs.sink = this.userStore.user.subscribe(user => {
 			if (user !== null) {
@@ -57,8 +64,32 @@ export class ProfileStore implements OnDestroy {
 		// );
 	}
 
-	updateProfile(profileId: string, profileRequest: ProfileRequest): Observable<Profile> {
-		return this.profileService.updateProfile(profileId, profileRequest);
+	createNewProfile(profile: Profile): Observable<void> {
+		return this.dbService.createProfile(profile);
+	}
+
+	updateProfile(profile: Profile): Observable<void> {
+		return this.dbService.updateProfile(profile);
+	}
+
+	uploadProfilePicture(coverImage: GalleryPhoto, profileId: string, platform: Platform): Observable<string> {
+        return from(readPhotoAsBase64(coverImage, platform)).pipe(
+          switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/profile-picture`)),
+          switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
+        );
+    }
+
+	uploadProfileImages(images: GalleryPhoto[], profileId: string, platform: Platform): Observable<string[]> {
+		const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+	
+		const downloadUrls$ = zip(...base64ImageObservables).pipe(
+		  switchMap(base64Images =>
+			zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/images/${uuidv4()}`)))
+		  ),
+		  switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+		);
+	
+		return downloadUrls$;
 	}
 
 	getFriends(userId: number): Observable<ProfilePreview[]> {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, Observable, zip } from 'rxjs';
-import { map, mergeAll, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
@@ -11,7 +11,8 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapGroupPostComments, mapGroupPostCommentRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest } from '../mappers';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -109,10 +110,10 @@ export class DatabaseService {
   getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
     const groupPosts = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
       switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
-      map(listOfGroupPosts => {
-        const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts);
-        return mergedArrayOfGroupPosts;
-      }),
+        map(listOfGroupPosts => {
+          const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts); // Flattens out the array of arrays into one array.
+          return mergedArrayOfGroupPosts;
+        }),
     );
 
     return groupPosts;
@@ -131,7 +132,6 @@ export class DatabaseService {
 
   createGroupPost(groupPost: GroupPost): Observable<void> {
     const mappedGroupPost = mapGroupPostRequest(groupPost);
-    console.log(mappedGroupPost)
 
     const groupsCollectionRef = this.afs.collection('group_posts');
     // Creates a reference to the new event doc that does not exist.
@@ -139,6 +139,10 @@ export class DatabaseService {
     const newGroupDocRef = groupsCollectionRef.doc(groupPost.GroupPostId);
 
     return from(newGroupDocRef.set(mappedGroupPost)); // set() creates a new doc since it doesn't exist.
+  }
+
+  deleteGroupPost(postId: string): Observable<void> {
+    return from(this.afs.doc(`group_posts/${postId}`).delete());
   }
 
   getPastGroupEvents(groupId: string): Observable<Event[]> {
@@ -182,8 +186,10 @@ export class DatabaseService {
     return user;
   }
     
-  createUser(newUser: User): Observable<User> {
-    throw new Error("Method not implemented.");
+  createUser(newUser: User): Observable<void> {
+    const mappedUser = mapUserRequest(newUser);
+    
+    return from(this.afs.doc(`users/${newUser.Uid}`).set(mappedUser));
   }
   
   getProfileById(id: string): Observable<Profile> {
@@ -192,6 +198,18 @@ export class DatabaseService {
     );
 
     return profile;
+  }
+
+  createProfile(newProfile: Profile): Observable<void> {
+	  const mappedProfile = mapProfileRequest(newProfile);
+
+    return from(this.afs.doc(`profiles/${newProfile.ProfileId}`).set(mappedProfile));
+  }
+
+  updateProfile(profile: Profile): Observable<void> {
+    const mappedProfile = mapProfileRequest(profile);
+
+    return from(this.afs.doc(`profiles/${profile.ProfileId}`).update(mappedProfile));
   }
 
   getSavedImagesAlbum(profileId: string, savedImagesAlbumId: string): Observable<SavedImagesAlbum>{

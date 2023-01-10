@@ -100,17 +100,7 @@
         <div class="images">
             <h4>Add Images</h4>
             <hr>
-            <div class="images-container">
-                <div class="image" *ngFor="let eventImage of eventImages; let i = index">
-                    <olii-responsive-aspect-ratio-container aspectRatio="1/1">
-                        <ion-badge (click)="removeEventImage(i)"><ion-icon name="close"></ion-icon></ion-badge>
-                        <olii-container-cover-image [imageUrl]="sanitizeUrl(eventImage.webPath)" boarderRadius="3%"></olii-container-cover-image>
-                    </olii-responsive-aspect-ratio-container>
-                </div>
-                <div class="add-image" *ngIf="eventImages.length < 9" (click)="setEventImages()">
-                    <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
-                </div>
-            </div>
+            <olii-edit-images [images]="eventImages" (imagesEvent)="onEventImagesChange($event)"></olii-edit-images>
         </div>
         <ion-button type="submit" [disabled]="!editEventForm.valid" mode="ios">Update Event</ion-button>
     </form>

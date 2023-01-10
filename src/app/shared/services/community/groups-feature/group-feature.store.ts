@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, of, zip } from "rxjs";
+import { BehaviorSubject, from, Observable, ObservedValueOf, of, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -90,25 +90,12 @@ export class GroupFeatureStore {
         return this.dbService.editGroup(group);
     }
 
-    uploadEventImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
-        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
-    
-        const downloadUrls$ = zip(...base64ImageObservables).pipe(
-          switchMap(base64Images =>
-            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
-          ),
-          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
-        );
-    
-        return downloadUrls$;
-      }
-
     uploadGroupCoverImage(coverImage: GalleryPhoto, groupId: string, platform: Platform): Observable<string> {
         return from(readPhotoAsBase64(coverImage, platform)).pipe(
           switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `groups/${groupId}/cover-image`)),
           switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
         );
-      }
+    }
 
     getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
         return this.dbService.getLatestPosts(profileId, earliestPostDate);
@@ -143,6 +130,23 @@ export class GroupFeatureStore {
 
     getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
         return this.dbService.getCommentsByGroupPostId(groupPostId)
+    }
+
+    deleteGroupPost(postId: string): Observable<void> {
+        return this.dbService.deleteGroupPost(postId);
+    }
+
+    uploadGroupPostImages(images: GalleryPhoto[], groupPostId: string, platform: Platform): Observable<string[]> {
+        const base64ImageObservables = images.map(image => from(readPhotoAsBase64(image, platform)));
+    
+        const downloadUrls$ = zip(...base64ImageObservables).pipe(
+          switchMap(base64Images =>
+            zip(...base64Images.map(imageData => this.cloudStorageService.uploadFile(imageData, `group_posts/${groupPostId}/images/${uuidv4()}`)))
+          ),
+          switchMap(uploadFileObservables => zip(...uploadFileObservables.map(x => x.DownloadUrl$)))
+        );
+    
+        return downloadUrls$;
     }
 
     // TODO-AfterBeta: Allow an admin to delete a group.

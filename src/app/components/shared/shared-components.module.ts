@@ -19,6 +19,7 @@ import { IconWithOffWhiteSquareBackgroundComponent } from './icon-with-off-white
 import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-ratio-container/responsive-aspect-ratio-container.component';
 import { BackButtonComponent } from './back-button/back-button.component';
 import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-icons.component';
+import { EditImagesComponent } from './edit-images/edit-images.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
     BackButtonComponent,
-    GroupPreviewIconsComponent
+    GroupPreviewIconsComponent,
+    EditImagesComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,8 @@ import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-
     IconWithOffWhiteSquareBackgroundComponent,
     ResponsiveAspectRatioContainerComponent,
     BackButtonComponent,
-    GroupPreviewIconsComponent
+    GroupPreviewIconsComponent,
+    EditImagesComponent
   ]
 })
 export class SharedComponentsModule { }

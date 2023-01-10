@@ -13,7 +13,6 @@ import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.
 import { User } from "src/app/models/dto/user/user.dto";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
-import { CommentsComponent } from 'src/app/community/shared/components/comments/comments.component'
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -101,7 +100,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
 
 function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
     const groupPreview: GroupPreview = {
-        GroupId: groupPreviewDoc.id,
+        GroupId: groupPreviewDoc.groupId,
         Name: groupPreviewDoc.name,
         CoverImageUrl: groupPreviewDoc.coverImageUrl
     };
@@ -179,13 +178,11 @@ export function mapProfile(profileDoc: any): Profile {
         ProfileId: profileDoc.id,
         FirstName: profileDoc.firstName,
         LastName: profileDoc.lastName,
-        Username: profileDoc.username,
         ProfilePictureUrl: profileDoc.profilePictureUrl,
         HomeCountry: profileDoc.homeCountry,
         HostCountry: profileDoc.hostCountry,
         CurrentCity: profileDoc.currentCity,
         Bio: profileDoc.bio,
-        Friends: profileDoc.friends,
         ImageUrls: profileDoc.imageUrls,
         SavedImageAlbumPreviews: mapSavedImagesAlbumPreviews(profileDoc.savedImagesAlbumsPreview)
     };
@@ -227,9 +224,9 @@ export function mapUser(userDoc: any): User {
     const user: User = {
         Uid: userDoc.uid,
         Username: userDoc.username,
-        Dob: userDoc.dob.toDate(),
+        Dob: userDoc.dob?.toDate(),
         Email: userDoc.email,
-        PhoneNumber: Number.parseInt(userDoc.phoneNumber)
+        PhoneNumber: +userDoc?.phoneNumber
     };
 
     return user;
@@ -317,6 +314,32 @@ export function mapGroupPostCommentRequest(comment: GroupPostComment) {
     };
 
     return mappedGroupPostComment;
+}
+
+export function mapProfileRequest(profile: Profile) {
+    const mappedProfile = {
+        firstName: profile.FirstName,
+        lastName: profile.LastName,
+        bio: profile.Bio,
+        homeCountry: profile.HomeCountry,
+        hostCountry: profile.HostCountry,
+        currentCity: profile.CurrentCity,
+        imageUrls: profile.ImageUrls,
+        profilePictureUrl: profile.ProfilePictureUrl
+    };
+
+    return mappedProfile;
+}
+
+export function mapUserRequest(user: User) {
+    const mappedUser = {
+        dob: user?.Dob,
+        email: user.Email,
+        phoneNumber: user?.PhoneNumber,
+        username: user.Username
+    };
+
+    return mappedUser;
 }
 
 function mapGroupPreviewRequest(groupPreview: GroupPreview) {

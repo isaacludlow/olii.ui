@@ -9,13 +9,14 @@ import { format } from 'date-fns';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
-import { selectImages } from 'src/app/shared/utilities';
+import { getItemsFromFirstArrayThatAreNotInSecondArray, selectImages } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 import gm = google.maps;
 import { CloudStorageService } from 'src/app/shared/services/bankend/cloud-storage-service/cloud-storage.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { zip } from 'rxjs';
 
 @Component({
   templateUrl: './edit-event.page.html',
@@ -32,6 +33,7 @@ export class EditEventPage implements OnDestroy {
   eventDateTimeInput: Date;
   eventCoverImage: GalleryPhoto = null;
   eventImages: GalleryPhoto[] = [];
+  subs = new SubSink();
   editEventForm = this.fb.group({
     coverImageUrl: [null, Validators.required],
     title: [null, [Validators.required, Validators.minLength(5)]],
@@ -48,12 +50,12 @@ export class EditEventPage implements OnDestroy {
       latitude: [null, Validators.required],
       longitude: [null, Validators.required]
     }),
-    privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
-    imageUrls: [[]]
+    privacyLevel: [PrivacyLevelRequest.Public, Validators.required]
   },
   // TODO: Try removing this and adding a check in the html (like on line 28) to only show error messages if a field has been touched.
   { updateOn: 'blur' });
-  subs = new SubSink();
+  imagesToDelete: string[] = [];
+  imagesToUpload: GalleryPhoto[] = [];
 
   constructor(
     private location: Location,
@@ -63,7 +65,7 @@ export class EditEventPage implements OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private eventStore: EventsFeatureStore,
-    private cloudStorageService: CloudStorageService
+    private storageService: CloudStorageService
   ) { }
 
   ionViewDidEnter() {
@@ -96,9 +98,7 @@ export class EditEventPage implements OnDestroy {
       this.addMapMarkerAndCenterMap(event.Location.Latitude, event.Location.Longitude);
 
       this.editEventForm.get('privacyLevel').setValue(event.PrivacyLevel);
-
-      this.editEventForm.get('imageUrls').setValue(event.ImageUrls);
-      this.eventImages = event.ImageUrls.map(imageUrl => <GalleryPhoto>{ webPath: imageUrl })
+      this.eventImages = event.ImageUrls.map(imageUrl => <GalleryPhoto>{ webPath: imageUrl });
     });
   }
 
@@ -153,17 +153,26 @@ export class EditEventPage implements OnDestroy {
     this.editEventForm.get('coverImageUrl').setValue(this.eventCoverImage.webPath);
   }
 
-  setEventImages() {
-    let numberOfImagesAllowedToUpload = 9 - this.eventImages.length;
-    this.subs.sink = selectImages(numberOfImagesAllowedToUpload).subscribe(galleryPhotos => {
-      this.eventImages.push(...galleryPhotos);
-      this.editEventForm.get('imageUrls').setValue(this.eventImages.map(image => image.webPath));
-    });
-  }
+  onEventImagesChange(galleryPhotos: GalleryPhoto[]) {
+    const deletedImages = getItemsFromFirstArrayThatAreNotInSecondArray(this.originalEvent.ImageUrls, galleryPhotos.map(x => x.webPath));
+    if (deletedImages.length > 0) {
+      for (const deletedImage of deletedImages) {
+        if (this.imagesToDelete.includes(deletedImage))
+          continue;
+        else 
+          this.imagesToDelete.push(...deletedImages);
+      }
+    }
 
-  removeEventImage(imageIndex: number): void {
-    this.eventImages.splice(imageIndex, 1);
-    this.editEventForm.get('imageUrls').setValue(this.eventImages.map(image => image.webPath));
+    const newImages = getItemsFromFirstArrayThatAreNotInSecondArray(galleryPhotos.map(x => x.webPath), this.eventImages.map(x => x.webPath));
+    if (newImages.length > 0) {
+      for (const newImage of newImages) {
+        if (this.imagesToUpload.includes(<GalleryPhoto>{ webPath: newImage}))
+          continue;
+        else
+          this.imagesToUpload.push(<GalleryPhoto>{ webPath: newImage});
+      }
+    }
   }
 
   sanitizeUrl(url: string): string {
@@ -177,12 +186,19 @@ export class EditEventPage implements OnDestroy {
       this.editEventForm.get('coverImageUrl').setValue(coverImageUrl);
     }
 
-    if (this.imagesHaveBeenUpdated(this.originalEvent.ImageUrls, this.eventImages.map(image => image.webPath))) {
-      const imageUrls = await this.eventStore.uploadEventImages(this.eventImages, eventId, this.platform).toPromise();
-      this.editEventForm.get('imageUrls').setValue(imageUrls);
+    let updatedImageUrls: string[] = [];
+
+    if (this.imagesToDelete.length > 0) {
+      updatedImageUrls.push(...this.originalEvent.ImageUrls.filter(imageUrl => !this.imagesToDelete.includes(imageUrl)));
+      await zip(this.imagesToDelete.map(imageUrl => this.storageService.deleteFile(imageUrl))).toPromise();
     }
 
-    const event = this.createEventRequest(this.editEventForm);
+    if (this.imagesToUpload.length > 0) {
+      const newImagesDownloadUrls = await this.eventStore.uploadEventImages(this.imagesToUpload, this.originalEvent.EventId, this.platform).toPromise();
+      updatedImageUrls.push(...newImagesDownloadUrls);
+    }
+
+    const event = this.createEventRequest(this.editEventForm, updatedImageUrls);
 
     this.subs.sink = this.eventStore.editEvent(event).subscribe(() => {
       this.editEventForm.reset();
@@ -194,25 +210,11 @@ export class EditEventPage implements OnDestroy {
     this.location.back();
   }
 
-  private imagesHaveBeenUpdated(originalImageUrls: string[], currentImageUrls: string[]) {
-    // Shallow equality comparison to save time.
-    if (originalImageUrls.length !== currentImageUrls.length) return true;
-
-    // Deep equality comparison when the shallow equality comparison isn't enough.
-    for (let originalImageUrl of originalImageUrls) {
-      const imageUrlsAreEqual = currentImageUrls.some(currentImageUrl => currentImageUrl === originalImageUrl);
-
-      if (!imageUrlsAreEqual) return true;
-    }
-
-    return false;
-  }
-
   private coverImageHasBeenUpdated(originalCoverImage: string, currentCoverImage: string) {
     return originalCoverImage !== currentCoverImage;
   }
 
-  private createEventRequest(form: FormGroup): Event {
+  private createEventRequest(form: FormGroup, updatedImageUrls: string[]): Event {
     const eventRequest: Event = {
       EventId: this.originalEvent.EventId,
       CoverImageUrl: form.get('coverImageUrl').value,
@@ -231,7 +233,7 @@ export class EditEventPage implements OnDestroy {
         Longitude: form.get('location.longitude').value,
         DisplayName: form.get('location.displayName').value
       },
-      ImageUrls: form.get('imageUrls').value,
+      ImageUrls: updatedImageUrls.length > 0 ? updatedImageUrls : [...this.originalEvent.ImageUrls],
       AttendeesPreview: [],
       TotalAttendees: 0
     };
