@@ -62,8 +62,6 @@ export class CommentsComponent implements OnInit {
   showComments: boolean;
   addCommentInput = new FormControl('', Validators.required);
   
-  dummyId = '32';
-
   constructor( 
     private groupStore: GroupFeatureStore,
     private profileStore: ProfileStore,
@@ -91,7 +89,7 @@ export class CommentsComponent implements OnInit {
   sendComment() {
     if (!this.addCommentInput.invalid) {
         const newComment: GroupPostComment = {
-          CommentId: this.dummyId, 
+          CommentId: null, 
           Author: {
                 ProfileId: this.profile.ProfileId,
                 FirstName: this.profile.FirstName,

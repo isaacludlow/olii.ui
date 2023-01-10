@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, ObservedValueOf, of, zip } from "rxjs";
+import { BehaviorSubject, from, Observable, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
-import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
 import { GroupPostComment } from "src/app/models/requests/community/groups/group-post-comment-request";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { DatabaseService } from "../../bankend/database-service/database.service";
