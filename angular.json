@@ -172,6 +172,7 @@
     }
   },
   "cli": {
+    "analytics": false,
     "defaultCollection": "@schematics/angular"
   }
 }
