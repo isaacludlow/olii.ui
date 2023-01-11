@@ -4,7 +4,7 @@ import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
-import { GroupPostComment } from "src/app/models/requests/community/groups/group-post-comment-request";
+import { GroupPostComment } from "src/app/models/dto/community/groups/group-post-comment.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { DatabaseService } from "../../bankend/database-service/database.service";
 import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-storage.service";
@@ -123,7 +123,7 @@ export class GroupFeatureStore {
         return this.dbService.createGroupPost(groupPost);
     }
 
-    createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<Boolean> {
+    createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<void> {
         return this.dbService.createCommentOnGroupPost(newComment, groupPostId);
     }
 
