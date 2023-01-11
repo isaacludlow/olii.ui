@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, Observable, zip } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
@@ -10,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapProfilePreviewRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -127,7 +128,7 @@ export class DatabaseService {
         map(listOfGroupPosts => {
           const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts); // Flattens out the array of arrays into one array.
           return mergedArrayOfGroupPosts;
-        })
+        }),
     );
 
     return groupPosts;
@@ -166,6 +167,21 @@ export class DatabaseService {
     );
 
     return pastGroupEvents;
+  }
+
+  createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string): Observable<void> {
+    const mappedComment = mapGroupPostCommentRequest(newComment)
+    const postCommentRef = this.afs.collection<any>(`group_posts/${groupPostId}/comments`);
+
+    return from(postCommentRef.add(mappedComment)).pipe(map(() => {})); //TODO: figure our how to return observable<void>
+  }
+
+  getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
+    const comments = this.afs.collection<any>(`group_posts/${groupPostId}/comments`).valueChanges().pipe(
+      map(comments => mapGroupPostComments(comments))
+    );
+
+    return comments;
   }
 
   getFutureGroupEvents(groupId: string): Observable<Event[]> {

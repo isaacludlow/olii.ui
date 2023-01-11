@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, ObservedValueOf, of, zip } from "rxjs";
+import { BehaviorSubject, from, Observable, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
 import { map, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
-import { CreatePostRequest } from "src/app/models/requests/community/groups/create-post-request";
-import { GroupPostCommentRequest } from "src/app/models/requests/community/groups/group-post-comment-request";
+import { GroupPostComment } from "src/app/models/dto/community/groups/group-post-comment.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
 import { DatabaseService } from "../../bankend/database-service/database.service";
 import { CloudStorageService } from "../../bankend/cloud-storage-service/cloud-storage.service";
@@ -124,6 +123,14 @@ export class GroupFeatureStore {
         return this.dbService.createGroupPost(groupPost);
     }
 
+    createCommentOnGroupPost(newComment: GroupPostComment, groupPostId: string):Observable<void> {
+        return this.dbService.createCommentOnGroupPost(newComment, groupPostId);
+    }
+
+    getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
+        return this.dbService.getCommentsByGroupPostId(groupPostId)
+    }
+
     deleteGroupPost(postId: string): Observable<void> {
         return this.dbService.deleteGroupPost(postId);
     }
@@ -139,10 +146,6 @@ export class GroupFeatureStore {
         );
     
         return downloadUrls$;
-    }
-
-    addCommentToGroupPost(newCommentRequest: GroupPostCommentRequest):Observable<boolean> {
-        return this.groupService.addCommentToGroupPost(newCommentRequest);
     }
 
     // TODO-AfterBeta: Allow an admin to delete a group.

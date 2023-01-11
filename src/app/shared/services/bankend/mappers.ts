@@ -11,9 +11,8 @@ import { Profile } from "src/app/models/dto/profile/profile.dto";
 import { SavedImagesAlbumPreview } from "src/app/models/dto/profile/saved-images-album-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { User } from "src/app/models/dto/user/user.dto";
-import { EventData } from "src/app/models/requests/community/events/event-data.dto";
-import { EventRequest } from "src/app/models/requests/community/events/event-request.dto";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
+import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
 // TODO: Use the firestore converters and the withConverter() method in the DatabaseService instead of these mappers.
 
 // #region Event mappers
@@ -90,7 +89,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         Description: groupDoc.description,
         PrivacyLevel: groupDoc.privacyLevel === 'public' ? PrivacyLevel.Public : PrivacyLevel.Private,
         Posts: [],
-        Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)),
+        Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)), // TODO fix the "admins?"
         MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
         Events: []
@@ -108,6 +107,30 @@ function mapGroupPreview(groupPreviewDoc: any): GroupPreview {
 
     return groupPreview;
 }
+
+export function mapGroupPostComments(groupPostCommentsDocs: any[]): GroupPostComment[] {
+    const mappedGroupPostComments: GroupPostComment[] = [];
+
+    for (let i = 0; i < groupPostCommentsDocs.length; i++) {
+        const groupPostComment = groupPostCommentsDocs[i];
+
+        mappedGroupPostComments.push(mapGroupPostComment(groupPostComment));
+    }
+
+    return mappedGroupPostComments;
+}
+
+function mapGroupPostComment(groupPostComment: any): GroupPostComment {
+    const mappedGroupPostComment: GroupPostComment = {
+        CommentId: groupPostComment.id,
+        Author: mapProfilePreview(groupPostComment.author),
+        Content: groupPostComment.content,
+        Date: groupPostComment.date.toDate()
+    };
+
+    return mappedGroupPostComment;
+}
+
 // endregion
 
 // #region Group Post mappers
@@ -281,6 +304,16 @@ export function mapGroupPostRequest(groupPost: GroupPost) {
     };
 
     return mappedGroupPost;
+}
+
+export function mapGroupPostCommentRequest(comment: GroupPostComment) {
+    const mappedGroupPostComment = {
+        author: mapProfilePreviewRequest(comment.Author),
+        content: comment.Content,
+        date: comment.Date
+    };
+
+    return mappedGroupPostComment;
 }
 
 export function mapProfileRequest(profile: Profile) {

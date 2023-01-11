@@ -1,0 +1,43 @@
+.card-content {
+    margin: 1rem;
+    color: var(--color-tertiary);
+}
+
+.post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+
+    .post-datetime {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+}
+
+.poster-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.poster-image {
+    min-width: 3em;
+    min-height: 3em;
+    height: 3em;
+    width: 3em;
+    margin-right: 0.5rem;
+}
+
+.poster-name {
+    align-self: center;
+}
+
+.post-images {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.25rem;
+    gap: 10px;
+}

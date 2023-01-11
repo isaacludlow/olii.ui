@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentCardComponent } from './comment-card.component';
+import { GroupPostCardComponent } from './group-post-card.component';
 
 describe('CommentCardComponent', () => {
-  let component: CommentCardComponent;
-  let fixture: ComponentFixture<CommentCardComponent>;
+  let component: GroupPostCardComponent;
+  let fixture: ComponentFixture<GroupPostCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommentCardComponent ]
+      declarations: [ GroupPostCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentCardComponent);
+    fixture = TestBed.createComponent(GroupPostCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

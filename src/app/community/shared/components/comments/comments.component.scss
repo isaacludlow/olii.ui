@@ -1,0 +1,55 @@
+ion-item {
+  --padding-start: 0;
+}
+
+hr {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid #eee;
+}
+
+.poster-image {
+  min-width: 3em;
+  min-height: 3em;
+  height: 3em;
+  width: 3em;
+  margin-right: 0.5rem;
+}
+
+.comment-icon {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-comment-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+}
+
+.post-comment-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.toggle-show-comments-text {
+  display: flex;
+  justify-content: center;
+}
+
+.comment-textbox{
+  padding: 0;
+  width: 12rem;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
