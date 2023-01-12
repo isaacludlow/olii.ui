@@ -6,7 +6,7 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
   template: `
     <ion-card>
       <div class="content">
-        <div>
+        <div class="thumbnail">
           <olii-responsive-aspect-ratio-container aspectRatio="1/1">
             <olii-container-cover-image [imageUrl]="event.CoverImageUrl" boarderRadius="5%"></olii-container-cover-image>
           </olii-responsive-aspect-ratio-container>
