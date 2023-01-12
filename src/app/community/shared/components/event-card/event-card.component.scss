@@ -6,14 +6,12 @@ ion-card {
     display: flex;
     gap: 4px;
 
-    .cover-image {
-        width: 15vh;
-    }
 
     .event-details {
+        max-width: 58vw;
         display: flex;
         flex-direction: column;
-        gap: 5px;
-        padding: 3px 3px 3px 0px;
+        gap: 3px;
+        padding: 1px 3px 3px 0px;
     }
 }

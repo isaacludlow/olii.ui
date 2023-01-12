@@ -351,12 +351,11 @@ ion-modal.date-picker {
 	}
 }
 
+// Note: The parent of the element with this class must have a defined width for this to work.
 .line-clamp {
-	// TODO: Figure out how to make this work. Look at the line overflow example in the my-groups page.
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 // @media (prefers-color-scheme: dark) {
