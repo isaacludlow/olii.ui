@@ -7,7 +7,7 @@ export const addCreatedEventToCreatorEventSubcollection = functions.firestore
       const event = snapshot.data();
       const eventPreview = {
         eventId: context.params.eventId,
-        date: event.get("date"),
+        date: event.date,
         isCreator: false,
       };
 

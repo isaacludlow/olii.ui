@@ -169,7 +169,13 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   addEvent() {
     this.router.navigate(
       ['community/events/create'],
-      { queryParams: { creatorType: EventCreatorIdType.Group, creatorId: this.group.GroupId } }
+      { queryParams: {
+        creatorType: EventCreatorIdType.Group, 
+        creatorId: this.group.GroupId,
+        creatorDisplayName: `${this.group.Name}`,
+        imageUrl: this.group.CoverImageUrl
+        }
+      } 
     );
   }
   
