@@ -161,6 +161,12 @@ service cloud.firestore {
 
         allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
       }
+
+      match /members/{memberId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+      }
     }
 
     match /group_posts/{group_postId} {
