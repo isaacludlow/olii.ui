@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { Profile } from '../models/dto/profile/profile.dto';
