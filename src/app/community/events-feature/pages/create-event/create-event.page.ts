@@ -162,7 +162,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
 
     this.subs.sink = this.eventStore.createEvent(event).subscribe(() => {
       this.createEventForm.reset();
-      this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
+      this.location.back();
     });
   }
 
