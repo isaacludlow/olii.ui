@@ -47,7 +47,7 @@ export class EventsFeaturePage implements OnInit, OnDestroy {
           creatorId: this.profile.ProfileId,
           creatorDisplayName: `${this.profile.FirstName} ${this.profile.LastName}`,
           imageUrl: this.profile.ProfilePictureUrl
-        } 
+        }
       }
     );
   }

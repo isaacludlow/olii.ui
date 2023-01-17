@@ -351,6 +351,13 @@ ion-modal.date-picker {
 	}
 }
 
+// Note: The parent of the element with this class must have a defined width for this to work.
+.line-clamp {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 // @media (prefers-color-scheme: dark) {
 //     .color-light {
 //         color: var(--dark-theme-color-light);

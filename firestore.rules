@@ -17,7 +17,7 @@ service cloud.firestore {
         && isOwner(request, userId)
         && request.resource.data.keys().hasAll(['email', 'phoneNumber', 'dob', 'username'])
         && request.resource.data.keys().hasOnly(['email', 'phoneNumber', 'dob', 'username'])
-        && !requestData.diff(resource.data).affectedKeys().hasAny(['email', 'username'])
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['email', 'username'])
         && request.resource.data.email is string
         // && request.resource.data.dob is timestamp
         // && request.resource.data.phoneNumber is int
@@ -69,7 +69,7 @@ service cloud.firestore {
         && requestData.get('profilePictureUrl', '') is string
       }
 
-      match /profiles/{profileId}/savedImagesAlbums/{albumId} {
+      match /savedImagesAlbums/{albumId} {
         allow read: if isAuthenticated(request)
           && isPublic(resource);
 
@@ -119,6 +119,13 @@ service cloud.firestore {
           && requestData.privacyLevel is string
           && requestData.title is string;
       }
+
+      match /attendees/{attendeeId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if isAuthenticated(request)
+          && isOwner(request, attendeeId);
+      }
     }
 
     match /groups/{groupdId} {
@@ -147,6 +154,18 @@ service cloud.firestore {
           && requestData.privacyLevel is string
           && requestData.totalMembers is int
           && requestData.totalMembers == 0;
+      }
+
+      match /events/{eventId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+      }
+
+      match /members/{memberId} {
+        allow read: if isAuthenticated(request);
+
+        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
       }
     }
 
@@ -213,10 +232,11 @@ service cloud.firestore {
     }
 
     function isAdminForGroup(request) {
+      let userUid = request.auth.uid;
       let groupId = request.resource.data.creator.creatorId;
-      let groupAdminsUids = get(/databases/$(database)/documents/groups/$(groupId)).data.admins;
+      let isGroupAdmin = get(/databases/$(database)/documents/profiles/$(userUid)/myGroups/$(groupId)).data.isAdmin;
 
-      return groupAdminsUids.hasAll(request.auth.uid);
+      return isGroupAdmin;
     }
 
     function isProfilePreviewDataValid(profilePreviewData) {

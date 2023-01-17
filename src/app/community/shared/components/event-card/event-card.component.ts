@@ -6,17 +6,15 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
   template: `
     <ion-card>
       <div class="content">
-        <div class="cover-image">
+        <div class="thumbnail">
           <olii-responsive-aspect-ratio-container aspectRatio="1/1">
             <olii-container-cover-image [imageUrl]="event.CoverImageUrl" boarderRadius="5%"></olii-container-cover-image>
           </olii-responsive-aspect-ratio-container>
         </div>  
         <div class="event-details">
-          <h4>{{ event.Title | truncate:21:'...' }}</h4>
-          <div class="location-time">
-            <olii-location-preview [locationText]="event.Location.DisplayName"></olii-location-preview>
-            <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
-          </div>
+          <h4 class="line-clamp">{{ event.Title }}</h4>
+          <olii-location-preview [locationText]="event.Location.DisplayName"></olii-location-preview>
+          <olii-date-time-preview [date]="event.Date"></olii-date-time-preview>
           <olii-profile-preview-icons
             *ngIf="event.AttendeesPreview.length > 0"
             [profilePictureUrls]="firstFourProfilePictureUrls"

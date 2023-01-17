@@ -1,13 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
-import { addAttendeeToCachedEvents, removeAttendeeFromCachedEvents } from 'src/app/shared/utilities';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -46,29 +44,6 @@ export class EventDetailsPage implements OnInit, OnDestroy {
       .subscribe(isAttending => this.attending = isAttending);
   }
 
-  rsvpToEvent() {
-    this.subs.sink = this.eventsStore.rsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
-    .subscribe(isRsvp => {
-      this.attending = isRsvp;
-      
-      const partialProfile: ProfilePreview = {
-         ProfileId: this.currentProfile.ProfileId,
-         FirstName: this.currentProfile.FirstName,
-         LastName: this.currentProfile.LastName,
-         ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
-      };
-      addAttendeeToCachedEvents(partialProfile, this.event.EventId, this.eventsStore);
-    });
-  }
-
-  cancelRsvpToEvent() {
-    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId)
-    .subscribe(isCanceledRsvp => {
-      this.attending = !isCanceledRsvp;
-      removeAttendeeFromCachedEvents(this.currentProfile.ProfileId, this.event.EventId, this.eventsStore);
-    });
-  }
-
   ionViewDidEnter() {
     // TODO-AfterBeta: Refactor to wait until call to get events is done.
     this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);
@@ -85,6 +60,21 @@ export class EventDetailsPage implements OnInit, OnDestroy {
       position: { lat: latitude, lng: longitude },
       map: this.map
     });
+  }
+
+  rsvpToEvent() {
+    const profilePreview: ProfilePreview = {
+      ProfileId: this.currentProfile.ProfileId,
+      FirstName: this.currentProfile.FirstName,
+      LastName: this.currentProfile.LastName,
+      ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
+    };
+    
+    this.subs.sink = this.eventsStore.rsvpToEvent(profilePreview, this.event.EventId).subscribe(() => this.attending = true);
+  }
+
+  cancelRsvpToEvent() {
+    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(() => this.attending = false);
   }
 
   navigateBack(): void {

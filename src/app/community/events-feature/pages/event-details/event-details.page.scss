@@ -95,6 +95,11 @@
         }
     }
 
+    .attendees-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .images {
         .images-container {
             display: flex;

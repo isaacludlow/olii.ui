@@ -6,20 +6,15 @@ ion-card {
     display: flex;
     gap: 4px;
 
-    .cover-image {
-        width: 30vw;
+    .thumbnail {
+        width: 7em;
     }
 
     .event-details {
+        width: 58vw;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 3px 3px 3px 0px;
-
-        .location-time {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
+        gap: 3px;
+        padding: 1px 3px 3px 0px;
     }
 }

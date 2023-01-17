@@ -11,6 +11,8 @@
             <ion-item>
                 <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
             </ion-item>
+            <ion-note color="danger" *ngIf="email.touched && email.invalid">Please enter a valid email</ion-note>
+
             <ion-item>
                 <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
             </ion-item>

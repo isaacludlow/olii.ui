@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +72,21 @@ export class DatabaseService {
     );
 
     return attendees;
+  }
+
+  isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
+    return this.afs.collection(`events/${eventId}/attendees`, ref => ref.where('profileId', '==', profileId)).valueChanges().pipe(
+      map(res => res.length > 0)
+    );
+  }
+
+  rsvpToEvent(profilePreview: ProfilePreview, eventId: string): Observable<void> {
+    const mappedProfilePreview = mapProfilePreviewRequest(profilePreview);
+    return from(this.afs.collection(`events/${eventId}/attendees`).doc(profilePreview.ProfileId).set(mappedProfilePreview));
+  }
+
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<void> {
+    return from(this.afs.doc(`events/${eventId}/attendees/${profileId}`).delete());
   }
 
   getMyGroups(profileId: string): Observable<Group[]> {
@@ -177,7 +192,13 @@ export class DatabaseService {
 
     return pastGroupEvents;
   }
-    
+
+  checkUsernameAvailability(username: string): Observable<boolean> {
+    return this.afs.collection(`usernames`, ref => ref.where('username', '==', username)).get().pipe(
+      map(res => res.size === 0)
+    );
+  }
+
   getUserByUid(uid: string): Observable<User> {
     const user = this.afs.doc(`users/${uid}`).valueChanges({ idField: 'uid' }).pipe(
       map(user => mapUser(user))

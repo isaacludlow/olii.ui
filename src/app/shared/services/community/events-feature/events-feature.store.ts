@@ -19,6 +19,8 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class EventsFeatureStore {
+  // TODO: Consider replacing the caching functionality here by adding a share() operator in the pipe of the dbService calls.
+  // See https://youtu.be/isI6rpnTIMA and https://www.youtube.com/watch?v=H542ZSyubrE.
   allEvents = new BehaviorSubject<Event[]>(null);
   myEvents = new BehaviorSubject<Event[]>(null);
   
@@ -99,15 +101,15 @@ export class EventsFeatureStore {
   }
   
   isAttendingEvent(eventId: string, profileId: string): Observable<boolean> {
-    return this.eventsService.isAttendingEvent(eventId, profileId);
+    return this.dbService.isAttendingEvent(eventId, profileId);
   }
   
-  rsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
-    return this.eventsService.rsvpToEvent(profileId, eventId);
+  rsvpToEvent(profilePreview: ProfilePreview, eventId: string): Observable<void> {
+    return this.dbService.rsvpToEvent(profilePreview, eventId);
   }
 
-  cancelRsvpToEvent(profileId: string, eventId: string): Observable<boolean> {
-    return this.eventsService.cancelRsvpToEvent(profileId, eventId);
+  cancelRsvpToEvent(profileId: string, eventId: string): Observable<void> {
+    return this.dbService.cancelRsvpToEvent(profileId, eventId);
   }
 
   uploadEventCoverImage(coverImage: GalleryPhoto, eventId: string, platform: Platform): Observable<string> {
@@ -135,7 +137,7 @@ export class EventsFeatureStore {
     switch (filter) {
       case MyEventsFilterOptions.Attending:
         return this.myEvents.asObservable().pipe(
-          map(events => events.filter(event => isFuture(event.Date)))
+          map(events => events.filter(event => isFuture(event.Date) && !this.isCreator(event, profileId)))
         );
 
       case MyEventsFilterOptions.Hosting:

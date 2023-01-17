@@ -7,7 +7,7 @@ export const addCreatedEventToCreatorEventSubcollection = functions.firestore
       const event = snapshot.data();
       const eventPreview = {
         eventId: context.params.eventId,
-        date: event.get("date"),
+        date: event.date,
         isCreator: false,
       };
 
@@ -62,7 +62,9 @@ export const removeAttendingEventToMyEvents = functions.firestore
 export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
     .document("events/{eventId}")
     .onUpdate(async (change, context) => {
-      if (change.before.get("date") === change.after.get("date")) {
+      if (
+        change.before.get("date")._seconds === change.after.get("date")._seconds
+      ) {
         return null;
       }
 
@@ -85,19 +87,17 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
 
       if (eventCreator.creatorType == "group") {
         return admin.firestore()
-            .collection(
+            .doc(
                 `groups/${eventCreator.creatorId}
                 /events/${context.params.eventId}`
             )
-            .doc()
             .update("date", updatedEventData.date);
       } else if (eventCreator.creatorType == "profile") {
         return admin.firestore()
-            .collection(
+            .doc(
                 `profiles/${eventCreator.creatorId}
                 /myEvents/${context.params.eventId}`
             )
-            .doc()
             .update("date", updatedEventData.date);
       } else return null;
     });
@@ -110,7 +110,7 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
           .get();
 
       if (!change.after.exists) {
-        await event.ref.update(
+        return await event.ref.update(
             "attendeesPreview",
             admin.firestore.FieldValue.arrayRemove(change.before.data())
         );
@@ -122,9 +122,10 @@ export const addFirstFiveAttendeesToPreview = functions.firestore
 
       if (numberOfAttendeesInPreview < 5) {
         const attendees = await admin.firestore()
-            .collection("events/{eventId}/attendees")
+            .collection(`events/${context.params.eventId}/attendees`)
             .offset(numberOfAttendeesInPreview)
-            .limit(numberOfAttendeesToGet).get();
+            .limit(numberOfAttendeesToGet)
+            .get();
 
         for (const attendeeDoc of attendees.docs) {
           const docData = attendeeDoc.data();
