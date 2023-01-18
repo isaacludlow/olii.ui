@@ -4,8 +4,9 @@ import { GroupsFeaturePage } from './groups-feature.page';
 import { GroupDetailsPage } from './pages/group-details/group-details.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
-import { MyGroupsPage } from './pages/groups-all/my-groups.page';
+import { MyGroupsPage } from './pages/my-groups/my-groups.page';
 import { EditGroupPage } from './pages/edit-group/edit-group.page';
+import { AllGroupsPage } from './pages/all-groups/all-groups.page'
 
 const routes: Routes = [
   { 
@@ -29,9 +30,13 @@ const routes: Routes = [
     component: CreateGroupPage
   },
   {
-    path: 'all',
+    path: 'my-groups',
     component: MyGroupsPage
   },
+  {
+    path: 'all-groups',
+  component: AllGroupsPage
+},
 ];
 
 @NgModule({
