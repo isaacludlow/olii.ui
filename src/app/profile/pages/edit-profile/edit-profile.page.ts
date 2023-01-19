@@ -20,6 +20,7 @@ export class EditProfilePage implements OnInit {
   originalProfile: Profile;
   profilePicture: GalleryPhoto;
   profileImages: GalleryPhoto[] = [];
+  loadingButton: boolean;
   subs = new SubSink();
 
   profileForm = this.fb.group({
@@ -31,7 +32,7 @@ export class EditProfilePage implements OnInit {
     hostCountry: [''],
     currentCity: [''],
     bio: [''],
-  })
+  });
   imagesToDelete: string[] = []; // Image urls from cloud storage.
   imagesToUpload: GalleryPhoto[] = [];
 
@@ -100,6 +101,7 @@ export class EditProfilePage implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
+    this.loadingButton = true;
     let updatedImageUrls: string[] = [];
 
     if (this.imagesToDelete.length > 0) {
@@ -127,6 +129,9 @@ export class EditProfilePage implements OnInit {
       SavedImageAlbumPreviews: this.originalProfile.SavedImageAlbumPreviews,
     };
 
-    this.profileStore.updateProfile(profile).subscribe(() => this.location.back());
+    this.profileStore.updateProfile(profile).subscribe(() => {
+      this.loadingButton = false;
+      this.location.back();
+    });
   }
 }

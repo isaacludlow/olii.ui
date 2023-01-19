@@ -21,9 +21,20 @@
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Name" formControlName="name"></ion-input>
         </ion-item>
+        <ion-note
+            color="danger"
+            *ngIf="createGroupForm.controls.name.touched && !createGroupForm.controls.name.valid">
+            Group name must be at least 5 characters long
+        </ion-note>
+
         <ion-item>
             <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Description" formControlName="description"></ion-input>
         </ion-item>
+        <ion-note
+            color="danger"
+            *ngIf="createGroupForm.controls.description.touched && !createGroupForm.controls.description.valid">
+            Group description must be at lease 8 characters long
+        </ion-note>
 
         <!-- <h4 class="form-label">Group Visibility</h4>
 
@@ -54,6 +65,9 @@
         </div>
     </div>
 
-    <ion-button type="button" expand="block" color="primary" (click)="createGroup()" mode="ios" [disabled]="!createGroupForm.valid || this.groupCoverImage == null">Create Group</ion-button>
+    <ion-button type="submit" expand="block" [disabled]="createGroupForm.invalid || this.groupCoverImage == null || loadingButton" mode="ios">
+        <span *ngIf="!loadingButton">Create Event</span>
+        <ion-spinner *ngIf="loadingButton"></ion-spinner>
+    </ion-button>
 
 </ion-content>

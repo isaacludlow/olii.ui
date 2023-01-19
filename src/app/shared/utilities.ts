@@ -1,12 +1,8 @@
-import { Type } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, GalleryPhoto, Photo } from '@capacitor/camera';
 import { Filesystem } from '@capacitor/filesystem';
 import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { ProfilePreview } from '../models/dto/profile/profile-preview.dto';
-import { EventsFeatureStore } from './services/community/events-feature/events-feature.store';
+import { map } from 'rxjs/operators';
 
 export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
     const galleryPhoto = from(Camera.pickImages({

@@ -18,7 +18,7 @@
         </ion-toolbar>
     </ion-header>
 
-    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()" #form="ngForm">
+    <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()">
         <div class="event-details">
             <h4>Event details</h4>
             <ion-item>
@@ -26,7 +26,7 @@
             </ion-item>
             <ion-note
                 color="danger"
-                *ngIf="(createEventForm.controls.title.touched || form.submitted) && !createEventForm.controls.title.valid">
+                *ngIf="createEventForm.controls.title.touched && !createEventForm.controls.title.valid">
                 Event title must be at least 5 characters long
             </ion-note>
 
@@ -35,7 +35,7 @@
             </ion-item>
             <ion-note
                 color="danger"
-                *ngIf="(createEventForm.controls.description.touched || form.submitted) && !createEventForm.controls.description.valid">
+                *ngIf="createEventForm.controls.description.touched && !createEventForm.controls.description.valid">
                 Event description must be at lease 8 characters long
             </ion-note>
 
@@ -109,7 +109,10 @@
                 </div>
             </div>
         </div>
-        <ion-button type="submit" [disabled]="!createEventForm.valid" mode="ios">Create Event</ion-button>
+        <ion-button type="submit" [disabled]="createEventForm.invalid || loadingButton" mode="ios">
+            <span *ngIf="!loadingButton">Create Event</span>
+            <ion-spinner *ngIf="loadingButton"></ion-spinner>
+        </ion-button>
     </form>
     <ion-modal trigger="open-modal" class="date-picker">
         <ng-template>

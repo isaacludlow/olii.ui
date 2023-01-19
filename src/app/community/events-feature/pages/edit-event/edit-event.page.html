@@ -27,7 +27,7 @@
             </ion-item>
             <ion-note
                 color="danger"
-                *ngIf="(editEventForm.controls.title.touched || form.submitted) && !editEventForm.controls.title.valid">
+                *ngIf="editEventForm.controls.title.touched && !editEventForm.controls.title.valid">
                 Event title must be at least 5 characters long
             </ion-note>
 
@@ -36,7 +36,7 @@
             </ion-item>
             <ion-note
                 color="danger"
-                *ngIf="(editEventForm.controls.description.touched || form.submitted) && !editEventForm.controls.description.valid">
+                *ngIf="editEventForm.controls.description.touched && !editEventForm.controls.description.valid">
                 Event description must be at lease 8 characters long
             </ion-note>
 
@@ -102,7 +102,10 @@
             <hr>
             <olii-edit-images [images]="eventImages" (imagesEvent)="onEventImagesChange($event)"></olii-edit-images>
         </div>
-        <ion-button type="submit" [disabled]="!editEventForm.valid" mode="ios">Update Event</ion-button>
+        <ion-button type="submit" [disabled]="editEventForm.invalid || loadingButton" mode="ios">
+            <span *ngIf="!loadingButton">Update Event</span>
+            <ion-spinner *ngIf="loadingButton"></ion-spinner>
+        </ion-button>
     </form>
     <ion-modal trigger="open-modal" class="date-picker">
         <ng-template>
