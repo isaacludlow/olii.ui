@@ -12,6 +12,7 @@ import { readPhotoAsBase64 } from "src/app/shared/utilities";
 import { GalleryPhoto } from "@capacitor/camera";
 import { Platform } from "@ionic/angular";
 import { v4 as uuidv4 } from 'uuid';
+import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -75,6 +76,10 @@ export class GroupFeatureStore {
                 return this._myGroups.asObservable();
             }));
         }
+    }
+
+    joinGroup(profilePreview: ProfilePreview, groupId: string): Observable<void> {
+        return this.dbService.addMemberToGroup(profilePreview, groupId);
     }
 
     createGroup(group: GroupRequest): Observable<void> {

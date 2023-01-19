@@ -105,6 +105,12 @@ export class DatabaseService {
     return group;
   }
 
+  addMemberToGroup(profilePreview: ProfilePreview, groupId: string): Observable<void> {
+    const mappedProfilePreview = mapProfilePreviewRequest(profilePreview);
+
+    return from(this.afs.collection(`groups/${groupId}/members`).doc(profilePreview.ProfileId).set(mappedProfilePreview));
+  }
+
   createGroup(group: GroupRequest): Observable<void> {
     const mappedGroup = mapGroupRequest(group);
 
