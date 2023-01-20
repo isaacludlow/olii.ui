@@ -10,7 +10,8 @@ import { SharedComponentsModule } from 'src/app/components/shared/shared-compone
 import { SharedModule } from '../shared/shared.module';
 import { GroupPostCardComponent } from './shared/components/group-post-card.component/group-post-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommentsComponent } from './shared/components/comments/comments.component'
+import { CommentsComponent } from './shared/components/comments/comments.component';
+import { GroupCardComponent } from './shared/components/group-card/group-card.component'
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CommentsComponent } from './shared/components/comments/comments.compone
     CommunityComponent,
     EventCardComponent,
     GroupPostCardComponent,
-    CommentsComponent
+    CommentsComponent,
+    GroupCardComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { CommentsComponent } from './shared/components/comments/comments.compone
   ],
   exports: [
     EventCardComponent,
-    GroupPostCardComponent
+    GroupPostCardComponent,
+    GroupCardComponent
   ]
 })
 export class CommunityModule { }

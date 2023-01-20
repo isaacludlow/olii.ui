@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest, mapGroups } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +96,15 @@ export class DatabaseService {
 
     return myGroups;
   }
+
+  getAllGroups(): Observable<Group[]> {
+    const allGroups = this.afs.collection('groups').valueChanges({ idField: 'id' }).pipe(
+      map(allGroups => mapGroups(allGroups))
+    );
+      
+    return allGroups;
+  }
+
 
   getGroupById(groupId: string): Observable<Group> {
     const group = this.afs.doc(`groups/${groupId}`).valueChanges({ idField: 'id'}).pipe(

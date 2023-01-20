@@ -1,0 +1,20 @@
+ion-card {
+  --background: white;
+}
+
+.content {
+  display: flex;
+  gap: 4px;
+
+  .thumbnail {
+      width: 7em;
+  }
+
+  .event-details {
+      width: 58vw;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 1px 3px 3px 0px;
+  }
+}

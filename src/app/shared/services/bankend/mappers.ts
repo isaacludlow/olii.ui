@@ -81,6 +81,18 @@ export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
 // #endregion
 
 // #region Group mappers
+export function mapGroups(groupDocs: DocumentData): Group[] {
+    const mappedGroups: Group[] = [];
+
+    for (let i = 0; i < groupDocs.length; i++) {
+        const groupDoc = groupDocs[i];
+
+        mappedGroups.push(mapGroup(groupDoc));
+    }
+
+    return mappedGroups;
+}
+
 export function mapGroup(groupDoc: any, groupId?: string): Group {
     const group: Group = {
         GroupId: groupId ?? groupDoc.id, 

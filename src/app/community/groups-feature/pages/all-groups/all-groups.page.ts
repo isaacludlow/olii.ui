@@ -3,7 +3,6 @@ import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { SubSink } from 'subsink';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
   templateUrl: './all-groups.page.html',
@@ -16,12 +15,11 @@ export class AllGroupsPage implements OnInit {
 
   constructor(
     private groupStore: GroupFeatureStore,
-    private profileStore: ProfileStore,
     private domSanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
-    this.subs.sink = this.groupStore.getAllGroups(this.profileStore.currentProfile.value.ProfileId).subscribe(res => this.groups = res);
+    this.subs.sink = this.groupStore.getAllGroups().subscribe(res => this.groups = res);
   }
 
   sanitizeUrl(url: string): string {
