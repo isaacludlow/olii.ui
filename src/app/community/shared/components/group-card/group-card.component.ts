@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 
 @Component({
@@ -7,14 +6,18 @@ import { Group } from 'src/app/models/dto/community/groups/group.dto';
   template: `
     <ion-card>
       <div class="content">
-        <div class="cover-image">
+        <div class="thumbnail">
           <olii-responsive-aspect-ratio-container aspectRatio="1/1">
-          <olii-container-cover-image [imageUrl]="sanitizeUrl(group.CoverImageUrl)"></olii-container-cover-image>
+            <olii-container-cover-image [imageUrl]="group.CoverImageUrl" boarderRadius="5%"></olii-container-cover-image>
           </olii-responsive-aspect-ratio-container>
         </div>  
         <div class="group-details">
           <h4 class="line-clamp">{{ group.Name }}</h4>
-          <div class = "font-body-s">{{ group.Description}}</div>
+          <olii-profile-preview-icons
+            *ngIf="group.MembersPreview.length > 0"
+            [profilePictureUrls]="firstFourProfilePictureUrls"
+            profileIconSize="small">
+          </olii-profile-preview-icons>
         </div>
       </div>
     </ion-card>
@@ -26,14 +29,10 @@ export class GroupCardComponent implements OnInit {
   firstFourProfilePictureUrls: Array<string>;
   numberOfProfilesDisplayed: number = 5;
 
-  constructor(
-    private domSanitizer: DomSanitizer,
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
+    this.firstFourProfilePictureUrls = this.group.MembersPreview.map(member => member.ProfilePictureUrl);
   }
 
-sanitizeUrl(url: string): string {
-  return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
-  }
 }
