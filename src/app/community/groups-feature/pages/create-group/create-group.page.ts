@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
-import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 
 @Component({
@@ -22,6 +21,7 @@ export class CreateGroupPage {
   friends: Profile[];
   subs = new SubSink();
   groupCoverImage: GalleryPhoto;
+  loadingButton: boolean;
 
   createGroupForm = this.fb.group({
     name: ['', Validators.required],
@@ -48,6 +48,7 @@ export class CreateGroupPage {
   }
 
   async createGroup() {
+    this.loadingButton = true;
     const profile = this.profileStore.currentProfile.value;
     const newGroupId = this.dbService.generateDocumentId();
 
@@ -68,6 +69,7 @@ export class CreateGroupPage {
     };
 
     this.subs.sink = this.groupStore.createGroup(newGroup).subscribe(() => {
+      this.loadingButton = false;
       this.router.navigate(['community/groups/group/' + newGroupId]);
     });
   }

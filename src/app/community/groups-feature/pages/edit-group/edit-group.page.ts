@@ -23,6 +23,7 @@ export class EditGroupPage implements OnInit {
 
   group: Group;
   groupCoverImage: GalleryPhoto = null;
+  loadingButton: boolean;
   subs = new SubSink();
 
   editGroupForm = this.fb.group({
@@ -66,7 +67,9 @@ export class EditGroupPage implements OnInit {
   }
 
   async updateGroup() {
+    this.loadingButton = true;
     const groupId = this.group.GroupId;
+
     const updatedGroup: GroupRequest = {
       GroupId: groupId,
       CoverImageUrl: this.editGroupForm.get('coverImageUrl').value == null
@@ -79,6 +82,7 @@ export class EditGroupPage implements OnInit {
     }
   
     this.subs.sink = this.groupStore.updateGroup(updatedGroup).subscribe(() => {
+      this.loadingButton = false;
       this.router.navigate(['community/groups/group/' + groupId])
     })
   }

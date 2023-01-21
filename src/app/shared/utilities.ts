@@ -1,15 +1,14 @@
-import { Type } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, GalleryPhoto, Photo } from '@capacitor/camera';
 import { Filesystem } from '@capacitor/filesystem';
 import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { ProfilePreview } from '../models/dto/profile/profile-preview.dto';
-import { EventsFeatureStore } from './services/community/events-feature/events-feature.store';
+import { map } from 'rxjs/operators';
 
 export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
-    const galleryPhoto = from(Camera.pickImages({limit: maxNumberOfImages}));
+    const galleryPhoto = from(Camera.pickImages({
+      limit: maxNumberOfImages,
+
+    }));
 
     return galleryPhoto.pipe(
         map(galleryPhoto => galleryPhoto.photos.slice(0, maxNumberOfImages))
@@ -17,15 +16,19 @@ export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto
 }
 
 export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: Platform): Promise<string> {
+  console.log(photo)
     if (platform.is('hybrid')) {
+      console.log('is hybrid')
       // Read the file into base64 format
       const file = await Filesystem.readFile({
         path: photo.path
       });
+      console.log(file)
   
-      return file.data;
+      return `data:image/jpeg;base64,${file.data}`;
     }
     else {
+      console.log('is not hybrid')
       // Fetch the photo, read as a blob, then convert to base64 format
       // TODO: convert this to use observables so the user gets one image at a time instead of waiting for all to be done.
       const response = await fetch(photo.webPath, {
