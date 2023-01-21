@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { AlertPromise } from 'selenium-webdriver';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
@@ -18,6 +19,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   mapMarker: google.maps.Marker;
   event: Event;
   attendingProfilePictures: string[];
+  canEditEvent: boolean;
   attending: boolean;
   currentProfile: Profile;
   subs = new SubSink();
@@ -38,6 +40,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     ).subscribe(event => {
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
+      this.canEditEvent = this.canEdit(event, this.currentProfile.ProfileId);
     });
 
     this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
@@ -71,6 +74,13 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     };
     
     this.subs.sink = this.eventsStore.rsvpToEvent(profilePreview, this.event.EventId).subscribe(() => this.attending = true);
+  }
+
+  canEdit(event_: Event, profile: String): boolean {
+    if (event_.Creator.CreatorId === profile) {
+      return true;
+    }
+    return false;
   }
 
   cancelRsvpToEvent() {
