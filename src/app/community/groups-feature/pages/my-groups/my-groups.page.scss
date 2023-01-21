@@ -36,9 +36,8 @@ ion-header {
 
 .groups-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding: 0.25rem;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .group-card-container {        

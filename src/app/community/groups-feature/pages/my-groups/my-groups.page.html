@@ -17,17 +17,7 @@
 
 <ion-content>
     <div class="groups-container">
-        <olii-responsive-aspect-ratio-container *ngFor="let group of groups" aspectRatio="1/1" class="group-card-container">
-            <ion-card [routerLink]="['../group', group.GroupId]">
-                <olii-responsive-aspect-ratio-container aspectRatio="1/0.75">
-                    <olii-container-cover-image [imageUrl]="sanitizeUrl(group.CoverImageUrl)"></olii-container-cover-image>
-                </olii-responsive-aspect-ratio-container>
-                
-                <div class="group-details">
-                    <h4 class="group-title">{{ group.Name }}</h4>
-                    <div class="group-description">{{ group.Description }}</div>
-                </div>
-            </ion-card>
-        </olii-responsive-aspect-ratio-container>
+        <olii-group-card *ngFor="let group of groups" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
+        </olii-group-card>
     </div>
 </ion-content>

@@ -13,6 +13,7 @@ import { Group } from 'src/app/models/dto/community/groups/group.dto';
         </div>  
         <div class="group-details">
           <h4 class="line-clamp">{{ group.Name }}</h4>
+          <div class="font-body-s line-clamp">{{ group.Description}} </div>
           <olii-profile-preview-icons
             *ngIf="group.MembersPreview.length > 0"
             [profilePictureUrls]="firstFourProfilePictureUrls"

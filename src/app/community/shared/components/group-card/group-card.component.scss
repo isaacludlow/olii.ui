@@ -7,11 +7,11 @@ ion-card {
   gap: 4px;
 
   .thumbnail {
-      width: 7em;
+      width: 29%; //not ideal, some images won't render properly and will be too big small. this only made it work for the error with the "On device group" group card. 
   }
 
   .group-details {
-      width: 58vw;
+      max-width: 58vw;
       display: flex;
       flex-direction: column;
       gap: 3px;
