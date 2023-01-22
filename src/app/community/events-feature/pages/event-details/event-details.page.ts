@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { switchMap } from 'rxjs/operators';
+import { FullscreenImageViewerComponent } from 'src/app/components/shared/fullscreen-image-viewer/fullscreen-image-viewer.component';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
@@ -26,7 +28,8 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     private eventsStore: EventsFeatureStore,
     private route: ActivatedRoute,
     private profileStore: ProfileStore,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +78,18 @@ export class EventDetailsPage implements OnInit, OnDestroy {
 
   cancelRsvpToEvent() {
     this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(() => this.attending = false);
+  }
+
+  async openImageViewer(imageIndex: number): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: FullscreenImageViewerComponent,
+      componentProps: {
+        imageUrls: this.event.ImageUrls,
+        startingIndex: imageIndex
+      }
+    });
+
+    modal.present();
   }
 
   navigateBack(): void {
