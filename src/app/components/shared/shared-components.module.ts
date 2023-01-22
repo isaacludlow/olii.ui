@@ -20,6 +20,7 @@ import { ResponsiveAspectRatioContainerComponent } from './responsive-aspect-rat
 import { BackButtonComponent } from './back-button/back-button.component';
 import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-icons.component';
 import { EditImagesComponent } from './edit-images/edit-images.component';
+import { FullscreenImageViewerComponent } from './fullscreen-image-viewer/fullscreen-image-viewer.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { EditImagesComponent } from './edit-images/edit-images.component';
     ResponsiveAspectRatioContainerComponent,
     BackButtonComponent,
     GroupPreviewIconsComponent,
-    EditImagesComponent
+    EditImagesComponent,
+    FullscreenImageViewerComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { EditImagesComponent } from './edit-images/edit-images.component';
     ResponsiveAspectRatioContainerComponent,
     BackButtonComponent,
     GroupPreviewIconsComponent,
-    EditImagesComponent
+    EditImagesComponent,
+    FullscreenImageViewerComponent
   ]
 })
 export class SharedComponentsModule { }
