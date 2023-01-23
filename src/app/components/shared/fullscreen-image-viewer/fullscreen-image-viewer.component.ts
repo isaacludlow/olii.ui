@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
       </olii-icon-with-purple-square-background>
     </ion-toolbar>
   </ion-header>
-  <ion-slides pager="true" [options]="{initialSlide: startingIndex}">
+  <ion-slides [pager]="showPager" [options]="{initialSlide: startingIndex}">
     <ion-slide *ngFor="let imageUrl of imageUrls">
       <olii-responsive-aspect-ratio-container aspectRatio="1/1" >
         <olii-container-cover-image [imageUrl]="imageUrl"></olii-container-cover-image>
@@ -22,11 +22,16 @@ import { ModalController } from '@ionic/angular';
   `,
   styleUrls: ['./fullscreen-image-viewer.component.scss']
 })
-export class FullscreenImageViewerComponent {
+export class FullscreenImageViewerComponent implements OnInit {
   @Input() imageUrls: string[];
   @Input() startingIndex: number = 0;
+  showPager: boolean;
   
   constructor(private modalCtrl: ModalController) {}
+
+  ngOnInit(): void {
+    this.showPager = this.imageUrls.length > 1;
+  }
 
   dismissModal() {
     this.modalCtrl.dismiss(null, 'cancel');
