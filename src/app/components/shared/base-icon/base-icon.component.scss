@@ -1,5 +1,9 @@
 @import '/src/global.scss';
 
+.mini {
+    @extend %icon-mini;
+}
+
 .extra-small {
     @extend %icon-extra-small;
 }
