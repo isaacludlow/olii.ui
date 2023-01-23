@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   template: `
     <div class="container">
       <olii-colored-square-background backgroundColor="translucent-purple">
-        <olii-base-icon size="extra-small" name="location-outline" color="primary"></olii-base-icon>
+        <olii-base-icon size="mini" name="location-outline" color="primary"></olii-base-icon>
       </olii-colored-square-background>
       <div class="font-body-s line-clamp">{{ locationText }}</div>
     </div>

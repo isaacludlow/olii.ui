@@ -22,10 +22,20 @@ import { CommentsComponent } from '../comments/comments.component'
                 </div>
             </div>
             {{post.Content}}
-            <div class="post-images">
-                <olii-responsive-aspect-ratio-container *ngFor="let image of post.ImageUrls" aspectRatio="1/1" class="image-container">
-                    <olii-container-cover-image [imageUrl]="image" boarderRadius="5px"></olii-container-cover-image>
-                </olii-responsive-aspect-ratio-container>
+            <div *ngIf="post.ImageUrls.length > 0" class="post-images">
+
+              <ion-thumbnail *ngIf="post.ImageUrls.length === 1">
+                <ion-img [src]="post.ImageUrls[0]"></ion-img>
+              </ion-thumbnail>
+
+              <ion-slides *ngIf="post.ImageUrls.length > 1" pager="true">
+                <ion-slide *ngFor="let imageUrl of post.ImageUrls">
+                  <ion-thumbnail>
+                    <ion-img [src]="imageUrl"></ion-img>
+                  </ion-thumbnail>
+                </ion-slide>
+              </ion-slides>
+
             </div>
             <olii-comments [postComments]="post.Comments" [groupPostId]="post.GroupPostId"></olii-comments>
         </div>
@@ -37,6 +47,7 @@ import { CommentsComponent } from '../comments/comments.component'
 export class GroupPostCardComponent implements OnInit {
   @ViewChild (CommentsComponent) comments: CommentsComponent;
   @Input() post: GroupPost;
+  showPostImageSlidePager: boolean;
   
   constructor( 
     private router: Router,
@@ -45,6 +56,7 @@ export class GroupPostCardComponent implements OnInit {
    
    ngOnInit(): void {
     this.groupStore.getCommentsByGroupPostId(this.post.GroupPostId).subscribe(comments => this.post.Comments = comments);
+    this.showPostImageSlidePager = this.post.ImageUrls.length > 0;
    }
 
   navigateToUserProfile(profileId: string) {
