@@ -237,6 +237,10 @@ a {
 	font-size: 16px;
 }
 
+.icon-smedium, %icon-smedium {
+	font-size: 20px;
+}
+
 .icon-medium, %icon-medium {
 	font-size: 24px;
 }
@@ -323,7 +327,7 @@ img {
 // Only works when mode is set to 'ios'.
 ion-segment.button-segment {
 	display: flex;
-	gap: 0.25rem;
+	gap: 3px;
 	--background: none;
 
 	ion-segment-button {
@@ -333,6 +337,7 @@ ion-segment.button-segment {
 		--indicator-color: var(--color-primary);
 		--padding-top: 8px;
 		--padding-bottom: 8px;
+		--border-width: 0px;
 	}
 }
 
