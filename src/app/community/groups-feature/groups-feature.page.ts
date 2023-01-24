@@ -47,6 +47,7 @@ export class GroupsFeaturePage implements OnInit {
         this.allGroups$ = this.groupStore.getAllGroups().pipe(tap(res => console.log(res)));
       }
     });
+    this.segmentToShow = "my-groups"
   }
 
   sanitizeUrl(url: string): string {
