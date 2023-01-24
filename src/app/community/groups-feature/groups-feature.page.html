@@ -22,44 +22,72 @@
           </ion-toolbar> -->
       </ion-header>
 
-    <div class="my-groups-container">
-        <div class="my-groups-header-container">
-            <h3>My groups</h3>
-            <div class="see-all-link" routerLink="./my-groups">See all</div>
+      <div>
+        <div class="my-groups-segment-container">
+            <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
+                <ion-segment-button value="my-groups" layout="icon-start">
+                    <ion-icon name="people-circle-outline"></ion-icon>
+                    <ion-label>My Groups</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="all-groups" layout="icon-start">
+                    <ion-icon name="compass-outline"></ion-icon>
+                    <ion-label>Discover</ion-label>
+                </ion-segment-button>
+            </ion-segment>
         </div>
-        <div class="my-groups-selector-container">
-            <div class="group-links-container">
-                <ng-container *ngIf="myGroupsPreview$ | async as myGroupsPreview">
-                    <olii-group-preview-icons
-                    [groups]="myGroupsPreview?.slice(0, calcDisplayGroups())"
-                    groupIconSize="large"
-                    [additionalDisplayNumber]="myGroupsPreview?.length - calcDisplayGroups()">
-                    </olii-group-preview-icons>
-                </ng-container>
+      </div>
+
+      <hr>
+
+      <div *ngIf="segmentToShow == 'my-groups'">
+    
+        <div class="my-groups-container">
+            <div class="my-groups-header-container">
+                <h3>My groups</h3>
+                <div class="see-all-link" routerLink="./my-groups">See all</div>
+            </div>
+            <div class="my-groups-selector-container">
+                <div class="group-links-container">
+                    <ng-container *ngIf="myGroupsPreview$ | async as myGroupsPreview">
+                        <olii-group-preview-icons
+                        [groups]="myGroupsPreview?.slice(0, calcDisplayGroups())"
+                        groupIconSize="large"
+                        [additionalDisplayNumber]="myGroupsPreview?.length - calcDisplayGroups()">
+                        </olii-group-preview-icons>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <hr>
+        <div>
+            <h3 class="section-header">Latest</h3>
+            <div class="post" *ngFor="let groupPost of latestGroupPosts$ | async">
+                <ion-card>
+                    <div class="card-content">
+                        <div class="post-group-header" [routerLink]="['./group', groupPost.GroupPreview.GroupId]">
+                            <div class="group-info">
+                                <div class="group-image">
+                                    <olii-container-cover-image [imageUrl]="groupPost.GroupPreview.CoverImageUrl" boarderRadius="50%"></olii-container-cover-image>
+                                </div>
+                                <div class="group-name">{{groupPost.GroupPreview.Name}}</div>
+                            </div>
+                        </div>
+
+                        <olii-group-post-card [post]="groupPost"></olii-group-post-card>
+                        
+                    </div>
+                </ion-card>
             </div>
         </div>
     </div>
-
-    <hr>
-
-    <div>
-        <h3 class="section-header">Latest</h3>
-        <div class="post" *ngFor="let groupPost of latestGroupPosts$ | async">
-            <ion-card>
-                <div class="card-content">
-                    <div class="post-group-header" [routerLink]="['./group', groupPost.GroupPreview.GroupId]">
-                        <div class="group-info">
-                            <div class="group-image">
-                                <olii-container-cover-image [imageUrl]="groupPost.GroupPreview.CoverImageUrl" boarderRadius="50%"></olii-container-cover-image>
-                            </div>
-                            <div class="group-name">{{groupPost.GroupPreview.Name}}</div>
-                        </div>
-                    </div>
-
-                    <olii-group-post-card [post]="groupPost"></olii-group-post-card>
-                    
-                </div>
-            </ion-card>
+        
+    <div *ngIf="segmentToShow == 'all-groups'">
+        <div class="groups-container">
+            <olii-group-card *ngFor="let group of allGroups$ | async" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
+            </olii-group-card>
         </div>
     </div>
 </ion-content>
