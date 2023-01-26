@@ -20,12 +20,12 @@ export class RegistrationFlowPage implements OnDestroy {
   @ViewChild('slider') slides: IonSlides;
   slideOptions = { initialSlide: 0, speed: 400, allowTouchMove: false };
   registerFlowForm = this.fb.group({
-    firstName: [null],
-    lastName: [null],
-    currentCity: [null],
-    hostCountry: [null],
-    homeCountry: [null],
-    bio: [null]
+    firstName: [''],
+    lastName: [''],
+    currentCity: [''],
+    hostCountry: [''],
+    homeCountry: [''],
+    bio: ['']
   });
   profilePicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   profileImages: GalleryPhoto[] = [];
