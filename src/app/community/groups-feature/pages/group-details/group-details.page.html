@@ -4,7 +4,7 @@
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
-        <div class="settings-icon">
+        <div *ngIf="canEditGroup" class="settings-icon">
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" (click)="editGroup()" ></olii-icon-with-off-white-square-background>
         </div>
     </div>

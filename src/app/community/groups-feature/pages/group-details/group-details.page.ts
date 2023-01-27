@@ -31,6 +31,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   group$: Observable<Group>;
   currentProfile: Profile;
   canViewGroup: boolean;
+  canEditGroup: boolean;
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
@@ -73,6 +74,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => {
           this.currentProfile = profile;
           this.canViewGroup = this.canView(group, profile.ProfileId);
+          this.canEditGroup = this.canEdit(group, profile.ProfileId);
         });
       }),
       tap(group => {
@@ -117,6 +119,13 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     content.style.setProperty('--webkit-filter', 'blur(8px)');
     content.style.filter = "blur(8px)";
     this.disableButtons = true;
+    return false;
+  }
+
+  canEdit(group: Group, profileId: string): boolean {
+    if (group.Admins.find(member => member.ProfileId === profileId)) {
+      return true;
+    }
     return false;
   }
 
