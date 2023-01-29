@@ -7,12 +7,12 @@ ion-card {
     gap: 4px;
 
     ion-thumbnail {
-        --size: 6.5rem;
+        --size: 6rem;
         --border-radius: 5%;
     }
 
     .event-details {
-        width: 10.5rem;
+        max-width: 50vw;
         display: flex;
         flex-direction: column;
         gap: 3px;

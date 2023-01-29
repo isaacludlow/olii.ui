@@ -32,7 +32,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
     </div>
 
     <div *ngIf="!showAddComment" class="comment-icon">
-        <olii-icon-with-off-white-square-background (click)="toggleAddComment(true)" name="chatbox-ellipses-outline"></olii-icon-with-off-white-square-background>
+        <olii-icon-with-purple-square-background (click)="toggleAddComment(true)" name="chatbox-ellipses-outline"></olii-icon-with-purple-square-background>
     </div>
 
     <div class="add-comment-content" *ngIf="showAddComment">
@@ -43,10 +43,10 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
             <ion-input [formControl]="addCommentInput" type="text" maxlength="50" placeholder="Add comment..."></ion-input>
         </ion-item>
         <div class="icon">
-            <olii-icon-with-off-white-square-background size="medium" name="close-circle-outline" (click)="cancelComment()"></olii-icon-with-off-white-square-background>
+            <olii-icon-with-purple-square-background size="medium" name="close-circle-outline" (click)="cancelComment()"></olii-icon-with-purple-square-background>
         </div>
         <div class="icon">
-            <olii-icon-with-off-white-square-background size="medium" name="send" (click)="sendComment()"></olii-icon-with-off-white-square-background>
+            <olii-icon-with-purple-square-background size="medium" name="send" (click)="sendComment()"></olii-icon-with-purple-square-background>
         </div>
     </div>
   `,

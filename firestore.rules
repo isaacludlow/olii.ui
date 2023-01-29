@@ -86,15 +86,15 @@ service cloud.firestore {
       allow read: if isAuthenticated(request);
 
       allow create: if isAuthenticated(request)
-        && (isEventCreator(request, request.resource) || isAdminForGroup(request))
+        && (isEventCreator(request, request.resource) || isGroupAdmin(request, request.resource.data.creator.creatorId))
         && isEventDataValid(request.resource.data);
 
       allow update: if isAuthenticated(request)
-        && (isEventCreator(request, request.resource) || isAdminForGroup(request))
+        && (isEventCreator(request, request.resource) || isGroupAdmin(request, request.resource.data.creator.creatorId))
         && isEventDataValid(request.resource.data);
 
       allow delete: if isAuthenticated(request)
-        && (isEventCreator(request, request.resource) || isAdminForGroup(request));
+        && (isEventCreator(request, request.resource) || isGroupAdmin(request, get(request.path).data.creator.creatorId));
 
       function isEventDataValid(requestData) {
         return requestData.keys().hasAll(
@@ -159,13 +159,17 @@ service cloud.firestore {
       match /events/{eventId} {
         allow read: if isAuthenticated(request);
 
-        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+        allow write: if isAuthenticated(request);
+        // TODO: Make sure changing this security rule didn't open up a security flaw.
+        // allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
       }
 
       match /members/{memberId} {
         allow read: if isAuthenticated(request);
 
-        allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
+        allow write: if isAuthenticated(request);
+        // TODO: Make sure changing this security rule didn't open up a security flaw.
+        // allow write: if false; // These are created, updated, and deleted by cloud functions. Never by the user.
       }
     }
 
@@ -180,7 +184,7 @@ service cloud.firestore {
         && isOwner(request, request.resource.data.author.profileId);
 
       allow delete: if isAuthenticated(request)
-        && isOwner(request, request.resource.data.author.profileId);
+        && (isOwner(request, get(request.path).data.author.profileId) || isGroupAdmin(request, get(request.path).data.groupPreview.groupId));
 
       function isGroupPostDataValid(requestData) {
         return requestData.keys().hasAll(['author', 'content', 'date', 'groupPreview'])
@@ -209,7 +213,7 @@ service cloud.firestore {
         && isOwner(request, request.resource.data.author.profileId);
 
       allow delete: if isAuthenticated(request)
-        && isOwner(request, request.resource.data.author.profileId);
+        && (isOwner(request, request.resource.data.author.profileId) || isGroupAdmin(request, request.resource.data.groupPreview.groupId));
 
       function isGroupPostCommentDataValid(requestData) {
         return requestData.keys().hasAll(['author', 'content', 'date'])
@@ -222,7 +226,7 @@ service cloud.firestore {
     function isAuthenticated(request) {
     	return request.auth != null;// && request.auth.token.email_verified;
     }
-    
+
     function isOwner(request, userId) {
       return request.auth.uid == userId;
     }
@@ -231,9 +235,8 @@ service cloud.firestore {
       return request.auth.uid == resource.data.creator.creatorId;
     }
 
-    function isAdminForGroup(request) {
+    function isGroupAdmin(request, groupId) {
       let userUid = request.auth.uid;
-      let groupId = request.resource.data.creator.creatorId;
       let isGroupAdmin = get(/databases/$(database)/documents/profiles/$(userUid)/myGroups/$(groupId)).data.isAdmin;
 
       return isGroupAdmin;
