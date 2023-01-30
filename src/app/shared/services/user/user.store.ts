@@ -33,8 +33,8 @@ export class UserStore implements OnDestroy {
         return this.dbService.getUserByUid(userIdToken);
     }
 
-    checkUsernameAvailability(username: string): Observable<boolean> {
-        return this.dbService.checkUsernameAvailability(username);
+    isUsernameAvailable(username: string): Observable<boolean> {
+        return this.dbService.isUsernameAvailable(username);
     }
 
     createUser(newUser: User): Observable<void> {

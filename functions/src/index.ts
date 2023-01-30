@@ -3,6 +3,7 @@ import * as admin from "firebase-admin";
 import * as eventFunctions from "./events-feature";
 import * as groupFunctions from "./groups-feature";
 import * as profileFunctions from "./profile-feature";
+import * as userFunctions from "./users-feature";
 
 admin.initializeApp();
 
@@ -38,3 +39,7 @@ export const addFirstFiveSavedImagesAlbumsToPreview =
     profileFunctions.addFirstFiveSavedImagesAlbumsToPreview;
 export const updateProfilePreviewAcrossDatabase =
     profileFunctions.updateProfilePreviewAcrossDatabase;
+
+// User functions
+export const addUsernameToUsernameCollectionWhenNewUserIsCreated =
+    userFunctions.addUsernameToUsernameCollectionWhenNewUserIsCreated;
