@@ -2,7 +2,6 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {firestore} from "firebase-admin";
 
-
 export const addFirstFiveSavedImagesAlbumsToPreview = functions.firestore
     .document("profiles/{profileId}/savedImagesAlbums/{albumId}")
     .onWrite(async (change, context) => {
