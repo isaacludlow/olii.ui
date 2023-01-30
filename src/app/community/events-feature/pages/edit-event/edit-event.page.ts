@@ -76,8 +76,6 @@ export class EditEventPage implements OnDestroy {
       switchMap(eventId => this.eventStore.getEventById(eventId))
     ).subscribe(event => {
       this.originalEvent = event;
-      console.log(event);
-
       this.editEventForm.get('coverImageUrl').setValue(event.CoverImageUrl);
       this.eventCoverImage = <GalleryPhoto>{ webPath: event.CoverImageUrl };
 

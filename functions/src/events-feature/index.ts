@@ -5,19 +5,25 @@ export const addCreatedEventToCreatorEventSubcollection = functions.firestore
     .document("events/{eventId}")
     .onCreate((snapshot, context) => {
       const event = snapshot.data();
-      const eventPreview = {
-        eventId: context.params.eventId,
-        date: event.date,
-        isCreator: false,
-      };
 
       if (event.creator.creatorType == "group") {
+        const eventPreview = {
+          eventId: context.params.eventId,
+          date: event.date,
+        };
+
         return admin.firestore()
             .collection(`groups/${event.creator.creatorId}/events`)
             // Creates a new document since no doc with this id will exist.
             .doc(context.params.eventId)
             .set(eventPreview);
       } else if (event.creator.creatorType == "profile") {
+        const eventPreview = {
+          eventId: context.params.eventId,
+          date: event.date,
+          isCreator: true,
+        };
+
         return admin.firestore()
             .collection(`profiles/${event.creator.creatorId}/myEvents`)
             // Creates a new document since no doc with this id will exist.

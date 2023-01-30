@@ -16,19 +16,15 @@ export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto
 }
 
 export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: Platform): Promise<string> {
-  console.log(photo)
     if (platform.is('hybrid')) {
-      console.log('is hybrid')
       // Read the file into base64 format
       const file = await Filesystem.readFile({
         path: photo.path
       });
-      console.log(file)
   
       return `data:image/jpeg;base64,${file.data}`;
     }
     else {
-      console.log('is not hybrid')
       // Fetch the photo, read as a blob, then convert to base64 format
       // TODO: convert this to use observables so the user gets one image at a time instead of waiting for all to be done.
       const response = await fetch(photo.webPath, {
