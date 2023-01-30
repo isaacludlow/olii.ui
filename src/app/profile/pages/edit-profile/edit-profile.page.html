@@ -59,7 +59,10 @@
         </div>
 
         <div class="save-button">
-            <ion-button type="submit" mode="ios" [disabled]="!profileForm.valid">Save</ion-button>
+            <ion-button type="submit" [disabled]="profileForm.invalid || loadingButton" mode="ios">
+                <span *ngIf="!loadingButton">Update profile</span>
+                <ion-spinner *ngIf="loadingButton"></ion-spinner>
+            </ion-button>
         </div>
     </form>
 

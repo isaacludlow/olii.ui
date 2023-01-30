@@ -7,87 +7,89 @@
             <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
         </div>
     </div>
-    <div *ngIf="profile" class="profile-info-container">
-        <div class="profile-image">
-            <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
-        </div>
-        <div class="profile-info">
-            <div class="personal-info">
-                <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName }} {{ profile.LastName }}</h3></ion-text>
-                <!-- TODO: Get the username from the userStore. -->
-                <!-- <ion-text color="medium"><div class="username">{{ profile.Username }}</div></ion-text> -->
-                <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
-                <div class="bio color-medium">{{ profile.Bio }}</div>
+    <div *ngIf="profile$ | async as profile">
+        <div class="profile-info-container">
+            <div class="profile-image">
+                <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
             </div>
-            <div class="highlighted-personal-info">
-                <div class="current-city">
-                    <ion-text color="medium">
-                        <h4 class="color-medium">Current City</h4>
-                    </ion-text>
-                    <ion-text color="tertiary">
-                        <p>{{ profile.CurrentCity }}</p>
-                    </ion-text>
+            <div class="profile-info">
+                <div class="personal-info">
+                    <ion-text color="tertiary"><h3 class="name">{{ profile.FirstName }} {{ profile.LastName }}</h3></ion-text>
+                    <!-- TODO: Get the username from the userStore. -->
+                    <!-- <ion-text color="medium"><div class="username">{{ profile.Username }}</div></ion-text> -->
+                    <div class="host-city color-medium">{{ profile.HomeCountry }}</div>
+                    <div class="bio color-medium">{{ profile.Bio }}</div>
                 </div>
-                <!-- <div class="friends">
-                    <ion-text color="medium">
-                        <h4 class="color-medium">Friends</h4>
-                    </ion-text>
-                    <ion-text color="tertiary">
-                        <p>{{ profile.Friends }}</p>
-                    </ion-text>
-                </div> -->
+                <div class="highlighted-personal-info">
+                    <div class="current-city">
+                        <ion-text color="medium">
+                            <h4 class="color-medium">Current City</h4>
+                        </ion-text>
+                        <ion-text color="tertiary">
+                            <p>{{ profile.CurrentCity }}</p>
+                        </ion-text>
+                    </div>
+                    <!-- <div class="friends">
+                        <ion-text color="medium">
+                            <h4 class="color-medium">Friends</h4>
+                        </ion-text>
+                        <ion-text color="tertiary">
+                            <p>{{ profile.Friends }}</p>
+                        </ion-text>
+                    </div> -->
+                </div>
             </div>
         </div>
-    </div>
-    <div class="assets">
-        <div class="menu-bar-container">
-            <div *ngIf="isActiveUser(); else elseView">
-                <!-- TODO-L16: Change the photos section on the profile page to "About Me" or something like that. Talk to Tovi about possible wording. -->
-                <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
-                    <ion-segment-button value="photos" layout="icon-start">
-                        <ion-icon name="image-outline"></ion-icon>
-                        <ion-label>Photos</ion-label>
-                    </ion-segment-button>
-                    <!-- <ion-segment-button value="saved" layout="icon-start">
-                        <ion-icon name="heart-outline"></ion-icon>
-                        <ion-label>Saved</ion-label>
-                    </ion-segment-button> -->
-                </ion-segment>
+        <div class="assets">
+            <div class="menu-bar-container">
+                <div *ngIf="isOwnProfile(); else elseView">
+                    <!-- TODO-L16: Change the photos section on the profile page to "About Me" or something like that. Talk to Tovi about possible wording. -->
+                    <ion-segment mode="md" class="menu-bar" (ionChange)="segmentChanged($event)" [value]="segmentToShow" color="tertiary">
+                        <ion-segment-button value="photos" layout="icon-start">
+                            <ion-icon name="image-outline"></ion-icon>
+                            <ion-label>Photos</ion-label>
+                        </ion-segment-button>
+                        <!-- <ion-segment-button value="saved" layout="icon-start">
+                            <ion-icon name="heart-outline"></ion-icon>
+                            <ion-label>Saved</ion-label>
+                        </ion-segment-button> -->
+                    </ion-segment>
+                </div>
+                <ng-template #elseView>
+                    <ion-button type="button" color="primary" mode="ios" expand="block" (click)="followUser()">
+                        <olii-base-icon size="medium" name="people-circle-outline"></olii-base-icon>
+                        <div>Follow</div>
+                    </ion-button>
+                </ng-template>
             </div>
-            <ng-template #elseView>
-                <ion-button type="button" color="primary" mode="ios" expand="block" (click)="followUser()">
-                    <olii-base-icon size="medium" name="people-circle-outline"></olii-base-icon>
-                    <div>Follow</div>
-                </ion-button>
-            </ng-template>
-        </div>
-        <div *ngIf="segmentToShow === 'photos'" class="posts">
-            <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile?.ImageUrls" aspectRatio="1/1" class="image-container">
-                <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px"></olii-container-cover-image>
-            </olii-responsive-aspect-ratio-container>
-        </div>
-        <div *ngIf="segmentToShow === 'saved'" class="saved">
-            <olii-responsive-aspect-ratio-container *ngFor="let album of profile?.SavedImageAlbumPreviews" aspectRatio="1/1" class="album-card-container">
-                <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
-                    <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
-                        <olii-container-cover-image [imageUrl]="album.CoverImageUrl"></olii-container-cover-image>
-                    </olii-responsive-aspect-ratio-container>
-
-                    <div class="saved-album-details">
-                        <h4>{{ album.Title }}</h4>
-                        <div class="color-medium font-body-s">{{ album.PrivacyLevel | titlecase }}</div>
-                    </div>
-                </ion-card>
-            </olii-responsive-aspect-ratio-container>
-
-            <olii-responsive-aspect-ratio-container aspectRatio="1/1" class="album-card-container">
-                <ion-card button="true" mode="ios" class="create-album-card" (click)="openModal()">
-                    <div class="content">
-                        <ion-icon size="hero" name="add" color="primary"></ion-icon>
-                        <h4 class="color-primary">Create album</h4>
-                    </div>
-                </ion-card>
-            </olii-responsive-aspect-ratio-container>
+            <div *ngIf="segmentToShow === 'photos'" class="posts">
+                <olii-responsive-aspect-ratio-container *ngFor="let profileImageUrl of profile.ImageUrls; let i = index" aspectRatio="1/1" class="image-container">
+                    <olii-container-cover-image [imageUrl]="profileImageUrl" boarderRadius="5px" (click)="openImageViewer(i)"></olii-container-cover-image>
+                </olii-responsive-aspect-ratio-container>
+            </div>
+            <div *ngIf="segmentToShow === 'saved'" class="saved">
+                <olii-responsive-aspect-ratio-container *ngFor="let album of profile?.SavedImageAlbumPreviews" aspectRatio="1/1" class="album-card-container">
+                    <ion-card button="true" mode="ios" [routerLink]="['/profile/album', profile.ProfileId, album.Id]">
+                        <olii-responsive-aspect-ratio-container aspectRatio="1/0.78">
+                            <olii-container-cover-image [imageUrl]="album.CoverImageUrl"></olii-container-cover-image>
+                        </olii-responsive-aspect-ratio-container>
+    
+                        <div class="saved-album-details">
+                            <h4>{{ album.Title }}</h4>
+                            <div class="color-medium font-body-s">{{ album.PrivacyLevel | titlecase }}</div>
+                        </div>
+                    </ion-card>
+                </olii-responsive-aspect-ratio-container>
+    
+                <olii-responsive-aspect-ratio-container aspectRatio="1/1" class="album-card-container">
+                    <ion-card button="true" mode="ios" class="create-album-card" (click)="openModal()">
+                        <div class="content">
+                            <ion-icon size="hero" name="add" color="primary"></ion-icon>
+                            <h4 class="color-primary">Create album</h4>
+                        </div>
+                    </ion-card>
+                </olii-responsive-aspect-ratio-container>
+            </div>
         </div>
     </div>
 </ion-content>

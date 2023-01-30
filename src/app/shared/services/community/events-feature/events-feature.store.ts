@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore, isFuture } from 'date-fns';
 import { BehaviorSubject, from, Observable, zip } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
-import { EventData as EventData } from 'src/app/models/requests/community/events/event-data.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
 import { DatabaseService } from '../../bankend/database-service/database.service';
 import { EventsFeatureService } from './events-feature.service';
-import { EventRequest } from 'src/app/models/requests/community/events/event-request.dto';
 import { GalleryPhoto } from '@capacitor/camera';
 import { Platform } from '@ionic/angular';
 import { readPhotoAsBase64 } from 'src/app/shared/utilities';

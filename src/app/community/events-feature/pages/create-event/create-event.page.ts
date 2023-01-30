@@ -48,9 +48,8 @@ export class CreateEventPage implements OnInit, OnDestroy {
     }),
     privacyLevel: [PrivacyLevelRequest.Public, Validators.required],
     imageUrls: [[]]
-  },
-    { updateOn: 'blur' }
-  );
+  });
+  loadingButton: boolean;
   subs = new SubSink();
 
   constructor(
@@ -149,6 +148,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    this.loadingButton = true;
     const newEventId = this.dbService.generateDocumentId();
     const coverImageUrl = await this.eventStore.uploadEventCoverImage(this.eventCoverImage, newEventId, this.platform).toPromise();
     this.createEventForm.get('coverImageUrl').setValue(coverImageUrl);
@@ -162,6 +162,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
 
     this.subs.sink = this.eventStore.createEvent(event).subscribe(() => {
       this.createEventForm.reset();
+      this.loadingButton = false;
       this.location.back();
     });
   }

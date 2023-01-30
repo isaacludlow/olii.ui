@@ -1,15 +1,14 @@
-import { Type } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, GalleryPhoto, Photo } from '@capacitor/camera';
 import { Filesystem } from '@capacitor/filesystem';
 import { Platform } from '@ionic/angular';
 import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { ProfilePreview } from '../models/dto/profile/profile-preview.dto';
-import { EventsFeatureStore } from './services/community/events-feature/events-feature.store';
+import { map } from 'rxjs/operators';
 
 export function selectImages(maxNumberOfImages: number): Observable<GalleryPhoto[]> {
-    const galleryPhoto = from(Camera.pickImages({limit: maxNumberOfImages}));
+    const galleryPhoto = from(Camera.pickImages({
+      limit: maxNumberOfImages,
+
+    }));
 
     return galleryPhoto.pipe(
         map(galleryPhoto => galleryPhoto.photos.slice(0, maxNumberOfImages))
@@ -23,7 +22,7 @@ export async function readPhotoAsBase64(photo: GalleryPhoto | Photo, platform: P
         path: photo.path
       });
   
-      return file.data;
+      return `data:image/jpeg;base64,${file.data}`;
     }
     else {
       // Fetch the photo, read as a blob, then convert to base64 format

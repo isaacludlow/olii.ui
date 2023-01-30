@@ -51,9 +51,8 @@ export class EditEventPage implements OnDestroy {
       longitude: [null, Validators.required]
     }),
     privacyLevel: [PrivacyLevelRequest.Public, Validators.required]
-  },
-  // TODO: Try removing this and adding a check in the html (like on line 28) to only show error messages if a field has been touched.
-  { updateOn: 'blur' });
+  });
+  loadingButton: boolean;
   imagesToDelete: string[] = [];
   imagesToUpload: GalleryPhoto[] = [];
 
@@ -77,8 +76,6 @@ export class EditEventPage implements OnDestroy {
       switchMap(eventId => this.eventStore.getEventById(eventId))
     ).subscribe(event => {
       this.originalEvent = event;
-      console.log(event);
-
       this.editEventForm.get('coverImageUrl').setValue(event.CoverImageUrl);
       this.eventCoverImage = <GalleryPhoto>{ webPath: event.CoverImageUrl };
 
@@ -180,6 +177,8 @@ export class EditEventPage implements OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    this.loadingButton = true;
+
     const eventId = this.originalEvent.EventId;
     if (this.coverImageHasBeenUpdated(this.originalEvent.CoverImageUrl, this.eventCoverImage.webPath)) {
       const coverImageUrl = await this.eventStore.uploadEventCoverImage(this.eventCoverImage, eventId, this.platform).toPromise();
@@ -202,6 +201,7 @@ export class EditEventPage implements OnDestroy {
 
     this.subs.sink = this.eventStore.editEvent(event).subscribe(() => {
       this.editEventForm.reset();
+      this.loadingButton = false;
       this.router.navigate(['community/events/my-events'], { queryParams: { eventFilterSegmentToShow: 'hosting' } })
     });
   }

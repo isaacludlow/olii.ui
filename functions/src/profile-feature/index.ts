@@ -133,7 +133,14 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("creator.profileId", "==", context.params.profileId)
           .get();
 
-      eventCreator.docs[0]?.ref.update("creator", newProfilePreview);
+      const newEventCreator = {
+        creatorId: newProfilePreview.profileId,
+        creatorType: "profile",
+        displayName:
+            newProfilePreview.firstName + " " + newProfilePreview.lastName,
+        imageUrl: newProfilePreview.profilePictureUrl,
+      };
+      eventCreator.docs[0]?.ref.update("creator", newEventCreator);
 
       // Update attendeesPreview, if needed
       const eventAttendeesPreview = await admin.firestore()

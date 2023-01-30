@@ -1,10 +1,10 @@
 <ion-content>
-    <div *ngIf="group$ | async as group">
+<div *ngIf="group$ | async as group">
     <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
         <div class="back-icon">
             <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
-        <div class="settings-icon">
+        <div *ngIf="canEditGroup" class="settings-icon">
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" (click)="editGroup()" ></olii-icon-with-off-white-square-background>
         </div>
     </div>
@@ -22,6 +22,11 @@
         </olii-profile-preview-icons> 
     </div>
 
+    <div *ngIf="!isMemberOrAdmin(group, currentProfile?.ProfileId)">
+        <div class="request-button-container">
+            <ion-button type="button" color="primary" (click)="joinGroup()" mode="ios">Join Group</ion-button>
+        </div>
+    </div>
     <hr>
 
     <div *ngIf="canViewGroup else requestToJoinView">
@@ -42,7 +47,7 @@
 
     <ng-template #requestToJoinView>
         <div class="request-button-container">
-            <ion-button type="button" color="primary" (click)="requestToJoinGroup()" mode="ios">Request to join</ion-button>
+            <ion-button type="button" color="primary" (click)="joinGroup()" mode="ios">Join Group</ion-button>
         </div>
     </ng-template>
 

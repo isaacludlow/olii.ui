@@ -19,6 +19,8 @@ import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } f
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
+import { Profile } from 'src/app/models/dto/profile/profile.dto';
+import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -27,7 +29,9 @@ import { DatabaseService } from 'src/app/shared/services/bankend/database-servic
 export class GroupDetailsPage implements OnInit, OnDestroy {
   group: Group;
   group$: Observable<Group>;
+  currentProfile: Profile;
   canViewGroup: boolean;
+  canEditGroup: boolean;
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
@@ -67,7 +71,11 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
         this.group = group;
-        this.subs.sink = this.profileStore.currentProfile.subscribe(profile => this.canViewGroup = this.canView(group, profile.ProfileId));
+        this.subs.sink = this.profileStore.currentProfile.subscribe(profile => {
+          this.currentProfile = profile;
+          this.canViewGroup = this.canView(group, profile.ProfileId);
+          this.canEditGroup = this.canEdit(group, profile.ProfileId);
+        });
       }),
       tap(group => {
         this.subs.sink = this.groupStore.getPostsByGroupId(group.GroupId, new Date(2020)).subscribe(posts => group.Posts = posts);
@@ -102,7 +110,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       return true;
     }
     else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (group.Members.concat(group.Admins).find(member => member.ProfileId === profileId)) {
+      if (this.isMemberOrAdmin(group, profileId)) {
         return true;
       }
     }
@@ -114,8 +122,21 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     return false;
   }
 
-  requestToJoinGroup() {
-    // TODO-L23: Create logic on the group-details page to let the user request to join a group.
+  canEdit(group: Group, profileId: string): boolean {
+    if (group.Admins.find(member => member.ProfileId === profileId)) {
+      return true;
+    }
+    return false;
+  }
+
+  joinGroup() {
+    const profilePreview: ProfilePreview = {
+      ProfileId: this.currentProfile.ProfileId,
+      FirstName: this.currentProfile.FirstName,
+      LastName: this.currentProfile.LastName,
+      ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
+    }
+    this.groupStore.joinGroup(profilePreview, this.group.GroupId);
   }
 
   addPostPicture() {
@@ -177,6 +198,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         }
       } 
     );
+  }
+
+  isMemberOrAdmin(group: Group, profileId: string): boolean {
+    return !!group.Members.concat(group.Admins).find(member => member.ProfileId === profileId);
   }
   
   ngOnDestroy(): void {

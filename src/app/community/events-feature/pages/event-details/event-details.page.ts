@@ -1,10 +1,14 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { switchMap } from 'rxjs/operators';
+import { FullscreenImageViewerComponent } from 'src/app/components/shared/fullscreen-image-viewer/fullscreen-image-viewer.component';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
+import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 
@@ -18,6 +22,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   mapMarker: google.maps.Marker;
   event: Event;
   attendingProfilePictures: string[];
+  canEditEvent: boolean;
   attending: boolean;
   currentProfile: Profile;
   subs = new SubSink();
@@ -26,7 +31,9 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     private eventsStore: EventsFeatureStore,
     private route: ActivatedRoute,
     private profileStore: ProfileStore,
-    private router: Router
+    private groupStore: GroupFeatureStore,
+    private router: Router,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +45,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     ).subscribe(event => {
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
+      this.canEdit(event, this.currentProfile.ProfileId).then(canEdit => this.canEditEvent = canEdit);
     });
 
     this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
@@ -73,8 +81,34 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     this.subs.sink = this.eventsStore.rsvpToEvent(profilePreview, this.event.EventId).subscribe(() => this.attending = true);
   }
 
+  async canEdit(event: Event, profileId: string): Promise<boolean> {
+    switch (event.Creator.CreatorType) {
+      case EventCreatorIdType.Profile:
+        return event.Creator.CreatorId === profileId;
+
+      case EventCreatorIdType.Group:
+        const group = await this.groupStore.getGroupById(event.Creator.CreatorId).toPromise();
+        return group.Admins.map(x => x.ProfileId).includes(profileId);
+
+      default:
+        return false;
+    }
+  }
+
   cancelRsvpToEvent() {
     this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(() => this.attending = false);
+  }
+
+  async openImageViewer(imageIndex: number): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: FullscreenImageViewerComponent,
+      componentProps: {
+        imageUrls: this.event.ImageUrls,
+        startingIndex: imageIndex
+      }
+    });
+
+    modal.present();
   }
 
   navigateBack(): void {
