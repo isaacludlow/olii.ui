@@ -93,7 +93,8 @@ export function mapGroups(groupDocs: DocumentData): Group[] {
     return mappedGroups;
 }
 
-export function mapGroup(groupDoc: any, groupId?: string): Group {
+export function mapGroup(groupDoc: any, groupId?: string): Group { 
+    console.log({groupDoc})
     const group: Group = {
         GroupId: groupId ?? groupDoc.id, 
         CoverImageUrl: groupDoc.coverImageUrl,
@@ -173,7 +174,7 @@ function mapGroupPost(groupPost: any): GroupPost {
 }
 // endregion
 
-function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
+export function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
     const profilePreview: ProfilePreview = {
         ProfileId: profilePreviewDoc.profileId,
         FirstName: profilePreviewDoc.firstName,

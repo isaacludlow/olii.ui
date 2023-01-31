@@ -31,6 +31,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   currentProfile: Profile;
   canViewGroup: boolean;
   canEditGroup: boolean;
+  isGroupMember: boolean;
+  groupMembers: ProfilePreview[];
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
@@ -66,6 +68,9 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         
         this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);
+        this.subs.sink = this.groupStore.getGroupMembers(groupId).subscribe(members => {
+          this.groupMembers = members
+        });
       }),
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
@@ -74,6 +79,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
           this.currentProfile = profile;
           this.canViewGroup = this.canView(group, profile.ProfileId);
           this.canEditGroup = this.canEdit(group, profile.ProfileId);
+          this.isGroupMember = this.isMemberOrAdmin(group, profile.ProfileId)
         });
       }),
       tap(group => {
@@ -136,6 +142,14 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
     }
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
+    this.isGroupMember = true;
+    console.log("join group")
+
+  }
+
+  leaveGroup() {
+    this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => this.isGroupMember = false);
+    console.log("leave group")
   }
 
   addPostPicture() {
@@ -200,7 +214,9 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   isMemberOrAdmin(group: Group, profileId: string): boolean {
-    return !!group.Members.concat(group.Admins).find(member => member.ProfileId === profileId);
+    console.log({group})
+    console.log({profileId})
+    return !!this.groupMembers.concat(group.Admins).find(member => member.ProfileId === profileId);
   }
   
   ngOnDestroy(): void {
