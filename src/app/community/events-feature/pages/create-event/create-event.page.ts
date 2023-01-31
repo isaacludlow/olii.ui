@@ -127,7 +127,7 @@ export class CreateEventPage implements OnInit, OnDestroy {
 
   removeEventCoverImage(): void {
     this.eventCoverImage = null;
-    this.createEventForm.get('coverImageUrl').setValue(this.eventCoverImage);
+    this.createEventForm.get('coverImageUrl').setValue(null);
   }
 
   setEventImages() {
