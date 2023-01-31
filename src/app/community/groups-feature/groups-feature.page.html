@@ -61,7 +61,6 @@
 
         <hr>
 
-        <hr>
         <div>
             <h3 class="section-header">Latest</h3>
             <div class="post" *ngFor="let groupPost of latestGroupPosts$ | async">
@@ -76,8 +75,7 @@
                             </div>
                         </div>
 
-                        <olii-group-post-card [post]="groupPost"></olii-group-post-card>
-                        
+                        <olii-group-post-card [post]="groupPost" [showDeletePostButton]="false"></olii-group-post-card>
                     </div>
                 </ion-card>
             </div>
@@ -86,7 +84,7 @@
         
     <div *ngIf="segmentToShow == 'all-groups'">
         <div class="groups-container">
-            <olii-group-card *ngFor="let group of allGroups$ | async" aspectRatio="1/1" [group]="group" [routerLink]="['./group', group.GroupId]">
+            <olii-group-card *ngFor="let group of allGroups$ | async" aspectRatio="1/1" [group]="group" [showDeletePostButton]="false" [routerLink]="['./group', group.GroupId]">
             </olii-group-card>
         </div>
     </div>

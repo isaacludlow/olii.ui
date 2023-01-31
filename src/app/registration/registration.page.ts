@@ -55,11 +55,11 @@ export class RegistrationPage {
   }
 
   async onSubmit(): Promise<void> {
-    // const usernameIsAvailable = await this.userStore.checkUsernameAvailability(this.registerForm.get('username').value).toPromise()
-    // if (!usernameIsAvailable) {
-    //   alert('Username is already taken. Please choose a different username.');
-    //   throw new Error('username unavailable');
-    // }
+    const usernameIsAvailable = await this.userStore.isUsernameAvailable(this.registerForm.get('username').value).toPromise()
+    if (!usernameIsAvailable) {
+      alert('Username is already taken. Please choose a different username.');
+      throw new Error('username unavailable');
+    }
     
     const newUser: User = {
       Uid: null,

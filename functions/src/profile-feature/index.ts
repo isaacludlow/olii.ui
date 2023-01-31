@@ -2,7 +2,6 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {firestore} from "firebase-admin";
 
-
 export const addFirstFiveSavedImagesAlbumsToPreview = functions.firestore
     .document("profiles/{profileId}/savedImagesAlbums/{albumId}")
     .onWrite(async (change, context) => {
@@ -133,7 +132,14 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
           .where("creator.profileId", "==", context.params.profileId)
           .get();
 
-      eventCreator.docs[0]?.ref.update("creator", newProfilePreview);
+      const newEventCreator = {
+        creatorId: newProfilePreview.profileId,
+        creatorType: "profile",
+        displayName:
+            newProfilePreview.firstName + " " + newProfilePreview.lastName,
+        imageUrl: newProfilePreview.profilePictureUrl,
+      };
+      eventCreator.docs[0]?.ref.update("creator", newEventCreator);
 
       // Update attendeesPreview, if needed
       const eventAttendeesPreview = await admin.firestore()

@@ -49,7 +49,6 @@ export class EditProfilePage implements OnInit {
     this.profileStore.currentProfile.subscribe(profile => {
       this.originalProfile = profile;
       if (this.originalProfile != null) {
-        console.log(profile)
         this.profilePicture = <GalleryPhoto>{ webPath: this.originalProfile.ProfilePictureUrl };
         this.profileForm.controls['firstName'].setValue(this.originalProfile.FirstName);
         this.profileForm.controls['lastName'].setValue(this.originalProfile.LastName);

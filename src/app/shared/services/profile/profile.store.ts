@@ -14,7 +14,6 @@ import { switchMap } from "rxjs/operators";
 import { readPhotoAsBase64 } from "../../utilities";
 import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
 import { v4 as uuidv4 } from 'uuid';
-import { ProfileRequest } from "src/app/models/requests/profile/profile-request";
 
 @Injectable({
 	providedIn: 'root'
@@ -72,8 +71,8 @@ export class ProfileStore implements OnDestroy {
 		return this.dbService.updateProfile(profile);
 	}
 
-	uploadProfilePicture(coverImage: GalleryPhoto, profileId: string, platform: Platform): Observable<string> {
-        return from(readPhotoAsBase64(coverImage, platform)).pipe(
+	uploadProfilePicture(profilePicture: GalleryPhoto, profileId: string, platform: Platform): Observable<string> {
+        return from(readPhotoAsBase64(profilePicture, platform)).pipe(
           switchMap(imageData => this.cloudStorageService.uploadFile(imageData, `profiles/${profileId}/profile-picture`)),
           switchMap(uploadFileObservable => uploadFileObservable.DownloadUrl$)
         );

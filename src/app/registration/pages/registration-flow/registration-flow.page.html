@@ -128,7 +128,10 @@
               <olii-base-icon name="checkmark-circle-outline" color="primary" size="hero"></olii-base-icon>
             </olii-blue-circle-background>
             <p>Create awesome memories and meet new exchange students</p>
-            <ion-button mode="ios" (click)="submit()">Done</ion-button>
+            <ion-button mode="ios" (click)="submit()" [disabled]="loadingButton">
+              <span *ngIf="!loadingButton">Done</span>
+              <ion-spinner *ngIf="loadingButton"></ion-spinner>
+            </ion-button>
           </div>
         </div>
       </ion-slide>
@@ -140,7 +143,8 @@
   <div class="navigation-buttons-container">
     <div class="navigation-buttons">
       <ion-button class="next" mode="ios" (click)="nextSlide()">Next</ion-button>
-      <a class="later" (click)="submit()"><h4>Continue later</h4></a>
+      <a *ngIf="!loadingButton" class="later" (click)="submit()"><h4>Continue later</h4></a>
+      <ion-spinner *ngIf="loadingButton"></ion-spinner>
     </div>
   </div>
 </ng-template>

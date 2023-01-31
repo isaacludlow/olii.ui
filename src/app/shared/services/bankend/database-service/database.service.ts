@@ -220,7 +220,7 @@ export class DatabaseService {
     return pastGroupEvents;
   }
 
-  checkUsernameAvailability(username: string): Observable<boolean> {
+  isUsernameAvailable(username: string): Observable<boolean> {
     return this.afs.collection(`usernames`, ref => ref.where('username', '==', username)).get().pipe(
       map(res => res.size === 0)
     );

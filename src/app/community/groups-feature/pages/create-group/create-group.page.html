@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <ion-button type="submit" expand="block" [disabled]="createGroupForm.invalid || this.groupCoverImage == null || loadingButton" mode="ios">
+    <ion-button (click)="createGroup()" expand="block" [disabled]="createGroupForm.invalid || this.groupCoverImage == null || loadingButton" mode="ios">
         <span *ngIf="!loadingButton">Create Event</span>
         <ion-spinner *ngIf="loadingButton"></ion-spinner>
     </ion-button>

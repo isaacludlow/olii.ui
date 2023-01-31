@@ -20,15 +20,16 @@ export class RegistrationFlowPage implements OnDestroy {
   @ViewChild('slider') slides: IonSlides;
   slideOptions = { initialSlide: 0, speed: 400, allowTouchMove: false };
   registerFlowForm = this.fb.group({
-    firstName: [null],
-    lastName: [null],
-    currentCity: [null],
-    hostCountry: [null],
-    homeCountry: [null],
-    bio: [null]
+    firstName: [''],
+    lastName: [''],
+    currentCity: [''],
+    hostCountry: [''],
+    homeCountry: [''],
+    bio: ['']
   });
   profilePicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   profileImages: GalleryPhoto[] = [];
+  loadingButton: boolean = false;
   subs = new SubSink();
 
   constructor(
@@ -79,9 +80,11 @@ export class RegistrationFlowPage implements OnDestroy {
   }
 
   async submit() {
+    this.loadingButton = true;
     const profileRequest = await this.createProfileRequest();
     this.subs.sink = this.profileStore.createNewProfile(profileRequest).subscribe(_ => {
       this.navBar.setNavBarVisibility(true);
+      this.loadingButton = false;
       this.router.navigate(['community/events'])
     });
   }
