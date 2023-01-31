@@ -68,9 +68,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         
         this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
         this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);
-        this.subs.sink = this.groupStore.getGroupMembers(groupId).subscribe(members => {
-          this.groupMembers = members
-        });
       }),
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
@@ -79,7 +76,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
           this.currentProfile = profile;
           this.canViewGroup = this.canView(group, profile.ProfileId);
           this.canEditGroup = this.canEdit(group, profile.ProfileId);
-          this.isGroupMember = this.isMemberOrAdmin(group, profile.ProfileId)
+          this.subs.sink = this.groupStore.getGroupMembers(group.GroupId).subscribe(members => {
+            this.groupMembers = members
+            this.isGroupMember = this.isMemberOrAdmin(group, profile.ProfileId);
+          });
         });
       }),
       tap(group => {
@@ -128,7 +128,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   canEdit(group: Group, profileId: string): boolean {
-    if (group.Admins.find(member => member.ProfileId === profileId)) {
+    if (group.Admins.find(x => x.ProfileId === profileId)) {
       return true;
     }
     return false;

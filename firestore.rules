@@ -163,21 +163,17 @@ service cloud.firestore {
       match /events/{eventId} {
         allow read: if isAuthenticated(request);
 
-        allow create: if isAuthenticated(request) && isOwner(request, request.resource.data.profileId);
+        allow create: if isAuthenticated(request);
 
-        allow update: if isAuthenticated(request) && isOwner(request, resource.data.profileId);
-
-        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).profileId);
+        allow delete: if isAuthenticated(request);
       }
 
       match /members/{memberId} {
         allow read: if isAuthenticated(request);
 
-        allow create: if isAuthenticated(request) && isOwner(request, request.resource.data.profileId);
+        allow create: if isAuthenticated(request);
 
-        allow update: if isAuthenticated(request) && isOwner(request, resource.data.profileId);
-
-        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).profileId);
+        allow delete: if isAuthenticated(request);
       }
     }
 
