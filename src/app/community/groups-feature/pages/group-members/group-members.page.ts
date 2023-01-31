@@ -31,7 +31,7 @@ export class GroupMembersPage implements OnInit {
     return this.route.snapshot.paramMap.get('groupId')
   }
 
-  navigateToUserProfile(profileId: number) {
+  navigateToUserProfile(profileId: string) {
     this.router.navigate(['/profile'], { queryParams: { profileId: profileId, showBackButton: true } })
   }
 }
