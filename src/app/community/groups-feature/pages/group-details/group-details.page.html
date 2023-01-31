@@ -135,7 +135,10 @@
                     <hr>
     
                     <div class="write-post-button-container">
-                        <ion-button color="primary" [disabled]="!createPostForm.valid" (click)="writePost()" mode="ios">Write a Post</ion-button>
+                        <ion-button color="primary" [disabled]="createPostForm.invalid || createPostLoadingButton" (click)="writePost()" mode="ios">
+                            <span *ngIf="!createPostLoadingButton">Write a post</span>
+                            <ion-spinner *ngIf="createPostLoadingButton"></ion-spinner>
+                        </ion-button>
                     </div>
                 </ion-content>
             </ng-template>

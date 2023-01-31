@@ -43,7 +43,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
-  })
+  });
+  createPostLoadingButton: boolean = false;
   subs = new SubSink();
 
   constructor(
@@ -150,6 +151,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   async writePost() {
+    this.createPostLoadingButton = true;
     const newPostId = this.dbService.generateDocumentId();
     let imageUrls: string[] = [];
 
@@ -180,7 +182,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(() => {
+      this.createPostLoadingButton = false;
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');

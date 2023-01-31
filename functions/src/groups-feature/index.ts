@@ -117,3 +117,12 @@ export const sumAllMembersWhenUpdated = functions.firestore
       return admin.firestore().doc(`groups/${change.params.groupId}`)
           .update("totalMembers", numberOfMembers);
     });
+
+// ========== Group Posts ==========
+export const deleteImagesWhenGroupPostIsDeleted = functions.firestore
+    .document("group_posts/{groupPostId}").onDelete((snapshot, context) => {
+      return admin
+          .storage()
+          .bucket()
+          .deleteFiles({prefix: `group_posts/${context.params.groupPostId}/`});
+    });
