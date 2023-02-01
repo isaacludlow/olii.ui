@@ -5,7 +5,6 @@ import { Injectable } from "@angular/core";
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
-import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SubSink } from "subsink";
 import { AuthStore } from '../../authentication/auth-store';

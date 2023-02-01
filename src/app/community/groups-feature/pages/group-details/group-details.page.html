@@ -22,11 +22,19 @@
         </olii-profile-preview-icons> 
     </div>
 
-    <div *ngIf="!isMemberOrAdmin(group, currentProfile?.ProfileId)">
-        <div class="request-button-container">
-            <ion-button type="button" color="primary" (click)="joinGroup()" mode="ios">Join Group</ion-button>
-        </div>
+    <div class="join-group">
+        <ion-button *ngIf="!isGroupMember" color="primary" (click)="joinGroup();" mode="ios">Join Group</ion-button>
+
+        <ion-accordion-group *ngIf="isGroupMember" expand="inset" mode="md">
+            <ion-accordion value="first">
+              <ion-item slot="header" color="light">
+                <ion-label>Joined</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content" (click)="leaveGroup()">Leave</div>
+            </ion-accordion>
+        </ion-accordion-group>
     </div>
+        
     <hr>
 
     <div *ngIf="canViewGroup else requestToJoinView">

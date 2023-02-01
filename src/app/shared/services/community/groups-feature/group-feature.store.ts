@@ -82,6 +82,23 @@ export class GroupFeatureStore {
         return this.dbService.addMemberToGroup(profilePreview, groupId);
     }
 
+    leaveGroup(profileId: string, GroupId: string): Observable<void> {
+        return this.dbService.leaveGroup(profileId, GroupId);
+      }
+
+    getAllGroups(offset: number = null, limit: number = null): Observable<Group[]> {
+        if (this._allGroups.value.length > 0) {
+            return this._allGroups.asObservable();
+        } else {
+            return this.dbService.getAllGroups().pipe(
+                switchMap(groups => {
+                    this._allGroups.next(groups);
+                    return this._allGroups.asObservable();
+                })
+            );   
+        }
+    }
+
     createGroup(group: GroupRequest): Observable<void> {
         return this.dbService.createGroup(group);
     }
@@ -122,6 +139,10 @@ export class GroupFeatureStore {
                 }
             })
         );
+    }
+
+    getGroupMembers(groupId: string): Observable<ProfilePreview[]> {
+        return this.dbService.getGroupMembers(groupId)
     }
 
     createGroupPost(groupPost: GroupPost): Observable<void> {

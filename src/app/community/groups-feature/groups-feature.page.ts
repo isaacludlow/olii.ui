@@ -8,7 +8,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { GroupPreview } from '../../models/dto/community/groups/group-preview.dto';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap} from 'rxjs/operators';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import sub from 'date-fns/sub';
 
@@ -21,9 +21,11 @@ export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
   myGroups$: Observable<Group[]>;
+  allGroups$: Observable<Group[]>;
   myGroupsPreview$: Observable<GroupPreview[]>
   latestGroupPosts$: Observable<GroupPost[]>;
   subs = new SubSink();
+  segmentToShow: string;
 
   constructor(
     private profileStore: ProfileStore,
@@ -42,8 +44,10 @@ export class GroupsFeaturePage implements OnInit {
 
         const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
+        this.allGroups$ = this.groupStore.getAllGroups().pipe(tap(res => console.log(res)));
       }
     });
+    this.segmentToShow = "my-groups"
   }
 
   sanitizeUrl(url: string): string {
@@ -74,6 +78,10 @@ export class GroupsFeaturePage implements OnInit {
 
   convertRemToPixels(rem: number): number {    
     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  }
+
+  segmentChanged(event) {
+    this.segmentToShow = event.detail.value;
   }
 
 }

@@ -127,8 +127,11 @@ service cloud.firestore {
       match /attendees/{attendeeId} {
         allow read: if isAuthenticated(request);
 
-        allow write: if isAuthenticated(request)
-          && isOwner(request, attendeeId);
+        allow create: if isAuthenticated(request) && isOwner(request, request.resource.data.profileId);
+
+        allow update: if isAuthenticated(request) && isOwner(request, resource.data.profileId);
+
+        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).data.profileId);
       }
     }
 
@@ -143,7 +146,7 @@ service cloud.firestore {
         && isOwner(request, request.resource.data.admins[0].profileId);
 
       allow delete: if isAuthenticated(request)
-        && isOwner(request, request.resource.data.admins[0].profileId);
+        && isOwner(request, get(request.path).data.admins[0].profileId);
 
       function isGroupDataValid(requestData) {
         return requestData.keys().hasAll(['admins', 'coverImageUrl', 'description', 'name', 'privacyLevel', 'totalMembers'])
@@ -167,7 +170,7 @@ service cloud.firestore {
 
         allow update: if isAuthenticated(request) && isOwner(request, resource.data.profileId);
 
-        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).profileId);
+        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).data.profileId);
       }
 
       match /members/{memberId} {
@@ -177,7 +180,7 @@ service cloud.firestore {
 
         allow update: if isAuthenticated(request) && isOwner(request, resource.data.profileId);
 
-        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).profileId);
+        allow delete: if isAuthenticated(request) && isOwner(request, get(request.path).data.profileId);
       }
     }
 

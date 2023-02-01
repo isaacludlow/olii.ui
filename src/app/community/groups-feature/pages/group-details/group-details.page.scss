@@ -134,10 +134,10 @@ ion-segment-button {
 //     --color: var(--color-secondary);
 // }
 
-ion-item {
-    --padding-start: 0;
-    margin-bottom: 2rem;
-}
+// ion-item {
+//     --padding-start: 0;
+//     margin-bottom: 2rem;
+// }
 
 .modal-content {
     --padding-start: 1rem;
@@ -217,4 +217,14 @@ ion-item {
 
 .request-button-container {
     margin-bottom: 3rem;
+}
+
+.join-group {
+    display: flex;
+    justify-content: center;
+    
+    ion-button {
+        --padding-start: 3rem;
+        --padding-end: 3rem;
+    }
 }
