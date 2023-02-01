@@ -94,7 +94,6 @@ export function mapGroups(groupDocs: DocumentData): Group[] {
 }
 
 export function mapGroup(groupDoc: any, groupId?: string): Group { 
-    console.log({groupDoc})
     const group: Group = {
         GroupId: groupId ?? groupDoc.id, 
         CoverImageUrl: groupDoc.coverImageUrl,
