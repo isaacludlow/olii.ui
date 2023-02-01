@@ -1,0 +1,70 @@
+ion-content {
+    --padding-top: 1rem;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+}
+
+ion-toolbar.purple-background {
+    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+    --padding-start: 0.75rem;
+    --padding-end: 0.75rem;
+    --padding-bottom: 0.5rem;
+
+    .header {
+        display: flex;
+        align-items: center;
+
+        .back {
+            margin-right: auto;
+            color: var(--color-primary);
+        }
+
+        h1 {
+            margin-right: auto;
+            margin-left: -6vw;
+        }
+    }
+}
+
+ion-header {
+    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+}
+
+.section-title {
+    color: var(--color-primary-contrast);
+}
+
+.groups-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0.25rem;
+}
+
+.group-card-container {        
+    width: 48%;
+
+    .group-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem 0.25rem;
+    }
+
+}
+
+.group-description {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.group-title {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}

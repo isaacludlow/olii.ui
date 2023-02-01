@@ -15,7 +15,7 @@ const routes: Routes = [
     component: SavedImagesAlbumPage
   },
   {
-    path: 'edit/:profileId',
+    path: 'edit',
     component: EditProfilePage
   },
   {

@@ -10,7 +10,7 @@
             <div class="back-icon">
                 <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
             </div>
-            <h2 class="color-light">Edit Group</h2>
+            <h1 class="color-light">Edit Group</h1>
         </div>
     </ion-toolbar>
 </ion-header>
@@ -19,7 +19,7 @@
     <form [formGroup]="editGroupForm">
         <h4 class="form-label">Group Details</h4>
         <ion-item>
-            <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Name" formControlName="name"></ion-input>
+            <ion-input color="tertiary" mode="ios" clearInput="true" type="text" placeholder="Group Name" formControlName="name"></ion-input>
         </ion-item>
         <ion-note
             color="danger"
@@ -28,7 +28,7 @@
         </ion-note>
 
         <ion-item>
-            <ion-input color="tertiary" mode="ios" type="text" placeholder="Group Description" formControlName="description"></ion-input>
+            <ion-textarea color="tertiary" mode="ios" clearInput="true" type="text" placeholder="Group Description" formControlName="description"></ion-textarea>
         </ion-item>
         <ion-note
             color="danger"
@@ -54,9 +54,15 @@
     </form>
 
     <h4 class="form-label">Change Image</h4>
-    <div class="group-picture-container" (click)="setGroupPicture()">
-        <div class="group-picture">
-            <olii-container-cover-image [imageUrl]="sanitizeUrl(groupCoverImage.webPath)"></olii-container-cover-image>  
+    <div class="group-cover-image-container">
+        <div class="add-image" *ngIf="this.groupCoverImage">
+            <olii-responsive-aspect-ratio-container aspectRatio="2/1">
+                <ion-badge (click)="removeGroupCoverImage()"><ion-icon name="close"></ion-icon></ion-badge>
+                <olii-container-cover-image [imageUrl]="sanitizeUrl(groupCoverImage.webPath)" boarderRadius="3%"></olii-container-cover-image>  
+            </olii-responsive-aspect-ratio-container>
+        </div>
+        <div class="add-image" *ngIf="this.groupCoverImage == null" (click)="setGroupCoverImage()">
+            <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
         </div>
     </div>
 

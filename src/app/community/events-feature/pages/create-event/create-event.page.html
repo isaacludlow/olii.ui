@@ -13,7 +13,7 @@
                         <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
                     </olii-colored-square-background>
                 </div>
-                <h2 class="color-light">Create Event</h2>
+                <h1 class="color-light">Create Event</h1>
             </div>
         </ion-toolbar>
     </ion-header>
@@ -60,13 +60,13 @@
             <hr>
             <capacitor-google-map #map></capacitor-google-map>
         </div>
-        <div class="cover-image">
+        <div>
             <h4>Cover Image</h4>
             <hr>
             <div class="add-image" *ngIf="!eventCoverImage" (click)="setEventCoverImage()">
                 <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
             </div>
-            <div *ngIf="eventCoverImage" class="cover-image">
+            <div *ngIf="eventCoverImage">
                 <olii-responsive-aspect-ratio-container aspectRatio="2/1">
                     <ion-badge (click)="removeEventCoverImage()"><ion-icon name="close"></ion-icon></ion-badge>
                     <olii-container-cover-image [imageUrl]="sanitizeUrl(eventCoverImage.webPath)" boarderRadius="3%"></olii-container-cover-image>

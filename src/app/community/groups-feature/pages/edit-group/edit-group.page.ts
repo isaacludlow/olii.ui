@@ -54,12 +54,17 @@ export class EditGroupPage implements OnInit {
     this.editGroupForm.controls['description'].setValue(this.group.Description);
   }
 
-  setGroupPicture() {
+  setGroupCoverImage() {
     selectImages(1).subscribe(galleryPhotos => {
       const coverImage = galleryPhotos.shift();
       this.editGroupForm.get('coverImageUrl').setValue(coverImage);
       this.groupCoverImage = coverImage;
     });
+  }
+
+  removeGroupCoverImage(): void {
+    this.groupCoverImage = null;
+    this.editGroupForm.get('coverImageUrl').setValue(null);
   }
 
   sanitizeUrl(url: string): string {

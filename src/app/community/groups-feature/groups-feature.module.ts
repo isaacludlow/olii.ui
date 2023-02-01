@@ -9,9 +9,10 @@ import { GroupDetailsPage } from './pages/group-details/group-details.page';
 import { CreateGroupPage } from './pages/create-group/create-group.page';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupMembersPage } from './pages/group-members/group-members.page';
-import { MyGroupsPage } from './pages/groups-all/my-groups.page';
+import { MyGroupsPage } from './pages/my-groups/my-groups.page';
 import { EditGroupPage } from './pages/edit-group/edit-group.page';
 import { CommunityModule } from '../community.module';
+import { AllGroupsPage } from './pages/all-groups/all-groups.page'
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { CommunityModule } from '../community.module';
     CreateGroupPage,
     GroupMembersPage,
     MyGroupsPage,
+    AllGroupsPage,
     EditGroupPage
   ],
   imports: [

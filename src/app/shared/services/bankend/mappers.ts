@@ -81,7 +81,20 @@ export function mapAttendees(attendeeDocs: DocumentData): ProfilePreview[] {
 // #endregion
 
 // #region Group mappers
-export function mapGroup(groupDoc: any, groupId?: string): Group {
+export function mapGroups(groupDocs: DocumentData): Group[] {
+    const mappedGroups: Group[] = [];
+
+    for (let i = 0; i < groupDocs.length; i++) {
+        const groupDoc = groupDocs[i];
+
+        mappedGroups.push(mapGroup(groupDoc));
+    }
+
+    return mappedGroups;
+}
+
+export function mapGroup(groupDoc: any, groupId?: string): Group { 
+    console.log({groupDoc})
     const group: Group = {
         GroupId: groupId ?? groupDoc.id, 
         CoverImageUrl: groupDoc.coverImageUrl,
@@ -92,7 +105,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)), // TODO fix the "admins?"
         MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
         Members: [],
-        Events: []
+        Events: [],
     };
 
     return group
@@ -161,7 +174,7 @@ function mapGroupPost(groupPost: any): GroupPost {
 }
 // endregion
 
-function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
+export function mapProfilePreview(profilePreviewDoc: any): ProfilePreview {
     const profilePreview: ProfilePreview = {
         ProfileId: profilePreviewDoc.profileId,
         FirstName: profilePreviewDoc.firstName,

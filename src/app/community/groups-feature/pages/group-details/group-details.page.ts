@@ -2,25 +2,25 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities';
+import { switchMap, tap } from 'rxjs/operators';
+import { selectImages } from 'src/app/shared/utilities';
 import { Group } from 'src/app/models/dto/community/groups/group.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
-import { CreatePostRequest } from 'src/app/models/requests/community/groups/create-post-request';
 import { FormBuilder } from '@angular/forms';
 import { NavController, Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { EventsFeatureStore, GroupEventsFilterOptions, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
+import { EventsFeatureStore, GroupEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -32,6 +32,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   currentProfile: Profile;
   canViewGroup: boolean;
   canEditGroup: boolean;
+  isGroupMember: boolean;
+  groupMembers: ProfilePreview[];
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
   showPostModal: boolean
@@ -43,7 +45,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
-  })
+  });
+  createPostLoadingButton: boolean = false;
   subs = new SubSink();
 
   constructor(
@@ -56,7 +59,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     private router: Router, 
     private route: ActivatedRoute,
     private nav: NavController,
-    private dbService: DatabaseService
+    private dbService: DatabaseService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +79,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
           this.currentProfile = profile;
           this.canViewGroup = this.canView(group, profile.ProfileId);
           this.canEditGroup = this.canEdit(group, profile.ProfileId);
+          this.subs.sink = this.groupStore.getGroupMembers(group.GroupId).subscribe(members => {
+            this.groupMembers = members
+            this.isGroupMember = this.isMemberOrAdmin(group, profile.ProfileId);
+          });
         });
       }),
       tap(group => {
@@ -123,7 +131,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   canEdit(group: Group, profileId: string): boolean {
-    if (group.Admins.find(member => member.ProfileId === profileId)) {
+    if (group.Admins.find(x => x.ProfileId === profileId)) {
       return true;
     }
     return false;
@@ -137,6 +145,14 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
     }
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
+    this.isGroupMember = true;
+    console.log("join group")
+
+  }
+
+  leaveGroup() {
+    this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => this.isGroupMember = false);
+    console.log("leave group")
   }
 
   addPostPicture() {
@@ -150,6 +166,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   async writePost() {
+    this.createPostLoadingButton = true;
     const newPostId = this.dbService.generateDocumentId();
     let imageUrls: string[] = [];
 
@@ -180,7 +197,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(() => {
+      this.createPostLoadingButton = false;
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
@@ -201,7 +219,13 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   isMemberOrAdmin(group: Group, profileId: string): boolean {
-    return !!group.Members.concat(group.Admins).find(member => member.ProfileId === profileId);
+    console.log({group})
+    console.log({profileId})
+    return !!this.groupMembers.concat(group.Admins).find(member => member.ProfileId === profileId);
+  }
+
+  navigateBack(): void {
+    this.location.back();
   }
   
   ngOnDestroy(): void {

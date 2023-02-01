@@ -11,7 +11,7 @@ import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { SavedImagesAlbum } from 'src/app/models/dto/profile/saved-images-album.dto';
 import { User } from 'src/app/models/dto/user/user.dto';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest } from '../mappers';
+import { mapAttendees, mapEvent, mapToEventRequest, mapEvents, mapGroup, mapGroupPosts, mapGroupRequest, mapProfile, mapSavedImagesAlbum, mapUser, mapGroupPostRequest, mapProfileRequest, mapUserRequest, mapGroupPostComments, mapGroupPostCommentRequest, mapProfilePreviewRequest, mapGroups, mapProfilePreview } from '../mappers';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +97,15 @@ export class DatabaseService {
     return myGroups;
   }
 
+  getAllGroups(): Observable<Group[]> {
+    const allGroups = this.afs.collection('groups').valueChanges({ idField: 'id' }).pipe(
+      map(allGroups => mapGroups(allGroups))
+    );
+      
+    return allGroups;
+  }
+
+
   getGroupById(groupId: string): Observable<Group> {
     const group = this.afs.doc(`groups/${groupId}`).valueChanges({ idField: 'id'}).pipe(
       map(group => mapGroup(group))
@@ -138,6 +147,18 @@ export class DatabaseService {
     );
 
     return groupPosts;
+  }
+
+  leaveGroup(profileId: string, groupId: string): Observable<void> {
+    return from(this.afs.doc(`groups/${groupId}/members/${profileId}`).delete());
+  }
+
+  getGroupMembers(groupId: string): Observable<ProfilePreview[]> {
+    const groupMembers = this.afs.collection<any>(`groups/${groupId}/members`).valueChanges().pipe(
+      map(members => members.map(member => mapProfilePreview(member)))
+    );
+
+    return groupMembers;
   }
 
   getPostsByGroupId(groupId: string, earliestDate: Date): Observable<GroupPost[]> {

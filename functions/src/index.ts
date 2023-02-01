@@ -34,6 +34,9 @@ export const removeFromMyGroupsWhenRemovedAsGroupAdmin =
 export const sumAllMembersWhenUpdated =
     groupFunctions.sumAllMembersWhenUpdated;
 
+export const deleteImagesWhenGroupPostIsDeleted =
+    groupFunctions.deleteImagesWhenGroupPostIsDeleted;
+
 // Profile functions
 export const addFirstFiveSavedImagesAlbumsToPreview =
     profileFunctions.addFirstFiveSavedImagesAlbumsToPreview;
