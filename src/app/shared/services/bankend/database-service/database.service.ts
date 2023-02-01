@@ -150,7 +150,7 @@ export class DatabaseService {
   }
 
   leaveGroup(profileId: string, groupId: string): Observable<void> {
-    return from(this.afs.doc(`group/${groupId}/members/${profileId}`).delete());
+    return from(this.afs.doc(`groups/${groupId}/members/${profileId}`).delete());
   }
 
   getGroupMembers(groupId: string): Observable<ProfilePreview[]> {

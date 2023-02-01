@@ -38,23 +38,22 @@ export class GroupsFeaturePage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.profileStore.currentProfile.subscribe(currentProfile => {
       if (currentProfile !== null) {
-        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId);
+        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId).pipe(
+          tap(myGroups => this.allGroups$ = this.groupStore.getAllGroups().pipe(
+            map(allGroups => allGroups.filter(group => !myGroups.find(myGroup => myGroup.GroupId === group.GroupId)))
+          )
+        ));
+        
         this.myGroupsPreview$ = this.myGroups$.pipe(
           map(group => group.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
         );
 
         const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
-        this.allGroups$ = this.groupStore.getAllGroups().pipe(tap(res => console.log(res)));
+
       }
     });
 
-    this.myGroups$.subscribe(myGroups => {
-      this.allGroups$ = this.allGroups$.pipe(
-        map(allGroups => allGroups.filter(group => !myGroups.find(myGroup => myGroup.GroupId === group.GroupId)))
-      );
-    });
-    
     this.segmentToShow = "my-groups"
   }
 
