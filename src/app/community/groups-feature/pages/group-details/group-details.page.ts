@@ -146,13 +146,11 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
     this.isGroupMember = true;
-    console.log("join group")
 
   }
 
   leaveGroup() {
     this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => this.isGroupMember = false);
-    console.log("leave group")
   }
 
   addPostPicture() {
@@ -219,8 +217,6 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   isMemberOrAdmin(group: Group, profileId: string): boolean {
-    console.log({group})
-    console.log({profileId})
     return !!this.groupMembers.concat(group.Admins).find(member => member.ProfileId === profileId);
   }
 

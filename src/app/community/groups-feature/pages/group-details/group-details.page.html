@@ -97,11 +97,11 @@
     
         <!-- TODO-L15: Add some sort of blurred background for "Write Post" and "Add Event" buttons so they don't blend in with the ion-content background. -->
         <div class="group-main-buttons">
-            <ion-button class="side-button" type="button" mode="ios" size="small" (click)="toggleModal()" [disabled]="disableButtons">
+            <ion-button type="button" mode="ios" size="small" (click)="toggleModal()" [disabled]="disableButtons">
                 <olii-base-icon name="pencil-outline"></olii-base-icon>
                 <div class="button-label">Write Post</div>
             </ion-button>
-            <ion-button class="side-button" type="button" mode="ios" size="small" (click)="addEvent()" [disabled]="disableButtons">
+            <ion-button type="button" mode="ios" size="small" (click)="addEvent()" [disabled]="disableButtons">
                 <olii-base-icon name="calendar-outline"></olii-base-icon>
                 <div class="button-label">Add Event</div>
             </ion-button>

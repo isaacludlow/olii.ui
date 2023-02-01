@@ -44,7 +44,7 @@ export class GroupsFeaturePage implements OnInit {
 
         const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
-        this.allGroups$ = this.groupStore.getAllGroups().pipe(tap(res => console.log(res)));
+        this.allGroups$ = this.groupStore.getAllGroups();
       }
     });
     this.segmentToShow = "my-groups"

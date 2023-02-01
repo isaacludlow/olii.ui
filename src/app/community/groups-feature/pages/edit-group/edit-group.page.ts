@@ -7,12 +7,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GalleryPhoto } from '@capacitor/camera';
-import { readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
-import { PrivacyLevelRequest } from 'src/app/models/requests/misc/privacy-level-request.do';
-import { NavController, Platform } from '@ionic/angular';
+import { selectImages } from 'src/app/shared/utilities'
+import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
-import { GroupFeatureService } from 'src/app/shared/services/community/groups-feature/group-feature.service';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 
 @Component({
