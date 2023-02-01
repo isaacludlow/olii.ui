@@ -21,6 +21,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -57,7 +58,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     private router: Router, 
     private route: ActivatedRoute,
     private nav: NavController,
-    private dbService: DatabaseService
+    private dbService: DatabaseService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -205,6 +207,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
 
   isMemberOrAdmin(group: Group, profileId: string): boolean {
     return !!group.Members.concat(group.Admins).find(member => member.ProfileId === profileId);
+  }
+
+  navigateBack(): void {
+    this.location.back();
   }
   
   ngOnDestroy(): void {
