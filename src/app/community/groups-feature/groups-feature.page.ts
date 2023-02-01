@@ -24,6 +24,7 @@ export class GroupsFeaturePage implements OnInit {
   allGroups$: Observable<Group[]>;
   myGroupsPreview$: Observable<GroupPreview[]>
   latestGroupPosts$: Observable<GroupPost[]>;
+  currentProfile: Profile;
   subs = new SubSink();
   segmentToShow: string;
 
@@ -47,6 +48,13 @@ export class GroupsFeaturePage implements OnInit {
         this.allGroups$ = this.groupStore.getAllGroups().pipe(tap(res => console.log(res)));
       }
     });
+
+    this.myGroups$.subscribe(myGroups => {
+      this.allGroups$ = this.allGroups$.pipe(
+        map(allGroups => allGroups.filter(group => !myGroups.find(myGroup => myGroup.GroupId === group.GroupId)))
+      );
+    });
+    
     this.segmentToShow = "my-groups"
   }
 
