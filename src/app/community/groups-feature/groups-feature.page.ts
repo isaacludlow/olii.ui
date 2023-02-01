@@ -50,7 +50,6 @@ export class GroupsFeaturePage implements OnInit {
 
         const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
-
       }
     });
 

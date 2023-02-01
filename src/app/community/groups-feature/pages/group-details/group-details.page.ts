@@ -20,6 +20,7 @@ import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './group-details.page.html',
@@ -44,7 +45,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   postPictures: GalleryPhoto[] = [];
   createPostForm = this.fb.group({
     postContent: ['', [Validators.required, Validators.minLength(8)]],
-  })
+  });
+  createPostLoadingButton: boolean = false;
   subs = new SubSink();
 
   constructor(
@@ -57,7 +59,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     private router: Router, 
     private route: ActivatedRoute,
     private nav: NavController,
-    private dbService: DatabaseService
+    private dbService: DatabaseService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -143,13 +146,11 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
     this.isGroupMember = true;
-    console.log("join group")
 
   }
 
   leaveGroup() {
     this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => this.isGroupMember = false);
-    console.log("leave group")
   }
 
   addPostPicture() {
@@ -163,6 +164,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   async writePost() {
+    this.createPostLoadingButton = true;
     const newPostId = this.dbService.generateDocumentId();
     let imageUrls: string[] = [];
 
@@ -193,7 +195,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     // TODO: ADD ERROR HANDLING: What if the message isn't posted correctly? (Connection issue, etc)
-    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(res => {
+    this.subs.sink = this.groupStore.createGroupPost(newPost).subscribe(() => {
+      this.createPostLoadingButton = false;
       this.showPostModal = false;
       this.postPictures = [];
       this.createPostForm.controls['postContent'].setValue('');
@@ -214,9 +217,11 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   isMemberOrAdmin(group: Group, profileId: string): boolean {
-    console.log({group})
-    console.log({profileId})
     return !!this.groupMembers.concat(group.Admins).find(member => member.ProfileId === profileId);
+  }
+
+  navigateBack(): void {
+    this.location.back();
   }
   
   ngOnDestroy(): void {

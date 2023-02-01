@@ -39,12 +39,16 @@ export class CreateGroupPage {
     private dbService: DatabaseService
   ) { }
 
-  setGroupPicture() {
+  setGroupCoverImage() {
     this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.groupCoverImage = galleryPhotos.shift());
   }
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
+  }
+
+  removeGroupCoverImage(): void {
+    this.groupCoverImage = null;
   }
 
   async createGroup() {

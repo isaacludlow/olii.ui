@@ -11,7 +11,7 @@
                 <div class="back">
                     <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups/group/{{getGroupId()}}"></olii-icon-with-off-white-square-background>
                 </div>
-                <h2 class="color-light">Members</h2>
+                <h1 class="color-light">Members</h1>
             </div>
         </ion-toolbar>
     </ion-header>
@@ -19,7 +19,7 @@
     <div class="content">
         <h4 class="member-section-heading">Admins</h4>
         <hr>
-        <div class="group-member-container" *ngFor="let memberAdmin of group.Admins" (click)="navigateToUserProfile(memberAdmin.Id)">
+        <div class="group-member-container" *ngFor="let memberAdmin of group.Admins" (click)="navigateToUserProfile(memberAdmin.ProfileId)">
             <div class="member-image">
                 <olii-container-cover-image [imageUrl]="memberAdmin.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
             </div>
@@ -28,7 +28,7 @@
 
         <h4 class="member-section-heading">Members</h4>
         <hr>
-        <div class="group-member-container" *ngFor="let member of group.Members" (click)="navigateToUserProfile(member.Id)">
+        <div class="group-member-container" *ngFor="let member of group.Members" (click)="navigateToUserProfile(member.ProfileId)">
             <div class="member-image">
                 <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
             </div>
