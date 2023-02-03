@@ -14,7 +14,7 @@ def capacitor_pods
   pod 'CapacitorGoogleMaps', :path => '../../node_modules/@capacitor/google-maps'
 end
 
-target 'App' do
+target 'Olii' do
   capacitor_pods
   # Add your Pods here
 end
