@@ -76,6 +76,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {
         this.group = group;
+        this.memberProfilePictures = this.group.MembersPreview.map(member => member.ProfilePictureUrl);
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => {
           this.currentProfile = profile;
           this.canViewGroup = this.canView(group, profile.ProfileId);

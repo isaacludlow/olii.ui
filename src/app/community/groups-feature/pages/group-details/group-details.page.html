@@ -2,7 +2,7 @@
 <div *ngIf="group$ | async as group">
     <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
         <div class="back-icon">
-            <olii-icon-with-off-white-square-background name="arrow-back" (click)="navigateBack()"></olii-icon-with-off-white-square-background>
+            <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
         <div *ngIf="canEditGroup" class="settings-icon">
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" (click)="editGroup()" ></olii-icon-with-off-white-square-background>
@@ -11,15 +11,6 @@
     <div class="group-details">
         <h1 class="group-name">{{ group.Name }}</h1>
         <p class="group-description">{{ group.Description}}</p>
-    </div>
-
-    <div class="member-icons">
-        <olii-profile-preview-icons
-            routerLink= "./members"
-            [profilePictureUrls]="memberProfilePictures?.slice(0, 5)"
-            profileIconSize="large"
-            [additionalDisplayNumber]="memberProfilePictures?.length - 5">
-        </olii-profile-preview-icons> 
     </div>
 
     <div class="join-group" *ngIf="!isGroupAdmin">
@@ -34,7 +25,21 @@
             </ion-accordion>
         </ion-accordion-group>
     </div>
-        
+
+    <div *ngIf="memberProfilePictures.length > 0">
+        <div class="members-header">
+            <h4>Members</h4>
+            <div class="font-body-s color-tertiary" [routerLink]="['/community/groups/group', group.GroupId, 'members']">See all</div>
+        </div>
+        <div class="members-header">
+            <olii-profile-preview-icons
+            [profilePictureUrls]="memberProfilePictures.slice(0, 5)"
+            profileIconSize="large"
+            [additionalDisplayNumber]="memberProfilePictures.length - 5">
+            </olii-profile-preview-icons> 
+        </div>
+    </div>  
+
     <hr>
 
     <div *ngIf="canViewGroup else requestToJoinView">

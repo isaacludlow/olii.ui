@@ -28,7 +28,7 @@
 
         <h4 class="member-section-heading">Members</h4>
         <hr>
-        <div class="group-member-container" *ngFor="let member of group.Members" (click)="navigateToUserProfile(member.ProfileId)">
+        <div class="group-member-container" *ngFor="let member of group.MembersPreview" (click)="navigateToUserProfile(member.ProfileId)">
             <div class="member-image">
                 <olii-container-cover-image [imageUrl]="member.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
             </div>
