@@ -22,10 +22,10 @@
         </olii-profile-preview-icons> 
     </div>
 
-    <div class="join-group">
+    <div class="join-group" *ngIf="!isGroupAdmin">
         <ion-button *ngIf="!isGroupMember" color="primary" (click)="joinGroup();" mode="ios">Join Group</ion-button>
 
-        <ion-accordion-group *ngIf="isGroupMember" expand="inset" mode="md">
+        <ion-accordion-group *ngIf="isGroupMember && !isGroupAdmin" expand="inset" mode="md">
             <ion-accordion value="first">
               <ion-item slot="header" color="light">
                 <ion-label>Joined</ion-label>

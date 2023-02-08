@@ -33,6 +33,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   canViewGroup: boolean;
   canEditGroup: boolean;
   isGroupMember: boolean;
+  isGroupAdmin: boolean;
   groupMembers: ProfilePreview[];
   pastEvents$: Observable<Event[]>;
   futureEvents$: Observable<Event[]>;
@@ -81,7 +82,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
           this.canEditGroup = this.canEdit(group, profile.ProfileId);
           this.subs.sink = this.groupStore.getGroupMembers(group.GroupId).subscribe(members => {
             this.groupMembers = members
-            this.isGroupMember = this.isMemberOrAdmin(group, profile.ProfileId);
+            this.isGroupMember = this.isMember(group, profile.ProfileId);
+            this.isGroupAdmin = this.isAdmin(group, profile.ProfileId);
           });
         });
       }),
@@ -118,7 +120,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       return true;
     }
     else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (this.isMemberOrAdmin(group, profileId)) {
+      if (this.isMember(group, profileId) || this.isAdmin(group, profileId)) {
         return true;
       }
     }
@@ -216,8 +218,12 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     );
   }
 
-  isMemberOrAdmin(group: Group, profileId: string): boolean {
-    return !!this.groupMembers.concat(group.Admins).find(member => member.ProfileId === profileId);
+  isMember(group: Group, profileId: string): boolean {
+    return !!this.groupMembers.find(member => member.ProfileId === profileId);
+  }
+
+  isAdmin(group: Group, profileId: string): boolean {
+    return !!this.group.Admins.find(admin => admin.ProfileId === profileId);
   }
 
   navigateBack(): void {
