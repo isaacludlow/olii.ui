@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, FieldPath } from '@angular/fire/compat/firestore';
+import { WhereFilterOp } from '@angular/fire/firestore';
 import { from, Observable, zip } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
@@ -32,12 +33,53 @@ export class DatabaseService {
     return allEvents;
   }
 
-  getMyEvents(profileId: string): Observable<Event[]> {
-    const myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`).valueChanges().pipe(
-      switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
-    );
+  getMyEvents(profileId: string, query?: {fieldPath: string | FieldPath, opStr: WhereFilterOp, value: any}): Observable<Event[]> {
+    let myEvents: Observable<Event[]>;
+
+    if (query) {
+      myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`, ref => ref.where(query.fieldPath, query.opStr, query.value))
+      .valueChanges().pipe(
+        switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
+      );
+    } else {
+      myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`).valueChanges().pipe(
+        switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
+      );
+    }
 
     return myEvents;
+  }
+
+  getMyAttendingEvents(profileId: string): Observable<Event[]> {
+    const today = new Date();
+
+    return this.afs.collection<any>(
+      `profiles/${profileId}/myEvents`,
+      ref => ref.where('date', '>=', today)
+    ).valueChanges().pipe(
+      switchMap(events => zip(...events.map(event => this.getEventById(event.eventId)))),
+      map(events => events.filter(event => event.Creator.CreatorId === profileId))
+    );
+  }
+
+  getMyHostingEvents(profileId: string): Observable<Event[]> {
+    return this.afs.collection<any>(
+      `events`,
+      ref => ref.where('creator.creatorId', '==', profileId)
+    ).valueChanges({ idField: 'id' }).pipe(
+      map(events => mapEvents(events))
+    );
+  }
+
+  getMyPastEvents(profileId: string): Observable<Event[]> {
+    const today = new Date();
+
+    return this.afs.collection<any>(
+      `profiles/${profileId}/myEvents`,
+      ref => ref.where('date', '<', today)
+    ).valueChanges().pipe(
+      switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
+    );
   }
 
   getEventById(eventId: string): Observable<Event> {

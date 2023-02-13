@@ -46,15 +46,15 @@ export class EventDetailsPage implements OnInit, OnDestroy {
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
       this.canEdit(event, this.currentProfile.ProfileId).then(canEdit => this.canEditEvent = canEdit);
+      this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
+      .subscribe(isAttending => this.attending = isAttending);
     });
 
-    this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
-      .subscribe(isAttending => this.attending = isAttending);
   }
 
   ionViewDidEnter() {
     // TODO-AfterBeta: Refactor to wait until call to get events is done.
-    this.createMap(this.event.Location.Latitude, this.event.Location.Longitude);
+    // this.createMap(this.event?.Location.Latitude, this.event?.Location.Longitude);
   }
 
   async createMap(latitude: number, longitude: number) {

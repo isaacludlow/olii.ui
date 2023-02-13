@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
-import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 
@@ -31,7 +31,7 @@ export class EventsFeaturePage implements OnInit, OnDestroy {
       // Waits for profile to load after initial login
       if (profile !== null) {
         this.allEvents$ = this.eventsStore.getAllEvents();
-        this.myEvents$ = this.eventsStore.getMyEvents(profile.ProfileId, MyEventsFilterOptions.Attending).pipe(map(events => events));
+        this.myEvents$ = this.eventsStore.getMyAttendingEvents(profile.ProfileId);
         this.profile = profile;
       }
     });

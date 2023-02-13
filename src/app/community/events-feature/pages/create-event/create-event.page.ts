@@ -81,9 +81,8 @@ export class CreateEventPage implements OnInit, OnDestroy {
     if (Array.isArray(dateTimeValue)) dateTimeValue = dateTimeValue[0];
 
     this.eventDateTimeInput = new Date(dateTimeValue);
-    this.createEventForm.get('dateTime').setValue(dateTimeValue);
+    this.createEventForm.get('dateTime').setValue(new Date(dateTimeValue));
   }
-
 
   async createMap() {
     this.map = new google.maps.Map(this.mapRef.nativeElement, {

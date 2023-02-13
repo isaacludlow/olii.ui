@@ -17,19 +17,22 @@ export const addCreatedEventToCreatorEventSubcollection = functions.firestore
             // Creates a new document since no doc with this id will exist.
             .doc(context.params.eventId)
             .set(eventPreview);
-      } else if (event.creator.creatorType == "profile") {
-        const eventPreview = {
-          eventId: context.params.eventId,
-          date: event.date,
-          isCreator: true,
-        };
-
-        return admin.firestore()
-            .collection(`profiles/${event.creator.creatorId}/myEvents`)
-            // Creates a new document since no doc with this id will exist.
-            .doc(context.params.eventId)
-            .set(eventPreview);
       } else return null;
+      // TODO: Remove this code if we don't want to
+      // automatically add the event creator as an attendee.
+
+      // else if (event.creator.creatorType == "profile") {
+      //   const eventPreview = {
+      //     eventId: context.params.eventId,
+      //     date: event.date,
+      //   };
+
+      //   return admin.firestore()
+      //       .collection(`profiles/${event.creator.creatorId}/myEvents`)
+      //       // Creates a new document since no doc with this id will exist.
+      //       .doc(context.params.eventId)
+      //       .set(eventPreview);
+      // }
     });
 
 export const addAttendingEventToMyEvents = functions.firestore
@@ -42,7 +45,6 @@ export const addAttendingEventToMyEvents = functions.firestore
       const eventPreview = {
         eventId: context.params.eventId,
         date: event.get("date"),
-        isCreator: false,
       };
 
       return admin.firestore()
@@ -79,14 +81,16 @@ export const updateEventReferencesWhenEventDateIsUpdated = functions.firestore
           .collection(`events/${context.params.eventId}/attendees`)
           .get();
 
-      for (const attendeesDoc of attendeesDocs.docs) {
-        const attendeeProfileId = attendeesDoc.data().profileId;
-        await admin.firestore()
-            .doc(
-                `profiles/${attendeeProfileId}
-                /myEvents/${context.params.eventId}`
-            )
-            .update("date", updatedEventData.date);
+      if (attendeesDocs.size > 0) {
+        for (const attendeesDoc of attendeesDocs.docs) {
+          const attendeeProfileId = attendeesDoc.data().profileId;
+          await admin.firestore()
+              .doc(
+                  `profiles/${attendeeProfileId}
+                  /myEvents/${context.params.eventId}`
+              )
+              .update("date", updatedEventData.date);
+        }
       }
 
       const eventCreator = change.before.get("creator");
