@@ -129,6 +129,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     // }
 
     if (this.isMember(profileId) || this.isAdmin(group, profileId)) {
+      this.canViewGroup = true;
       return true;
     }
 
