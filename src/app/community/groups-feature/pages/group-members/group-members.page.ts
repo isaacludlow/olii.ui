@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -14,6 +15,7 @@ export class GroupMembersPage implements OnInit {
   subs = new SubSink();
 
   constructor(
+    private location: Location,
     private router: Router,
     private route: ActivatedRoute,
     private groupStore: GroupFeatureStore
@@ -34,4 +36,9 @@ export class GroupMembersPage implements OnInit {
   navigateToUserProfile(profileId: string) {
     this.router.navigate(['/profile'], { queryParams: { profileId: profileId, showBackButton: true } })
   }
+  
+  navigateBack(): void {
+    this.location.back();
+  }
+  
 }

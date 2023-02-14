@@ -79,12 +79,12 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         this.memberProfilePictures = this.group.MembersPreview.map(member => member.ProfilePictureUrl);
         this.subs.sink = this.profileStore.currentProfile.subscribe(profile => {
           this.currentProfile = profile;
-          this.canViewGroup = this.canView(group, profile.ProfileId);
           this.canEditGroup = this.canEdit(group, profile.ProfileId);
           this.subs.sink = this.groupStore.getGroupMembers(group.GroupId).subscribe(members => {
             this.groupMembers = members
-            this.isGroupMember = this.isMember(group, profile.ProfileId);
+            this.isGroupMember = this.isMember(profile.ProfileId);
             this.isGroupAdmin = this.isAdmin(group, profile.ProfileId);
+            this.canViewGroup = this.canView(group, profile.ProfileId);
           });
         });
       }),
@@ -117,13 +117,19 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   }
 
   canView(group: Group, profileId: string): boolean {
-    if (group.PrivacyLevel == PrivacyLevel.Public) {
+
+    // TODO: use when we add public/private groups
+    // if (group.PrivacyLevel == PrivacyLevel.Public) {
+    //   return true;
+    // }
+    // else if (group.PrivacyLevel == PrivacyLevel.Private) {
+    //   if (this.isMember(group, profileId) || this.isAdmin(group, profileId)) {
+    //     return true;
+    //   }
+    // }
+
+    if (this.isMember(profileId) || this.isAdmin(group, profileId)) {
       return true;
-    }
-    else if (group.PrivacyLevel == PrivacyLevel.Private) {
-      if (this.isMember(group, profileId) || this.isAdmin(group, profileId)) {
-        return true;
-      }
     }
 
     const content = document.getElementById("group-content");
@@ -149,11 +155,15 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
     this.isGroupMember = true;
+    this.canViewGroup = true;
 
   }
 
   leaveGroup() {
-    this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => this.isGroupMember = false);
+    this.subs.sink = this.groupStore.leaveGroup(this.currentProfile.ProfileId, this.group.GroupId).subscribe(() => { 
+      this.isGroupMember = false;
+      this.canViewGroup = false;
+    });
   }
 
   addPostPicture() {
@@ -219,7 +229,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     );
   }
 
-  isMember(group: Group, profileId: string): boolean {
+  isMember(profileId: string): boolean {
     return !!this.groupMembers.find(member => member.ProfileId === profileId);
   }
 
