@@ -15,10 +15,10 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class EventsFeatureStore {
-  private allEvents: Observable<Event[]>;
-  private myAttendingEvents: Observable<Event[]>;
-  private myHostingEvents: Observable<Event[]>;
-  private myPastEvents: Observable<Event[]>;
+  private _allEvents: Observable<Event[]>;
+  private _myAttendingEvents: Observable<Event[]>;
+  private _myHostingEvents: Observable<Event[]>;
+  private _myPastEvents: Observable<Event[]>;
 
   constructor(
     private dbService: DatabaseService,
@@ -26,13 +26,13 @@ export class EventsFeatureStore {
   ) { }
   
   getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
-    this.allEvents = this.dbService.getAllEvents().pipe(shareReplay(1));
+    this._allEvents = this.dbService.getAllEvents().pipe(shareReplay(1));
 
-    return this.allEvents;
+    return this._allEvents;
   }
 
   getEventById(eventId: string): Observable<Event> {
-    let eventObservables = [this.allEvents, this.myAttendingEvents, this.myHostingEvents, this.myPastEvents];
+    let eventObservables = [this._allEvents, this._myAttendingEvents, this._myHostingEvents, this._myPastEvents];
     eventObservables = eventObservables.filter(eventObservable => eventObservable != null);
 
     const event = combineLatest(eventObservables).pipe(
@@ -43,33 +43,29 @@ export class EventsFeatureStore {
   }
 
   getMyAttendingEvents(profileId: string): Observable<Event[]> {
-    this.myAttendingEvents = this.dbService.getMyAttendingEvents(profileId).pipe(shareReplay(1));
+    this._myAttendingEvents = this.dbService.getMyAttendingEvents(profileId).pipe(shareReplay(1));
 
-    return this.myAttendingEvents;
+    return this._myAttendingEvents;
   }
 
   getMyHostingEvents(profileId: string): Observable<Event[]> {
-    this.myHostingEvents = this.dbService.getMyHostingEvents(profileId).pipe(shareReplay(1));
+    this._myHostingEvents = this.dbService.getMyHostingEvents(profileId).pipe(shareReplay(1));
 
-    return this.myHostingEvents;
+    return this._myHostingEvents;
   }
 
   getMyPastEvents(profileId: string): Observable<Event[]> {
-    this.myPastEvents = this.dbService.getMyPastEvents(profileId).pipe(shareReplay(1));
+    this._myPastEvents = this.dbService.getMyPastEvents(profileId).pipe(shareReplay(1));
 
-    return this.myPastEvents;
+    return this._myPastEvents;
   }
             
   getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.dbService.getPastGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isBefore(event.Date, new Date())))
-        );
+        return this.dbService.getPastGroupEvents(groupId);
       case GroupEventsFilterOptions.Future:
-        return this.dbService.getPastGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isAfter(event.Date, new Date())))
-        );
+        return this.dbService.getUpcomingGroupEvents(groupId);
     }
   }
 

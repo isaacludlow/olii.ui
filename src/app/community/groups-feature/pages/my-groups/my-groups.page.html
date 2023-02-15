@@ -17,7 +17,7 @@
 
 <ion-content>
     <div class="groups-container">
-        <olii-group-card *ngFor="let group of groups" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
+        <olii-group-card *ngFor="let group of groups$ | async" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
         </olii-group-card>
     </div>
 </ion-content>

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, from, Observable, zip } from "rxjs";
+import { BehaviorSubject, combineLatest, from, Observable, zip } from "rxjs";
 import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
-import { map, switchMap, tap } from "rxjs/operators";
+import { map, shareReplay, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from "src/app/models/dto/community/groups/group-post-comment.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
@@ -19,12 +19,13 @@ import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 })
 
 export class GroupFeatureStore {
-    private _allGroups = new BehaviorSubject<Group[]>([]);
-    private _myGroups = new BehaviorSubject<Group[]>([]);
+    private _allGroups: Observable<Group[]>;
+    private _myGroups: Observable<Group[]>;
+    private _latestPosts: Observable<GroupPost[]>;
+
     private _manualOverrideForGroupSection = new BehaviorSubject<Section>('feed');
 
     constructor(
-        private groupService: GroupFeatureService,
         private dbService: DatabaseService,
         private cloudStorageService: CloudStorageService
     ) {}
@@ -40,42 +41,27 @@ export class GroupFeatureStore {
 		return currentSection;
 	}
 
-    getGroups(refresh: boolean = false, limit: number = null, offset: number = null): Observable<Group[]> {
-        // Legacy
-        if (this._allGroups.value === null || refresh) {
-            return this.groupService.getGroups(limit, offset).pipe(switchMap(groups => {
-                this._allGroups.next(groups);
-                return this._allGroups.asObservable();
-            }));
-        } else {
-            return this._allGroups.asObservable();
-        }
+    getAllGroups(offset: number = null, limit: number = null): Observable<Group[]> {
+        this._allGroups = this.dbService.getAllGroups().pipe(shareReplay(1));
+
+        return this._allGroups;
     }
 
     getGroupById(groupId: string): Observable<Group> {
-        const groupQuery = this._allGroups.value.find(group => group.GroupId === groupId);
+        let groupObservables = [this._allGroups, this._myGroups];
+        groupObservables = groupObservables.filter(groupObservable => groupObservable != null);
 
-        if (groupQuery === undefined) {
-            return this.dbService.getGroupById(groupId).pipe(
-                switchMap(group => {
-                    this._allGroups.next([...this._allGroups.value, group]);
-                    return this._allGroups.asObservable().pipe(map(allGroups => allGroups.find(x => x.GroupId === groupId)));
-                })
-            );
-        } else {
-            return this._allGroups.asObservable().pipe(map(groups => groups.find(group => group.GroupId === groupId)));
-        }
+        const group = combineLatest(groupObservables).pipe(
+            map(groups => groups.flat().find(group => group.GroupId === groupId))
+        );
+
+        return group;
     }
 
     getMyGroups(profileId: string): Observable<Group[]> {
-        if (this._myGroups.value.length > 0) {
-            return this._myGroups.asObservable();
-        } else {
-            return this.dbService.getMyGroups(profileId).pipe(switchMap(groups => {
-                this._myGroups.next(groups);
-                return this._myGroups.asObservable();
-            }));
-        }
+        this._myGroups = this.dbService.getMyGroups(profileId).pipe(shareReplay(1));
+
+        return this._myGroups;
     }
 
     joinGroup(profilePreview: ProfilePreview, groupId: string): Observable<void> {
@@ -84,30 +70,13 @@ export class GroupFeatureStore {
 
     leaveGroup(profileId: string, GroupId: string): Observable<void> {
         return this.dbService.leaveGroup(profileId, GroupId);
-      }
-
-    getAllGroups(offset: number = null, limit: number = null): Observable<Group[]> {
-        if (this._allGroups.value.length > 0) {
-            return this._allGroups.asObservable();
-        } else {
-            return this.dbService.getAllGroups().pipe(
-                switchMap(groups => {
-                    this._allGroups.next(groups);
-                    return this._allGroups.asObservable();
-                })
-            );   
-        }
     }
-
+    
     createGroup(group: GroupRequest): Observable<void> {
         return this.dbService.createGroup(group);
     }
 
     updateGroup(group: GroupRequest): Observable<void> {
-        const editedGroupIndex = this._allGroups.value.findIndex(x => x.GroupId === group.GroupId);
-        this._allGroups.value.splice(editedGroupIndex , 1)
-        this._allGroups.next(this._allGroups.value);
-
         return this.dbService.editGroup(group);
     }
 
@@ -119,26 +88,13 @@ export class GroupFeatureStore {
     }
 
     getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
-        return this.dbService.getLatestPosts(profileId, earliestPostDate);
+        this._latestPosts = this.dbService.getLatestPosts(profileId, earliestPostDate).pipe(shareReplay(1));
+
+        return this._latestPosts;
     }
 
     getPostsByGroupId(groupId: string, earliestPostDate: Date): Observable<GroupPost[]> {
-        return this.dbService.getPostsByGroupId(groupId, earliestPostDate).pipe(
-            tap(posts => {
-                let allGroups = this._allGroups.value;
-                let foundFromAllGroups = allGroups.find(x => x.GroupId === groupId);
-                let myGroups = this._myGroups.value;
-                let foundFromMyGroups = myGroups.find(x => x.GroupId === groupId);
-
-                if (foundFromAllGroups != undefined) {
-                    foundFromAllGroups.Posts.push(...posts);
-                }
-
-                if (foundFromMyGroups != undefined) {
-                    foundFromMyGroups.Posts.push(...posts);
-                }
-            })
-        );
+        return this.dbService.getPostsByGroupId(groupId, earliestPostDate);
     }
 
     getGroupMembers(groupId: string): Observable<ProfilePreview[]> {
@@ -154,7 +110,7 @@ export class GroupFeatureStore {
     }
 
     getCommentsByGroupPostId(groupPostId: string): Observable<GroupPostComment[]> {
-        return this.dbService.getCommentsByGroupPostId(groupPostId)
+        return this.dbService.getCommentsByGroupPostId(groupPostId);
     }
 
     deleteGroupPost(postId: string): Observable<void> {

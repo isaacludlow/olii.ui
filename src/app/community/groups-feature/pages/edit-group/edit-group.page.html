@@ -66,8 +66,8 @@
         </div>
     </div>
 
-    <ion-button type="submit" expand="block" [disabled]="editGroupForm.invalid || loadingButton" mode="ios">
-        <span *ngIf="!loadingButton">Create Event</span>
+    <ion-button (click)="updateGroup()" expand="block" [disabled]="editGroupForm.invalid || loadingButton" mode="ios">
+        <span *ngIf="!loadingButton">Edit Event</span>
         <ion-spinner *ngIf="loadingButton"></ion-spinner>
     </ion-button>
 </ion-content>

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, FieldPath } from '@angular/fire/compat/firestore';
-import { WhereFilterOp } from '@angular/fire/firestore';
-import { from, Observable, zip } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { combineLatest, from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { GroupPostComment } from 'src/app/models/dto/community/groups/group-post-comment.dto'
@@ -33,23 +32,6 @@ export class DatabaseService {
     return allEvents;
   }
 
-  getMyEvents(profileId: string, query?: {fieldPath: string | FieldPath, opStr: WhereFilterOp, value: any}): Observable<Event[]> {
-    let myEvents: Observable<Event[]>;
-
-    if (query) {
-      myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`, ref => ref.where(query.fieldPath, query.opStr, query.value))
-      .valueChanges().pipe(
-        switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
-      );
-    } else {
-      myEvents = this.afs.collection<any>(`profiles/${profileId}/myEvents`).valueChanges().pipe(
-        switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
-      );
-    }
-
-    return myEvents;
-  }
-
   getMyAttendingEvents(profileId: string): Observable<Event[]> {
     const today = new Date();
 
@@ -57,8 +39,7 @@ export class DatabaseService {
       `profiles/${profileId}/myEvents`,
       ref => ref.where('date', '>=', today)
     ).valueChanges().pipe(
-      switchMap(events => zip(...events.map(event => this.getEventById(event.eventId)))),
-      map(events => events.filter(event => event.Creator.CreatorId === profileId))
+      switchMap(events => combineLatest(...events.map(event => this.getEventById(event.eventId))))
     );
   }
 
@@ -78,7 +59,7 @@ export class DatabaseService {
       `profiles/${profileId}/myEvents`,
       ref => ref.where('date', '<', today)
     ).valueChanges().pipe(
-      switchMap(events => zip(...events.map(event => this.getEventById(event.eventId))))
+      switchMap(events => combineLatest(...events.map(event => this.getEventById(event.eventId))))
     );
   }
 
@@ -133,7 +114,7 @@ export class DatabaseService {
 
   getMyGroups(profileId: string): Observable<Group[]> {
     const myGroups = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
-      switchMap(groupRef => zip(...groupRef.map(group => this.getGroupById(group.groupId))))
+      switchMap(groupRef => combineLatest(...groupRef.map(group => this.getGroupById(group.groupId))))
     );
 
     return myGroups;
@@ -181,7 +162,7 @@ export class DatabaseService {
 
   getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
     const groupPosts = this.afs.collection<any>(`profiles/${profileId}/myGroups`).valueChanges().pipe(
-      switchMap(groupPreviews => zip(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
+      switchMap(groupPreviews => combineLatest(...groupPreviews.map(groupPreview => this.getPostsByGroupId(groupPreview.groupId, earliestPostDate)))),
         map(listOfGroupPosts => {
           const mergedArrayOfGroupPosts: GroupPost[] = [].concat.apply([], listOfGroupPosts); // Flattens out the array of arrays into one array.
           return mergedArrayOfGroupPosts;
@@ -231,8 +212,17 @@ export class DatabaseService {
 
   getPastGroupEvents(groupId: string): Observable<Event[]> {
     const currentDateTime = new Date();
+    const pastGroupEvents = this.afs.collection<any>(`groups/${groupId}/events`, ref => ref.where('date', '<', currentDateTime)).valueChanges().pipe(
+      switchMap(eventPreviews => combineLatest(...eventPreviews.map(eventPreview => this.getEventById(eventPreview.eventId))))
+    );
+
+    return pastGroupEvents;
+  }
+
+  getUpcomingGroupEvents(groupId: string): Observable<Event[]> {
+    const currentDateTime = new Date();
     const pastGroupEvents = this.afs.collection<any>(`groups/${groupId}/events`, ref => ref.where('date', '>=', currentDateTime)).valueChanges().pipe(
-      switchMap(eventPreviews => zip(...eventPreviews.map(eventPreview => this.getEventById(eventPreview.eventId))))
+      switchMap(eventPreviews => combineLatest(...eventPreviews.map(eventPreview => this.getEventById(eventPreview.eventId))))
     );
 
     return pastGroupEvents;
@@ -256,7 +246,7 @@ export class DatabaseService {
   getFutureGroupEvents(groupId: string): Observable<Event[]> {
     const currentDateTime = new Date();
     const pastGroupEvents = this.afs.collection<any>(`groups/${groupId}/events`, ref => ref.where('date', '<=', currentDateTime)).valueChanges().pipe(
-      switchMap(eventPreviews => zip(...eventPreviews.map(eventPreview => this.getEventById(eventPreview.eventId))))
+      switchMap(eventPreviews => combineLatest(...eventPreviews.map(eventPreview => this.getEventById(eventPreview.eventId))))
     );
 
     return pastGroupEvents;
