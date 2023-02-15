@@ -38,6 +38,10 @@ export class RegistrationPage {
     private location: Location
   ) { }
 
+  get username() {
+    return this.registerForm.get('username');
+  }
+
   get email() {
     return this.registerForm.get('email');
   }
