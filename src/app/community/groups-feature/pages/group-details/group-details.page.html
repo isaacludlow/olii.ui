@@ -2,7 +2,7 @@
 <div *ngIf="group$ | async as group">
     <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
         <div class="back-icon">
-            <olii-icon-with-off-white-square-background name="arrow-back" (click)="navigateBack()"></olii-icon-with-off-white-square-background>
+            <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
         </div>
         <div *ngIf="canEditGroup" class="settings-icon">
             <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" (click)="editGroup()" ></olii-icon-with-off-white-square-background>
@@ -13,16 +13,7 @@
         <p class="group-description">{{ group.Description}}</p>
     </div>
 
-    <div class="member-icons">
-        <olii-profile-preview-icons
-            routerLink= "./members"
-            [profilePictureUrls]="memberProfilePictures?.slice(0, 5)"
-            profileIconSize="large"
-            [additionalDisplayNumber]="memberProfilePictures?.length - 5">
-        </olii-profile-preview-icons> 
-    </div>
-
-    <div class="join-group">
+    <div class="join-group" *ngIf="!isGroupAdmin">
         <ion-button *ngIf="!isGroupMember" color="primary" (click)="joinGroup();" mode="ios">Join Group</ion-button>
 
         <ion-accordion-group *ngIf="isGroupMember" expand="inset" mode="md">
@@ -34,10 +25,22 @@
             </ion-accordion>
         </ion-accordion-group>
     </div>
-        
-    <hr>
 
-    <div *ngIf="canViewGroup else requestToJoinView">
+    <div *ngIf="canViewGroup">
+        <div *ngIf="memberProfilePictures.length > 0">
+            <div class="members-header">
+                <h4>Members</h4>
+                <div class="font-body-s color-tertiary" [routerLink]="['/community/groups/group', group.GroupId, 'members']">See all</div>
+            </div>
+            <div class="members-header">
+                <olii-profile-preview-icons
+                [profilePictureUrls]="memberProfilePictures.slice(0, 5)"
+                profileIconSize="large"
+                [additionalDisplayNumber]="memberProfilePictures.length - 5">
+                </olii-profile-preview-icons> 
+            </div>
+        </div>
+  
         <div class="feed-events-segment-container">
             <ion-segment class="button-segment" mode="ios" (ionChange)="segmentChanged($event)" [value]="segmentToShow">
                 <ion-segment-button value="feed" layout="icon-start">
@@ -52,12 +55,6 @@
             </ion-segment>
         </div>
     </div>
-
-    <ng-template #requestToJoinView>
-        <div class="request-button-container">
-            <ion-button type="button" color="primary" (click)="joinGroup()" mode="ios">Join Group</ion-button>
-        </div>
-    </ng-template>
 
     <!--ngIf user is a member of this group-->
     <div id="group-content" class="view-content">

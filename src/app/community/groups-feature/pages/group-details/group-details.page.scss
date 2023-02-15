@@ -48,27 +48,35 @@ ion-card {
 }
 
 .group-name {
-    text-align: center;
-    margin: 0.5rem 0 0.8rem 0;
-}
+        text-align: center;
+        margin: 0.5rem 0 0.8rem 0;
+    }
 
 .group-description {
-    color: var(--color-tertiary);
-    font-size: 0.875em;
-    text-align: center;
-}
+        color: var(--color-tertiary);
+        font-size: 0.875em;
+        text-align: center;
+    }
 
 .member-icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
 
 .member-image {
-    height: 2.5rem;
-    width: 2.5rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
+        height: 2.5rem;
+        width: 2.5rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+.members-header {
+    margin: 1rem 0.5rem;
+    display: flex;
+    gap: 1.5rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 hr {
@@ -216,3 +224,4 @@ ion-segment-button {
         --padding-end: 3rem;
     }
 }
+

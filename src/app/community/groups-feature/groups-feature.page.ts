@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { map, tap} from 'rxjs/operators';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import sub from 'date-fns/sub';
+import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 
 @Component({
   selector: 'groups-feature',
@@ -20,8 +21,10 @@ import sub from 'date-fns/sub';
 export class GroupsFeaturePage implements OnInit {
   private readonly _postLimiter: number = 10;
   profile: Profile;
+  profileId: string;
   myGroups$: Observable<Group[]>;
   allGroups$: Observable<Group[]>;
+  discoverGroups$: Observable<Group[]>;
   myGroupsPreview$: Observable<GroupPreview[]>
   latestGroupPosts$: Observable<GroupPost[]>;
   subs = new SubSink();
@@ -31,7 +34,8 @@ export class GroupsFeaturePage implements OnInit {
     private profileStore: ProfileStore,
     private groupStore: GroupFeatureStore, 
     private domSanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private dbService: DatabaseService
   ) { }
 
   ngOnInit(): void {
@@ -39,12 +43,13 @@ export class GroupsFeaturePage implements OnInit {
       if (currentProfile !== null) {
         this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId);
         this.myGroupsPreview$ = this.myGroups$.pipe(
-          map(group => group.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
+          map(groups => groups.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
         );
 
         const earliestPostDate = sub(new Date(), { months: 1 });
         this.latestGroupPosts$ = this.groupStore.getLatestPosts(currentProfile.ProfileId, earliestPostDate);
         this.allGroups$ = this.groupStore.getAllGroups();
+        this.discoverGroups$ = this.dbService.getDiscoverGroups(currentProfile.ProfileId);
       }
     });
     this.segmentToShow = "my-groups"
