@@ -120,6 +120,25 @@ export class DatabaseService {
     return myGroups;
   }
 
+  getDiscoverGroups(profileId: string): Observable<Group[]> {
+    const discoverGroups = this.afs.collection(`profiles/${profileId}/myGroups`).valueChanges().pipe(
+      switchMap(myGroups =>
+        this.afs.collection('groups').valueChanges({ idField: 'id' }).pipe(
+          map(groups => mapGroups(groups)),
+          map(groups => this.filterGroups(groups, myGroups))
+        )
+      )
+    );
+    
+    return discoverGroups;
+  }
+
+  private filterGroups(groups, myGroups) {
+    const myGroupIds = myGroups.map(group => group.groupId);
+    
+    return groups.filter(group => !myGroupIds.includes(group.GroupId))  
+  }
+
   getAllGroups(): Observable<Group[]> {
     const allGroups = this.afs.collection('groups').valueChanges({ idField: 'id' }).pipe(
       map(allGroups => mapGroups(allGroups))

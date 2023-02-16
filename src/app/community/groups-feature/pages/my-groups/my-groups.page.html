@@ -4,18 +4,20 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-header collapse="condense" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-        <div class="header">
-            <div class="back">
-                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-            </div>
-            <h1 class="color-light">My Groups</h1>
-        </div>
-    </ion-toolbar>
-</ion-header>
 
-<ion-content>
+
+<ion-content fullscreen="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+                </div>
+                <h1 class="color-light">My Groups</h1>
+            </div>
+        </ion-toolbar>
+    </ion-header>
+
     <div class="groups-container">
         <olii-group-card *ngFor="let group of groups$ | async" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
         </olii-group-card>

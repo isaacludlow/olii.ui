@@ -15,7 +15,6 @@ import { Group } from 'src/app/models/dto/community/groups/group.dto';
           <h4 class="line-clamp">{{ group.Name }}</h4>
           <div class="font-body-s line-clamp">{{ group.Description}} </div>
           <olii-profile-preview-icons
-            *ngIf="group.MembersPreview.length > 0"
             [profilePictureUrls]="firstFourProfilePictureUrls"
             profileIconSize="small">
           </olii-profile-preview-icons>
@@ -33,7 +32,7 @@ export class GroupCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.firstFourProfilePictureUrls = this.group.MembersPreview.map(member => member.ProfilePictureUrl);
+    this.firstFourProfilePictureUrls = this.group.Admins.map(admin => admin.ProfilePictureUrl);
   }
 
 }

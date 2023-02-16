@@ -1,21 +1,21 @@
 <ion-header collapse="fade" mode="ios">
     <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Edit Group</ion-title>
+      <!--ion-title color="light">Edit Group</ion-title-->
     </ion-toolbar>
 </ion-header>
 
-<ion-header collapse="condense" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-        <div class="header">
-            <div class="back-icon">
-                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+<ion-content fullscreen="true" scrollY="true">
+    <ion-header collapse="condense" mode="ios">
+        <ion-toolbar class="purple-background" mode="ios">
+            <div class="header">
+                <div class="back">
+                    <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
+                </div>
+                <h1 class="color-light">Edit Group</h1>
             </div>
-            <h1 class="color-light">Edit Group</h1>
-        </div>
-    </ion-toolbar>
-</ion-header>
+        </ion-toolbar>
+    </ion-header>
 
-<ion-content>
     <form [formGroup]="editGroupForm">
         <h4 class="form-label">Group Details</h4>
         <ion-item>
@@ -51,6 +51,24 @@
             </ion-item>
         </ion-radio-group> -->
     
+        <h4 class="form-label">Change Image</h4>
+        <div class="group-cover-image-container">
+            <div class="add-image" *ngIf="this.groupCoverImage">
+                <olii-responsive-aspect-ratio-container aspectRatio="2/1">
+                    <ion-badge (click)="removeGroupCoverImage()"><ion-icon name="close"></ion-icon></ion-badge>
+                    <olii-container-cover-image [imageUrl]="sanitizeUrl(groupCoverImage.webPath)" boarderRadius="3%"></olii-container-cover-image>  
+                </olii-responsive-aspect-ratio-container>
+            </div>
+            <div class="add-image" *ngIf="this.groupCoverImage == null" (click)="setGroupCoverImage()">
+                <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+            </div>
+        </div>
+
+        <ion-button type="submit" expand="block" [disabled]="editGroupForm.invalid || loadingButton" mode="ios" (click)="updateGroup()">
+            <span *ngIf="!loadingButton">Update Group</span>
+            <ion-spinner *ngIf="loadingButton"></ion-spinner>
+        </ion-button>
+
     </form>
 
     <h4 class="form-label">Change Image</h4>
