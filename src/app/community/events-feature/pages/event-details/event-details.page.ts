@@ -54,7 +54,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     // TODO-AfterBeta: Refactor to wait until call to get events is done.
-    // this.createMap(this.event?.Location.Latitude, this.event?.Location.Longitude);
+    this.createMap(this.event?.Location.Latitude, this.event?.Location.Longitude);
   }
 
   async createMap(latitude: number, longitude: number) {
