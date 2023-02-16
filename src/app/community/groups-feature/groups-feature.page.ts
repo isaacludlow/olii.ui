@@ -27,6 +27,7 @@ export class GroupsFeaturePage implements OnInit {
   discoverGroups$: Observable<Group[]>;
   myGroupsPreview$: Observable<GroupPreview[]>
   latestGroupPosts$: Observable<GroupPost[]>;
+  currentProfile: Profile;
   subs = new SubSink();
   segmentToShow: string;
 
@@ -41,7 +42,12 @@ export class GroupsFeaturePage implements OnInit {
   ngOnInit(): void {
     this.subs.sink = this.profileStore.currentProfile.subscribe(currentProfile => {
       if (currentProfile !== null) {
-        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId);
+        this.myGroups$ = this.groupStore.getMyGroups(currentProfile.ProfileId).pipe(
+          tap(myGroups => this.allGroups$ = this.groupStore.getAllGroups().pipe(
+            map(allGroups => allGroups.filter(group => !myGroups.find(myGroup => myGroup.GroupId === group.GroupId)))
+          )
+        ));
+        
         this.myGroupsPreview$ = this.myGroups$.pipe(
           map(groups => groups.map(group => <GroupPreview>{ GroupId: group.GroupId, CoverImageUrl: group.CoverImageUrl, Name: group.Name }))
         );
@@ -52,6 +58,7 @@ export class GroupsFeaturePage implements OnInit {
         this.discoverGroups$ = this.dbService.getDiscoverGroups(currentProfile.ProfileId);
       }
     });
+
     this.segmentToShow = "my-groups"
   }
 
