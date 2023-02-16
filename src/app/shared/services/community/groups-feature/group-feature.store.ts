@@ -67,6 +67,10 @@ export class GroupFeatureStore {
         }
     }
 
+    getDiscoverGroups (profileId: string): Observable<Group[]> {
+        return this.dbService.getDiscoverGroups(profileId);
+    } 
+
     getMyGroups(profileId: string): Observable<Group[]> {
         if (this._myGroups.value.length > 0) {
             return this._myGroups.asObservable();
