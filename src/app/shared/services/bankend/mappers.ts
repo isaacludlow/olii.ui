@@ -103,7 +103,7 @@ export function mapGroup(groupDoc: any, groupId?: string): Group {
         Posts: [],
         Admins: groupDoc.admins?.map(admin => mapProfilePreview(admin)), // TODO fix the "admins?"
         MembersPreview: groupDoc.membersPreview?.map(member => mapProfilePreview(member)) ?? [],
-        Members: groupDoc.members?.map(member => mapProfilePreview(member)),
+        Members: [],
         Events: [],
     };
 
