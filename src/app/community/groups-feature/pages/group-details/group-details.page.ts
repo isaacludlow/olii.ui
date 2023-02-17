@@ -83,7 +83,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
           this.subs.sink = this.groupStore.getGroupMembers(group.GroupId).subscribe(members => {
             this.groupMembers = members
             this.isGroupMember = this.isMember(profile.ProfileId);
-            this.isGroupAdmin = this.isAdmin(group, profile.ProfileId);
+            this.isGroupAdmin = this.isAdmin(profile.ProfileId);
             this.canViewGroup = this.canView(group, profile.ProfileId);
           });
         });
@@ -123,12 +123,12 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     //   return true;
     // }
     // else if (group.PrivacyLevel == PrivacyLevel.Private) {
-    //   if (this.isMember(group, profileId) || this.isAdmin(group, profileId)) {
+    //   if (this.isMember(profileId) || this.isAdmin(profileId)) {
     //     return true;
     //   }
     // }
 
-    if (this.isMember(profileId) || this.isAdmin(group, profileId)) {
+    if (this.isMember(profileId) || this.isAdmin(profileId)) {
       this.canViewGroup = true;
       return true;
     }
@@ -154,10 +154,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
       LastName: this.currentProfile.LastName,
       ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
     }
+
     this.groupStore.joinGroup(profilePreview, this.group.GroupId);
     this.isGroupMember = true;
     this.canViewGroup = true;
-
   }
 
   leaveGroup() {
@@ -234,7 +234,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     return !!this.groupMembers.find(member => member.ProfileId === profileId);
   }
 
-  isAdmin(group: Group, profileId: string): boolean {
+  isAdmin(profileId: string): boolean {
     return !!this.group.Admins.find(admin => admin.ProfileId === profileId);
   }
 

@@ -70,4 +70,22 @@
         </ion-button>
 
     </form>
+
+    <h4 class="form-label">Change Image</h4>
+    <div class="group-cover-image-container">
+        <div class="add-image" *ngIf="this.groupCoverImage">
+            <olii-responsive-aspect-ratio-container aspectRatio="2/1">
+                <ion-badge (click)="removeGroupCoverImage()"><ion-icon name="close"></ion-icon></ion-badge>
+                <olii-container-cover-image [imageUrl]="sanitizeUrl(groupCoverImage.webPath)" boarderRadius="3%"></olii-container-cover-image>  
+            </olii-responsive-aspect-ratio-container>
+        </div>
+        <div class="add-image" *ngIf="this.groupCoverImage == null" (click)="setGroupCoverImage()">
+            <olii-base-icon name="add-circle-outline" color="primary"></olii-base-icon>
+        </div>
+    </div>
+
+    <ion-button (click)="updateGroup()" expand="block" [disabled]="editGroupForm.invalid || loadingButton" mode="ios">
+        <span *ngIf="!loadingButton">Edit Event</span>
+        <ion-spinner *ngIf="loadingButton"></ion-spinner>
+    </ion-button>
 </ion-content>

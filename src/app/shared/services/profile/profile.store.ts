@@ -10,7 +10,7 @@ import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
 import { SavedImagesAlbum } from "src/app/models/dto/profile/saved-images-album.dto";
 import { GalleryPhoto } from "@capacitor/camera";
 import { Platform } from "@ionic/angular";
-import { switchMap } from "rxjs/operators";
+import { shareReplay, switchMap } from "rxjs/operators";
 import { readPhotoAsBase64 } from "../../utilities";
 import { CloudStorageService } from "../bankend/cloud-storage-service/cloud-storage.service";
 import { v4 as uuidv4 } from 'uuid';
@@ -49,18 +49,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: string): Observable<Profile> {
-		return this.dbService.getProfileById(profileId);
-
-		// Use this code below for caching profile images on device in the future since they don't change very often.
-		// .pipe(
-		// 	map(profile => {
-		// 		profile.ProfileImages.forEach(img => {
-		// 			this.getBase64Image(img.Url).pipe(map(imageData => img.DownloadedImage = imageData)).subscribe();
-		// 		});
-
-		// 		return profile;
-		// 	})
-		// );
+		return this.dbService.getProfileById(profileId).pipe(shareReplay(1));
 	}
 
 	createNewProfile(profile: Profile): Observable<void> {

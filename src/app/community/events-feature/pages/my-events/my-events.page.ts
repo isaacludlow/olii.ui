@@ -1,9 +1,8 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { EventsFeatureStore, MyEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
+import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 
 @Component({
@@ -26,9 +25,9 @@ export class MyEventsPage implements OnInit {
   ngOnInit(): void {
     const profileId = this.profileStore.currentProfile.value.ProfileId;
 
-    this.attendingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Attending);
-    this.hostingEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Hosting);
-    this.pastEvents$ = this.eventStore.getMyEvents(profileId, MyEventsFilterOptions.Past);
+    this.attendingEvents$ = this.eventStore.getMyAttendingEvents(profileId);
+    this.hostingEvents$ = this.eventStore.getMyHostingEvents(profileId);
+    this.pastEvents$ = this.eventStore.getMyPastEvents(profileId);
 
     this.route.queryParamMap.subscribe(paramMap => {
       const eventFilterSegmentToShow = paramMap.get('eventFilterSegmentToShow');

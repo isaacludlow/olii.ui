@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start:firebase-demo": "firebase emulators:start --project=demo-oliiapp",
-    "start:firebase": "firebase emulators:start --project=oliiapp",
+    "start:firebase": "firebase emulators:start",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

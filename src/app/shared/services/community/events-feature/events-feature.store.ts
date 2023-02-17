@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { isAfter, isBefore, isFuture } from 'date-fns';
-import { BehaviorSubject, from, Observable, zip } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { isAfter, isBefore } from 'date-fns';
+import { combineLatest, from, merge, Observable, zip } from 'rxjs';
+import { map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
-import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
 import { DatabaseService } from '../../bankend/database-service/database.service';
-import { EventsFeatureService } from './events-feature.service';
 import { GalleryPhoto } from '@capacitor/camera';
 import { Platform } from '@ionic/angular';
 import { readPhotoAsBase64 } from 'src/app/shared/utilities';
@@ -17,72 +15,57 @@ import { v4 as uuidv4 } from 'uuid';
   providedIn: 'root'
 })
 export class EventsFeatureStore {
-  // TODO: Consider replacing the caching functionality here by adding a share() operator in the pipe of the dbService calls.
-  // See https://youtu.be/isI6rpnTIMA and https://www.youtube.com/watch?v=H542ZSyubrE.
-  allEvents = new BehaviorSubject<Event[]>(null);
-  myEvents = new BehaviorSubject<Event[]>(null);
-  
+  private _allEvents: Observable<Event[]>;
+  private _myAttendingEvents: Observable<Event[]>;
+  private _myHostingEvents: Observable<Event[]>;
+  private _myPastEvents: Observable<Event[]>;
+
   constructor(
     private dbService: DatabaseService,
-    private eventsService: EventsFeatureService,
     private cloudStorageService: CloudStorageService
   ) { }
   
   getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
-    if (this.allEvents.value === null) {
-      return this.dbService.getAllEvents().pipe(
-        switchMap(events => {
-          this.allEvents.next(events);
-          return this.allEvents.asObservable();
-        })
-      );
-    } else {
-      return this.allEvents.asObservable();
-    }
+    this._allEvents = this.dbService.getAllEvents().pipe(shareReplay(1));
+
+    return this._allEvents;
   }
-  
+
   getEventById(eventId: string): Observable<Event> {
-    let event = undefined;
+    let eventObservables = [this._allEvents, this._myAttendingEvents, this._myHostingEvents, this._myPastEvents];
+    eventObservables = eventObservables.filter(eventObservable => eventObservable != null);
 
-    if (this.allEvents.value !== null) {
-      event = this.allEvents.value.find(event => event.EventId === eventId);
-    }
+    const event = combineLatest(eventObservables).pipe(
+      map(events => events.flat().find(event => event.EventId === eventId))
+    );
 
-    if (event === undefined) {
-      return this.dbService.getEventById(eventId).pipe(
-        switchMap(event => {
-          this.allEvents.next([...this.allEvents.value, event]);
-          return this.allEvents.pipe(map(events => events.find(x => x.EventId === eventId)));
-        })
-      );
-    } else {
-      return this.allEvents.pipe(map(events => events.find(event => event.EventId === eventId)));
-    }
+    return event;
   }
 
-  getMyEvents(profileId: string, filter: MyEventsFilterOptions): Observable<Event[]> {
-    if (this.myEvents.value === null) {
-      return this.dbService.getMyEvents(profileId).pipe(
-        switchMap(events => {
-          this.myEvents.next(events);
-          return this.filterMyEvents(profileId, filter);
-        })
-      )
-    } else {
-      return this.filterMyEvents(profileId, filter);
-    }
+  getMyAttendingEvents(profileId: string): Observable<Event[]> {
+    this._myAttendingEvents = this.dbService.getMyAttendingEvents(profileId).pipe(shareReplay(1));
+
+    return this._myAttendingEvents;
+  }
+
+  getMyHostingEvents(profileId: string): Observable<Event[]> {
+    this._myHostingEvents = this.dbService.getMyHostingEvents(profileId).pipe(shareReplay(1));
+
+    return this._myHostingEvents;
+  }
+
+  getMyPastEvents(profileId: string): Observable<Event[]> {
+    this._myPastEvents = this.dbService.getMyPastEvents(profileId).pipe(shareReplay(1));
+
+    return this._myPastEvents;
   }
             
   getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.dbService.getPastGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isBefore(event.Date, new Date())))
-        );
+        return this.dbService.getPastGroupEvents(groupId);
       case GroupEventsFilterOptions.Future:
-        return this.dbService.getPastGroupEvents(groupId).pipe(
-          map(events => events.filter(event => isAfter(event.Date, new Date())))
-        );
+        return this.dbService.getUpcomingGroupEvents(groupId);
     }
   }
 
@@ -129,49 +112,6 @@ export class EventsFeatureStore {
 
     return downloadUrls$;
   }
-
-  //#region getMyEvents() helper methods.
-  private filterMyEvents(profileId: string, filter: MyEventsFilterOptions) {
-    switch (filter) {
-      case MyEventsFilterOptions.Attending:
-        return this.myEvents.asObservable().pipe(
-          map(events => events.filter(event => isFuture(event.Date) && !this.isCreator(event, profileId)))
-        );
-
-      case MyEventsFilterOptions.Hosting:
-        return this.myEvents.asObservable().pipe(
-          map(events => events.filter(event => this.isCreator(event, profileId))
-        ));
-
-      case MyEventsFilterOptions.Past:
-        return this.myEvents.asObservable().pipe(
-          map(events => events.filter(event => isBefore(event.Date, new Date(Date.now()))))
-        );
-
-      case MyEventsFilterOptions.All:
-        return this.myEvents.asObservable();
-    }
-  }
-
-  private retrieveGroupEvents(groupId: string): Observable<Event[]> {
-    return this.eventsService.getEventsByGroupId(groupId);
-  }
-  
-  private isCreator(event: Event, profileId: string): boolean {
-    if (event.Creator.CreatorType !== EventCreatorIdType.Profile) {
-      return false;
-    } else {
-      return event.Creator.CreatorId === profileId;
-    }
-  }
-  //#endregion
-}
-
-export enum MyEventsFilterOptions {
-  Attending,
-  Hosting,
-  Past,
-  All
 }
 
 export enum GroupEventsFilterOptions {
