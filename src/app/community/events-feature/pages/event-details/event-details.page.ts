@@ -1,12 +1,16 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { FullscreenImageViewerComponent } from 'src/app/components/shared/fullscreen-image-viewer/fullscreen-image-viewer.component';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
+import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
+import { mapEvent } from 'src/app/shared/services/bankend/mappers';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
@@ -20,6 +24,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   @ViewChild('map') mapRef: ElementRef<HTMLElement>
   map: google.maps.Map;
   mapMarker: google.maps.Marker;
+  event$: Observable<Event>;
   event: Event;
   attendingProfilePictures: string[];
   canEditEvent: boolean;
@@ -33,7 +38,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     private profileStore: ProfileStore,
     private groupStore: GroupFeatureStore,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit(): void {
@@ -41,15 +46,16 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     this.currentProfile = this.profileStore.currentProfile.value;
 
     this.subs.sink = this.route.paramMap.pipe(
+      tap((paramMap: ParamMap) => console.log(paramMap.get('eventId'))),
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
       this.canEdit(event, this.currentProfile.ProfileId).then(canEdit => this.canEditEvent = canEdit);
+      
       this.subs.sink = this.eventsStore.isAttendingEvent(this.event.EventId, this.currentProfile.ProfileId)
-      .subscribe(isAttending => this.attending = isAttending);
+        .subscribe(isAttending => this.attending = isAttending);
     });
-
   }
 
   ionViewDidEnter() {
@@ -70,7 +76,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  rsvpToEvent() {
+  rsvpToEvent(event: Event) {
     const profilePreview: ProfilePreview = {
       ProfileId: this.currentProfile.ProfileId,
       FirstName: this.currentProfile.FirstName,
@@ -78,7 +84,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
       ProfilePictureUrl: this.currentProfile.ProfilePictureUrl
     };
     
-    this.subs.sink = this.eventsStore.rsvpToEvent(profilePreview, this.event.EventId).subscribe(() => this.attending = true);
+    this.subs.sink = this.eventsStore.rsvpToEvent(profilePreview, event.EventId).subscribe(() => this.attending = true);
   }
 
   async canEdit(event: Event, profileId: string): Promise<boolean> {
@@ -95,15 +101,15 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  cancelRsvpToEvent() {
-    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, this.event.EventId).subscribe(() => this.attending = false);
+  cancelRsvpToEvent(event: Event) {
+    this.subs.sink = this.eventsStore.cancelRsvpToEvent(this.currentProfile.ProfileId, event.EventId).subscribe(() => this.attending = false);
   }
 
-  async openImageViewer(imageIndex: number): Promise<void> {
+  async openImageViewer(imageIndex: number, event: Event): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: FullscreenImageViewerComponent,
       componentProps: {
-        imageUrls: this.event.ImageUrls,
+        imageUrls: event.ImageUrls,
         startingIndex: imageIndex
       }
     });

@@ -1,5 +1,5 @@
 <ion-content>
-    <div class="cover-image" [style]="{'--background': 'url(\'' + event.CoverImageUrl + '\')' }">
+    <div *ngIf="event" class="cover-image" [style]="{'--background': 'url(\'' + event?.CoverImageUrl + '\')' }">
         <div class="header-icons">
             <olii-icon-with-off-white-square-background (click)="navigateBack()" name="arrow-back"></olii-icon-with-off-white-square-background>
             <olii-icon-with-off-white-square-background *ngIf="canEditEvent" routerLink="./edit" name="ellipsis-vertical-circle-outline"></olii-icon-with-off-white-square-background>
@@ -7,7 +7,7 @@
     </div>
 
     <div class="event-container">
-        <div class="event-details">
+        <div *ngIf="event" class="event-details">
             <div class="event-details-header">
                 <h3>{{ event.Title }}</h3>
                 <!-- TODO: Make a method to determine what type of creator this is and then navigate to the profile or group page. -->
@@ -39,41 +39,41 @@
                 </div>
             </div>
         </div>
-        <div class="rsvp">
-            <ion-button *ngIf="!attending" mode="ios" color="primary" (click)="rsvpToEvent()">Attend</ion-button>
+        <div *ngIf="event" class="rsvp">
+            <ion-button *ngIf="!attending" mode="ios" color="primary" (click)="rsvpToEvent(event)">Attend</ion-button>
 
             <ion-accordion-group *ngIf="attending" expand="inset" mode="md">
                 <ion-accordion value="first">
                     <ion-item slot="header" color="light">
                     <ion-label>Attending</ion-label>
                     </ion-item>
-                    <div class="ion-padding" slot="content" (click)="cancelRsvpToEvent()">Cancel</div>
+                    <div class="ion-padding" slot="content" (click)="cancelRsvpToEvent(event)">Cancel</div>
                 </ion-accordion>
                 </ion-accordion-group>
         </div>
-        <div *ngIf="attendingProfilePictures.length > 0">
+        <div *ngIf="event && attendingProfilePictures.length > 0">
             <div class="attendees-header">
                 <h4>Attending</h4>
                 <div class="font-body-s color-tertiary" [routerLink]="['/community/events', event.EventId, 'attendees']">See all</div>
             </div>
             <div>
                 <olii-profile-preview-icons
-                [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
-                profileIconSize="large"
-                [additionalDisplayNumber]="attendingProfilePictures.length - 5">
-            </olii-profile-preview-icons> 
-        </div>
+                    [profilePictureUrls]="attendingProfilePictures.slice(0, 5)"
+                    profileIconSize="large"
+                    [additionalDisplayNumber]="attendingProfilePictures.length - 5">
+                </olii-profile-preview-icons> 
+            </div>
         </div>
         <div class="location">
             <h4>Location</h4>
             <capacitor-google-map #map></capacitor-google-map>
         </div>
-        <div *ngIf="event.ImageUrls.length > 0" class="images">
+        <div *ngIf="event && event.ImageUrls.length > 0" class="images">
             <h4>Pictures</h4>
             <div class="images-container">
                 <div *ngFor="let imageUrl of event.ImageUrls; let i = index" class="image-container">
                     <olii-responsive-aspect-ratio-container aspectRatio="1/1">
-                        <olii-container-cover-image [imageUrl]="imageUrl" boarderRadius="5%" (click)="openImageViewer(i)"></olii-container-cover-image>
+                        <olii-container-cover-image [imageUrl]="imageUrl" boarderRadius="5%" (click)="openImageViewer(i, event)"></olii-container-cover-image>
                     </olii-responsive-aspect-ratio-container>
                 </div>
             </div>
