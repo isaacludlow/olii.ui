@@ -46,7 +46,6 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     this.currentProfile = this.profileStore.currentProfile.value;
 
     this.subs.sink = this.route.paramMap.pipe(
-      tap((paramMap: ParamMap) => console.log(paramMap.get('eventId'))),
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(paramMap.get('eventId')))
     ).subscribe(event => {
       this.event = event;
