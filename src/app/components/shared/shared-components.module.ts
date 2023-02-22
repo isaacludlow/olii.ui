@@ -21,6 +21,11 @@ import { BackButtonComponent } from './back-button/back-button.component';
 import { GroupPreviewIconsComponent } from './group-preview-icons/group-preview-icons.component';
 import { EditImagesComponent } from './edit-images/edit-images.component';
 import { FullscreenImageViewerComponent } from './fullscreen-image-viewer/fullscreen-image-viewer.component';
+import { BaseSpacerComponent } from '../layout/spacers/base-spacer/base-spacer.component';
+import { OneRemSpacerComponent } from '../layout/spacers/one-rem-spacer/one-rem-spacer.component';
+import { BaseHeaderComponent } from '../headers/base-header/base-header.component';
+import { CollapsiblePurpleHeaderWithRightButtonSectionOneComponent } from '../headers/collapsible-purple-header-with-right-button-section-one/collapsible-purple-header-with-right-button-section-one.component';
+import { CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent } from '../headers/collapsible-purple-header-with-right-button-section-two/collapsible-purple-header-with-right-button-section-two.component';
 
 
 @NgModule({
@@ -41,7 +46,12 @@ import { FullscreenImageViewerComponent } from './fullscreen-image-viewer/fullsc
     BackButtonComponent,
     GroupPreviewIconsComponent,
     EditImagesComponent,
-    FullscreenImageViewerComponent
+    FullscreenImageViewerComponent,
+    BaseSpacerComponent,
+    OneRemSpacerComponent,
+    BaseHeaderComponent,
+    CollapsiblePurpleHeaderWithRightButtonSectionOneComponent,
+    CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +76,12 @@ import { FullscreenImageViewerComponent } from './fullscreen-image-viewer/fullsc
     BackButtonComponent,
     GroupPreviewIconsComponent,
     EditImagesComponent,
-    FullscreenImageViewerComponent
+    FullscreenImageViewerComponent,
+    BaseSpacerComponent,
+    OneRemSpacerComponent,
+    BaseHeaderComponent,
+    CollapsiblePurpleHeaderWithRightButtonSectionOneComponent,
+    CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent
   ]
 })
 export class SharedComponentsModule { }
