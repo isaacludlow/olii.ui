@@ -4,19 +4,22 @@
   // Example: https://ionicframework.com/docs/api/toolbar#css-custom-properties. Reference: https://ionicframework.com/docs/reference/glossary#shadow
 
 
-// ========== olii-collapsible-purple-header-with-right-button-section-one component ==========
-ion-header.olii-collapsible-purple-header-with-right-button-section-one {
+// ========== olii-collapsible-purple-header-with-one-button-section-one component ==========
+ion-header.olii-collapsible-purple-header-with-one-button-section-one {
     background: var(--purple-gradient);
 }
-ion-toolbar.olii-collapsible-purple-header-with-right-button-section-one {
-    --background: var(--purple-gradient);
-}
-
-// ========== olii-collapsible-purple-header-with-right-button-section-two component ==========
-ion-header.olii-collapsible-purple-header-with-right-button-section-two {
-    background: var(--purple-gradient);
-}
-ion-toolbar.olii-collapsible-purple-header-with-right-button-section-two {
+ion-toolbar.olii-collapsible-purple-header-with-one-button-section-one {
     --background: var(--purple-gradient);
     --padding-end: 0.5rem;
+    --padding-start: 0.5rem;
+}
+
+// ========== olii-collapsible-purple-header-with-one-button-section-two component ==========
+ion-header.olii-collapsible-purple-header-with-one-button-section-two {
+    background: var(--purple-gradient);
+}
+ion-toolbar.olii-collapsible-purple-header-with-one-button-section-two {
+    --background: var(--purple-gradient);
+    --padding-end: 0.5rem;
+    --padding-start: 0.5rem;
 }

@@ -24,8 +24,8 @@ import { FullscreenImageViewerComponent } from './fullscreen-image-viewer/fullsc
 import { BaseSpacerComponent } from '../layout/spacers/base-spacer/base-spacer.component';
 import { OneRemSpacerComponent } from '../layout/spacers/one-rem-spacer/one-rem-spacer.component';
 import { BaseHeaderComponent } from '../headers/base-header/base-header.component';
-import { CollapsiblePurpleHeaderWithRightButtonSectionOneComponent } from '../headers/collapsible-purple-header-with-right-button-section-one/collapsible-purple-header-with-right-button-section-one.component';
-import { CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent } from '../headers/collapsible-purple-header-with-right-button-section-two/collapsible-purple-header-with-right-button-section-two.component';
+import { CollapsiblePurpleHeaderWithOneButtonSectionOneComponent } from '../headers/collapsible-purple-header-with-one-button-section-one/collapsible-purple-header-with-one-button-section-one.component';
+import { CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent } from '../headers/collapsible-purple-header-with-one-button-section-two/collapsible-purple-header-with-one-button-section-two.component';
 
 
 @NgModule({
@@ -50,8 +50,8 @@ import { CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent } from '../he
     BaseSpacerComponent,
     OneRemSpacerComponent,
     BaseHeaderComponent,
-    CollapsiblePurpleHeaderWithRightButtonSectionOneComponent,
-    CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent
+    CollapsiblePurpleHeaderWithOneButtonSectionOneComponent,
+    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent
   ],
   imports: [
     CommonModule,
@@ -80,8 +80,8 @@ import { CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent } from '../he
     BaseSpacerComponent,
     OneRemSpacerComponent,
     BaseHeaderComponent,
-    CollapsiblePurpleHeaderWithRightButtonSectionOneComponent,
-    CollapsiblePurpleHeaderWithRightButtonSectionTwoComponent
+    CollapsiblePurpleHeaderWithOneButtonSectionOneComponent,
+    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent
   ]
 })
 export class SharedComponentsModule { }
