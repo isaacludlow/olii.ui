@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, combineLatest, from, Observable, zip } from "rxjs";
-import { GroupFeatureService } from "./group-feature.service";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
-import { map, shareReplay, switchMap, tap } from "rxjs/operators";
+import { map, shareReplay, startWith, switchMap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from "src/app/models/dto/community/groups/group-post-comment.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
@@ -42,7 +41,10 @@ export class GroupFeatureStore {
 	}
 
     getAllGroups(offset: number = null, limit: number = null): Observable<Group[]> {
-        this._allGroups = this.dbService.getAllGroups().pipe(shareReplay(1));
+        this._allGroups = this.dbService.getAllGroups().pipe(
+            startWith([]),
+            shareReplay(1)
+        );
 
         return this._allGroups;
     }
@@ -63,7 +65,10 @@ export class GroupFeatureStore {
     } 
 
     getMyGroups(profileId: string): Observable<Group[]> {
-        this._myGroups = this.dbService.getMyGroups(profileId).pipe(shareReplay(1));
+        this._myGroups = this.dbService.getMyGroups(profileId).pipe(
+            startWith([]),
+            shareReplay(1)
+        );
 
         return this._myGroups;
     }
@@ -92,7 +97,10 @@ export class GroupFeatureStore {
     }
 
     getLatestPosts(profileId: string, earliestPostDate: Date): Observable<GroupPost[]> {
-        this._latestPosts = this.dbService.getLatestPosts(profileId, earliestPostDate).pipe(shareReplay(1));
+        this._latestPosts = this.dbService.getLatestPosts(profileId, earliestPostDate).pipe(
+            startWith([]),
+            shareReplay(1)
+        );
 
         return this._latestPosts;
     }
