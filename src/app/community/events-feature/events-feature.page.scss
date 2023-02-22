@@ -1,55 +1,27 @@
-ion-toolbar.purple-background {
-    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
-    --padding-start: 0.75rem;
-    --padding-end: 0.75rem;
-    --padding-bottom: 0.5rem;
-
-    .header {
-        display: flex;
-        align-items: center;
-
-        .add-event {
-            margin-left: auto;
-        }
-
-        h1 {
-            margin-left: auto;
-            margin-right: -12vw;
-        }
-    }
-}
-
 ion-header {
     background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
-}
 
-ion-toolbar.searchbar {
-    --background: #FBFBFB;
-
-    ion-searchbar {
-        margin-top: 0.5rem;
+    ion-toolbar {
+        --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+        --padding-end: 0.5rem;
     }
-}
-
-.spacer {
-    margin-bottom: 1rem;
 }
 
 .events-container {
-    margin: 0rem 0.5rem 1.5rem 0.5rem;
+    margin: 0rem 0.5rem 0rem 0.5rem;
 
-    .my-events {
+    .my-events-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
 
-    .upcoming-events {
-        margin-bottom: 0.75rem;
+    .upcoming-events-header {
+        margin-bottom: 0.5rem;
     }
 
     .card-wrapper {
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
 }

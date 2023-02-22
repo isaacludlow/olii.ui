@@ -1,3 +1,10 @@
+  // NOTE: The reason for holding the styles for a child component in the base component is because many Ionic components use the Shadow DOM.
+  // This means that the only way to set styles on them is to target the ionic element and use the predefined custom CSS properties.
+  // Setting classes or styles on these elements will not affect them.
+  // Example: https://ionicframework.com/docs/api/toolbar#css-custom-properties. Reference: https://ionicframework.com/docs/reference/glossary#shadow
+
+
+// ========== olii-collapsible-purple-header-with-right-button-section-one component ==========
 ion-header.olii-collapsible-purple-header-with-right-button-section-one {
     background: var(--purple-gradient);
 }
@@ -5,3 +12,11 @@ ion-toolbar.olii-collapsible-purple-header-with-right-button-section-one {
     --background: var(--purple-gradient);
 }
 
+// ========== olii-collapsible-purple-header-with-right-button-section-two component ==========
+ion-header.olii-collapsible-purple-header-with-right-button-section-two {
+    background: var(--purple-gradient);
+}
+ion-toolbar.olii-collapsible-purple-header-with-right-button-section-two {
+    --background: var(--purple-gradient);
+    --padding-end: 0.5rem;
+}

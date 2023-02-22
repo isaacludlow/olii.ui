@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
       mode="ios"
       headerClass="olii-collapsible-purple-header-with-right-button-section-one"
       toolbarClass="olii-collapsible-purple-header-with-right-button-section-one">
+      
       <ion-title color="light">{{ title }}</ion-title>
     </olii-base-header>
   `,
