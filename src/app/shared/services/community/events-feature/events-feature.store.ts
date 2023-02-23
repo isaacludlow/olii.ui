@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { isAfter, isBefore } from 'date-fns';
 import { combineLatest, from, merge, Observable, zip } from 'rxjs';
-import { map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, mergeMap, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
@@ -26,7 +26,10 @@ export class EventsFeatureStore {
   ) { }
   
   getAllEvents(offset: number = null, limit: number = null): Observable<Event[]> {
-    this._allEvents = this.dbService.getAllEvents().pipe(shareReplay(1));
+    this._allEvents = this.dbService.getAllEvents().pipe(
+      startWith([]),
+      shareReplay(1)
+    );
 
     return this._allEvents;
   }
@@ -43,19 +46,28 @@ export class EventsFeatureStore {
   }
 
   getMyAttendingEvents(profileId: string): Observable<Event[]> {
-    this._myAttendingEvents = this.dbService.getMyAttendingEvents(profileId).pipe(shareReplay(1));
+    this._myAttendingEvents = this.dbService.getMyAttendingEvents(profileId).pipe(
+      startWith([]),
+      shareReplay(1)
+    );
 
     return this._myAttendingEvents;
   }
 
   getMyHostingEvents(profileId: string): Observable<Event[]> {
-    this._myHostingEvents = this.dbService.getMyHostingEvents(profileId).pipe(shareReplay(1));
+    this._myHostingEvents = this.dbService.getMyHostingEvents(profileId).pipe(
+      startWith([]),
+      shareReplay(1)
+    );
 
     return this._myHostingEvents;
   }
 
   getMyPastEvents(profileId: string): Observable<Event[]> {
-    this._myPastEvents = this.dbService.getMyPastEvents(profileId).pipe(shareReplay(1));
+    this._myPastEvents = this.dbService.getMyPastEvents(profileId).pipe(
+      startWith([]),
+      shareReplay(1)
+    );
 
     return this._myPastEvents;
   }
