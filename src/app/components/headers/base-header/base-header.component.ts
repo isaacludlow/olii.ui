@@ -12,9 +12,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./base-header.component.scss'],
 })
 export class BaseHeaderComponent {
-  /** The name of child component. Then add a css class following the set pattern in the base-header scss file. */
+  /** The name of child component. The child component should then pass in a class name that matches a css class in the base-header scss file. */
   @Input() headerClass: string | null;
-  /** The name of child component. Then add a css class following the set pattern in the base-header scss file. */
+  /** The name of child component. The child component should then pass in a class name that matches a css class in the base-header scss file. */
   @Input() toolbarClass: string | null;
   /** Describes the scroll effect that will be applied to the header. Only applies in iOS mode. */
   @Input() collapseMode: string | null;
