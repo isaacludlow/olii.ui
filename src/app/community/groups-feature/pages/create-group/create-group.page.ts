@@ -78,6 +78,10 @@ export class CreateGroupPage {
     });
   }
 
+  navigateToGroupsPage(): void {
+    this.router.navigate(['community/groups']);
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

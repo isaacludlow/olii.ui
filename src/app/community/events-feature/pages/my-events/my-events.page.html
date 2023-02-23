@@ -1,26 +1,9 @@
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Events</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one buttonPosition="start" title="My Events" iconName="arrow-back" (buttonClickEventEmitter)="navigateToEventsPage()">
+</olii-collapsible-purple-header-with-one-button-section-one>
 
-<ion-content fullscreen="true" scrollY="true">
-    <ion-header collapse="condense" mode="ios">
-        <ion-toolbar class="purple-background" mode="ios">
-            <div class="header">
-                <div class="back" routerLink="/community/events">
-                    <olii-colored-square-background backgroundColor="purple-tinted-white">
-                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
-                    </olii-colored-square-background>
-                </div>
-                <h1 class="color-light">My Events</h1>
-            </div>
-        </ion-toolbar>
-        <div class="searchbar-spacer"></div>
-        <!-- <ion-toolbar class="searchbar" mode="ios">
-            <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
-        </ion-toolbar> -->
-    </ion-header>
+<ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two buttonPosition="start" title="My Events" iconName="arrow-back" (buttonClickEventEmitter)="navigateToEventsPage()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
 
     <!-- Use this for later beta versions -->
     <!-- <div class="events-invites">

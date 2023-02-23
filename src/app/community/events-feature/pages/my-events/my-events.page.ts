@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
@@ -18,6 +18,7 @@ export class MyEventsPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private eventStore: EventsFeatureStore,
     private profileStore: ProfileStore
   ) { }
@@ -42,5 +43,9 @@ export class MyEventsPage implements OnInit {
 
   eventFilterSegmentChanged(event) {
     this.currentEventFilterSegment = event.detail.value;
+  }
+
+  navigateToEventsPage(): void {
+    this.router.navigate(['community/events'])
   }
 }

@@ -1,26 +1,11 @@
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Groups</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one buttonPosition="end" title="Groups" iconName="add" (buttonClickEventEmitter)="createGroup()">
+</olii-collapsible-purple-header-with-one-button-section-one>
   
-  <ion-content fullscreen="true" scrollY="true">
-      <ion-header collapse="condense" mode="ios">
-          <ion-toolbar class="purple-background" mode="ios">
-              <div class="header">
-                  <h1 class="color-light">Groups</h1>
-                  <div class="add-event">
-                      <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="createGroup()">
-                          <olii-base-icon name="add" color="primary" size="small"></olii-base-icon>
-                      </olii-colored-square-background>
-                  </div>
-              </div>
-          </ion-toolbar>
-          <div class="spacer"></div>
-          <!-- <ion-toolbar class="searchbar" mode="ios">
-              <ion-searchbar animated="true" placeholder="Search for groups"></ion-searchbar>
-          </ion-toolbar> -->
-      </ion-header>
+  <ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two buttonPosition="end" title="Groups" iconName="add" (buttonClickEventEmitter)="createGroup()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
+
+      <olii-one-rem-spacer></olii-one-rem-spacer>
 
       <div>
         <div class="my-groups-segment-container">

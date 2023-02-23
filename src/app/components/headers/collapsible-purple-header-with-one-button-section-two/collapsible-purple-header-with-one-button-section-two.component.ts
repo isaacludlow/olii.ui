@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       headerClass="olii-collapsible-purple-header-with-one-button-section-two"
       toolbarClass="olii-collapsible-purple-header-with-one-button-section-two">
 
-      <ion-title color="light" style="font-size: 1.5rem;">{{ title }}</ion-title>
+      <h2 [ngClass]="buttonPosition"><ion-text color="light">{{ title }}</ion-text></h2>
       <ion-buttons [collapse]="true" [slot]="buttonPosition">
           <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="buttonClickEventEmitter.emit()">
               <olii-base-icon [name]="iconName" color="primary" size="small"></olii-base-icon>
