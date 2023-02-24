@@ -2,36 +2,6 @@ ion-content {
     --ion-background-color: #FBFBFB;
 }
 
-ion-toolbar.purple-background {
-    --background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
-
-    .header {
-        display: flex;
-        align-items: center;
-
-        .back {
-            margin-right: auto;
-        }
-
-        h1 {
-            margin-right: auto;
-            margin-left: -6vw;
-        }
-    }
-}
-
-ion-header {
-    background: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
-}
-
-ion-toolbar.searchbar {
-    --background: #FBFBFB;
-
-    ion-searchbar {
-        margin-top: 0.5rem;
-    }
-}
-
 .events-invites {
     margin: 1rem 0.5rem 1rem 0.5rem;
 }

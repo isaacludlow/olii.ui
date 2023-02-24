@@ -27,6 +27,17 @@
 
 // Global variables
 :root {
+	/*
+    * Custom Colors
+    * -------------------------------------------
+    */
+	--purple-gradient: linear-gradient(261.25deg, #7D5FFF -6.29%, #AA52FF 106.29%);
+
+	/*
+    * Ionic Light Colors
+    * -------------------------------------------
+    */
+
     --color-primary: #7d5fff;
 	--color-primary-rgb: 125,95,255;
 	--color-primary-contrast: #ffffff;
@@ -91,7 +102,7 @@
 	--color-light-tint: #f5f6f9;
 
     /*
-    * Dark Colors
+    * Ionic dark Colors
     * -------------------------------------------
     */
     --dark-theme-color-primary: #7d5fff;

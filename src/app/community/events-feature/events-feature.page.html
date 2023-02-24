@@ -1,29 +1,14 @@
-<ion-header collapse="fade" mode="ios">
-  <ion-toolbar class="purple-background" mode="ios">
-    <ion-title color="light">Events</ion-title>
-  </ion-toolbar>
-</ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one buttonPosition="end" title="Events" iconName="add" (buttonClickEventEmitter)="createEvent()">
+</olii-collapsible-purple-header-with-one-button-section-one>
 
-<ion-content fullscreen="true">
-    <ion-header collapse="condense" mode="ios">
-        <ion-toolbar class="purple-background" mode="ios">
-            <div class="header">
-                <h1 class="color-light">Events</h1>
-                <div class="add-event">
-                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="createEvent()">
-                        <olii-base-icon name="add" color="primary" size="small"></olii-base-icon>
-                    </olii-colored-square-background>
-                </div>
-            </div>
-        </ion-toolbar>
-        <div class="spacer"></div>
-        <!-- <ion-toolbar class="searchbar" mode="ios">
-            <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
-        </ion-toolbar> -->
-    </ion-header>
-    
+<ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two buttonPosition="end" title="Events" iconName="add" (buttonClickEventEmitter)="createEvent()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
+
+    <olii-one-rem-spacer></olii-one-rem-spacer>
+
     <div class="events-container">
-        <div class="my-events">
+        <div class="my-events-header">
             <h3>My events</h3>
             <p routerLink="/community/events/my-events" class="font-body-s color-tertiary">See all</p>
         </div>
@@ -32,8 +17,10 @@
         </div>
     </div>
 
+    <olii-one-rem-spacer></olii-one-rem-spacer>
+
     <div class="events-container">
-        <div class="upcoming-events">
+        <div class="upcoming-events-header">
             <h3>Upcoming events</h3>
         </div>
         <div class="card-wrapper" *ngFor="let event of allEvents$ | async">
