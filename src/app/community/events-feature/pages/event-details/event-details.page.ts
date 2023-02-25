@@ -118,7 +118,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   }
 
   navigateToEditEventPage(): void {
-    this.router.navigate(['./edit']);
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
   ngOnDestroy(): void {

@@ -1,3 +1,8 @@
+ion-content {
+    --opacity: 0;
+    position: absolute;
+}
+
 @supports (--custom:property) {
     .cover-image {
         height: 30vh;

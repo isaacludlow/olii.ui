@@ -1,21 +1,18 @@
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">My Groups</ion-title>
-    </ion-toolbar>
-</ion-header>
-
-<ion-header collapse="condense" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-        <div class="header">
-            <div class="back">
-                <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-            </div>
-            <h2 class="color-light">My Groups</h2>
-        </div>
-    </ion-toolbar>
-</ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one
+    buttonPosition="start"
+    title="All Groups"
+    iconName="arrow-back"
+    (buttonClickEventEmitter)="navigateBack()">
+</olii-collapsible-purple-header-with-one-button-section-one>
 
 <ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two
+        buttonPosition="start"
+        title="All Groups"
+        iconName="arrow-back"
+        (buttonClickEventEmitter)="navigateBack()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
+
     <div class="groups-container">
         <olii-group-card *ngFor="let group of groups" aspectRatio="1/1" [group]="group" [routerLink]="['../group', group.GroupId]">
         </olii-group-card>

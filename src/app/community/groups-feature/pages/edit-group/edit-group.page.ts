@@ -12,6 +12,7 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { GroupRequest } from 'src/app/models/requests/community/groups/group-request';
 import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
+import { Location } from '@angular/common';
 
 @Component({
   templateUrl: './edit-group.page.html',
@@ -37,7 +38,8 @@ export class EditGroupPage implements OnInit {
     private platform: Platform,
     private groupStore: GroupFeatureStore,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +69,10 @@ export class EditGroupPage implements OnInit {
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
+  }
+
+  navigateBack(): void {
+    this.location.back();
   }
 
   async updateGroup() {
