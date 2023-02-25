@@ -169,7 +169,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
 
   addPostPicture() {
     if (this.postPictures.length < 5) {
-      this.subs.sink = selectImages(1).subscribe(galleryPhotos => this.postPictures = [galleryPhotos.shift()]);
+      this.subs.sink = selectImages(5).subscribe(galleryPhotos => this.postPictures.push(...galleryPhotos));
     }
   }
 
