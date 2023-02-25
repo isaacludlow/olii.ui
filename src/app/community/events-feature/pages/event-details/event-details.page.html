@@ -1,10 +1,12 @@
-<ion-content>
-    <div *ngIf="event" class="cover-image" [style]="{'--background': 'url(\'' + event?.CoverImageUrl + '\')' }">
-        <div class="header-icons">
-            <olii-icon-with-off-white-square-background (click)="navigateBack()" name="arrow-back"></olii-icon-with-off-white-square-background>
-            <olii-icon-with-off-white-square-background *ngIf="canEditEvent" routerLink="./edit" name="ellipsis-vertical-circle-outline"></olii-icon-with-off-white-square-background>
-        </div>
-    </div>
+<olii-transparent-header-with-two-buttons
+    leftIconName="arrow-back"
+    (leftButtonClickEventEmitter)="navigateBack()"
+    rightIconName="ellipsis-vertical-circle-outline"
+    (rightButtonClickEventEmitter)="navigateToEditEventPage()">
+</olii-transparent-header-with-two-buttons>
+
+<ion-content [fullscreen]="true">
+    <div *ngIf="event" class="cover-image" [style]="{'--background': 'url(\'' + event?.CoverImageUrl + '\')' }"></div>
 
     <div class="event-container">
         <div *ngIf="event" class="event-details">
