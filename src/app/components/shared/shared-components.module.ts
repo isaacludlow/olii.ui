@@ -26,7 +26,7 @@ import { OneRemSpacerComponent } from '../layout/spacers/one-rem-spacer/one-rem-
 import { BaseHeaderComponent } from '../headers/base-header/base-header.component';
 import { CollapsiblePurpleHeaderWithOneButtonSectionOneComponent } from '../headers/collapsible-purple-header-with-one-button-section-one/collapsible-purple-header-with-one-button-section-one.component';
 import { CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent } from '../headers/collapsible-purple-header-with-one-button-section-two/collapsible-purple-header-with-one-button-section-two.component';
-
+import { TransparentHeaderWithTwoButtonsComponent } from '../headers/transparent-header-with-two-buttons/transparent-header-with-two-buttons.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,8 @@ import { CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent } from '../head
     OneRemSpacerComponent,
     BaseHeaderComponent,
     CollapsiblePurpleHeaderWithOneButtonSectionOneComponent,
-    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent
+    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent,
+    TransparentHeaderWithTwoButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +82,8 @@ import { CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent } from '../head
     OneRemSpacerComponent,
     BaseHeaderComponent,
     CollapsiblePurpleHeaderWithOneButtonSectionOneComponent,
-    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent
+    CollapsiblePurpleHeaderWithOneButtonSectionTwoComponent,
+    TransparentHeaderWithTwoButtonsComponent
   ]
 })
 export class SharedComponentsModule { }
