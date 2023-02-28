@@ -1,26 +1,17 @@
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-    <ion-title color="light">Attendees</ion-title>
-</ion-toolbar>
-</ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one
+    buttonPosition="start"
+    title="Attendees"
+    iconName="arrow-back"
+    (buttonClickEventEmitter)="navigateBack()">
+</olii-collapsible-purple-header-with-one-button-section-one>
 
-<ion-content fullscreen="true" scrollY="true">
-    <ion-header collapse="condense" mode="ios">
-        <ion-toolbar class="purple-background" mode="ios">
-            <div class="header">
-                <div class="back">
-                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
-                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
-                    </olii-colored-square-background>
-                </div>
-                <h1 class="color-light">Attendees</h1>
-            </div>
-        </ion-toolbar>
-        <div class="spacer"></div>
-        <!-- <ion-toolbar class="searchbar" mode="ios">
-            <ion-searchbar animated="true" placeholder="Search for events"></ion-searchbar>
-        </ion-toolbar> -->
-    </ion-header>
+<ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two
+        buttonPosition="start"
+        title="Attendees"
+        iconName="arrow-back"
+        (buttonClickEventEmitter)="navigateBack()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
 
     <div class="container">
         <ion-item *ngFor="let attendee of eventAttendees$ | async" class="attendee" (click)="navigateToProfile(attendee.ProfileId)">

@@ -1,8 +1,16 @@
-<olii-collapsible-purple-header-with-one-button-section-one buttonPosition="start" title="Create Event" iconName="arrow-back" (buttonClickEventEmitter)="navigateBack()">
+<olii-collapsible-purple-header-with-one-button-section-one
+    buttonPosition="start"
+    title="Create Event"
+    iconName="arrow-back"
+    (buttonClickEventEmitter)="navigateBack()">
 </olii-collapsible-purple-header-with-one-button-section-one>
 
 <ion-content>
-    <olii-collapsible-purple-header-with-one-button-section-two buttonPosition="start" title="Create Event" iconName="arrow-back" (buttonClickEventEmitter)="navigateBack()">
+    <olii-collapsible-purple-header-with-one-button-section-two
+        buttonPosition="start"
+        title="Create Event"
+        iconName="arrow-back"
+        (buttonClickEventEmitter)="navigateBack()">
     </olii-collapsible-purple-header-with-one-button-section-two>
 
     <form [formGroup]="createEventForm" (ngSubmit)="onSubmit()">

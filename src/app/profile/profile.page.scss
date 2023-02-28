@@ -2,20 +2,8 @@
 
 .profile-options {
     display: flex;
-}
-
-.settings {
-    display: flex;
-    margin-left: auto;
-    margin-right: 1rem;
-    margin-top: 1rem;
-    color: var(--color-primary);
-}
-
-.back {
-    display: flex;
-    margin-left: 1rem;
-    margin-top: 1rem;
+    justify-content: space-between;
+    margin: 1rem 0.5rem 0rem 0.5rem;
 }
 
 .profile-info-container {

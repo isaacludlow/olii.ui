@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
@@ -9,8 +8,6 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
-import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
-import { mapEvent } from 'src/app/shared/services/bankend/mappers';
 import { EventsFeatureStore } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
@@ -130,6 +127,10 @@ export class EventDetailsPage implements OnInit, OnDestroy {
 
   navigateBack(): void {
     this.router.navigate(['community/events']);
+  }
+
+  navigateToEditEventPage(): void {
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
   ngOnDestroy(): void {

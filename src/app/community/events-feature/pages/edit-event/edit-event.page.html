@@ -1,23 +1,17 @@
-<!-- TODO: The collapse style here is "fade", but in the header inside the ion-content it's "condense". Should those be the same? -->
-<ion-header collapse="fade" mode="ios">
-    <ion-toolbar class="purple-background" mode="ios">
-      <ion-title color="light">Update Event</ion-title>
-    </ion-toolbar>
-</ion-header>
+<olii-collapsible-purple-header-with-one-button-section-one
+    buttonPosition="start"
+    title="Edit Event"
+    iconName="arrow-back"
+    (buttonClickEventEmitter)="navigateBack()">
+</olii-collapsible-purple-header-with-one-button-section-one>
 
-<ion-content fullscreen="true" scrollY="true">
-    <ion-header collapse="condense" mode="ios">
-        <ion-toolbar class="purple-background" mode="ios">
-            <div class="header">
-                <div class="back">
-                    <olii-colored-square-background backgroundColor="purple-tinted-white" (click)="navigateBack()">
-                        <olii-base-icon name="arrow-back" color="primary" size="small"></olii-base-icon>
-                    </olii-colored-square-background>
-                </div>
-                <h1 class="color-light">Update Event</h1>
-            </div>
-        </ion-toolbar>
-    </ion-header>
+<ion-content>
+    <olii-collapsible-purple-header-with-one-button-section-two
+        buttonPosition="start"
+        title="Edit Event"
+        iconName="arrow-back"
+        (buttonClickEventEmitter)="navigateBack()">
+    </olii-collapsible-purple-header-with-one-button-section-two>
 
     <form [formGroup]="editEventForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <div class="event-details">

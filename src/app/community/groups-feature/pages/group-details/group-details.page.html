@@ -1,13 +1,13 @@
-<ion-content>
+<olii-transparent-header-with-two-buttons
+    leftIconName="arrow-back"
+    (leftButtonClickEventEmitter)="navigateBack()"
+    rightIconName="ellipsis-vertical-circle-outline"
+    (rightButtonClickEventEmitter)="navigateToEditGroupPage()">
+</olii-transparent-header-with-two-buttons>
+
+<ion-content [fullscreen]="true">
 <div *ngIf="group$ | async as group">
-    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }">
-        <div class="back-icon">
-            <olii-icon-with-off-white-square-background name="arrow-back" routerLink="/community/groups"></olii-icon-with-off-white-square-background>
-        </div>
-        <div *ngIf="canEditGroup" class="settings-icon">
-            <olii-icon-with-off-white-square-background name="ellipsis-vertical-circle-outline" (click)="editGroup()" ></olii-icon-with-off-white-square-background>
-        </div>
-    </div>
+    <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }"></div>
     <div class="group-details">
         <h1 class="group-name">{{ group.Name }}</h1>
         <p class="group-description">{{ group.Description}}</p>

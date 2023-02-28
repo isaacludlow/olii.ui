@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonModal, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -55,8 +55,12 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.segmentToShow = event.detail.value;
   }
 
-  navigateBack() {
+  navigateBack(): void {
     this.location.back();
+  }
+
+  navigateToSettingsPage(): void {
+    this.router.navigate(['./settings']);
   }
 
   isOwnProfile() {
