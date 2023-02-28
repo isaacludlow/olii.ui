@@ -36,7 +36,7 @@ const routes: Routes = [
   {
     path: 'all-groups',
     component: AllGroupsPage
-},
+  },
 ];
 
 @NgModule({

@@ -116,6 +116,18 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     modal.present();
   }
 
+  navigateToCreatorPage(creatorId: string, creatorType: EventCreatorIdType): void {
+    switch (creatorType) {
+      case EventCreatorIdType.Profile:
+        this.router.navigate(['profile'], { queryParams: { profileId: creatorId, showBackButton: true } });
+        break;
+
+      case EventCreatorIdType.Group:
+        this.router.navigate(['community/groups/group', creatorId]);
+        break;
+    }
+  }
+
   navigateBack(): void {
     this.router.navigate(['community/events']);
   }

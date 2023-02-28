@@ -17,8 +17,9 @@ import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-
   styleUrls: ['./profile.page.scss']
 })
 export class ProfilePage implements OnInit, OnDestroy {
-  profile: Profile;
   profile$: Observable<Profile>;
+  profile: Profile;
+  ownProfile: Profile
   profilePostUrls: string[];
   segmentToShow: string;
   subs = new SubSink();
@@ -37,9 +38,11 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.profile$ = this.route.queryParamMap.pipe(
       switchMap(paramMap => {
         if (paramMap.has('profileId')) {
+          this.profileStore.currentProfile.subscribe(profile => this.ownProfile = profile);
+
           return this.profileStore.getProfileById(paramMap.get('profileId'));
         } else {
-          return this.profileStore.currentProfile.asObservable();
+          return this.profileStore.currentProfile.asObservable().pipe(tap(profile => this.ownProfile = profile));
         }
       })
     ).pipe(tap(profile => this.profile = profile));
@@ -57,7 +60,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   isOwnProfile() {
-    return true;
+    return this.ownProfile.ProfileId === this.profile.ProfileId;
   }
 
   // viewControl(): void {
