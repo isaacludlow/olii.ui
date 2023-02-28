@@ -69,7 +69,7 @@ export const removeFromMyGroupsWhenRemovedAsGroupMember = functions.firestore
 export const addToMyGroupsWhenNewGroupIsCreated = functions.firestore
     .document("groups/{groupId}")
     .onCreate(async (snapshot, context) => {
-      const profileId = snapshot.data().admins[0].profileId;
+      const profileId: any = snapshot.data().admins[0].profileId;
       const myGroupData = {
         groupId: context.params.groupId,
         isAdmin: true,
@@ -116,6 +116,53 @@ export const sumAllMembersWhenUpdated = functions.firestore
       const numberOfMembers = memberDocRefs.length;
       return admin.firestore().doc(`groups/${change.params.groupId}`)
           .update("totalMembers", numberOfMembers);
+    });
+
+export const updateGroupReferencesWhenGroupIsUpdated = functions.firestore
+    .document("groups/{groupId}")
+    .onUpdate(async (change, context) => {
+      const oldGroup = change.before.data();
+      const newGroup = change.after.data();
+
+      const hasNameOrCoverImageChanged =
+        oldGroup.name !== newGroup.name ||
+        oldGroup.coverImageUrl !== newGroup.coverImageUrl;
+
+      if (hasNameOrCoverImageChanged) {
+        return;
+      }
+      
+      
+      // Update group posts
+      const newGroupPreview = {
+        groupId: context.params.groupId,
+        name: newGroup.name,
+        coverImageUrl: newGroup.coverImageUrl,
+      };
+
+      const groupPosts = await admin.firestore()
+        .collection("group_posts/{group_postId}")
+        .where("groupPreview.groupId", "==", context.params.groupId)
+        .get();
+
+        groupPosts?.forEach(doc =>
+          doc?.ref.update("groupPreview", newGroupPreview));
+
+        // Update group events
+        const groupEventCreator = {
+          creatorId: context.params.groupId,
+          creatorType: "group",
+          displayName: newGroup.name,
+
+        };
+
+        const groupEvents = await admin.firestore()
+        .collection("events/{eventId}")
+        .where("creator.creatorId", "==", context.params.groupId)
+        .get();
+
+        groupEvents?.forEach(doc =>
+          doc?.ref.update("creator", groupEventCreator));
     });
 
 // ========== Group Posts ==========

@@ -33,6 +33,8 @@ export const removeFromMyGroupsWhenRemovedAsGroupAdmin =
     groupFunctions.removeFromMyGroupsWhenRemovedAsGroupAdmin;
 export const sumAllMembersWhenUpdated =
     groupFunctions.sumAllMembersWhenUpdated;
+export const updateGroupReferencesWhenGroupIsUpdated =
+    groupFunctions.updateGroupReferencesWhenGroupIsUpdated;
 
 export const deleteImagesWhenGroupPostIsDeleted =
     groupFunctions.deleteImagesWhenGroupPostIsDeleted;

@@ -100,6 +100,8 @@ export const updateProfilePreviewAcrossDatabase = functions.firestore
               firestore.FieldValue.arrayUnion(newProfilePreview)
           );
 
+    // TODO: Test to see if these updates work. I think the [0] is only going to update one document instead of
+    // all the documents matching the query. They should most likely be looped over and each updated.
       // Update group members sub-collection, if needed
       const groupMembers = await admin.firestore()
           .collection("groups/{groupId}/members/{memberId}")
