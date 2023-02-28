@@ -13,7 +13,7 @@
             <div class="event-details-header">
                 <h3>{{ event.Title }}</h3>
                 <!-- TODO: Make a method to determine what type of creator this is and then navigate to the profile or group page. -->
-                <div class="creator" [routerLink]="['/profile', { queryParams: { profileId: event.Creator.CreatorId } }]">
+                <div class="creator" (click)="navigateToCreatorPage(event.Creator.CreatorId, event.Creator.CreatorType)">
                     <ion-avatar>
                         <img [src]="event.Creator.ImageUrl">
                     </ion-avatar>

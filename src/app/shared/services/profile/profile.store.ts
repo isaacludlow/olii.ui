@@ -49,7 +49,7 @@ export class ProfileStore implements OnDestroy {
 	}
 
 	getProfileById(profileId: string): Observable<Profile> {
-		return this.dbService.getProfileById(profileId).pipe(shareReplay(1));
+		return this.dbService.getProfileById(profileId);
 	}
 
 	createNewProfile(profile: Profile): Observable<void> {
