@@ -2,6 +2,7 @@
 
 .profile-options {
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     margin: 1rem 0.5rem 0rem 0.5rem;
 }

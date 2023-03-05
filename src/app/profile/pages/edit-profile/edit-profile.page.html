@@ -23,29 +23,29 @@
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" #form="ngForm">
         <ion-item>
             <ion-label color="tertiary" position="stacked">First Name</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="firstName" clearInput="true"></ion-input>
+            <ion-input mode="ios" type="text" formControlName="firstName" clearInput="true"></ion-input>
         </ion-item>
         <ion-note color="danger" *ngIf="!profileForm.controls.firstName.valid">First name cannot be left blank</ion-note>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Last Name</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="lastName" clearInput="true"></ion-input>
+            <ion-input mode="ios" type="text" formControlName="lastName" clearInput="true"></ion-input>
         </ion-item>
         <ion-note color="danger" *ngIf="!profileForm.controls.lastName.valid">Last name cannot be left blank</ion-note>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Home Country</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="homeCountry" clearInput="true"></ion-input>
+            <olii-places-autocomplete-field [textInput]="profileForm.controls.homeCountry.value" (autocompletedResult)="setHomeCountry($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']"></olii-places-autocomplete-field>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Host Country</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="hostCountry" clearInput="true"></ion-input>
+            <olii-places-autocomplete-field [textInput]="profileForm.controls.hostCountry.value" (autocompletedResult)="setHostCountry($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']"></olii-places-autocomplete-field>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Current City</ion-label>
-            <ion-input color="tertiary" mode="ios" type="text" formControlName="currentCity" clearInput="true"></ion-input>
+            <olii-places-autocomplete-field [textInput]="profileForm.controls.currentCity.value" (autocompletedResult)="setCurrentCity($event)" [responseType]="['(cities)']" [responseFieldType]="['vicinity']"></olii-places-autocomplete-field>
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Bio</ion-label>
-            <ion-textarea color="tertiary" mode="ios" type="text" formControlName="bio" clearInput="true"></ion-textarea>
+            <ion-textarea mode="ios" type="text" formControlName="bio" clearInput="true"></ion-textarea>
         </ion-item>
         <div class="images">
             <h4>Add Images</h4>

@@ -4,13 +4,13 @@ import { SubSink } from 'subsink';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { Location } from '@angular/common';
-import { getItemsFromFirstArrayThatAreNotInSecondArray, readPhotoAsBase64, selectImages } from 'src/app/shared/utilities'
+import { getItemsFromFirstArrayThatAreNotInSecondArray, selectImages } from 'src/app/shared/utilities'
 import { GalleryPhoto } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ProfileRequest } from 'src/app/models/requests/profile/profile-request';
 import { Platform } from '@ionic/angular';
-import { Observable, zip } from 'rxjs';
 import { CloudStorageService } from 'src/app/shared/services/bankend/cloud-storage-service/cloud-storage.service';
+import { zip } from 'rxjs';
+import gm = google.maps;
 
 @Component({
   templateUrl: './edit-profile.page.html',
@@ -67,6 +67,19 @@ export class EditProfilePage implements OnInit {
 
   sanitizeUrl(url: string): string {
     return this.domSanitizer.bypassSecurityTrustUrl(url) as string;
+  }
+
+  setHostCountry(placeResult: gm.places.PlaceResult): void {
+    this.profileForm.get('hostCountry').setValue(placeResult.formatted_address);
+  }
+
+  setCurrentCity(placeResult: gm.places.PlaceResult): void {
+    console.log(placeResult)
+    this.profileForm.get('currentCity').setValue(placeResult.vicinity);
+  }
+
+  setHomeCountry(placeResult: gm.places.PlaceResult): void {
+    this.profileForm.get('homeCountry').setValue(placeResult.formatted_address);
   }
 
   setProfilePicture() {
