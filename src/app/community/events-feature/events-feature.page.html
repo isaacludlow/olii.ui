@@ -20,9 +20,7 @@
             <h3>My events</h3>
             <p routerLink="/community/events/my-events" class="font-body-s color-tertiary">See all</p>
         </div>
-        <div class="card-wrapper" *ngFor="let event of myEvents$ | async">
-            <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
-        </div>
+        <olii-event-card-list [events$]="myEvents$" alternativeText="RSVP to an event to see it here"></olii-event-card-list>
     </div>
 
     <olii-one-rem-spacer></olii-one-rem-spacer>
@@ -31,8 +29,6 @@
         <div class="upcoming-events-header">
             <h3>Upcoming events</h3>
         </div>
-        <div class="card-wrapper" *ngFor="let event of allEvents$ | async">
-            <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
-        </div>
+        <olii-event-card-list [events$]="allEvents$" alternativeText="No upcoming events"></olii-event-card-list>
     </div>
 </ion-content>

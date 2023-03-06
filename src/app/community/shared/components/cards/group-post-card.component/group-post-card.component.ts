@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, LoadingController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
-import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store'
-import { CommentsComponent } from '../comments/comments.component'
+import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
+import { CommentsComponent } from '../../comments/comments.component';
 
 @Component({
   selector: 'olii-group-post-card',
