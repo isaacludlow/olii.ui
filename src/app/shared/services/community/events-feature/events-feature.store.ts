@@ -38,9 +38,13 @@ export class EventsFeatureStore {
     let eventObservables = [this._allEvents, this._myAttendingEvents, this._myHostingEvents, this._myPastEvents];
     eventObservables = eventObservables.filter(eventObservable => eventObservable != null);
 
-    const event = combineLatest(eventObservables).pipe(
+    let event = combineLatest(eventObservables).pipe(
       map(events => events.flat().find(event => event.EventId === eventId))
     );
+
+    if (!event) {
+      event = this.dbService.getEventById(eventId);
+    }
 
     return event;
   }
@@ -75,9 +79,9 @@ export class EventsFeatureStore {
   getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.dbService.getPastGroupEvents(groupId);
-      case GroupEventsFilterOptions.Future:
-        return this.dbService.getUpcomingGroupEvents(groupId);
+        return this.dbService.getPastGroupEvents(groupId).pipe(startWith([]));
+      case GroupEventsFilterOptions.Upcoming:
+        return this.dbService.getUpcomingGroupEvents(groupId).pipe(startWith([]));
     }
   }
 
@@ -128,5 +132,5 @@ export class EventsFeatureStore {
 
 export enum GroupEventsFilterOptions {
   Past,
-  Future,
+  Upcoming,
 }

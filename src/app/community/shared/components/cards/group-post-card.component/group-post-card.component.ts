@@ -8,7 +8,7 @@ import { CommentsComponent } from '../../comments/comments.component';
 @Component({
   selector: 'olii-group-post-card',
   template: `
-	<div>
+	<ion-card>
 		<div class="card-content">
 			<div class="post-header">
 				<div class="poster-info" (click)="navigateToUserProfile(post.Author.ProfileId)">
@@ -41,7 +41,7 @@ import { CommentsComponent } from '../../comments/comments.component';
 			</div>
 			<olii-comments [postComments]="post.Comments" [groupPostId]="post.GroupPostId"></olii-comments>
 		</div>
-	</div>
+	</ion-card>
   `,
   styleUrls: ['./group-post-card.component.scss'],
 

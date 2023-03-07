@@ -12,7 +12,8 @@ import { GroupPostCardComponent } from './shared/components/cards/group-post-car
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommentsComponent } from './shared/components/comments/comments.component';
 import { GroupCardComponent } from './shared/components/cards/group-card/group-card.component';
-import { EventCardListComponent } from './shared/components/cards/event-card-list/event-card-list.component'
+import { EventCardListComponent } from './shared/components/cards/event-card-list/event-card-list.component';
+import { GroupPostCardListComponent } from './shared/components/cards/group-post-card-list/group-post-card-list.component'
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { EventCardListComponent } from './shared/components/cards/event-card-lis
     GroupPostCardComponent,
     CommentsComponent,
     GroupCardComponent,
-    EventCardListComponent
+    EventCardListComponent,
+    GroupPostCardListComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { EventCardListComponent } from './shared/components/cards/event-card-lis
     EventCardComponent,
     GroupPostCardComponent,
     GroupCardComponent,
-    EventCardListComponent
+    EventCardListComponent,
+    GroupPostCardListComponent
   ]
 })
 export class CommunityModule { }

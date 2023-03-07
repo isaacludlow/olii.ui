@@ -10,7 +10,7 @@ import { Event } from 'src/app/models/dto/community/events/event.dto';
         <p class="color-medium">{{ alternativeText }}</p>
       </div>
 
-      <div  class="card-wrapper" *ngFor="let event of events">
+      <div class="card-wrapper" *ngFor="let event of events">
         <olii-event-card [event]="event" [routerLink]="['/community/events', event.EventId]"></olii-event-card>
       </div>
     </div>
