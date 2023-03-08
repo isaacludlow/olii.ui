@@ -22,13 +22,13 @@
               <h3>Personal Information</h3>
               <p class="color-medium font-thin">Help others recognize you.</p>
             </div>
-            <div class="personal-info-inputs">
+            <div>
               <ion-item>
                 <ion-input formControlName="firstName" type="text" placeholder="First Name"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-input formControlName="lastName" type="text" placeholder="Last Name"></ion-input>
-            </ion-item>
+              </ion-item>
+              <ion-item>
+                  <ion-input formControlName="lastName" type="text" placeholder="Last Name"></ion-input>
+              </ion-item>
             </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
           </div>
@@ -45,21 +45,30 @@
               <h3>Location</h3>
               <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
             </div>
-            <div class="location-inputs">
+            <div>
               <ion-item>
-                <ion-input>
-                  <olii-places-autocomplete-field (autocompletedResult)="setHostCity($event)" [responseType]="['(cities)']" [responseFieldType]="['vicinity']" placeholder="Host City"></olii-places-autocomplete-field>
-                </ion-input>
+                <olii-places-autocomplete-field
+                  (autocompletedResult)="setHostCity($event)"
+                  [responseType]="['(cities)']"
+                  [responseFieldType]="['vicinity']"
+                  placeholder="Host City">
+                </olii-places-autocomplete-field>
               </ion-item>
               <ion-item>
-                <ion-input>
-                  <olii-places-autocomplete-field (autocompletedResult)="setHostCountry($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Host Country"></olii-places-autocomplete-field>
-                </ion-input>
+                <olii-places-autocomplete-field
+                  (autocompletedResult)="setHostCountry($event)" 
+                  [responseType]="['country']" 
+                  [responseFieldType]="['formatted_address']" 
+                  placeholder="Host Country">
+                </olii-places-autocomplete-field>
               </ion-item>
               <ion-item>
-                <ion-input>
-                  <olii-places-autocomplete-field (autocompletedResult)="setHomeLocation($event)" [responseType]="['country']" [responseFieldType]="['formatted_address']" placeholder="Home Country"></olii-places-autocomplete-field>
-                </ion-input>
+                <olii-places-autocomplete-field
+                  (autocompletedResult)="setHomeLocation($event)" 
+                  [responseType]="['country']" 
+                  [responseFieldType]="['formatted_address']" 
+                  placeholder="Home Country">
+                </olii-places-autocomplete-field>
               </ion-item>
             </div>
             <ng-container [ngTemplateOutlet]="navigationButtons"></ng-container>
