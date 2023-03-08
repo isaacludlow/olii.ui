@@ -9,14 +9,13 @@ import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feat
 import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { SubSink } from 'subsink';
 import { FormBuilder } from '@angular/forms';
-import { NavController, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { Observable, of } from 'rxjs';
 import { Validators } from '@angular/forms';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventsFeatureStore, GroupEventsFilterOptions } from 'src/app/shared/services/community/events-feature/events-feature.store';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
-import { PrivacyLevel } from 'src/app/models/dto/misc/privacy-level.dto';
 import { DatabaseService } from 'src/app/shared/services/bankend/database-service/database.service';
 import { Profile } from 'src/app/models/dto/profile/profile.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
@@ -36,10 +35,10 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
   isGroupAdmin: boolean;
   groupMembers: ProfilePreview[];
   pastEvents$: Observable<Event[]>;
-  futureEvents$: Observable<Event[]>;
+  upcomingEvents$: Observable<Event[]>;
   showPostModal: boolean
   segmentToShow: string;
-  subSegmentToShow: string = 'future';
+  subSegmentToShow: string = 'upcoming';
   memberProfilePictures: string[]
   disableButtons: boolean;
   addPictureImage: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
@@ -70,7 +69,7 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
         const groupId = paramMap.get('groupId');
         
         this.pastEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Past);
-        this.futureEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Future);
+        this.upcomingEvents$ = this.eventStore.getGroupEvents(groupId, GroupEventsFilterOptions.Upcoming);
       }),
       switchMap((paramMap: ParamMap) => this.groupStore.getGroupById(paramMap.get('groupId'))),
       tap(group => {

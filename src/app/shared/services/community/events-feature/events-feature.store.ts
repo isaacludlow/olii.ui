@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { isAfter, isBefore } from 'date-fns';
-import { combineLatest, from, merge, Observable, zip } from 'rxjs';
-import { map, mergeMap, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, from, Observable, zip } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';
@@ -38,7 +37,7 @@ export class EventsFeatureStore {
     let eventObservables = [this._allEvents, this._myAttendingEvents, this._myHostingEvents, this._myPastEvents];
     eventObservables = eventObservables.filter(eventObservable => eventObservable != null);
 
-    const event = combineLatest(eventObservables).pipe(
+    let event = combineLatest(eventObservables).pipe(
       map(events => events.flat().find(event => event.EventId === eventId))
     );
 
@@ -75,9 +74,9 @@ export class EventsFeatureStore {
   getGroupEvents(groupId: string, filter: GroupEventsFilterOptions): Observable<Event[]> {
     switch (filter) {
       case GroupEventsFilterOptions.Past:
-        return this.dbService.getPastGroupEvents(groupId);
-      case GroupEventsFilterOptions.Future:
-        return this.dbService.getUpcomingGroupEvents(groupId);
+        return this.dbService.getPastGroupEvents(groupId).pipe(startWith([]));
+      case GroupEventsFilterOptions.Upcoming:
+        return this.dbService.getUpcomingGroupEvents(groupId).pipe(startWith([]));
     }
   }
 
@@ -128,5 +127,5 @@ export class EventsFeatureStore {
 
 export enum GroupEventsFilterOptions {
   Past,
-  Future,
+  Upcoming,
 }
