@@ -101,7 +101,7 @@
               </div>
 
               <ion-item>
-                <ion-textarea formControlName="bio" placeholder="Write your profile bio here"></ion-textarea>
+                <ion-textarea formControlName="bio" [autoGrow]="true" inputmode="text" maxlength="100" placeholder="Write your profile bio here"></ion-textarea>
               </ion-item>
 
               <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
