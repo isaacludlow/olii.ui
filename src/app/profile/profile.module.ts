@@ -5,7 +5,7 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
-import { SharedComponentsModule } from '../components/shared/shared-components.module';
+import { SharedComponentsModule } from '../components/shared-components.module';
 import { SavedImagesAlbumPage } from './pages/saved-photos-album/saved-images-album.page';
 import { EditProfilePage } from './pages/edit-profile/edit-profile.page';
 import { CreateAlbumPopUpComponent } from './shared/components/create-album-pop-up/create-album-pop-up.component';

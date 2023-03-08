@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { isAfter, isBefore } from 'date-fns';
-import { combineLatest, from, merge, Observable, zip } from 'rxjs';
-import { map, mergeMap, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, from, Observable, zip } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
 import { CloudStorageService } from '../../bankend/cloud-storage-service/cloud-storage.service';

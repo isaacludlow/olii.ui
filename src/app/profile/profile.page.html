@@ -1,12 +1,4 @@
 <ion-content class="ion-padding-vertical">
-    <div class="profile-options">
-        <div *ngIf="showBackButton" (click)="navigateBack()">
-            <olii-icon-with-purple-square-background name="arrow-back-outline"></olii-icon-with-purple-square-background>
-        </div>
-        <div *ngIf="!showBackButton" routerLink="/profile/settings">
-            <olii-icon-with-purple-square-background name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
-        </div>
-    </div>
     <div *ngIf="profile$ | async as profile">
         <div class="profile-options">
             <div *ngIf="showBackButton" class="back" (click)="navigateBack()">

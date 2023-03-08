@@ -31,7 +31,7 @@ import {
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { SharedComponentsModule } from './components/shared/shared-components.module';
+import { SharedComponentsModule } from './components/shared-components.module';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
