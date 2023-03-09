@@ -62,7 +62,7 @@ service cloud.firestore {
         return (requestData.keys().hasOnly(
           ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl', 'savedImagesAlbumsPreview', 'friends']
         ))
-        && (requestData.keys().hasAll(['firstName', 'lastName']))
+        // && (requestData.keys().hasAll(['firstName', 'lastName'])) // Commenting out this for now, but might need it later.
         && requestData.firstName is string
         && requestData.lastName is string
         && requestData.get('bio', '') is string
