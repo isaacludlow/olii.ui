@@ -70,6 +70,13 @@ export class CreateEventPage implements OnInit, OnDestroy {
       this.createEventForm.get('creator.displayName').setValue(paramMap.get('creatorDisplayName'));
       this.createEventForm.get('creator.imageUrl').setValue(paramMap.get('imageUrl'));
     });
+
+    this.createEventForm.valueChanges.subscribe(value => {
+      console.log(value)
+    })
+    this.createEventForm.statusChanges.subscribe(status => {
+      console.log(status)
+    })
   }
 
   ionViewDidEnter() {
