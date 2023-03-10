@@ -53,6 +53,7 @@
 
         <div>
             <h3 class="section-header">Latest</h3>
+            <!-- TODO: Move this to a list component and add empty state text -->
             <div class="post" *ngFor="let groupPost of latestGroupPosts$ | async">
                 <ion-card>
                     <div class="card-content">
