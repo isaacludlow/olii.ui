@@ -2,10 +2,12 @@
     <div *ngIf="profile$ | async as profile">
         <div class="profile-options">
             <div *ngIf="showBackButton" class="back" (click)="navigateBack()">
-                <olii-icon-with-purple-square-background size="medium" name="arrow-back-outline"></olii-icon-with-purple-square-background>
+                <olii-icon-with-purple-square-background size="medium" name="arrow-back-outline">
+                </olii-icon-with-purple-square-background>
             </div>
             <div *ngIf="isOwnProfile()" class="settings" routerLink="/profile/settings">
-                <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline"></olii-icon-with-purple-square-background>
+                <olii-icon-with-purple-square-background size="medium" name="ellipsis-vertical-circle-outline">
+                </olii-icon-with-purple-square-background>
             </div>
         </div>
 

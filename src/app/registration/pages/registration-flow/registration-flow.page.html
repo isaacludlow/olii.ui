@@ -14,7 +14,8 @@
       <ion-slide>
         <div class="slide">
           <div class="header">
-            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()">
+            </olii-icon-with-purple-square-background>
             <ion-progress-bar mode="md" value="0.25"></ion-progress-bar>
           </div>
           <div class="slide-content">
@@ -37,13 +38,16 @@
       <ion-slide>
         <div class="slide">
           <div class="header">
-            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()">
+            </olii-icon-with-purple-square-background>
             <ion-progress-bar mode="md" value="0.5"></ion-progress-bar>
           </div>
           <div class="slide-content">
             <div class="slide-text">
               <h3>Location</h3>
-              <p class="color-medium font-thin">This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.</p>
+              <p class="color-medium font-thin">
+                This is used to see how close you are to other students. It also allows us to show the most relevant content close to you.
+              </p>
             </div>
             <div>
               <ion-item>
@@ -81,7 +85,8 @@
       <ion-slide>
         <div class="slide">
           <div class="header">
-            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()">
+            </olii-icon-with-purple-square-background>
             <ion-progress-bar mode="md" value="0.75"></ion-progress-bar>
           </div>
 
@@ -94,14 +99,15 @@
             <div class="profile-inputs">
               <div class="profile-picture-container" (click)="setProfilePicture()">
                 <div class="profile-picture">
-                  <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>  
+                  <olii-container-cover-image [imageUrl]="sanitizeUrl(profilePicture.webPath)" boarderRadius="50%"></olii-container-cover-image>
                   <!-- <img [src]="profilePicture.webPath" alt=""> -->
                 </div>
                 <p class="font-body-s color-tertiary">Add profile picture</p>
               </div>
 
               <ion-item>
-                <ion-textarea formControlName="bio" [autoGrow]="true" inputmode="text" maxlength="100" placeholder="Write your profile bio here"></ion-textarea>
+                <ion-textarea formControlName="bio" [autoGrow]="true" inputmode="text" maxlength="100" placeholder="Write your profile bio here">
+                </ion-textarea>
               </ion-item>
 
               <p class="font-body-s color-tertiary">Choose up to 9 pictures for your profile from your photos library</p>
@@ -125,7 +131,8 @@
       <ion-slide>
         <div class="slide">
           <div class="header">
-            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()"></olii-icon-with-purple-square-background>
+            <olii-icon-with-purple-square-background class="back" size="medium" name="arrow-back" (click)="previousSlide()">
+            </olii-icon-with-purple-square-background>
             <ion-progress-bar mode="md" value="1"></ion-progress-bar>
           </div>
           <div class="slide-content">
@@ -137,10 +144,12 @@
               <olii-base-icon name="checkmark-circle-outline" color="primary" size="hero"></olii-base-icon>
             </olii-blue-circle-background>
             <p>Create awesome memories and meet new exchange students</p>
-            <ion-button mode="ios" (click)="submit()" [disabled]="loadingButton">
-              <span *ngIf="!loadingButton">Done</span>
-              <ion-spinner *ngIf="loadingButton"></ion-spinner>
-            </ion-button>
+            <div class="done">
+              <ion-button class="done" mode="ios" (click)="submit()" [disabled]="loadingButton">
+                <span *ngIf="!loadingButton">Done</span>
+                <ion-spinner *ngIf="loadingButton"></ion-spinner>
+              </ion-button>
+            </div>
           </div>
         </div>
       </ion-slide>
@@ -151,7 +160,7 @@
 <ng-template #navigationButtons>
   <div class="navigation-buttons-container">
     <div class="navigation-buttons">
-      <ion-button class="next" mode="ios" (click)="nextSlide()">Next</ion-button>
+      <ion-button mode="ios" (click)="nextSlide()">Next</ion-button>
       <a *ngIf="!loadingButton" class="later" (click)="submit()"><h4>Continue later</h4></a>
       <ion-spinner *ngIf="loadingButton"></ion-spinner>
     </div>
