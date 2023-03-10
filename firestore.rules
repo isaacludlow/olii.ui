@@ -59,10 +59,10 @@ service cloud.firestore {
 
       function isProfileDataValid(requestData) {
       // Require first and last name. All other fields are optional.
-      return (requestData.keys().hasAll(['firstName', 'lastName']))
-        && (requestData.keys().hasOnly(
+        return (requestData.keys().hasOnly(
           ['firstName', 'lastName', 'bio', 'homeCountry', 'hostCountry', 'currentCity', 'imageUrls', 'profilePictureUrl', 'savedImagesAlbumsPreview', 'friends']
         ))
+        // && (requestData.keys().hasAll(['firstName', 'lastName'])) // Commenting out this for now, but might need it later.
         && requestData.firstName is string
         && requestData.lastName is string
         && requestData.get('bio', '') is string
