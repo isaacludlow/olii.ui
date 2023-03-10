@@ -7,7 +7,7 @@ import { RegistrationSlideshowPage } from './pages/registration-slideshow/regist
 import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SharedComponentsModule } from '../components/shared/shared-components.module';
+import { SharedComponentsModule } from '../components/shared-components.module';
 import { RegistrationFlowPage } from './pages/registration-flow/registration-flow.page';
 import { SignInPage } from './pages/sign-in/sign-in.page';
 
