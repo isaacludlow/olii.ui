@@ -20,12 +20,14 @@ export class RegistrationFlowPage implements OnDestroy {
   @ViewChild('slider') slides: IonSlides;
   slideOptions = { initialSlide: 0, speed: 400, allowTouchMove: false };
   registerFlowForm = this.fb.group({
+    profilePicture: [''],
     firstName: [''],
     lastName: [''],
     currentCity: [''],
     hostCountry: [''],
     homeCountry: [''],
-    bio: ['']
+    bio: [''],
+    imageUrls: [[]]
   });
   profilePicture: GalleryPhoto = <GalleryPhoto>{ webPath: '../../../../assets/images/placeholder-profile-image.png' };
   profileImages: GalleryPhoto[] = [];
@@ -100,12 +102,22 @@ export class RegistrationFlowPage implements OnDestroy {
       HostCountry: this.registerFlowForm.get('hostCountry').value,
       CurrentCity: this.registerFlowForm.get('currentCity').value,
       Bio: this.registerFlowForm.get('bio').value,
-      ProfilePictureUrl: await this.profileStore.uploadProfilePicture(this.profilePicture, profileId, this.platform).toPromise(),
-      ImageUrls: await this.profileStore.uploadProfileImages(this.profileImages, profileId, this.platform).toPromise(),
+      ProfilePictureUrl: this.registerFlowForm.get('profilePicture').value.length > 0
+        ? await this.uploadProfilePicture(this.profilePicture, profileId, this.platform) : '',
+      ImageUrls: this.registerFlowForm.get('imageUrls').value.length > 0
+        ? await this.uploadProfileImages(this.profileImages, profileId, this.platform) : [],
       SavedImageAlbumPreviews: []
     };
 
     return profile
+  }
+
+  private uploadProfilePicture(profilePicture: GalleryPhoto, profileId: string, platform: Platform): Promise<string> {
+    return this.profileStore.uploadProfilePicture(profilePicture, profileId, platform).toPromise();
+  }
+
+  private uploadProfileImages(profileImages: GalleryPhoto[], profileId: string, platform: Platform): Promise<string[]> {
+    return this.profileStore.uploadProfileImages(profileImages, profileId, platform).toPromise();
   }
 
   ngOnDestroy(): void {

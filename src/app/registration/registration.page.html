@@ -11,7 +11,7 @@
             <ion-item>
                 <ion-input formControlName="username" type="text" placeholder="Username"></ion-input>
             </ion-item>
-            <ion-note *ngIf="username.touched">You cannot change your username later</ion-note>
+            <ion-note *ngIf="username.dirty">You cannot change your username later</ion-note>
             <ion-item>
                 <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
             </ion-item>

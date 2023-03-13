@@ -74,7 +74,6 @@ export class EditProfilePage implements OnInit {
   }
 
   setCurrentCity(placeResult: gm.places.PlaceResult): void {
-    console.log(placeResult)
     this.profileForm.get('currentCity').setValue(placeResult.vicinity);
   }
 
