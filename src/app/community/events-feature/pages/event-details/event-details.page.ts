@@ -1,8 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { FullscreenImageViewerComponent } from 'src/app/components/shared/fullscreen-image-viewer/fullscreen-image-viewer.component';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { EventCreatorIdType } from 'src/app/models/dto/misc/entity-preview-id-type.dto';
@@ -35,6 +36,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     private profileStore: ProfileStore,
     private groupStore: GroupFeatureStore,
     private router: Router,
+    private location: Location,
     private modalCtrl: ModalController,
   ) { }
 
@@ -42,9 +44,11 @@ export class EventDetailsPage implements OnInit, OnDestroy {
     // TODO: Need to change this to wait for the currentProfile to come back from the db on reload.
     this.currentProfile = this.profileStore.currentProfile.value;
 
-    this.subs.sink = this.route.paramMap.pipe(
+    this.event$ = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => this.eventsStore.getEventById(paramMap.get('eventId')))
-    ).subscribe(event => {
+    );
+    
+    this.subs.sink = this.event$.subscribe(event => {
       this.event = event;
       this.attendingProfilePictures = this.event.AttendeesPreview.map(attendee => attendee.ProfilePictureUrl);
       this.canEdit(event, this.currentProfile.ProfileId).then(canEdit => this.canEditEvent = canEdit);
@@ -56,7 +60,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     // TODO-AfterBeta: Refactor to wait until call to get events is done.
-    this.createMap(this.event?.Location.Latitude, this.event?.Location.Longitude);
+    this.subs.sink = this.event$.subscribe(event => this.createMap(event.Location.Latitude, event.Location.Longitude))
   }
 
   async createMap(latitude: number, longitude: number) {
@@ -126,7 +130,7 @@ export class EventDetailsPage implements OnInit, OnDestroy {
   }
 
   navigateBack(): void {
-    this.router.navigate(['community/events']);
+    this.location.back();
   }
 
   navigateToEditEventPage(): void {

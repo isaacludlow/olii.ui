@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, combineLatest, from, Observable, zip } from "rxjs";
+import { BehaviorSubject, combineLatest, from, Observable, of, zip } from "rxjs";
 import { Group } from "src/app/models/dto/community/groups/group.dto";
-import { map, shareReplay, startWith, switchMap } from "rxjs/operators";
+import { map, shareReplay, startWith, switchMap, tap } from "rxjs/operators";
 import { GroupRequest } from "src/app/models/requests/community/groups/group-request";
 import { GroupPostComment } from "src/app/models/dto/community/groups/group-post-comment.dto";
 import { GroupPost } from "src/app/models/dto/community/groups/group-post.dto";
@@ -12,6 +12,7 @@ import { GalleryPhoto } from "@capacitor/camera";
 import { Platform } from "@ionic/angular";
 import { v4 as uuidv4 } from 'uuid';
 import { ProfilePreview } from "src/app/models/dto/profile/profile-preview.dto";
+import { ProfileStore } from "../../profile/profile.store";
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,7 @@ export class GroupFeatureStore {
 
     constructor(
         private dbService: DatabaseService,
-        private cloudStorageService: CloudStorageService
+        private cloudStorageService: CloudStorageService,
     ) {}
 
 	set groupSection(section: Section) {
@@ -53,11 +54,20 @@ export class GroupFeatureStore {
         let groupObservables = [this._allGroups, this._myGroups];
         groupObservables = groupObservables.filter(groupObservable => groupObservable != null);
 
-        const group = combineLatest(groupObservables).pipe(
-            map(groups => groups.flat().find(group => group.GroupId === groupId))
-        );
+        if (groupObservables.length === 0) {
+            return this.dbService.getGroupById(groupId);
+        }
 
-        return group;
+        return combineLatest(groupObservables).pipe(
+            map(groups => groups.flat().find(group => group.GroupId === groupId)),
+            switchMap(group => {
+                if (group) {
+                    return of(group);
+                } else {
+                    return this.dbService.getGroupById(groupId);
+                }
+            })
+        );
     }
 
     getDiscoverGroups (profileId: string): Observable<Group[]> {
