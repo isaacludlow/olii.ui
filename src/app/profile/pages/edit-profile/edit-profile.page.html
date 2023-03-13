@@ -45,7 +45,7 @@
         </ion-item>
         <ion-item>
             <ion-label color="tertiary" position="stacked">Bio</ion-label>
-            <ion-textarea mode="ios" type="text" formControlName="bio" clearInput="true"></ion-textarea>
+            <ion-textarea mode="ios" type="text" formControlName="bio" [autoGrow]="true" clearInput="true" inputmode="text" maxlength="100"></ion-textarea>
         </ion-item>
         <div class="images">
             <h4>Add Images</h4>
