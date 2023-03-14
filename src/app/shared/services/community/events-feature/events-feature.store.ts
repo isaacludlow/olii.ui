@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, from, Observable, zip } from 'rxjs';
+import { combineLatest, from, Observable, of, zip } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Event } from 'src/app/models/dto/community/events/event.dto';
 import { ProfilePreview } from 'src/app/models/dto/profile/profile-preview.dto';
@@ -41,7 +41,15 @@ export class EventsFeatureStore {
       map(events => events.flat().find(event => event.EventId === eventId))
     );
 
-    return event;
+    return event.pipe(
+      switchMap(detailsPageEvent => {
+        if (!detailsPageEvent){
+          return this.dbService.getEventById(eventId);
+        } else {
+          return of(detailsPageEvent);
+        }
+      })
+    );
   }
 
   getMyAttendingEvents(profileId: string): Observable<Event[]> {
