@@ -131,8 +131,8 @@ export class GroupDetailsPage implements OnInit, OnDestroy {
     }
 
     const content = document.getElementById("group-content");
-    content.style.setProperty('--webkit-filter', 'blur(8px)');
-    content.style.filter = "blur(8px)";
+    // content.style.setProperty('--webkit-filter', 'blur(8px)');
+    // content.style.filter = "blur(8px)";
     this.disableButtons = true;
     return false;
   }
