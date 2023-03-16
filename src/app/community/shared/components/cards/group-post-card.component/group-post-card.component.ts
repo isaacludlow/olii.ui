@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { GroupPost } from 'src/app/models/dto/community/groups/group-post.dto';
 import { GroupFeatureStore } from 'src/app/shared/services/community/groups-feature/group-feature.store';
+import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
 import { CommentsComponent } from '../../comments/comments.component';
 
 @Component({
@@ -49,18 +50,24 @@ import { CommentsComponent } from '../../comments/comments.component';
 export class GroupPostCardComponent implements OnInit {
   @ViewChild (CommentsComponent) comments: CommentsComponent;
   @Input() post: GroupPost;
-  @Input() showDeletePostButton: boolean = true;
+  @Input() showDeletePostButton: boolean = false;
   showPostImageSlidePager: boolean;
 
 	constructor( 
 		private router: Router,
 		private groupStore: GroupFeatureStore,
+		private profileStore: ProfileStore,
 		private actionSheetCtrl: ActionSheetController
 	) { }
    
 	ngOnInit(): void {
 		this.groupStore.getCommentsByGroupPostId(this.post.GroupPostId).subscribe(comments => this.post.Comments = comments);
 		this.showPostImageSlidePager = this.post.ImageUrls.length > 0;
+		this.profileStore.currentProfile.subscribe(profile => {
+			if (profile) {
+				this.showDeletePostButton = this.post.Author.ProfileId === profile.ProfileId;
+			}
+		});
 	}
 
 	async presentConfirmDeleteActionSheet(postId: string): Promise<void> {

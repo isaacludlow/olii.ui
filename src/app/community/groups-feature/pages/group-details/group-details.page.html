@@ -5,7 +5,7 @@
     (rightButtonClickEventEmitter)="navigateToEditGroupPage()">
 </olii-transparent-header-with-two-buttons>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="main">
     <div *ngIf="group$ | async as group">
         <div class="cover-image" [style]="{'--background': 'url(\'' + group.CoverImageUrl + '\')' }"></div>
         <div class="group-details">
@@ -85,7 +85,7 @@
             </div>
         
             <!-- TODO-L15: Add some sort of blurred background for "Write Post" and "Add Event" buttons so they don't blend in with the ion-content background. -->
-            <div class="group-main-buttons">
+            <!-- <div class="group-main-buttons">
                 <ion-button type="button" mode="ios" size="small" (click)="toggleModal()" [disabled]="disableButtons">
                     <olii-base-icon name="pencil-outline"></olii-base-icon>
                     <div class="button-label">Write Post</div>
@@ -94,7 +94,8 @@
                     <olii-base-icon name="calendar-outline"></olii-base-icon>
                     <div class="button-label">Add Event</div>
                 </ion-button>
-            </div>
+            </div> -->
+            
         
             <ion-modal class="create-post-popup-modal" [isOpen]="showPostModal">
                 <ng-template>
@@ -142,4 +143,18 @@
             </ion-modal>
         </div>
     </div>
+
+    <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+        <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+            <ion-fab-button>
+                <ion-icon name="calendar-outline" color="tertiary" (click)="addEvent()" [disabled]="disableButtons"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button>
+                <ion-icon name="pencil-outline" color="tertiary" (click)="toggleModal()" [disabled]="disableButtons"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
 </ion-content>
