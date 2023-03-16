@@ -5,7 +5,7 @@
     (rightButtonClickEventEmitter)="navigateToEditEventPage()">
 </olii-transparent-header-with-two-buttons>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="main">
     <div *ngIf="event" class="cover-image" [style]="{'--background': 'url(\'' + event?.CoverImageUrl + '\')' }"></div>
 
     <div class="event-container">

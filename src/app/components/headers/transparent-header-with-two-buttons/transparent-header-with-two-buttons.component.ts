@@ -19,10 +19,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./transparent-header-with-two-buttons.component.scss']
 })
 // To use this component the consuming page must have fullscreen set to true on the ion-content tag.
-// Example: <ion-content [fullscreen]="true">
+// You'll also want to put a class on this so that you don't mess up any other ion-content tags used for modals, etc.
+// Example: <ion-content class="main" [fullscreen]="true">
 // Then, set these styles on ion-content in the scss for that page.
-// ion-content {
-//   --offset-top: 0px;
+// ion-content.main {
 //   position: absolute;
 // }
 export class TransparentHeaderWithTwoButtonsComponent {

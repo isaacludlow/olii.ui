@@ -1,6 +1,6 @@
-ion-content {
-    --opacity: 0;
+ion-content.main {
     position: absolute;
+    --padding-bottom: 3rem;
 }
 
 @supports (--custom:property) {
