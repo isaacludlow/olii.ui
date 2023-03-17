@@ -17,7 +17,7 @@
         <div class="event-details">
             <h4>Event details</h4>
             <ion-item>
-                <ion-input formControlName="title" clearInput="true" type="text" placeholder="Event title"></ion-input>
+                <ion-textarea formControlName="title" maxlength="25" clearInput="true" type="text" placeholder="Event title"></ion-textarea>
             </ion-item>
             <ion-note
                 color="danger"
@@ -26,7 +26,7 @@
             </ion-note>
 
             <ion-item>
-                <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+                <ion-textarea maxlength="100" formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
             <ion-note
                 color="danger"
