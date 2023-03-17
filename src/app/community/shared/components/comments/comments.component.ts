@@ -40,7 +40,7 @@ import { ProfileStore } from 'src/app/shared/services/profile/profile.store';
             <olii-container-cover-image [imageUrl]="profile.ProfilePictureUrl" boarderRadius="50%"></olii-container-cover-image>
         </div>
         <ion-item class="comment-textbox">
-            <ion-input [formControl]="addCommentInput" type="text" maxlength="50" placeholder="Add comment..."></ion-input>
+            <ion-textarea [formControl]="addCommentInput" type="text" maxlength="150" placeholder="Add comment..."></ion-textarea>
         </ion-item>
         <div class="icon">
             <olii-icon-with-purple-square-background size="medium" name="close-circle-outline" (click)="cancelComment()"></olii-icon-with-purple-square-background>
